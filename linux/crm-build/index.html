@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="Tu5vqPaUb8svfkPx5eetJFD84ciQCcWVXNatdsWtj9Q">
+  <meta name="baidu-site-verification" content="baidu_verify_FBq9PG4BBb">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.1","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="CRM 项目的部署步骤，也就是 Linux 各种应用，包括 uwsgi、MariaDB的安装和数据库的配置、Python 虚拟环境的使用和依赖安装、nginx 和 supervisor 在环境部署时的配合使用等等。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="crm 项目部署">
+<meta property="og:url" content="https://sliu.vip/linux/crm-build/index.html">
+<meta property="og:site_name" content="刘硕的技术查阅手册">
+<meta property="og:description" content="CRM 项目的部署步骤，也就是 Linux 各种应用，包括 uwsgi、MariaDB的安装和数据库的配置、Python 虚拟环境的使用和依赖安装、nginx 和 supervisor 在环境部署时的配合使用等等。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sliu.vip/linux/crm-build/image-20200207150724321.png">
+<meta property="og:image" content="https://sliu.vip/linux/crm-build/rz.gif">
+<meta property="og:image" content="https://sliu.vip/linux/crm-build/1581138963892.png">
+<meta property="og:image" content="https://sliu.vip/linux/crm-build/1581139026445.png">
+<meta property="og:image" content="https://sliu.vip/linux/crm-build/1581140304786.png">
+<meta property="og:image" content="https://sliu.vip/linux/crm-build/1581144016414.png">
+<meta property="og:image" content="https://sliu.vip/linux/crm-build/image-20200207163337987.png">
+<meta property="og:image" content="https://sliu.vip/linux/crm-build/1581146856257.png">
+<meta property="article:published_time" content="2020-02-17T06:32:21.000Z">
+<meta property="article:modified_time" content="2020-02-29T02:34:02.068Z">
+<meta property="article:author" content="刘硕">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="全栈开发">
+<meta property="article:tag" content="并发编程">
+<meta property="article:tag" content="网络编程">
+<meta property="article:tag" content="爬虫">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="自动化测试">
+<meta property="article:tag" content="Web开发">
+<meta property="article:tag" content="HTML">
+<meta property="article:tag" content="CSS">
+<meta property="article:tag" content="JavaScript">
+<meta property="article:tag" content="jQuery">
+<meta property="article:tag" content="Bootstrap">
+<meta property="article:tag" content="测试自动化">
+<meta property="article:tag" content="Selenium">
+<meta property="article:tag" content="postman">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="Vue">
+<meta property="article:tag" content="drf">
+<meta property="article:tag" content="django">
+<meta property="article:tag" content="文档翻译">
+<meta property="article:tag" content="PEP8">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sliu.vip/linux/crm-build/image-20200207150724321.png">
+
+<link rel="canonical" href="https://sliu.vip/linux/crm-build/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>crm 项目部署 | 刘硕的技术查阅手册</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f14f123935d6183fdd06f8f1c4bc378f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="刘硕的技术查阅手册" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">刘硕的技术查阅手册</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">Python 全栈开发学习笔记</h1>
+      
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-toc">
+
+    <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-fw fa-rss"></i>订阅</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/linux/crm-build/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          crm 项目部署
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-17 14:32:21" itemprop="dateCreated datePublished" datetime="2020-02-17T14:32:21+08:00">2020-02-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-29 10:34:02" itemprop="dateModified" datetime="2020-02-29T10:34:02+08:00">2020-02-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <div class="post-description">CRM 项目的部署步骤，也就是 Linux 各种应用，包括 uwsgi、MariaDB的安装和数据库的配置、Python 虚拟环境的使用和依赖安装、nginx 和 supervisor 在环境部署时的配合使用等等。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="crm-项目部署流程"><a href="#crm-项目部署流程" class="headerlink" title="crm 项目部署流程"></a>crm 项目部署流程</h3><ul>
+<li>配置 nginx，提供反向代理功能。将 80 端口的请求，转发给 django 的 8000 端口；</li>
+<li>uwsgi + django 启动后端进程，部署在 8000 端口，处理用户的动态逻辑，包括登录、注册、查询等 curd（增删改查）操作</li>
+<li>mariadb（MySQL 数据库），进行数据导出、导入操作</li>
+<li>虚拟环境的创建</li>
+<li>supervisor 进程管理工具  ，防止 uwsgi 突然崩溃，supervisor 能够自动启动 uwsgi</li>
+</ul>
+<h3 id="配置-uwsgi"><a href="#配置-uwsgi" class="headerlink" title="配置 uwsgi"></a>配置 uwsgi</h3><p>部署 django 项目使用的命令 <code>python3 manage.py runserver</code> 其实是调用 wsgiref 这个 Python 内置的 wsgi 服务器，性能很低。</p>
+<p>wsgi 实际上是运行一个 socket 服务端，便于程序员调试 django 程序，它是单线程，单进程，性能不高。</p>
+<p>在 Linux 服务器线上，主流的部署形式是 uwsgi 对 django 进行启动，支持多进程，多线程，以及各种优化。</p>
+<p>uwsgi 并发性更好，因为它是 C 写的一个基于 uwsgi 协议运行的高性能 Web 服务器。</p>
+<img src="/linux/crm-build/image-20200207150724321.png" class="" title="image-20200207150724321">
+
+<p>服务器中环境比较复杂，为了不影响其他项目的运行，项目部署一般在虚拟的 Python 环境中进行。</p>
+<p>因此，首先要配置一个 Python 的虚拟环境。在配置之前，要查看是否安装了 virtualenv：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost etc]<span class="comment"># which virtualenv</span></span><br><span class="line">/usr/bin/<span class="built_in">which</span>: no virtualenv <span class="keyword">in</span> (/usr/<span class="built_in">local</span>/sbin:/usr/<span class="built_in">local</span>/bin:/usr/sbin:/usr/bin:/root/bin:/etc/python36/bin:/opt/python36/bin)</span><br></pre></td></tr></table></figure>
+
+<p>若出现上面的提示，说明需要先安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install -i https://pypi.douban.com/simple virtualenv</span><br></pre></td></tr></table></figure>
+
+<p>进入想要存放虚拟环境的文件夹，创建虚拟 Python 环境：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost etc]<span class="comment"># mkdir /opt/venvs</span></span><br><span class="line">[root@localhost etc]<span class="comment"># cd /opt/venvs/</span></span><br><span class="line">[root@localhost venvs]<span class="comment"># virtualenv --no-site-packages --python=python3 venv_crm</span></span><br><span class="line">[root@localhost venvs]<span class="comment"># cd venv_crm/</span></span><br><span class="line">[root@localhost venv_crm]<span class="comment"># </span></span><br><span class="line">[root@localhost venv_crm]<span class="comment"># source ./bin/activate</span></span><br><span class="line">(venv_crm) [root@localhost venv_crm]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p>以后的配置，都会在这个虚拟环境中进行。</p>
+<p>虚拟环境激活后，安装 uwsgi 工具：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost venv_crm]<span class="comment"># pip3 install -i https://pypi.douban.com/simple uwsgi</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="上传-crm-代码"><a href="#上传-crm-代码" class="headerlink" title="上传 crm 代码"></a>上传 crm 代码</h3><p>把我们的 crm 项目打包成 zip，在 Xshell 上通过 lrzsz 工具上传至 Linux。</p>
+<img src="/linux/crm-build/rz.gif" class="" title="rz">
+
+<p>若没有 lrzsz 工具，可能会无法发送，需要先安装这个工具：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install lrzsz</span><br></pre></td></tr></table></figure>
+
+<p>若是 mac 用户，可以使用 scp 命令传输。</p>
+<p>收到 crm 项目的 zip 压缩文件后，使用 unzip 命令解压缩。当然，要先安装 unzip 工具：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost ~]<span class="comment"># yum install unzip -y</span></span><br><span class="line">(venv_crm) [root@localhost ~]<span class="comment"># unzip CRM.zip</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="安装-crm-项目依赖的环境"><a href="#安装-crm-项目依赖的环境" class="headerlink" title="安装 crm 项目依赖的环境"></a>安装 crm 项目依赖的环境</h3><h4 id="安装-django"><a href="#安装-django" class="headerlink" title="安装 django"></a>安装 django</h4><p>进入 crm 项目第一层文件夹，尝试启动 crm 项目：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost ~]<span class="comment"># cd CRM</span></span><br><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># ls</span></span><br><span class="line">app01  CRM  manage.py  rbac  utils</span><br><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># python3 manage.py runserver</span></span><br></pre></td></tr></table></figure>
+
+<p>运行出错，错误信息为：</p>
+<figure class="highlight vbnet"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ImportError: Couldn<span class="comment">'t import Django. Are you sure it's installed and available on your PYTHONPATH environment variable? Did you forget to activate a virtual environment?</span></span><br></pre></td></tr></table></figure>
+
+<p>这是因为虚拟环境中没有 django。兵来将挡水来土掩，安装 django 就是了：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># pip3 install -i https://pypi.douban.com/simple django==1.11.9</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="安装-pymysql"><a href="#安装-pymysql" class="headerlink" title="安装 pymysql"></a>安装 pymysql</h4><p>安装好 django，继续尝试启动 crm 项目：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># python3 manage.py runserver</span></span><br></pre></td></tr></table></figure>
+
+<p>程序再次报错，这次的报错信息是：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">ModuleNotFoundError:</span> <span class="literal">No</span> <span class="string">module</span> <span class="string">named</span> <span class="string">'pymysql'</span></span><br></pre></td></tr></table></figure>
+
+<p>看来我们还需要安装 pymysql 模块：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># pip3 install -i https://pypi.douban.com/simple pymysql</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="安装-django-multiselectfield"><a href="#安装-django-multiselectfield" class="headerlink" title="安装 django-multiselectfield"></a>安装 django-multiselectfield</h4><p>继续，尝试启动 crm 项目：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># python3 manage.py runserver</span></span><br></pre></td></tr></table></figure>
+
+<p>有报错了，报错信息为：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">ModuleNotFoundError:</span> <span class="literal">No</span> <span class="string">module</span> <span class="string">named</span> <span class="string">'multiselectfield'</span></span><br></pre></td></tr></table></figure>
+
+<p>这里提示的是没有安装 multiselectfield 模块。但主要注意的是，包的名字是 django-multiselectfield 而不是直接的 multiselectfield：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># pip3 install -i https://pypi.douban.com/simple django-multiselectfield</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="一键安装-crm-依赖环境"><a href="#一键安装-crm-依赖环境" class="headerlink" title="一键安装 crm 依赖环境"></a>一键安装 crm 依赖环境</h4><p>除了像我们前面逐次尝试逐个安装的方式外，我们还可以通过 pip 的 freeze 功能批量导出和导入所有模块。</p>
+<p>在我们编写 crm 项目的操作系统中输入命令，批量导出模块信息至 <code>requirements.txt</code> 文件中：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 freeze &gt; requirements.txt</span><br></pre></td></tr></table></figure>
+
+<p>在 cmd 所在文件夹会出现一个 <code>requirements.txt</code> 文件，里面有所有的模块名和版本号信息。</p>
+<p>把这个文件发送到 Linux 系统中，通过命令批量导入依赖的包：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install -r requirements.txt</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置数据库"><a href="#配置数据库" class="headerlink" title="配置数据库"></a>配置数据库</h3><h4 id="安装-MariaDB（MySQL）"><a href="#安装-MariaDB（MySQL）" class="headerlink" title="安装 MariaDB（MySQL）"></a>安装 MariaDB（MySQL）</h4><p>安装好各种 crm 依赖的环境之后，crm 项目依然无法正常运行：因为我们还没有安装 MySQL 数据库。</p>
+<p>在 CentOS 中，由于 MySQL 已经开始收费，有开源组织创建了一个完全一模一样的数据库，就是 MariaDB 数据库。</p>
+<p>可以使用 yum 直接安装 MariaDB：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># yum install mariadb-server mariadb -y</span></span><br></pre></td></tr></table></figure>
+
+<p>通过 yum 安装的 MariaDB 数据库服务可以通过 systemctl 命令启动：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># systemctl start mariadb</span></span><br></pre></td></tr></table></figure>
+
+<p>为测试 MariaDB 运行状态，我们可以尝试登录。MariaDB 的用法同 MySQL 完全一致，甚至连接命令使用的也是 mysql：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># mysql -uroot -p</span></span><br></pre></td></tr></table></figure>
+
+<p>初始密码默认为空，直接回车即可进入 MariaDB。使用命令修改密码为 123：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MariaDB [(none)]&gt; set password &#x3D; password(&#39;123&#39;);</span><br></pre></td></tr></table></figure>
+
+<p>若数据库名称和密码会发生变化，还需要修改 <code>settings.py</code> 中数据库部分的配置。</p>
+<h4 id="导出和导入数据库数据"><a href="#导出和导入数据库数据" class="headerlink" title="导出和导入数据库数据"></a>导出和导入数据库数据</h4><p>在 Windows 中通过命令导出数据库中的数据：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqldump -uroot -p crm &gt; crm.sql</span><br></pre></td></tr></table></figure>
+
+<p>把导出的 <code>crm.sql</code> 文件传到 Linux 中。创建并进入 crm 数据库，使用命令导入数据：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">MariaDB [(none)]&gt; create database crm;</span><br><span class="line">Query OK, 1 row affected (0.00 sec)</span><br><span class="line">MariaDB [(none)]&gt; use crm;</span><br><span class="line">Database changed</span><br><span class="line">MariaDB [crm]&gt; source ~&#x2F;crm.sql</span><br></pre></td></tr></table></figure>
+
+<p>可以查看一些表，是不是有数据导入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">MariaDB [crm]&gt; show tables;</span><br><span class="line">+----------------------------+</span><br><span class="line">| Tables_in_crm              |</span><br><span class="line">+----------------------------+</span><br><span class="line">| app01_campuses             |</span><br><span class="line">| app01_classlist            |</span><br><span class="line">| app01_classlist_teachers   |</span><br><span class="line">| app01_consultrecord        |</span><br><span class="line">| app01_courserecord         |</span><br><span class="line">| app01_customer             |</span><br><span class="line">| app01_customer_class_list  |</span><br><span class="line">| app01_enrollment           |</span><br><span class="line">| app01_studyrecord          |</span><br><span class="line">| app01_userinfo             |</span><br><span class="line">| app01_userinfo_roles       |</span><br><span class="line">| auth_group                 |</span><br><span class="line">| auth_group_permissions     |</span><br><span class="line">| auth_permission            |</span><br><span class="line">| auth_user                  |</span><br><span class="line">| auth_user_groups           |</span><br><span class="line">| auth_user_user_permissions |</span><br><span class="line">| django_admin_log           |</span><br><span class="line">| django_content_type        |</span><br><span class="line">| django_migrations          |</span><br><span class="line">| django_session             |</span><br><span class="line">| rbac_menu                  |</span><br><span class="line">| rbac_permission            |</span><br><span class="line">| rbac_role                  |</span><br><span class="line">| rbac_role_permissions      |</span><br><span class="line">+----------------------------+</span><br><span class="line">25 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">MariaDB [crm]&gt; select * from rbac_role;</span><br><span class="line">+----+-----------+</span><br><span class="line">| id | role_name |</span><br><span class="line">+----+-----------+</span><br><span class="line">|  2 | CEO       |</span><br><span class="line">|  3 | 销售      |</span><br><span class="line">|  4 | 讲师      |</span><br><span class="line">+----+-----------+</span><br><span class="line">3 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">MariaDB [crm]&gt;</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置-settings-py"><a href="#配置-settings-py" class="headerlink" title="配置 settings.py"></a>配置 <code>settings.py</code></h3><p>再次调试 crm ，应该就可以正常运行了。将其配置在 <code>0.0.0.0:8000</code>，并尝试通过浏览器访问，部署之前，或许需要清空防火墙列表：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># iptables -F</span></span><br><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># python3 manage.py runserver 0.0.0.0:8000</span></span><br></pre></td></tr></table></figure>
+
+<p>虽然访问被禁止，但已经能看见 django 的大黄页，至少说明我们成功连接到了 Linux 的 django。禁止访问的原因是，我们没有在 settings.py 中指定 ALLOWED_HOSTS。</p>
+<img src="/linux/crm-build/1581138963892.png" class="" width="1581138963892">
+
+<p><code>ctrl + c</code> 终止运行中的 django 项目。使用 vim 命令编辑 settings.py 文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># vim CRM/settings.py</span></span><br></pre></td></tr></table></figure>
+
+<p>找到 ALLOWED_HOSTS，在列表中添加 <code>‘*’</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALLOWED_HOSTS = [<span class="string">'*'</span>]</span><br></pre></td></tr></table></figure>
+
+<p>保存并退出，再次启动 django 项目，我们就可以访问我们的 crm 项目了。</p>
+<img src="/linux/crm-build/1581139026445.png" class="" width="1581139026445">
+
+<h3 id="uwsgi-启动-django"><a href="#uwsgi-启动-django" class="headerlink" title="uwsgi 启动 django"></a>uwsgi 启动 django</h3><p>虽然刚刚我们已经成功运行好 django 项目。但是我们前面讨论过，django 使用的是 python 自带的 wsgiref，性能较低。平时的测试足够用，但并不适合线上的高并发环境。所以我们需要使用 uwsgi，使用多进程的方式启动 django。</p>
+<h4 id="配置-uwsgi-ini-文件"><a href="#配置-uwsgi-ini-文件" class="headerlink" title="配置 uwsgi.ini 文件"></a>配置 <code>uwsgi.ini</code> 文件</h4><p>进入 crm 项目的第一层文件夹，在此处创建一个 <code>uwsgi.ini</code> 文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># pwd</span></span><br><span class="line">/root/CRM</span><br><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># vim uwsgi.ini</span></span><br></pre></td></tr></table></figure>
+
+<p>在刚刚创建的文件中写入如下配置信息：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[uwsgi]</span></span><br><span class="line"><span class="comment"># Django-related settings</span></span><br><span class="line"><span class="comment"># the base directory (full path)</span></span><br><span class="line"><span class="comment"># 填入你crm项目的第一层绝对路径</span></span><br><span class="line"><span class="attr">chdir</span>           = /root/CRM</span><br><span class="line"><span class="comment"># Django's wsgi file</span></span><br><span class="line"><span class="comment"># 这个wsgi.py文件，在第二层的crm目录下</span></span><br><span class="line"><span class="attr">module</span>          = CRM.wsgi</span><br><span class="line"><span class="comment"># the virtualenv (full path)</span></span><br><span class="line"><span class="comment"># 填写虚拟环境的绝对路径</span></span><br><span class="line"><span class="attr">home</span>            = /opt/venvs/venv_crm</span><br><span class="line"><span class="comment"># process-related settings</span></span><br><span class="line"><span class="comment"># master</span></span><br><span class="line"><span class="attr">master</span>          = <span class="literal">true</span></span><br><span class="line"><span class="comment"># maximum number of worker processes</span></span><br><span class="line"><span class="comment"># 定义uwsgi的工作进程数，优化公式是 2 * cpu_核数 + 1 </span></span><br><span class="line"><span class="attr">processes</span>       = <span class="number">3</span></span><br><span class="line"><span class="comment"># the socket (use the full path to be safe</span></span><br><span class="line"><span class="comment"># 这个socket参数是把你的crm启动在一个基于uwsgi协议的socket链接上，用户无法直接访问了</span></span><br><span class="line"><span class="comment"># 启动在socket链接上，就只能用nginx通过uwsgi协议反向代理，用户无法直接访问了</span></span><br><span class="line"><span class="comment"># 保护后端进程的安全，以及高性能 </span></span><br><span class="line"><span class="comment"># 这个socket也就是crm启动的地址和端口 </span></span><br><span class="line"><span class="attr">socket</span>          = <span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">8000</span></span><br><span class="line"><span class="comment"># ... with appropriate permissions - may be needed</span></span><br><span class="line"><span class="comment"># chmod-socket    = 664</span></span><br><span class="line"><span class="comment"># clear environment on exit</span></span><br><span class="line"><span class="attr">vacuum</span>          = <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="启动-uwsgi"><a href="#启动-uwsgi" class="headerlink" title="启动 uwsgi"></a>启动 uwsgi</h4><p>使用 uwsgi 命令，指定 uwsgi.ini 配置文件，启动 crm 程序，要注意找到 uwsgi 的位置：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># uwsgi --ini uwsgi.ini</span></span><br></pre></td></tr></table></figure>
+
+<p>启动成功后，发现提示网页无法正常工作：</p>
+<img src="/linux/crm-build/1581140304786.png" class="" width="1581140304786">
+
+<p>这是因为浏览器发送的是 http 请求，基于的是 http 协议；而 uwsgi 遵循的是 uwsgi 协议。两个协议不一致，就好比两个人，一个人说中文，一个人说英语，当然是没法正常交流的。这时，我们就需要找一个翻译。对于我们的服务器而言，这个翻译就是 nginx。</p>
+<h3 id="nginx-配置和静态文件托管"><a href="#nginx-配置和静态文件托管" class="headerlink" title="nginx 配置和静态文件托管"></a>nginx 配置和静态文件托管</h3><h4 id="配置-nginx-反向代理"><a href="#配置-nginx-反向代理" class="headerlink" title="配置 nginx 反向代理"></a>配置 nginx 反向代理</h4><p>首先，找到 nginx.conf 文件。通过 yum 安装的 nginx，配置文件的位置为 <code>/etc/nginx/nginx.conf</code>；通过源码编译安装的nginx，配置文件在指定安装路径的 conf 文件夹下。然后，修改配置文件中的反向代理参数，设置如下：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span>       <span class="number">80</span> default_server;</span><br><span class="line">    <span class="attribute">listen</span>       [::]:<span class="number">80</span> default_server;</span><br><span class="line">    <span class="attribute">server_name</span>  _;</span><br><span class="line">    <span class="attribute">root</span>         /usr/share/nginx/html;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Load configuration files for the default server block.</span></span><br><span class="line">    <span class="attribute">include</span> /etc/nginx/default.d/<span class="regexp">*.conf</span>;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">location</span> / &#123;</span><br><span class="line">    	<span class="comment"># proxy_pass 处理的是 http 请求转发</span></span><br><span class="line">    	<span class="comment"># 这里要用基于 uwsgi 的转发参数</span></span><br><span class="line">        <span class="attribute">uwsgi_pass</span> <span class="number">0.0.0.0:8000</span>;</span><br><span class="line">        <span class="attribute">include</span> uwsgi_params;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">error_page</span> <span class="number">404</span> /<span class="number">404</span>.html;</span><br><span class="line">    	<span class="attribute">location</span> = /40x.html &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">error_page</span> <span class="number">500</span> <span class="number">502</span> <span class="number">503</span> <span class="number">504</span> /50x.html;</span><br><span class="line">    	<span class="attribute">location</span> = /50x.html &#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>修改好配置文件，保存并退出。平滑重启 nginx，并启动 uwsgi 服务：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># nginx -s reload</span></span><br><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># uwsgi --ini uwsgi.ini</span></span><br></pre></td></tr></table></figure>
+
+<p>浏览器中输入服务器的 IP 地址。注意不要去 8000 端口，因为 nginx 监听的是 80 端口。如果访问 8000 端口，依然是直接访问的 uwsgi，还是无法正常访问。</p>
+<h4 id="静态文件托管"><a href="#静态文件托管" class="headerlink" title="静态文件托管"></a>静态文件托管</h4><p>当我们直接输入 IP 地址访问时，访问成功。但遇到一个问题——我们丢失了全部的样式，或者说，静态文件全部失效了。</p>
+<img src="/linux/crm-build/1581144016414.png" class="" width="1581144016414">
+
+<p>这是因为 uwsgi 默认不会为我们解析静态文件。我们需要把静态文件托管给 nginx。</p>
+<p>首先，在 django 项目的 <code>settings.py</code> 文件中，添加一个如下的配置，这个配置的意义是指定一个路径，准备存放即将导出的 crm 项目中的静态文件（注意要使用绝对路径，且不要放在 <code>/root</code> 路径下）：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">STATIC_ROOT = <span class="string">'/tmp/crm_static'</span></span><br></pre></td></tr></table></figure>
+
+<p>保存退出，使用命令导出 crm 项目中的静态文件至刚刚指定的文件夹中：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># python3 manage.py collectstatic</span></span><br></pre></td></tr></table></figure>
+
+<p>查看我们指定的静态文件存放的路径，发现静态文件已经成功提出出来：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># ls /tmp/crm_static/</span></span><br><span class="line">admin  adminLTE  auth  __init__.py  rbac</span><br></pre></td></tr></table></figure>
+
+<p>提取出静态文件后，我们需要在 nginx 的配置中指定静态文件所在的位置。首先当然是打开 nginx.conf 配置文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># vim /etc/nginx/nginx.conf</span></span><br></pre></td></tr></table></figure>
+
+<p>在 server 中原来的 location 下添加一条新的 location 配置：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">location / &#123;</span><br><span class="line">    uwsgi_pass 0.0.0.0:8000;</span><br><span class="line">    include uwsgi_params;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">location /static &#123;</span><br><span class="line">	<span class="built_in">alias</span> /tmp/crm_static;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这条配置的意思是给路径做一个别名，当发送来 <code>/static</code> 的请求时，到我们指定的静态文件存放位置返回静态文件。这个过程由 nginx 自动执行，不需要像后端发送请求。</p>
+<p>静态文件，别名的修改原理图如下：</p>
+<img src="/linux/crm-build/image-20200207163337987.png" class="" title="image-20200207163337987">
+
+<p>保存并退出配置，平滑重启 nginx，启动 uwsgi 服务：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># nginx -s reload</span></span><br><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># uwsgi --ini uwsgi.ini</span></span><br></pre></td></tr></table></figure>
+
+<p>此时，我们就可以直接输入 IP，正常访问我们的 crm 项目了。</p>
+<img src="/linux/crm-build/1581146856257.png" class="" width="1581146856257">
+
+<h3 id="Supervisor-进程管理工具"><a href="#Supervisor-进程管理工具" class="headerlink" title="Supervisor 进程管理工具"></a>Supervisor 进程管理工具</h3><p>其实，我们已经完成了 crm 项目的部署。但是有这样一个问题：如果 uwsgi 因为某种原因崩溃了，而我们又没有及时发现。但是用户看来，会觉得网站很不好用。这时，我们就可以使用 Supervisor 进程管理工具。当后端进程崩溃时，Supervisor 会自动检测并自动重启 uwsgi 进程。</p>
+<p>首先，还是要安装 Supervisor 工具：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># yum install supervisor -y</span></span><br></pre></td></tr></table></figure>
+
+<p>紧接着，使用命令生成 Supervisor 配置文件，定义管理 crm 的任务：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># echo_supervisord_conf &gt; /etc/supervisor.conf</span></span><br></pre></td></tr></table></figure>
+
+<p>修改配置文件，在最底行，输入如下内容，Supervisor 其实也就是帮助用户执行命令而已：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[program:crm]</span></span><br><span class="line"><span class="attr">command</span>=/opt/venvs/venv_crm/bin/uwsgi --ini  /root/CRM/uwsgi.ini    <span class="comment">; 程序启动命令，绝对路径</span></span><br><span class="line"><span class="attr">autostart</span>=<span class="literal">true</span>       <span class="comment">; 在supervisord启动的时候也自动启动</span></span><br><span class="line"><span class="attr">startsecs</span>=<span class="number">10</span>         <span class="comment">; 启动10秒后没有异常退出，就表示进程正常启动了，默认为1秒</span></span><br><span class="line"><span class="attr">autorestart</span>=<span class="literal">true</span>     <span class="comment">; 程序退出后自动重启,可选值：[unexpected,true,false]，默认为unexpected，表示进程意外杀死后才重启</span></span><br><span class="line"></span><br><span class="line"><span class="attr">stopasgroup</span>=<span class="literal">true</span>     <span class="comment">;默认为false,进程被杀死时，是否向这个进程组发送stop信号，包括子进程</span></span><br><span class="line"><span class="attr">killasgroup</span>=<span class="literal">true</span>     <span class="comment">;默认为false，向进程组发送kill信号，包括子进程</span></span><br></pre></td></tr></table></figure>
+
+<p>第一行 program 冒号后的 crm，就管理任务的一个名字而已，随便叫什么，自己能够看的懂就好。</p>
+<p>此时，我们就可以用命令启动 Supervisor，然后查看被管理的任务，可以通过 ps 命令查看 uwsgi 是否顺利启动：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># supervisord -c /etc/supervisor.conf </span></span><br><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># ps -ef | grep uwsgi</span></span><br><span class="line">root      37003  37002  0 15:50 ?        00:00:00 /opt/venvs/venv_crm/bin/uwsgi --ini /root/CRM/uwsgi.ini</span><br><span class="line">root      37005  37003  0 15:50 ?        00:00:00 /opt/venvs/venv_crm/bin/uwsgi --ini /root/CRM/uwsgi.ini</span><br><span class="line">root      37006  37003  0 15:50 ?        00:00:00 /opt/venvs/venv_crm/bin/uwsgi --ini /root/CRM/uwsgi.ini</span><br><span class="line">root      37007  37003  0 15:50 ?        00:00:00 /opt/venvs/venv_crm/bin/uwsgi --ini /root/CRM/uwsgi.ini</span><br><span class="line">root      37009  35426  0 15:51 pts/0    00:00:00 grep --color=auto uwsgi</span><br></pre></td></tr></table></figure>
+
+<p>尝试杀死 uwsgi 进程，再使用 ps 命令查看：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># pkill uwsgi</span></span><br><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># ps -ef | grep uwsgi</span></span><br><span class="line">root      37003  37002  0 15:50 ?        00:00:01 /opt/venvs/venv_crm/bin/uwsgi --ini /root/CRM/uwsgi.ini</span><br><span class="line">root      37012  37003  0 15:53 ?        00:00:00 /opt/venvs/venv_crm/bin/uwsgi --ini /root/CRM/uwsgi.ini</span><br><span class="line">root      37013  37003  0 15:53 ?        00:00:00 /opt/venvs/venv_crm/bin/uwsgi --ini /root/CRM/uwsgi.ini</span><br><span class="line">root      37014  37003  0 15:53 ?        00:00:00 /opt/venvs/venv_crm/bin/uwsgi --ini /root/CRM/uwsgi.ini</span><br><span class="line">root      37016  35426  0 15:53 pts/0    00:00:00 grep --color=auto uwsgi</span><br></pre></td></tr></table></figure>
+
+<p>可以使用 Supervisor 的任务管理命令 supervisorctl 查看、启动或终止进程：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># supervisorctl -c /etc/supervisor.conf </span></span><br><span class="line">crm                              RUNNING   pid 37003, uptime 0:04:58</span><br><span class="line">supervisor&gt; stop crm</span><br><span class="line">crm: stopped</span><br><span class="line">supervisor&gt; start crm</span><br><span class="line">crm: started</span><br><span class="line">supervisor&gt; restart crm</span><br><span class="line">crm: stopped</span><br><span class="line">crm: started</span><br><span class="line">supervisor&gt; status crm</span><br><span class="line">crm                              RUNNING   pid 37054, uptime 0:00:16</span><br></pre></td></tr></table></figure>
+
+<p>大功告成，我们顺利实现 crm 的部署上线~</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/linux/common-command/" rel="prev" title="Linux 常用命令">
+      <i class="fa fa-chevron-left"></i> Linux 常用命令
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/linux/dns/" rel="next" title="dns 域名解析">
+      dns 域名解析 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#crm-项目部署流程"><span class="nav-number">1.</span> <span class="nav-text">crm 项目部署流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置-uwsgi"><span class="nav-number">2.</span> <span class="nav-text">配置 uwsgi</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#上传-crm-代码"><span class="nav-number">3.</span> <span class="nav-text">上传 crm 代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-crm-项目依赖的环境"><span class="nav-number">4.</span> <span class="nav-text">安装 crm 项目依赖的环境</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#安装-django"><span class="nav-number">4.1.</span> <span class="nav-text">安装 django</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装-pymysql"><span class="nav-number">4.2.</span> <span class="nav-text">安装 pymysql</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装-django-multiselectfield"><span class="nav-number">4.3.</span> <span class="nav-text">安装 django-multiselectfield</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#一键安装-crm-依赖环境"><span class="nav-number">4.4.</span> <span class="nav-text">一键安装 crm 依赖环境</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置数据库"><span class="nav-number">5.</span> <span class="nav-text">配置数据库</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#安装-MariaDB（MySQL）"><span class="nav-number">5.1.</span> <span class="nav-text">安装 MariaDB（MySQL）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#导出和导入数据库数据"><span class="nav-number">5.2.</span> <span class="nav-text">导出和导入数据库数据</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置-settings-py"><span class="nav-number">6.</span> <span class="nav-text">配置 settings.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#uwsgi-启动-django"><span class="nav-number">7.</span> <span class="nav-text">uwsgi 启动 django</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#配置-uwsgi-ini-文件"><span class="nav-number">7.1.</span> <span class="nav-text">配置 uwsgi.ini 文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#启动-uwsgi"><span class="nav-number">7.2.</span> <span class="nav-text">启动 uwsgi</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nginx-配置和静态文件托管"><span class="nav-number">8.</span> <span class="nav-text">nginx 配置和静态文件托管</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#配置-nginx-反向代理"><span class="nav-number">8.1.</span> <span class="nav-text">配置 nginx 反向代理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#静态文件托管"><span class="nav-number">8.2.</span> <span class="nav-text">静态文件托管</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Supervisor-进程管理工具"><span class="nav-number">9.</span> <span class="nav-text">Supervisor 进程管理工具</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="刘硕"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">刘硕</p>
+  <div class="site-description" itemprop="description">不成为自己讨厌的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">221</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:liushuo432@outlook.com" title="E-Mail → mailto:liushuo432@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/2436055290" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;2436055290" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备20001451号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘硕</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.2" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="/js/love.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/Epsilon2.1.model.json"},"display":{"superSample":2,"width":200,"height":400,"position":"left","hOffset":-30,"vOffset":-40},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>

@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="Tu5vqPaUb8svfkPx5eetJFD84ciQCcWVXNatdsWtj9Q">
+  <meta name="baidu-site-verification" content="baidu_verify_FBq9PG4BBb">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.1","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="all 函数all 函数用来判断可迭代对象中是否所有的元素都为 True： 123print(all([1, 2, 32, 43, 5]))输出的结果为： True  any 函数any 函数与用来判断可迭代对象中的元素是否有一个为 True： 123print(any([1, 2, 3, 0, 1, 0]))输出的结果为： True  callable 函数callable 函数用来判断变量是否">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基础内置函数">
+<meta property="og:url" content="https://sliu.vip/python-basic/basic-bif/index.html">
+<meta property="og:site_name" content="刘硕的技术查阅手册">
+<meta property="og:description" content="all 函数all 函数用来判断可迭代对象中是否所有的元素都为 True： 123print(all([1, 2, 32, 43, 5]))输出的结果为： True  any 函数any 函数与用来判断可迭代对象中的元素是否有一个为 True： 123print(any([1, 2, 3, 0, 1, 0]))输出的结果为： True  callable 函数callable 函数用来判断变量是否">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sliu.vip/python-basic/basic-bif/1570277690185.png">
+<meta property="og:image" content="https://sliu.vip/python-basic/basic-bif/1570277894909.png">
+<meta property="article:published_time" content="2020-02-15T05:42:27.000Z">
+<meta property="article:modified_time" content="2020-02-29T02:34:01.861Z">
+<meta property="article:author" content="刘硕">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="全栈开发">
+<meta property="article:tag" content="并发编程">
+<meta property="article:tag" content="网络编程">
+<meta property="article:tag" content="爬虫">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="自动化测试">
+<meta property="article:tag" content="Web开发">
+<meta property="article:tag" content="HTML">
+<meta property="article:tag" content="CSS">
+<meta property="article:tag" content="JavaScript">
+<meta property="article:tag" content="jQuery">
+<meta property="article:tag" content="Bootstrap">
+<meta property="article:tag" content="测试自动化">
+<meta property="article:tag" content="Selenium">
+<meta property="article:tag" content="postman">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="Vue">
+<meta property="article:tag" content="drf">
+<meta property="article:tag" content="django">
+<meta property="article:tag" content="文档翻译">
+<meta property="article:tag" content="PEP8">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sliu.vip/python-basic/basic-bif/1570277690185.png">
+
+<link rel="canonical" href="https://sliu.vip/python-basic/basic-bif/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>基础内置函数 | 刘硕的技术查阅手册</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f14f123935d6183fdd06f8f1c4bc378f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="刘硕的技术查阅手册" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">刘硕的技术查阅手册</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">Python 全栈开发学习笔记</h1>
+      
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-toc">
+
+    <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-fw fa-rss"></i>订阅</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/basic-bif/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          基础内置函数
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-15 13:42:27" itemprop="dateCreated datePublished" datetime="2020-02-15T13:42:27+08:00">2020-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="all-函数"><a href="#all-函数" class="headerlink" title="all 函数"></a><code>all</code> 函数</h3><p>all 函数用来判断可迭代对象中是否所有的元素<strong>都</strong>为 True：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">print(all([<span class="number">1</span>, <span class="number">2</span>, <span class="number">32</span>, <span class="number">43</span>, <span class="number">5</span>]))</span><br><span class="line"></span><br><span class="line">输出的结果为： <span class="literal">True</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="any-函数"><a href="#any-函数" class="headerlink" title="any 函数"></a><code>any</code> 函数</h3><p>any 函数与用来判断可迭代对象中的元素是否<strong>有一个</strong>为 True：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">print(any([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>]))</span><br><span class="line"></span><br><span class="line">输出的结果为： <span class="literal">True</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="callable-函数"><a href="#callable-函数" class="headerlink" title="callable 函数"></a><code>callable</code> 函数</h3><p>callable 函数用来判断变量是否可以被调用：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line">print(callable(func))</span><br><span class="line"></span><br><span class="line">输出的结果为： <span class="literal">True</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="bytes-函数"><a href="#bytes-函数" class="headerlink" title="bytes 函数"></a><code>bytes</code> 函数</h3><p>bytes 函数可以将字符串编码为二进制形式，它的功能和字符串的 <code>.encode()</code> 方法十分类似，更推荐使用字符串的 <code>.encode()</code> 方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">'你好'</span>.encode(<span class="string">'utf-8'</span>))</span><br><span class="line">print(bytes(<span class="string">'你好'</span>, encoding=<span class="string">'utf-8'</span>))</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">b'\xe4\xbd\xa0\xe5\xa5\xbd'</span></span><br><span class="line"><span class="string">b'\xe4\xbd\xa0\xe5\xa5\xbd'</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="chr-和-ord-函数"><a href="#chr-和-ord-函数" class="headerlink" title="chr 和 ord 函数"></a><code>chr</code> 和 <code>ord</code> 函数</h3><p>chr 函数根据当前编码（Python 3 中为 Unicode）解码为字符，ord 为 chr 方法的逆运算，用来将字符编码为数字：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">print(chr(<span class="number">20320</span>))</span><br><span class="line">print(ord(<span class="string">'你'</span>))</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">你</span><br><span class="line"><span class="number">20320</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="complex-和-divmod-函数"><a href="#complex-和-divmod-函数" class="headerlink" title="complex 和 divmod 函数"></a><code>complex</code> 和 <code>divmod</code> 函数</h3><p>这两个函数用来进行计算。complex 函数用来将一对数字转换为复数形式，第一个数作为复数的实部，第二个数为复数的虚部：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">print(complex(<span class="number">20</span>, <span class="number">3</span>))</span><br><span class="line"></span><br><span class="line">输出的结果为：(<span class="number">20</span>+<span class="number">3j</span>)</span><br></pre></td></tr></table></figure>
+
+<p>divmode 函数会将一对数字做商，第一个参数做被除数，第二个参数做除数，返回值为一个元组，元组的第一个元素是商，第二个元素是余数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">print(divmod(<span class="number">20</span>, <span class="number">3</span>))</span><br><span class="line"></span><br><span class="line">输出的结果为：(<span class="number">6</span>, <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="eval-和-exec-函数"><a href="#eval-和-exec-函数" class="headerlink" title="eval 和 exec 函数"></a><code>eval</code> 和 <code>exec</code> 函数</h3><p>这两个函数用来执行字符串中的代码。其中，eval 函数可以执行单行字符串代码，exec 函数可以执行多行字符串代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">msg = <span class="string">'print(1)'</span></span><br><span class="line">eval(msg)</span><br><span class="line"></span><br><span class="line">msg2 = <span class="string">"""                                    # 禁用</span></span><br><span class="line"><span class="string">def func():</span></span><br><span class="line"><span class="string">    print("太厉害了")</span></span><br><span class="line"><span class="string">func()</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">exec(msg2)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span></span><br><span class="line">太厉害了</span><br></pre></td></tr></table></figure>
+
+<p>注意这两个函数在日后的编程中是被<strong>禁止使用</strong>的，因为有可能会出现被恶意注入的 Bug。</p>
+<h3 id="frozenset-函数"><a href="#frozenset-函数" class="headerlink" title="frozenset 函数"></a><code>frozenset</code> 函数</h3><p>frozenset 可以生成一个冻结的不可变的集合：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;frozenset(&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>&#125;): <span class="number">1</span>&#125;</span><br><span class="line">print(dic)</span><br><span class="line"></span><br><span class="line">输出的结果为：&#123;frozenset(&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>&#125;): <span class="number">1</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p>既然能做字典的键，就说明冻结集合是一个不可变数据。</p>
+<h3 id="hash-函数"><a href="#hash-函数" class="headerlink" title="hash 函数"></a><code>hash</code> 函数</h3><p>hash 函数用来判断一个数据是否可哈希。如果可哈希，会返回该数据的哈希值；如果不可哈希，会报错：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">print(hash(<span class="string">'12'</span>))</span><br><span class="line">print(hash(<span class="number">12</span>))</span><br><span class="line">print(hash(<span class="literal">True</span>))</span><br><span class="line"><span class="comment"># print(hash([1, 2]))</span></span><br><span class="line">print(hash((<span class="number">1</span>, <span class="number">2</span>)))</span><br><span class="line"><span class="comment"># print(hash(&#123;1: 2&#125;))</span></span><br><span class="line"><span class="comment"># print(hash(&#123;1, 2&#125;))</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="help-函数"><a href="#help-函数" class="headerlink" title="help 函数"></a><code>help</code> 函数</h3><p>help 函数可以查看帮助信息：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">help(list)    <span class="comment"># 使用 help 函数不需要打印</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="进制转换函数"><a href="#进制转换函数" class="headerlink" title="进制转换函数"></a>进制转换函数</h3><p>bin、oct 和 hex 三个函数分别能将十进制数转换为二进制、八进制和十六进制数；int 方法则能将各种进制数转换为十进制数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">print(bin(<span class="number">10</span>))</span><br><span class="line">print(oct(<span class="number">10</span>))</span><br><span class="line">print(hex(<span class="number">30</span>))</span><br><span class="line">print(int(<span class="string">'0x1e'</span>, <span class="number">16</span>))    <span class="comment"># 将十六进制数转为十进制，0x可以不加</span></span><br><span class="line">print(int(<span class="string">'1e'</span>, <span class="number">16</span>))</span><br><span class="line">print(int(<span class="string">'0o11'</span>, <span class="number">8</span>))</span><br><span class="line">print(int(<span class="string">'0b11'</span>, <span class="number">2</span>))</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0b1010</span></span><br><span class="line"><span class="number">0o12</span></span><br><span class="line"><span class="number">0x1e</span></span><br><span class="line"><span class="number">30</span></span><br><span class="line"><span class="number">30</span></span><br><span class="line"><span class="number">9</span></span><br><span class="line"><span class="number">3</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="pow-函数"><a href="#pow-函数" class="headerlink" title="pow 函数"></a><code>pow</code> 函数</h3><p>pow 函数用来进行幂运算，返回的结果是前一个数的后一个数次幂：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">print(pow(<span class="number">3</span>, <span class="number">4</span>))    <span class="comment"># 3 ** 4</span></span><br><span class="line"></span><br><span class="line">输出的结果为： <span class="number">81</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="repr-函数"><a href="#repr-函数" class="headerlink" title="repr 函数"></a><code>repr</code> 函数</h3><p>repr 函数用来显示打印出来的字符串两端的双引号，即令字符串原形毕露：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">'123'</span>)</span><br><span class="line">print(repr(<span class="string">'123'</span>))</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">123</span></span><br><span class="line"><span class="string">'123'</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="round-函数"><a href="#round-函数" class="headerlink" title="round 函数"></a><code>round</code> 函数</h3><p>round 函数用来将小数取整，取整规则是四舍六入五成双，也可以指定保留的小数位数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">print(round(<span class="number">3.4</span>))</span><br><span class="line">print(round(<span class="number">3.5</span>))</span><br><span class="line">print(round(<span class="number">3.6</span>))</span><br><span class="line">print(round(<span class="number">4.4</span>))</span><br><span class="line">print(round(<span class="number">4.5</span>))</span><br><span class="line">print(round(<span class="number">4.6</span>))</span><br><span class="line">print(round(<span class="number">3.14159265397932384626</span>, <span class="number">3</span>))</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line"><span class="number">5</span></span><br><span class="line"><span class="number">3.142</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="abs-函数"><a href="#abs-函数" class="headerlink" title="abs 函数"></a><code>abs</code> 函数</h3><p>abs 用来求数字的绝对值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(abs(<span class="number">-6</span>))</span><br></pre></td></tr></table></figure>
+
+<h3 id="format-函数"><a href="#format-函数" class="headerlink" title="format 函数"></a><code>format</code> 函数</h3><p>format 函数用来格式化字符串，与字符串的 <code>.center()</code> 方法类似：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">'你好'</span></span><br><span class="line">s1 = format(s, <span class="string">'&gt;20'</span>)    <span class="comment"># 靠右</span></span><br><span class="line">s2 = format(s, <span class="string">'&lt;20'</span>)    <span class="comment"># 靠左</span></span><br><span class="line">s3 = format(s, <span class="string">'^20'</span>)    <span class="comment"># 居中</span></span><br><span class="line">print(s1, s2, s3, sep=<span class="string">'\n'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">                  你好</span><br><span class="line">你好                  </span><br><span class="line">         你好</span><br></pre></td></tr></table></figure>
+
+<p>format 也可以用来进行数字的进制转换：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="number">18</span></span><br><span class="line">print(format(s, <span class="string">'08b'</span>))    <span class="comment"># 08的意思是总共八位，不足的用0补齐，b指的是要转换为二进制bin</span></span><br><span class="line">print(format(s, <span class="string">'08o'</span>))    <span class="comment"># oct</span></span><br><span class="line">print(format(s, <span class="string">'08x'</span>))    <span class="comment"># hex</span></span><br><span class="line">print(format(s, <span class="string">'08d'</span>))    <span class="comment"># decimal</span></span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">00010010</span></span><br><span class="line"><span class="number">00000022</span></span><br><span class="line"><span class="number">00000012</span></span><br><span class="line"><span class="number">00000018</span></span><br></pre></td></tr></table></figure>
+
+<p>format 方法对于转换 ip 地址会很有用。</p>
+<h3 id="sum-函数"><a href="#sum-函数" class="headerlink" title="sum 函数"></a><code>sum</code> 函数</h3><p>sum 函数用来求一个可迭代对象中元素的总和：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(sum[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>])</span><br></pre></td></tr></table></figure>
+
+<h3 id="dir-函数"><a href="#dir-函数" class="headerlink" title="dir 函数"></a><code>dir</code> 函数</h3><p>dir 函数用来查看当前对象有哪些方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(dir(list))</span><br></pre></td></tr></table></figure>
+
+<h3 id="print-函数"><a href="#print-函数" class="headerlink" title="print 函数"></a><code>print</code> 函数</h3><p>print 函数我们已经非常熟悉了，用来将内容打印出来。我们还需要了解的是 print 有两个关键字参数：sep 和 end。</p>
+<p>sep 用来规定 print 中多个元素以什么间隔开，默认值为一个空格 <code>&#39; &#39;</code>；end 用来规定 print 函数打印完全部内容后以什么为结尾，默认为换行符 <code>\n</code>。</p>
+<p>我们可以通过修改 sep 和 end 的值来实现不同的打印输出效果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">'alex'</span>, <span class="string">'wusir'</span>, <span class="string">'太亮'</span>, sep=<span class="string">'-'</span>, end=<span class="string">' '</span>)</span><br><span class="line">print(<span class="string">'meet'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alex-wusir-太亮 meet</span><br></pre></td></tr></table></figure>
+
+<p>我们可以利用 print 的这两个参数实现打印九九乘法表：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">10</span>):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">10</span>):</span><br><span class="line">        <span class="keyword">if</span> i &gt; j:</span><br><span class="line">            print(<span class="string">f'<span class="subst">&#123;i&#125;</span> * <span class="subst">&#123;j&#125;</span> = <span class="subst">&#123;i * j&#125;</span>'</span>, end=<span class="string">' '</span>)</span><br><span class="line">        <span class="keyword">elif</span> i == j:</span><br><span class="line">            print(<span class="string">f'<span class="subst">&#123;i&#125;</span> * <span class="subst">&#123;j&#125;</span> = <span class="subst">&#123;i * j&#125;</span>'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果是这样的：</p>
+<img src="/python-basic/basic-bif/1570277690185.png" class="" width="1570277690185">
+
+<p>除了能将信息打印到屏幕上，print 也可以将信息写入到文件中：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">f = open(<span class="string">'test'</span>, <span class="string">'a'</span>, encoding=<span class="string">'utf-8'</span>)</span><br><span class="line">print(<span class="string">'meet'</span>, file=f)</span><br></pre></td></tr></table></figure>
+
+<p>屏幕上没又打印出任何内容，但是出现了一个名为 test 的文件，文件中的内容为 meet：</p>
+<img src="/python-basic/basic-bif/1570277894909.png" class="" width="1570277894909">
+
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/python-basic/computer-basic/" rel="prev" title="计算机基础知识总结">
+      <i class="fa fa-chevron-left"></i> 计算机基础知识总结
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/linux/server-linux/" rel="next" title="服务器与 Linux 基础知识">
+      服务器与 Linux 基础知识 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#all-函数"><span class="nav-number">1.</span> <span class="nav-text">all 函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#any-函数"><span class="nav-number">2.</span> <span class="nav-text">any 函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#callable-函数"><span class="nav-number">3.</span> <span class="nav-text">callable 函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bytes-函数"><span class="nav-number">4.</span> <span class="nav-text">bytes 函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#chr-和-ord-函数"><span class="nav-number">5.</span> <span class="nav-text">chr 和 ord 函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#complex-和-divmod-函数"><span class="nav-number">6.</span> <span class="nav-text">complex 和 divmod 函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#eval-和-exec-函数"><span class="nav-number">7.</span> <span class="nav-text">eval 和 exec 函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#frozenset-函数"><span class="nav-number">8.</span> <span class="nav-text">frozenset 函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hash-函数"><span class="nav-number">9.</span> <span class="nav-text">hash 函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#help-函数"><span class="nav-number">10.</span> <span class="nav-text">help 函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进制转换函数"><span class="nav-number">11.</span> <span class="nav-text">进制转换函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pow-函数"><span class="nav-number">12.</span> <span class="nav-text">pow 函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#repr-函数"><span class="nav-number">13.</span> <span class="nav-text">repr 函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#round-函数"><span class="nav-number">14.</span> <span class="nav-text">round 函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#abs-函数"><span class="nav-number">15.</span> <span class="nav-text">abs 函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#format-函数"><span class="nav-number">16.</span> <span class="nav-text">format 函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sum-函数"><span class="nav-number">17.</span> <span class="nav-text">sum 函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#dir-函数"><span class="nav-number">18.</span> <span class="nav-text">dir 函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#print-函数"><span class="nav-number">19.</span> <span class="nav-text">print 函数</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="刘硕"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">刘硕</p>
+  <div class="site-description" itemprop="description">不成为自己讨厌的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">221</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:liushuo432@outlook.com" title="E-Mail → mailto:liushuo432@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/2436055290" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;2436055290" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备20001451号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘硕</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.2" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="/js/love.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/Epsilon2.1.model.json"},"display":{"superSample":2,"width":200,"height":400,"position":"left","hOffset":-30,"vOffset":-40},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>

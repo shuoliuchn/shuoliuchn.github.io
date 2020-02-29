@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="Tu5vqPaUb8svfkPx5eetJFD84ciQCcWVXNatdsWtj9Q">
+  <meta name="baidu-site-verification" content="baidu_verify_FBq9PG4BBb">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.1","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="荏苒资讯的搭建，包括目录构造，和 Django 项目的创建。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="荏苒资讯后端项目搭建">
+<meta property="og:url" content="https://sliu.vip/project/renran-proj-build/index.html">
+<meta property="og:site_name" content="刘硕的技术查阅手册">
+<meta property="og:description" content="荏苒资讯的搭建，包括目录构造，和 Django 项目的创建。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sliu.vip/project/renran-proj-build/1578105222972.png">
+<meta property="og:image" content="https://sliu.vip/project/renran-proj-build/1553139497155.png">
+<meta property="og:image" content="https://sliu.vip/project/renran-proj-build/1578104421692.png">
+<meta property="og:image" content="https://sliu.vip/project/renran-proj-build/1578104445382.png">
+<meta property="og:image" content="https://sliu.vip/project/renran-proj-build/1578105329159.png">
+<meta property="og:image" content="https://sliu.vip/project/renran-proj-build/1578104595762.png">
+<meta property="og:image" content="https://sliu.vip/project/renran-proj-build/1578104637328.png">
+<meta property="og:image" content="https://sliu.vip/project/renran-proj-build/1578104662964.png">
+<meta property="og:image" content="https://sliu.vip/project/renran-proj-build/1557367991756.png">
+<meta property="og:image" content="https://sliu.vip/project/renran-proj-build/1578105541412.png">
+<meta property="og:image" content="https://sliu.vip/project/renran-proj-build/1582764455009.png">
+<meta property="og:image" content="https://sliu.vip/project/renran-proj-build/1578106172369-1582811074190.png">
+<meta property="og:image" content="https://sliu.vip/project/renran-proj-build/1578106188249-1582811074191.png">
+<meta property="og:image" content="https://sliu.vip/project/renran-proj-build/1578106470078-1582811074191.png">
+<meta property="og:image" content="https://sliu.vip/project/renran-proj-build/1557375896356-1582811074191.png">
+<meta property="og:image" content="https://sliu.vip/project/renran-proj-build/1557453985484.png">
+<meta property="og:image" content="https://sliu.vip/project/renran-proj-build/1557454099123.png">
+<meta property="og:image" content="https://sliu.vip/project/renran-proj-build/1582775549830.png">
+<meta property="article:published_time" content="2020-02-25T16:48:09.000Z">
+<meta property="article:modified_time" content="2020-02-28T16:43:26.000Z">
+<meta property="article:author" content="刘硕">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="全栈开发">
+<meta property="article:tag" content="并发编程">
+<meta property="article:tag" content="网络编程">
+<meta property="article:tag" content="爬虫">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="自动化测试">
+<meta property="article:tag" content="Web开发">
+<meta property="article:tag" content="HTML">
+<meta property="article:tag" content="CSS">
+<meta property="article:tag" content="JavaScript">
+<meta property="article:tag" content="jQuery">
+<meta property="article:tag" content="Bootstrap">
+<meta property="article:tag" content="测试自动化">
+<meta property="article:tag" content="Selenium">
+<meta property="article:tag" content="postman">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="Vue">
+<meta property="article:tag" content="drf">
+<meta property="article:tag" content="django">
+<meta property="article:tag" content="文档翻译">
+<meta property="article:tag" content="PEP8">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sliu.vip/project/renran-proj-build/1578105222972.png">
+
+<link rel="canonical" href="https://sliu.vip/project/renran-proj-build/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>荏苒资讯后端项目搭建 | 刘硕的技术查阅手册</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f14f123935d6183fdd06f8f1c4bc378f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="刘硕的技术查阅手册" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">刘硕的技术查阅手册</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">Python 全栈开发学习笔记</h1>
+      
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-toc">
+
+    <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-fw fa-rss"></i>订阅</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/project/renran-proj-build/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          荏苒资讯后端项目搭建
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-26 00:48:09" itemprop="dateCreated datePublished" datetime="2020-02-26T00:48:09+08:00">2020-02-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-29 00:43:26" itemprop="dateModified" datetime="2020-02-29T00:43:26+08:00">2020-02-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BB%BC%E5%90%88%E9%A1%B9%E7%9B%AE/" itemprop="url" rel="index"><span itemprop="name">综合项目</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <div class="post-description">荏苒资讯的搭建，包括目录构造，和 Django 项目的创建。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="创建项目"><a href="#创建项目" class="headerlink" title="创建项目"></a>创建项目</h2><p>项目所在路径不要使用中文或者空格或者除了下划线的其它特殊符号</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/Desktop</span><br><span class="line">mkdir renran</span><br><span class="line"><span class="built_in">cd</span> renran</span><br><span class="line">django-admin startproject renranapi</span><br></pre></td></tr></table></figure>
+
+<h2 id="打开项目"><a href="#打开项目" class="headerlink" title="打开项目"></a>打开项目</h2><p>在 PyCharm 中打开项目</p>
+<img src="/project/renran-proj-build/1578105222972.png" class="" width="1578105222972">
+
+<p>选择菜单 file, 点选 settings… 设置虚拟环境</p>
+<img src="/project/renran-proj-build/1553139497155.png" class="" width="1553139497155">
+
+<p>点击右边的齿轮，选择 Add…</p>
+<img src="/project/renran-proj-build/1578104421692.png" class="" width="1578104421692">
+
+<p>选择已存在的虚拟环境，并选择正确的 python 文件</p>
+<img src="/project/renran-proj-build/1578104445382.png" class="" width="1578104445382">
+
+<p>启动 django 项目中的 <code>manage.py</code></p>
+<img src="/project/renran-proj-build/1578105329159.png" class="" width="1578105329159">
+
+<p>因为仅启动 manage.py，所以项目不会运行，所以需要配置启动 <code>manage.py</code> 的参数。</p>
+<img src="/project/renran-proj-build/1578104595762.png" class="" width="1578104595762">
+
+<p>点选 <code>Edit Configurations</code>，在新窗口中的 Parammeters 中加上以下内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">runserver 0.0.0.0:8000</span><br></pre></td></tr></table></figure>
+
+<img src="/project/renran-proj-build/1578104637328.png" class="" width="1578104637328">
+
+<p>再次运行 <code>manage.py</code></p>
+<img src="/project/renran-proj-build/1578104662964.png" class="" width="1578104662964">
+
+<p>效果：</p>
+<img src="/project/renran-proj-build/1557367991756.png" class="" width="1557367991756">
+
+<p>提示：</p>
+<p>在 PyCharm 中如果要使用已经创建好的虚拟环境，则必须设置 PyCharm 中的 Python 解释器，设置为虚拟环境中的 python。</p>
+<h2 id="调整目录"><a href="#调整目录" class="headerlink" title="调整目录"></a>调整目录</h2><figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">reran/</span><br><span class="line">  ├── docs/          <span class="meta"># 项目相关资料保存目录</span></span><br><span class="line">  ├── reran_pc/     <span class="meta"># 前端项目目录</span></span><br><span class="line">  ├── reranapi/      <span class="meta"># api服务端项目目录</span></span><br><span class="line">       ├── logs/          <span class="meta"># 项目运行时/开发时日志目录</span></span><br><span class="line">       ├── manage.py</span><br><span class="line">       ├── reranapi/      <span class="meta"># 项目主应用，开发时的代码保存</span></span><br><span class="line">       │    ├── apps/      <span class="meta"># 开发者的代码保存目录，以模块[子应用]为目录保存</span></span><br><span class="line">       │    ├── libs/      <span class="meta"># 第三方类库的保存目录[第三方组件、模块]</span></span><br><span class="line">       │    ├── settings/</span><br><span class="line">       │         ├── dev.py   <span class="meta"># 项目开发时的本地配置[不需要上传到线上或者服务器]</span></span><br><span class="line">       │         ├── prod.py  <span class="meta"># 项目上线时的运行配置</span></span><br><span class="line">       │    ├── urls.py    <span class="meta"># 总路由</span></span><br><span class="line">       │    ├── utils/     <span class="meta"># 多个模块[子应用]的公共函数类库[自己开发的组件]</span></span><br><span class="line">       └── scripts/       <span class="meta"># 保存项目运营时的脚本文件</span></span><br></pre></td></tr></table></figure>
+
+<p>在编辑中开发项目时，必须指定项目目录才能运行。例如，开发后端项目，则必须选择的目录是 renranapi</p>
+<h3 id="分不同环境进行项目配置"><a href="#分不同环境进行项目配置" class="headerlink" title="分不同环境进行项目配置"></a>分不同环境进行项目配置</h3><p>开发者本地的环境、目录、数据库密码和线上的服务器都会不一样,所以我们的配置文件可以针对不同的系统分成多分.</p>
+<ol>
+<li>在项目主应用下,创建一个 settings 的配置文件存储目录</li>
+<li>根据线上线下两种情况分别创建 2 个配置文件 <code>dev.py</code> 和 <code>prod.py</code></li>
+<li>把原来项目主应用的 <code>settings.py</code> 配置内容复制 2 份到 <code>dev.py</code> 和 <code>prod.py</code> 里面</li>
+<li>把原来的 <code>settings.py</code> 配置文件修改文件名，例如 <code>settings_old.py</code> 或者直接删除 <code>settings.py</code></li>
+</ol>
+<p>新的配置文件目录 settings：</p>
+<img src="/project/renran-proj-build/1578105541412.png" class="" width="1578105541412">
+
+<p>接下来就可以在 <code>manage.py</code> 中根据不同的开发环境导入对应的配置文件了.</p>
+<img src="/project/renran-proj-build/1582764455009.png" class="" width="1582764455009">
+
+
+
+<h2 id="创建代码版本"><a href="#创建代码版本" class="headerlink" title="创建代码版本"></a>创建代码版本</h2><p>cd 进入到自己希望存储代码的目录路径，并创建本地仓库 <code>.git</code>【pycharm直接打开终端就是项目根目录了。无须cd了】<br>新创建的本地仓库.git是个空仓库</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> 目录路径</span><br><span class="line">git init</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置用户名和邮箱"><a href="#配置用户名和邮箱" class="headerlink" title="配置用户名和邮箱"></a>配置用户名和邮箱</h3><p>用户姓名和邮箱写真实的即可。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name <span class="string">'Shuo Liu'</span></span><br><span class="line">git config --global user.email <span class="string">'liushuo432@outlook.com'</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="在-Gitee-平台创建工程"><a href="#在-Gitee-平台创建工程" class="headerlink" title="在 Gitee 平台创建工程"></a>在 Gitee 平台创建工程</h2><p>公司一般都会有自己的代码仓库，一般都是自己搭建，也有使用第三方提供代码管理平台。</p>
+<p>常用的代码管理平台：GitHub、Gitee（码云）、GitLab。</p>
+<p>如果公司自己搭建的代码管理平台，往往使用 GitLab 框架。</p>
+<h3 id="创建私有项目库"><a href="#创建私有项目库" class="headerlink" title="创建私有项目库"></a>创建私有项目库</h3><p>创建一个名为 renran 的仓库，基本啥也不用选，建立个空白仓库就行。</p>
+<img src="/project/renran-proj-build/1578106172369-1582811074190.png" class="" title="1578106172369-1582811074190">
+
+<img src="/project/renran-proj-build/1578106188249-1582811074191.png" class="" title="1578106188249-1582811074191">
+
+<p>创建私有/公有空仓库以后的界面：</p>
+<img src="/project/renran-proj-build/1578106470078-1582811074191.png" class="" title="1578106470078-1582811074191">
+
+
+
+<h3 id="克隆项目到本地"><a href="#克隆项目到本地" class="headerlink" title="克隆项目到本地"></a>克隆项目到本地</h3><p>注意：我们当前项目不需要这个步骤，这个步骤当以后我们进入公司里面，参与人家已经在做的项目时会用到。别人已经有仓库了，但是我们是新人加入项目中，那么我们不需要在自己本地进行 <code>git init</code>，直接 <code>git clone</code> 复制别人的仓库代码就好。</p>
+<p>注意：如果当前目录下出现git仓库同名目录时，会克隆失败。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> 仓库地址</span><br></pre></td></tr></table></figure>
+
+<h3 id="编辑-gitignore"><a href="#编辑-gitignore" class="headerlink" title="编辑 .gitignore"></a>编辑 <code>.gitignore</code></h3><p>编辑项目版本根目录的 <code>.gitignore</code> 把一些不需要版本控制的文件过滤掉。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim .gitignore</span><br></pre></td></tr></table></figure>
+
+<p>向其中写入如下内容：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-class">.git</span></span><br><span class="line"><span class="selector-class">.idea</span></span><br><span class="line">__<span class="selector-tag">pycache__</span></span><br><span class="line"><span class="selector-tag">db</span><span class="selector-class">.sqlite3</span></span><br><span class="line"><span class="selector-tag">node_modules</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="git-提交"><a href="#git-提交" class="headerlink" title="git 提交"></a>git 提交</h3><p>直接使用命令即可</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git add 代码目录   <span class="comment"># 添加代码到上传队列  多个目录或文件  git add 文件1 文件2 目录1 目录2....</span></span><br><span class="line">git status        <span class="comment"># 查看当前项目的版本状态</span></span><br><span class="line">git commit -m <span class="string">'添加项目代码'</span>  <span class="comment"># 提交代码到本地仓库， -m 表示本次提交的描述</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="创建并切换分支到-dev"><a href="#创建并切换分支到-dev" class="headerlink" title="创建并切换分支到 dev"></a>创建并切换分支到 dev</h3><figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># git branch dev      # 创建本地分支dev,dev是自定义</span><br><span class="line"># git checkout dev    # 切换本地分支代码</span><br><span class="line">git checkout -b dev   # 这里是上面两句代码的简写</span><br><span class="line">git branch -d dev     # 删除分支</span><br></pre></td></tr></table></figure>
+
+<h3 id="推送到远端"><a href="#推送到远端" class="headerlink" title="推送到远端"></a>推送到远端</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git remote add origin https://gitee.com/mooluo/renran.git</span><br><span class="line">git push origin dev:dev</span><br></pre></td></tr></table></figure>
+
+<p>如果推送代码时，出现这样的提示：<code>git pull ....</code>，则表示当前本地的代码和线上的代码版本不同。要解决这个问题，可以按照以下两个步骤尝试解决：</p>
+<ol>
+<li><p>把线上的代码执行以下命令,拉取到本地,进行同步</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git pull</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>根据提示，移除多余的冲突的文件，也可以删除。完成这些步骤以后，再次 add，commit，push 即可。</p>
+</li>
+</ol>
+<h3 id="上传代码至远程仓库"><a href="#上传代码至远程仓库" class="headerlink" title="上传代码至远程仓库"></a>上传代码至远程仓库</h3><p>接下来，我们就把上面创建好的本地项目提交到 Gitee 码云上面</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># .表示当前目录下所有的文件或目录提交到上传队列[上传队列也叫"暂存区"]</span></span><br><span class="line"><span class="comment"># 切换当前工作目录到项目根目录 cd ~/Desktop/renran/</span></span><br><span class="line">git add .</span><br><span class="line"></span><br><span class="line"><span class="comment"># 把本地上传队列的代码提交到本地仓库</span></span><br><span class="line">git commit -m <span class="string">"项目初始化搭建"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 给本地的git版本控制软件设置项目的远程仓库地址</span></span><br><span class="line">git remote add origin https://gitee.com/moluo/renran.git</span><br><span class="line"></span><br><span class="line"><span class="comment"># 提交代码给远程仓库</span></span><br><span class="line">git push -u origin master</span><br></pre></td></tr></table></figure>
+
+<p>扩展：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">通过 <span class="selector-tag">git</span> <span class="selector-tag">status</span> 可以查看当前项目的代码版本状态</span><br><span class="line">通过 <span class="selector-tag">git</span> <span class="selector-tag">reflog</span> 可以查看代码版本日志<span class="selector-attr">[简单格式]</span></span><br><span class="line">通过 <span class="selector-tag">git</span> <span class="selector-tag">log</span>    可以查看代码版本日志<span class="selector-attr">[详细格式]</span></span><br></pre></td></tr></table></figure>
+
+<p>最终就可以成功提交代码版本到 Gitee 平台。</p>
+<h3 id="从-git-中删除文件"><a href="#从-git-中删除文件" class="headerlink" title="从 git 中删除文件"></a>从 git 中删除文件</h3><p>上面虽然成功移交了代码版本，但是一些不需要的文件也被提交上去了。</p>
+<p>所以，我们针对一些不需要的文件，可以选择从代码版本中删除，并且使用 <code>.gitignore</code> 把这些垃圾文件过滤掉。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">git rm 文件  <span class="comment"># 删除单个文件</span></span><br><span class="line">git rm -rf 目录  <span class="comment"># 递归删除目录</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 以下操作建议通过ubuntu的终端来完成，不要使用pycharm提供，否则删除.idea还会继续生成。</span></span><br><span class="line">git rm -rf .idea</span><br><span class="line">git rm db.sqlite3</span><br><span class="line"><span class="comment"># 注意，上面的操作只是从项目的源代码中删除，但是git是不知情的，所以我们需要同步。</span></span><br><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">"删除不必要的文件或目录"</span></span><br><span class="line">git push -u origin master</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用-PyCharm-管理-git"><a href="#使用-PyCharm-管理-git" class="headerlink" title="使用 PyCharm 管理 git"></a>使用 PyCharm 管理 git</h3><p>开发时我们经常会使用 PyCharm 的提供的 git 管理工具来完成代码的拉取和推送。</p>
+<img src="/project/renran-proj-build/1557375896356-1582811074191.png" class="" title="1557375896356-1582811074191">
+
+<h2 id="日志配置"><a href="#日志配置" class="headerlink" title="日志配置"></a>日志配置</h2><p>日志等级说明：</p>
+<ul>
+<li>DEBUG，开发人员用于测试</li>
+<li>INFO，运行项目时的基本提示信息</li>
+<li>WARNING，警告，代码会继续往下执行，如果解析器没有执行到这行代码，则不会报错</li>
+<li>ERROR，严重错误，代码不会继续往下执行，如果解析器没有执行到当前代码，则不会报错</li>
+<li>CRITICAL，致命错误，代码不会往下执行，在运行程序之初，还没有开始执行代码之前，解析器会先进行语法检测，在语法检测的时候，程序已经终止了</li>
+</ul>
+<p>在 <code>settings/dev.py</code> 文件中追加如下配置：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 日志配置</span></span><br><span class="line">LOGGING = &#123;</span><br><span class="line">    <span class="string">'version'</span>: <span class="number">1</span>,</span><br><span class="line">    <span class="string">'disable_existing_loggers'</span>: <span class="literal">False</span>,</span><br><span class="line">    <span class="string">'formatters'</span>: &#123; <span class="comment"># 日志的处理格式</span></span><br><span class="line">        <span class="string">'verbose'</span>: &#123;</span><br><span class="line">            <span class="string">'format'</span>: <span class="string">'%(levelname)s %(asctime)s %(module)s %(lineno)d %(message)s'</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="string">'simple'</span>: &#123;</span><br><span class="line">            <span class="string">'format'</span>: <span class="string">'%(levelname)s %(module)s %(lineno)d %(message)s'</span></span><br><span class="line">        &#125;,</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">'filters'</span>: &#123;</span><br><span class="line">        <span class="string">'require_debug_true'</span>: &#123;</span><br><span class="line">            <span class="string">'()'</span>: <span class="string">'django.utils.log.RequireDebugTrue'</span>,</span><br><span class="line">        &#125;,</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="string">'handlers'</span>: &#123;</span><br><span class="line">        <span class="string">'console'</span>: &#123;</span><br><span class="line">            <span class="string">'level'</span>: <span class="string">'DEBUG'</span>,</span><br><span class="line">            <span class="string">'filters'</span>: [<span class="string">'require_debug_true'</span>],</span><br><span class="line">            <span class="string">'class'</span>: <span class="string">'logging.StreamHandler'</span>,</span><br><span class="line">            <span class="string">'formatter'</span>: <span class="string">'simple'</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="string">'file'</span>: &#123;</span><br><span class="line">            <span class="string">'level'</span>: <span class="string">'INFO'</span>,</span><br><span class="line">            <span class="string">'class'</span>: <span class="string">'logging.handlers.RotatingFileHandler'</span>,</span><br><span class="line">            <span class="comment"># 日志位置,日志文件名,日志保存目录必须手动创建</span></span><br><span class="line">            <span class="string">'filename'</span>: os.path.join(os.path.dirname(BASE_DIR), <span class="string">"logs/renran.log"</span>),</span><br><span class="line">            <span class="comment"># 单个日志文件的最大值,这里我们设置300M</span></span><br><span class="line">            <span class="string">'maxBytes'</span>: <span class="number">300</span> * <span class="number">1024</span> * <span class="number">1024</span>,</span><br><span class="line">            <span class="comment"># 备份日志文件的数量,设置最大日志数量为10</span></span><br><span class="line">            <span class="string">'backupCount'</span>: <span class="number">10</span>,</span><br><span class="line">            <span class="comment"># 日志格式:详细格式</span></span><br><span class="line">            <span class="string">'formatter'</span>: <span class="string">'verbose'</span></span><br><span class="line">        &#125;,</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment"># 日志对象</span></span><br><span class="line">    <span class="string">'loggers'</span>: &#123;</span><br><span class="line">        <span class="string">'django'</span>: &#123; <span class="comment"># 固定，将来django内部也会有异常的处理，只会调用django下标的日志对象</span></span><br><span class="line">            <span class="string">'handlers'</span>: [<span class="string">'console'</span>, <span class="string">'file'</span>],</span><br><span class="line">            <span class="string">'propagate'</span>: <span class="literal">True</span>, <span class="comment"># 是否让日志信息继续冒泡给其他的日志处理系统</span></span><br><span class="line">        &#125;,</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="异常处理"><a href="#异常处理" class="headerlink" title="异常处理"></a>异常处理</h2><p>新建 <code>utils/exceptions.py</code> 文件，并在其中写入下面的代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> rest_framework.views <span class="keyword">import</span> exception_handler</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> django.db <span class="keyword">import</span> DatabaseError</span><br><span class="line"><span class="keyword">from</span> rest_framework.response <span class="keyword">import</span> Response</span><br><span class="line"><span class="keyword">from</span> rest_framework <span class="keyword">import</span> status</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> logging</span><br><span class="line">logger = logging.getLogger(<span class="string">'django'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">custom_exception_handler</span><span class="params">(exc, context)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    自定义异常处理</span></span><br><span class="line"><span class="string">    :param exc: 异常类</span></span><br><span class="line"><span class="string">    :param context: 抛出异常的上下文</span></span><br><span class="line"><span class="string">    :return: Response响应对象</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="comment"># 调用drf框架原生的异常处理方法</span></span><br><span class="line">    response = exception_handler(exc, context)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> response <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        view = context[<span class="string">'view'</span>]</span><br><span class="line">        <span class="keyword">if</span> isinstance(exc, DatabaseError):</span><br><span class="line">            <span class="comment"># 数据库异常</span></span><br><span class="line">            logger.error(<span class="string">'[%s] %s'</span> % (view, exc))</span><br><span class="line">            response = Response(&#123;<span class="string">'message'</span>: <span class="string">'服务器内部错误'</span>&#125;, status=status.HTTP_507_INSUFFICIENT_STORAGE)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> response</span><br></pre></td></tr></table></figure>
+
+<p>然后在 <code>settings/dev.py</code> 配置文件中添加异常处理的句柄：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">REST_FRAMEWORK = &#123;</span><br><span class="line">    <span class="comment"># 异常处理</span></span><br><span class="line">    <span class="string">'EXCEPTION_HANDLER'</span>: <span class="string">'renranapi.utils.exceptions.custom_exception_handler'</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="创建数据库"><a href="#创建数据库" class="headerlink" title="创建数据库"></a>创建数据库</h2><p>先登录数据库：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql -uroot -p</span><br></pre></td></tr></table></figure>
+
+<p>然后创建数据库：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create database renran default charset&#x3D;utf8mb4;</span><br></pre></td></tr></table></figure>
+
+<p>为当前项目创建数据库用户（这个用户只能看到这个数据库）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">create user renran_user identified by &#39;renran&#39;;</span><br><span class="line">grant all privileges on renran.* to &#39;renran_user&#39;@&#39;%&#39;;</span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
+
+<h2 id="配置数据库连接"><a href="#配置数据库连接" class="headerlink" title="配置数据库连接"></a>配置数据库连接</h2><p>打开 <code>settings/dev.py</code> 文件，并配置：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">DATABASES = &#123;</span><br><span class="line">    <span class="string">"default"</span>: &#123;</span><br><span class="line">        <span class="string">"ENGINE"</span>: <span class="string">"django.db.backends.mysql"</span>,</span><br><span class="line">        <span class="string">"HOST"</span>: <span class="string">"127.0.0.1"</span>,</span><br><span class="line">        <span class="string">"PORT"</span>: <span class="number">3306</span>,</span><br><span class="line">        <span class="string">"USER"</span>: <span class="string">"renran_user"</span>,</span><br><span class="line">        <span class="string">"PASSWORD"</span>: <span class="string">"renran"</span>,</span><br><span class="line">        <span class="string">"NAME"</span>: <span class="string">"renran"</span>,</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在项目主模块的 <code>__init__.py</code> 中导入 pymysql：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pymysql</span><br><span class="line"></span><br><span class="line">pymysql.install_as_MySQLdb()</span><br></pre></td></tr></table></figure>
+
+<h4 id="调整错误"><a href="#调整错误" class="headerlink" title="调整错误"></a>调整错误</h4><p>因为我们用的是 Django 2.2.0 版本，启动项目时会导致错误，所以需要修改一下源代码。</p>
+<p>数据库版本检测导致的错误：</p>
+<img src="/project/renran-proj-build/1557453985484.png" class="" width="1557453985484">
+
+<p>数据库的版本检测代码注释掉：</p>
+<img src="/project/renran-proj-build/1557454099123.png" class="" width="1557454099123">
+
+<p>重启项目，又出现了另一个关于 bytes 转换编码的问题，错误如下：</p>
+<img src="/project/renran-proj-build/1582775549830.png" class="" width="1582775549830">
+
+<p>第二个错误也是因为数据库版本的默认编码导致，query 返回的内容格式使用有误。</p>
+<p>修改一行代码，把 query 查询结果转换格式改为 bytes类型</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">query = query.decode(errors=<span class="string">'replace'</span>)</span><br><span class="line"><span class="comment"># 改为下面：</span></span><br><span class="line">query = query.encode(errors=<span class="string">'replace'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>此时，先不要执行数据库迁移指令，因为我们后面要创建认证信息的数据表，可能会与系统自动生成的产生冲突，未来会造成各种各样的问题。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/project/renran-envir/" rel="prev" title="荏苒资讯项目环境部署">
+      <i class="fa fa-chevron-left"></i> 荏苒资讯项目环境部署
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/translation/django-rest-framework-tutorial/class-based-view/" rel="next" title="教程 3：类视图 Class-based View">
+      教程 3：类视图 Class-based View <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建项目"><span class="nav-number">1.</span> <span class="nav-text">创建项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#打开项目"><span class="nav-number">2.</span> <span class="nav-text">打开项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调整目录"><span class="nav-number">3.</span> <span class="nav-text">调整目录</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#分不同环境进行项目配置"><span class="nav-number">3.1.</span> <span class="nav-text">分不同环境进行项目配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建代码版本"><span class="nav-number">4.</span> <span class="nav-text">创建代码版本</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#配置用户名和邮箱"><span class="nav-number">4.1.</span> <span class="nav-text">配置用户名和邮箱</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在-Gitee-平台创建工程"><span class="nav-number">5.</span> <span class="nav-text">在 Gitee 平台创建工程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建私有项目库"><span class="nav-number">5.1.</span> <span class="nav-text">创建私有项目库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#克隆项目到本地"><span class="nav-number">5.2.</span> <span class="nav-text">克隆项目到本地</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编辑-gitignore"><span class="nav-number">5.3.</span> <span class="nav-text">编辑 .gitignore</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git-提交"><span class="nav-number">5.4.</span> <span class="nav-text">git 提交</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建并切换分支到-dev"><span class="nav-number">5.5.</span> <span class="nav-text">创建并切换分支到 dev</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#推送到远端"><span class="nav-number">5.6.</span> <span class="nav-text">推送到远端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#上传代码至远程仓库"><span class="nav-number">5.7.</span> <span class="nav-text">上传代码至远程仓库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#从-git-中删除文件"><span class="nav-number">5.8.</span> <span class="nav-text">从 git 中删除文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-PyCharm-管理-git"><span class="nav-number">5.9.</span> <span class="nav-text">使用 PyCharm 管理 git</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#日志配置"><span class="nav-number">6.</span> <span class="nav-text">日志配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#异常处理"><span class="nav-number">7.</span> <span class="nav-text">异常处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建数据库"><span class="nav-number">8.</span> <span class="nav-text">创建数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置数据库连接"><span class="nav-number">9.</span> <span class="nav-text">配置数据库连接</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#调整错误"><span class="nav-number">9.0.1.</span> <span class="nav-text">调整错误</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="刘硕"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">刘硕</p>
+  <div class="site-description" itemprop="description">不成为自己讨厌的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">221</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:liushuo432@outlook.com" title="E-Mail → mailto:liushuo432@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/2436055290" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;2436055290" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备20001451号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘硕</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.2" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="/js/love.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/Epsilon2.1.model.json"},"display":{"superSample":2,"width":200,"height":400,"position":"left","hOffset":-30,"vOffset":-40},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>

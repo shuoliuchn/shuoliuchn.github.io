@@ -1,0 +1,1521 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="Tu5vqPaUb8svfkPx5eetJFD84ciQCcWVXNatdsWtj9Q">
+  <meta name="baidu-site-verification" content="baidu_verify_FBq9PG4BBb">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.1","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="在 Ubuntu 中搭建完整 Python 开发环境的教程笔记，很详细，可以说应有尽有。就算不是 Ubuntu，就算不开发 Python，里面的工具和环境的部署命令也是可以借鉴的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ubuntu 系统安装和 Python 开发环境配置">
+<meta property="og:url" content="https://sliu.vip/web/ubuntu-python/index.html">
+<meta property="og:site_name" content="刘硕的技术查阅手册">
+<meta property="og:description" content="在 Ubuntu 中搭建完整 Python 开发环境的教程笔记，很详细，可以说应有尽有。就算不是 Ubuntu，就算不开发 Python，里面的工具和环境的部署命令也是可以借鉴的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/20180620200651158.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555322379232(1).png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555322411473.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555406823989.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555406875540.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555322558054.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555322574001.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555322584853.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555322605989.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555322613074.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555322619297.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555322626102.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555322643496.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555322651420.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555322658865.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555322696354.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555407034888.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555407053476-1581426733172.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555407978602-1581426737191.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555408000095-1581426740276.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555408167496.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555408927535-1581426747358.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555409110692.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555409235259.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555409767922.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555409861780.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555410041516.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555410055056.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555410117339.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555410182580.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555410217668.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555410324956.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555410343152.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555411260859.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555411352862-1581426764017.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555411390939.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1559058496068.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1559058552593.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1582380080539.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1582380617036.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555470919223-1581426772475.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555466987568.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555467043282-1581426776805.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555467087378.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555471035561.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555471112932.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555471142332.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555471162743.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555471209936-1581426796448.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555467889227-1581426799587.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555467966573-1581426802630.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555467980106.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555471345709-1581426807693.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555471416927.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555471442196.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555471709889.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555471730863.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555471759032.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555471781326.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555472039635-1581426820442.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555472662852-1581426823460.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555473218834.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555474613731.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555474739744.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555469017912.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555469066192.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555475630890.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555475665216.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555475772154.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555475945674.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555486869608-1581426856520.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555486897199-1581426863488.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555492891577-1581426874460.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555493308420-1581426878406.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555495251155.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555493352631-1581426884879.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555495302952.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555495399898.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555495562038.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555495835948.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555483227691.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555483413283.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555483481421.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555483637964.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555483666999.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555483797479.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555484649053.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555485036396.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555485058132-1581426927873.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555485093085-1581426931225.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555496062646.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555496477552-1581426937389.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555496520217-1581426941079.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555485497312.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555496622098.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555496747740-1581426959638.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555558869882-1581426970659.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555558912918.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555558990718.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555559056428.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555559963030.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555572438424.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555572888816.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555573020937-1581427035728.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555580827498.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555581235664-1581427057876.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555581250971-1581427063109.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555582465252.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/ubuntu-python.assets/postman.svg">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555582656833.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555582917726-1581427102604.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555583954368-1581427115278.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555584388674.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555585333786-1581427129706.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555898548578-1581427168780.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555898571439-1581427174747.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555900488599.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555900526360.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555910269500.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555908358615.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555910720836-1581427271868.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1555929756938-1581427278998.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1559067730172.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1559068011503.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1559068087606.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1559068107255.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1559071678964.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1559991495887.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1559993384933.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1559993708840.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1559994987016.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1559995017833.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1559995062084.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1560023751123.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1560024123309.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1560027047451.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1560025682569.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1560027163923.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1560027337315.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1560027395430.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1560027576109.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1560032506594.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1560032582257.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1560032672351-1581427834094.png">
+<meta property="og:image" content="https://sliu.vip/web/ubuntu-python/1560094084889.png">
+<meta property="article:published_time" content="2020-02-17T10:55:03.000Z">
+<meta property="article:modified_time" content="2020-02-22T16:58:03.000Z">
+<meta property="article:author" content="刘硕">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="全栈开发">
+<meta property="article:tag" content="并发编程">
+<meta property="article:tag" content="网络编程">
+<meta property="article:tag" content="爬虫">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="自动化测试">
+<meta property="article:tag" content="Web开发">
+<meta property="article:tag" content="HTML">
+<meta property="article:tag" content="CSS">
+<meta property="article:tag" content="JavaScript">
+<meta property="article:tag" content="jQuery">
+<meta property="article:tag" content="Bootstrap">
+<meta property="article:tag" content="测试自动化">
+<meta property="article:tag" content="Selenium">
+<meta property="article:tag" content="postman">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="Vue">
+<meta property="article:tag" content="drf">
+<meta property="article:tag" content="django">
+<meta property="article:tag" content="文档翻译">
+<meta property="article:tag" content="PEP8">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sliu.vip/web/ubuntu-python/20180620200651158.png">
+
+<link rel="canonical" href="https://sliu.vip/web/ubuntu-python/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>Ubuntu 系统安装和 Python 开发环境配置 | 刘硕的技术查阅手册</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f14f123935d6183fdd06f8f1c4bc378f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="刘硕的技术查阅手册" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">刘硕的技术查阅手册</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">Python 全栈开发学习笔记</h1>
+      
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-toc">
+
+    <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-fw fa-rss"></i>订阅</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/web/ubuntu-python/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          Ubuntu 系统安装和 Python 开发环境配置
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-17 18:55:03" itemprop="dateCreated datePublished" datetime="2020-02-17T18:55:03+08:00">2020-02-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-23 00:58:03" itemprop="dateModified" datetime="2020-02-23T00:58:03+08:00">2020-02-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <div class="post-description">在 Ubuntu 中搭建完整 Python 开发环境的教程笔记，很详细，可以说应有尽有。就算不是 Ubuntu，就算不开发 Python，里面的工具和环境的部署命令也是可以借鉴的</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="Ubuntu-系统的安装"><a href="#Ubuntu-系统的安装" class="headerlink" title="Ubuntu 系统的安装"></a>Ubuntu 系统的安装</h2><p>Ubuntu 可用 <a href="https://developer.aliyun.com/mirror/" target="_blank" rel="noopener">淘宝镜像站</a> 下载，下载链接为：<a href="https://mirrors.aliyun.com/ubuntu-releases/18.04/ubuntu-18.04.3-desktop-amd64.iso" target="_blank" rel="noopener">https://mirrors.aliyun.com/ubuntu-releases/18.04/ubuntu-18.04.3-desktop-amd64.iso</a> 。这是 18.04 版本的，也可以去下载其他版本。</p>
+<p>在 VMware 中新建虚拟机：</p>
+<img src="/web/ubuntu-python/20180620200651158.png" class="" width="20180620200651158">
+
+<img src="/web/ubuntu-python/1555322379232(1).png" class="" title="1555322379232(1)">
+
+
+
+<img src="/web/ubuntu-python/1555322411473.png" class="" width="1555322411473">
+
+
+
+<p>指定当前虚拟机使用的系统镜像：</p>
+<img src="/web/ubuntu-python/1555406823989.png" class="" width="1555406823989">
+
+
+
+<p>设置系统的登录账号密码，设置完成以后一定要记住。</p>
+<img src="/web/ubuntu-python/1555406875540.png" class="" width="1555406875540">
+
+
+
+<img src="/web/ubuntu-python/1555322558054.png" class="" width="1555322558054">
+
+
+
+<img src="/web/ubuntu-python/1555322574001.png" class="" width="1555322574001">
+
+
+
+<img src="/web/ubuntu-python/1555322584853.png" class="" width="1555322584853">
+
+
+
+<img src="/web/ubuntu-python/1555322605989.png" class="" width="1555322605989">
+
+
+
+<img src="/web/ubuntu-python/1555322613074.png" class="" width="1555322613074">
+
+
+
+<img src="/web/ubuntu-python/1555322619297.png" class="" width="1555322619297">
+
+
+
+<img src="/web/ubuntu-python/1555322626102.png" class="" width="1555322626102">
+
+
+
+<img src="/web/ubuntu-python/1555322643496.png" class="" width="1555322643496">
+
+
+
+<img src="/web/ubuntu-python/1555322651420.png" class="" width="1555322651420">
+
+
+
+<img src="/web/ubuntu-python/1555322658865.png" class="" width="1555322658865">
+
+
+
+
+
+<img src="/web/ubuntu-python/1555322696354.png" class="" width="1555322696354">
+
+
+
+<img src="/web/ubuntu-python/1555407034888.png" class="" width="1555407034888">
+
+
+
+<img src="/web/ubuntu-python/1555407053476-1581426733172.png" class="" title="1555407053476-1581426733172">
+
+
+
+<p>一直等待，系统初始化安装，直到出现下方界面：</p>
+<img src="/web/ubuntu-python/1555407978602-1581426737191.png" class="" title="1555407978602-1581426737191">
+
+
+
+<p>输入前面设置的密码，点击 <code>Sign In</code>。</p>
+<img src="/web/ubuntu-python/1555408000095-1581426740276.png" class="" title="1555408000095-1581426740276">
+
+
+
+<p>点击右上角绿色按钮，一路 next 即可。</p>
+<img src="/web/ubuntu-python/1555408167496.png" class="" width="1555408167496">
+
+
+
+<p>点击 <code>Install Now</code>，下载最新版本的 Ubuntu 软件库。</p>
+<img src="/web/ubuntu-python/1555408927535-1581426747358.png" class="" title="1555408927535-1581426747358">
+
+<p>输入登录密码。</p>
+<img src="/web/ubuntu-python/1555409110692.png" class="" width="1555409110692">
+
+
+
+<img src="/web/ubuntu-python/1555409235259.png" class="" width="1555409235259">
+
+
+
+<p>选择稍后重启 <code>Restart Later</code>。</p>
+<img src="/web/ubuntu-python/1555409767922.png" class="" width="1555409767922">
+
+<h2 id="更改系统语言为中文"><a href="#更改系统语言为中文" class="headerlink" title="更改系统语言为中文"></a>更改系统语言为中文</h2><p>点击屏幕右上角设置按钮</p>
+<img src="/web/ubuntu-python/1555409861780.png" class="" width="1555409861780">
+
+<p>选择地区和语言设置 <code>Region &amp; Language</code>。</p>
+<p>然后选择 语言安装管理 <code>Manage Installed Languages</code> 。</p>
+<img src="/web/ubuntu-python/1555410041516.png" class="" width="1555410041516">
+
+
+
+<img src="/web/ubuntu-python/1555410055056.png" class="" width="1555410055056">
+
+
+
+<p>点击 <code>Install</code>，下载安装语言包，必须联网。</p>
+<p>下载安装语言包需要管理员授权，所以还是输入登录密码。</p>
+<img src="/web/ubuntu-python/1555410117339.png" class="" width="1555410117339">
+
+
+
+<img src="/web/ubuntu-python/1555410182580.png" class="" width="1555410182580">
+
+
+
+<p>点击 <code>Install/Remove Languages...</code>，安装语言包</p>
+<img src="/web/ubuntu-python/1555410217668.png" class="" width="1555410217668">
+
+
+
+<p>在弹出窗口中，找到<code>Chinese(simplified)</code> 和 <code>Englis</code>h，勾选上再点击 <code>Apply</code>。</p>
+<img src="/web/ubuntu-python/1555410324956.png" class="" width="1555410324956">
+
+
+
+<p>等待下载完成。</p>
+<img src="/web/ubuntu-python/1555410343152.png" class="" width="1555410343152">
+
+
+
+<p>在已经下载完成的语言列表中找到汉语（中国），并把它拖到语言列表的最上方位置，并点选 <code>Apply System-Wide</code>，最后点击 <code>Close</code> 关闭当前窗口。</p>
+<img src="/web/ubuntu-python/1555411260859.png" class="" width="1555411260859">
+
+<p>重启 Ubuntu。</p>
+<img src="/web/ubuntu-python/1555411352862-1581426764017.png" class="" title="1555411352862-1581426764017">
+
+<img src="/web/ubuntu-python/1555411390939.png" class="" width="1555411390939">
+
+
+
+<p>重启后的 Ubuntu，会弹出提示将标准文件夹更新到当前语言吗？选择保留旧的名称 。</p>
+<h2 id="更改系统时区为亚洲-上海"><a href="#更改系统时区为亚洲-上海" class="headerlink" title="更改系统时区为亚洲/上海"></a>更改系统时区为亚洲/上海</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo tzselect</span><br><span class="line"><span class="comment"># 选项Asia  4</span></span><br><span class="line"><span class="comment"># 选项China 9</span></span><br><span class="line"><span class="comment"># 选项Beijing 1</span></span><br><span class="line"><span class="comment"># 选项Yes     1</span></span><br></pre></td></tr></table></figure>
+
+<img src="/web/ubuntu-python/1559058496068.png" class="" width="1559058496068">
+
+<img src="/web/ubuntu-python/1559058552593.png" class="" width="1559058552593">
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 复制时区文件</span></span><br><span class="line">sudo cp /usr/share/zoneinfo/Asia/Shanghai  /etc/localtime</span><br><span class="line"><span class="comment"># 安装ntp时间服务器</span></span><br><span class="line">sudo apt install ntpdate</span><br><span class="line"><span class="comment"># 同步ntp时间服务器</span></span><br><span class="line">sudo ntpdate time.windows.com</span><br><span class="line"><span class="comment"># 将系统时间与网络同步</span></span><br><span class="line">sudo ntpdate cn.pool.ntp.org</span><br><span class="line"><span class="comment"># 将时间写入硬件</span></span><br><span class="line">sudo hwclock --systohc</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重启Ubuntu</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="调整分辨率"><a href="#调整分辨率" class="headerlink" title="调整分辨率"></a>调整分辨率</h2><p>虚拟机中的 Ubuntu 一半都会随着窗口的变大或变小，自动适应。即便不适应，也可以通过 <code>设置 -&gt; 设备 -&gt; 显示</code> 很简单地调整分辨率。</p>
+<p>但是偶尔，虚拟机有不听话的时候，窗口很小。而可供选择的分辨率又没有适合自己的，就可以通过下面的步骤自定义一个屏幕分辨率。</p>
+<p>终端输入命令，查看当前可供选择的屏幕分辨率：</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">xrandr</span></span><br></pre></td></tr></table></figure>
+
+<img src="/web/ubuntu-python/1582380080539.png" class="" width="1582380080539">
+
+<p>如果列表中有你满意的分辨率，那么可以直接通过命令，修改分辨率，比如（我不知道中间的是不是 x，最好还是直接复制粘贴人家打印出来的东西）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xrandr --size 1920x1200</span><br></pre></td></tr></table></figure>
+
+<p>若没有，操作就要麻烦一点了。</p>
+<p>首先，查看一下你想要的分辨率的相关信息，比如我想查看 1920x1080 分辨率，刷新频率 60 赫兹的各项参数：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">moluo@ubuntu:~$ cvt 1920 1080 60</span><br><span class="line"><span class="comment"># 1920x1080 59.96 Hz (CVT 2.07M9) hsync: 67.16 kHz; pclk: 173.00 MHz</span></span><br><span class="line">Modeline <span class="string">"1920x1080_60.00"</span>  173.00  1920 2048 2248 2576  1080 1083 1088 1120 -hsync +vsync</span><br></pre></td></tr></table></figure>
+
+<p>上面输出的数据中，Modline 后面的内容是我们需要的显示信息。</p>
+<p>将这个信息配置到系统中，使用命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xrandr --newmode <span class="string">"1920x1080_60.00"</span>  173.00  1920 2048 2248 2576  1080 1083 1088 1120 -hsync +vsync</span><br></pre></td></tr></table></figure>
+
+<p>再次查看系统支持的分辨率模式，发现新模式以及加入：</p>
+<img src="/web/ubuntu-python/1582380617036.png" class="" width="1582380617036">
+
+<p>不过虽然新的显示模式已经有了，但并没有配置在我们的显示器（virtual1）中。所以，下一步就要把显示模式适配到显示器上（同上，中间的 x 最好复制粘贴）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xrandr --addmode 1920x1080_60.00</span><br></pre></td></tr></table></figure>
+
+<p>这是即可发现，新的分辨率已经适配到我们的系统中。当然，这个过程可能会导致屏幕分辨率变化。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">moluo@ubuntu:~$ xrandr</span><br><span class="line">Screen 0: minimum 1 x 1, current 800 x 600, maximum 16384 x 16384</span><br><span class="line">Virtual1 connected primary 800x600+0+0 (normal left inverted right x axis y axis) 0mm x 0mm</span><br><span class="line">   800x600       60.00*+  60.32  </span><br><span class="line">   2560x1600     59.99  </span><br><span class="line">   1920x1440     60.00  </span><br><span class="line">   1856x1392     60.00  </span><br><span class="line">   1792x1344     60.00  </span><br><span class="line">   1920x1200     59.88  </span><br><span class="line">   1600x1200     60.00  </span><br><span class="line">   1680x1050     59.95  </span><br><span class="line">   1400x1050     59.98  </span><br><span class="line">   1280x1024     60.02  </span><br><span class="line">   1440x900      59.89  </span><br><span class="line">   1280x960      60.00  </span><br><span class="line">   1360x768      60.02  </span><br><span class="line">   1280x800      59.81  </span><br><span class="line">   1152x864      75.00  </span><br><span class="line">   1280x768      59.87  </span><br><span class="line">   1024x768      60.00  </span><br><span class="line">   640x480       59.94  </span><br><span class="line">   1920x1080_60.00  59.96  </span><br><span class="line">Virtual2 disconnected (normal left inverted right x axis y axis)</span><br><span class="line">Virtual3 disconnected (normal left inverted right x axis y axis)</span><br><span class="line">Virtual4 disconnected (normal left inverted right x axis y axis)</span><br><span class="line">Virtual5 disconnected (normal left inverted right x axis y axis)</span><br><span class="line">Virtual6 disconnected (normal left inverted right x axis y axis)</span><br><span class="line">Virtual7 disconnected (normal left inverted right x axis y axis)</span><br><span class="line">Virtual8 disconnected (normal left inverted right x axis y axis)</span><br></pre></td></tr></table></figure>
+
+<p>使用命令，即可应用新的显示模式了：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xrandr -s 1920x1080_60.00</span><br></pre></td></tr></table></figure>
+
+<p>为了让系统每次启动时，都自动使用这个分辨率，可以在 <code>~/.xprofile</code> 文件中加上这样一行代码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xrandr --output Virtual1 --mode 1920x1080_60.00</span><br></pre></td></tr></table></figure>
+
+<h2 id="安装基本使用软件"><a href="#安装基本使用软件" class="headerlink" title="安装基本使用软件"></a>安装基本使用软件</h2><h3 id="Vim"><a href="#Vim" class="headerlink" title="Vim"></a>Vim</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install vim</span><br></pre></td></tr></table></figure>
+
+<img src="/web/ubuntu-python/1555470919223-1581426772475.png" class="" title="1555470919223-1581426772475">
+
+<h3 id="ssh"><a href="#ssh" class="headerlink" title="ssh"></a>ssh</h3><p>一般 Ubuntu 都会默认安装 openssh-client，但是没有安装 openssh-server。而如果我们要远程 ssh 连接到 Ubuntu，就要 Ubuntu 作为 ssh 服务器才行。</p>
+<p>所以，首先要安装 ssh 服务器：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install openssh-server</span><br></pre></td></tr></table></figure>
+
+<p>如果需要，也可以再安装一个 ssh 客户端：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install openssh-client</span><br></pre></td></tr></table></figure>
+
+<p> 配置 ssh 客户端，去掉 <code>PasswordAuthentication yes</code> 前面用于注释的 # 号，保存退出。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/ssh/ssh_config</span><br></pre></td></tr></table></figure>
+
+<p>配置 ssh 服务端，把 <code>PermitRootLogin prohibit-password</code> 取消注释，并将其改成 <code>PermitRootLogin yes</code>，保存后退出。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/ssh/sshd_config</span><br></pre></td></tr></table></figure>
+
+<p>常用命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sudo /etc/init.d/ssh start     <span class="comment"># 启动ssh服务</span></span><br><span class="line">sudo /etc/init.d/ssh restart   <span class="comment"># 重启ssh服务</span></span><br><span class="line">sudo /etc/init.d/ssh stop      <span class="comment"># 关闭ssh服务</span></span><br><span class="line"></span><br><span class="line">ps -ef | grep sshd    <span class="comment"># 查看ssh服务是否运行</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="Chrome"><a href="#Chrome" class="headerlink" title="Chrome"></a>Chrome</h3><p>使用 Ubuntu 内置的火狐浏览器打开谷歌浏览器的下载地址：</p>
+<p><a href="http://www.google.cn/intl/zh-CN/chrome/browser/desktop/index.html" target="_blank" rel="noopener">http://www.google.cn/intl/zh-CN/chrome/browser/desktop/index.html</a></p>
+<img src="/web/ubuntu-python/1555466987568.png" class="" width="1555466987568">
+
+
+
+<p>选择 Ubuntu 版本</p>
+<img src="/web/ubuntu-python/1555467043282-1581426776805.png" class="" title="1555467043282-1581426776805">
+
+
+
+<p>点选 <code>保存文件</code>，默认会保存在用户家目录下的 Downloads 目录下</p>
+<img src="/web/ubuntu-python/1555467087378.png" class="" width="1555467087378">
+
+
+
+<img src="/web/ubuntu-python/1555471035561.png" class="" width="1555471035561">
+
+
+
+<img src="/web/ubuntu-python/1555471112932.png" class="" width="1555471112932">
+
+
+
+<img src="/web/ubuntu-python/1555471142332.png" class="" width="1555471142332">
+
+
+
+<img src="/web/ubuntu-python/1555471162743.png" class="" width="1555471162743">
+
+
+
+<img src="/web/ubuntu-python/1555471209936-1581426796448.png" class="" title="1555471209936-1581426796448">
+
+
+
+<p>可以选择把图标拉动到左侧收藏栏中，方便快速打开。</p>
+<img src="/web/ubuntu-python/1555467889227-1581426799587.png" class="" title="1555467889227-1581426799587">
+
+
+
+<img src="/web/ubuntu-python/1555467966573-1581426802630.png" class="" title="1555467966573-1581426802630">
+
+
+
+<img src="/web/ubuntu-python/1555467980106.png" class="" width="1555467980106">
+
+
+
+<h3 id="搜狗输入法"><a href="#搜狗输入法" class="headerlink" title="搜狗输入法"></a>搜狗输入法</h3><p>访问搜狗输入法 For Linux：<a href="https://pinyin.sogou.com/linux/?r=pinyin" target="_blank" rel="noopener">https://pinyin.sogou.com/linux/?r=pinyin</a></p>
+<img src="/web/ubuntu-python/1555471345709-1581426807693.png" class="" title="1555471345709-1581426807693">
+
+
+
+<img src="/web/ubuntu-python/1555471416927.png" class="" width="1555471416927">
+
+
+
+<img src="/web/ubuntu-python/1555471442196.png" class="" width="1555471442196">
+
+
+
+<img src="/web/ubuntu-python/1555471709889.png" class="" width="1555471709889">
+
+
+
+<img src="/web/ubuntu-python/1555471730863.png" class="" width="1555471730863">
+
+
+
+<img src="/web/ubuntu-python/1555471759032.png" class="" width="1555471759032">
+
+
+
+<p>关闭窗口后，重启 Ubuntu。</p>
+<img src="/web/ubuntu-python/1555471781326.png" class="" width="1555471781326">
+
+
+
+<img src="/web/ubuntu-python/1555472039635-1581426820442.png" class="" title="1555472039635-1581426820442">
+
+
+
+<h3 id="PyCharm"><a href="#PyCharm" class="headerlink" title="PyCharm"></a>PyCharm</h3><img src="/web/ubuntu-python/1555472662852-1581426823460.png" class="" title="1555472662852-1581426823460">
+
+
+
+<img src="/web/ubuntu-python/1555473218834.png" class="" width="1555473218834">
+
+
+
+<img src="/web/ubuntu-python/1555474613731.png" class="" width="1555474613731">
+
+
+
+<img src="/web/ubuntu-python/1555474739744.png" class="" width="1555474739744">
+
+
+
+<img src="/web/ubuntu-python/1555469017912.png" class="" width="1555469017912">
+
+
+
+<img src="/web/ubuntu-python/1555469066192.png" class="" width="1555469066192">
+
+<p>合理使用地址：<a href="http://idea.lanyus.com/" target="_blank" rel="noopener">http://idea.lanyus.com/</a></p>
+<p>第一步 将：0.0.0.0 <a href="https://account.jetbrains.com:443" target="_blank" rel="noopener">https://account.jetbrains.com:443</a> 加入 hosts，hosts 文件在 <code>/etc/hosts</code><br>第二步 打开终端，输入<code>sudo /etc/init.d/networking restart</code>，刷新 dns 缓存<br>第三步 在 Activation code 输入 lanyu 序列号</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">56</span>ZS5PQ1RF-eyJsaWNlbnNlSWQiOiI1NlpTNVBRMVJGIiwibGljZW5zZWVOYW1lIjoi5q2j54mI5o6I5p2DIC4iLCJhc3NpZ25lZU5hbWUiOiIiLCJhc3NpZ25lZUVtYWlsIjoiIiwibGljZW5zZVJlc3RyaWN0aW9uIjoiRm9yIGVkdWNhdGlvbmFsIHVzZSBvbmx5IiwiY2hlY2tDb25jdXJyZW50VXNlIjpmYWxzZSwicHJvZHVjdHMiOlt7ImNvZGUiOiJJSSIsInBhaWRVcFRvIjoiMjAyMC0wMy0xMCJ9LHsiY29kZSI6IkFDIiwicGFpZFVwVG8iOiIyMDIwLTAzLTEwIn0seyJjb2RlIjoiRFBOIiwicGFpZFVwVG8iOiIyMDIwLTAzLTEwIn0seyJjb2RlIjoiUFMiLCJwYWlkVXBUbyI6IjIwMjAtMDMtMTAifSx7ImNvZGUiOiJHTyIsInBhaWRVcFRvIjoiMjAyMC0wMy0xMCJ9LHsiY29kZSI6IkRNIiwicGFpZFVwVG8iOiIyMDIwLTAzLTEwIn0seyJjb2RlIjoiQ0wiLCJwYWlkVXBUbyI6IjIwMjAtMDMtMTAifSx7ImNvZGUiOiJSUzAiLCJwYWlkVXBUbyI6IjIwMjAtMDMtMTAifSx7ImNvZGUiOiJSQyIsInBhaWRVcFRvIjoiMjAyMC0wMy0xMCJ9LHsiY29kZSI6IlJEIiwicGFpZFVwVG8iOiIyMDIwLTAzLTEwIn0seyJjb2RlIjoiUEMiLCJwYWlkVXBUbyI6IjIwMjAtMDMtMTAifSx7ImNvZGUiOiJSTSIsInBhaWRVcFRvIjoiMjAyMC0wMy0xMCJ9LHsiY29kZSI6IldTIiwicGFpZFVwVG8iOiIyMDIwLTAzLTEwIn0seyJjb2RlIjoiREIiLCJwYWlkVXBUbyI6IjIwMjAtMDMtMTAifSx7ImNvZGUiOiJEQyIsInBhaWRVcFRvIjoiMjAyMC0wMy0xMCJ9LHsiY29kZSI6IlJTVSIsInBhaWRVcFRvIjoiMjAyMC0wMy0xMCJ9XSwiaGFzaCI6IjEyMjkxNDk4LzAiLCJncmFjZVBlcmlvZERheXMiOjAsImF1dG9Qcm9sb25nYXRlZCI6ZmFsc2UsImlzQXV0b1Byb2xvbmdhdGVkIjpmYWxzZX0=-SYSsDcgL1WJmHnsiGaHUWbaZLPIe2oI3QiIneDtaIbh/SZOqu63G7RGudSjf3ssPb1zxroMti/bK9II1ugHz/nTjw31Uah7D0HqeaCO7Zc0q9BeHysiWmBZ+<span class="number">8</span>bABs5vr25GgIa5pO7CJhL7RitXQbWpAajrMBAeZ2En3wCgNwT6D6hNmiMlhXsWgwkw2OKnyHZ2dl8yEL+oV5SW14t7bdjYGKQrYjSd4+<span class="number">2</span>zc4FnaX88yLnGNO9B3U6G+BuM37pxS5MjHrkHqMTK8W3I66mIj6IB6dYXD5nvKKO1OZREBAr6LV0BqRYSbuJKFhZ8nd6YDG20GvW6leimv0rHVBFmA0w==-MIIElTCCAn2gAwIBAgIBCTANBgkqhkiG9w0BAQsFADAYMRYwFAYDVQQDDA1KZXRQcm9maWxlIENBMB4XDTE4MTEwMTEyMjk0NloXDTIwMTEwMjEyMjk0NlowaDELMAkGA1UEBhMCQ1oxDjAMBgNVBAgMBU51c2xlMQ8wDQYDVQQHDAZQcmFndWUxGTAXBgNVBAoMEEpldEJyYWlucyBzLnIuby4xHTAbBgNVBAMMFHByb2QzeS1mcm9tLTIwMTgxMTAxMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxcQkq+zdxlR2mmRYBPzGbUNdMN6OaXiXzxIWtMEkrJMO/<span class="number">5</span>oUfQJbLLuMSMK0QHFmaI37WShyxZcfRCidwXjot4zmNBKnlyHodDij/<span class="number">78</span>TmVqFl8nOeD5+<span class="number">07</span>B8VEaIu7c3E1N+e1doC6wht4I4+IEmtsPAdoaj5WCQVQbrI8KeT8M9VcBIWX7fD0fhexfg3ZRt0xqwMcXGNp3DdJHiO0rCdU+Itv7EmtnSVq9jBG1usMSFvMowR25mju2JcPFp1+I4ZI+FqgR8gyG8oiNDyNEoAbsR3lOpI7grUYSvkB/xVy/VoklPCK2h0f0GJxFjnye8NT1PAywoyl7RmiAVRE/EKwIDAQABo4GZMIGWMAkGA1UdEwQCMAAwHQYDVR0OBBYEFGEpG9oZGcfLMGNBkY7SgHiMGgTcMEgGA1UdIwRBMD+AFKOetkhnQhI2Qb1t4Lm0oFKLl/GzoRykGjAYMRYwFAYDVQQDDA1KZXRQcm9maWxlIENBggkA0myxg7KDeeEwEwYDVR0lBAwwCgYIKwYBBQUHAwEwCwYDVR0PBAQDAgWgMA0GCSqGSIb3DQEBCwUAA4ICAQAF8uc+YJOHHwOFcPzmbjcxNDuGoOUIP+<span class="number">2</span>h1R75Lecswb7ru2LWWSUMtXVKQzChLNPn/<span class="number">72</span>W0k+oI056tgiwuG7M49LXp4zQVlQnFmWU1wwGvVhq5R63Rpjx1zjGUhcXgayu7+<span class="number">9</span>zMUW596Lbomsg8qVve6euqsrFicYkIIuUu4zYPndJwfe0YkS5nY72SHnNdbPhEnN8wcB2Kz+OIG0lih3yz5EqFhld03bGp222ZQCIghCTVL6QBNadGsiN/lWLl4JdR3lJkZzlpFdiHijoVRdWeSWqM4y0t23c92HXKrgppoSV18XMxrWVdoSM3nuMHwxGhFyde05OdDtLpCv+jlWf5REAHHA201pAU6bJSZINyHDUTB+Beo28rRXSwSh3OUIvYwKNVeoBY+KwOJ7WnuTCUq1meE6GkKc4D/cXmgpOyW/<span class="number">1</span>SmBz3XjVIi/zprZ0zf3qH5mkphtg6ksjKgKjmx1cXfZAAX6wcDBNaCL+Ortep1Dh8xDUbqbBVNBL4jbiL3i3xsfNiyJgaZ5sX7i8tmStEpLbPwvHcByuf59qJhV/bZOl8KqJBETCDJcY6O2aqhTUy+<span class="number">9</span>x93ThKs1GKrRPePrWPluud7ttlgtRveit/pcBrnQcXOl1rHq7ByB8CFAxNotRUYL9IF5n3wJOgkPojMy6jetQA5Ogc8Sm7RG6vg1yow==</span><br></pre></td></tr></table></figure>
+
+<p>Pycharm 新版本在 Ubuntu 下面和搜索的底层有冲突，可能需要 revert pycharm的版本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">snap revert pycharm-professional</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="Sublimetext-3"><a href="#Sublimetext-3" class="headerlink" title="Sublimetext 3"></a>Sublimetext 3</h3><img src="/web/ubuntu-python/1555475630890.png" class="" width="1555475630890">
+
+
+
+<img src="/web/ubuntu-python/1555475665216.png" class="" width="1555475665216">
+
+
+
+<img src="/web/ubuntu-python/1555475772154.png" class="" width="1555475772154">
+
+
+
+<img src="/web/ubuntu-python/1555475945674.png" class="" width="1555475945674">
+
+
+
+
+
+<h3 id="virtualenv"><a href="#virtualenv" class="headerlink" title="virtualenv"></a>virtualenv</h3><p>默认情况下 Ubuntu18.04 版本已经内置 Python3.6 了。但是没有内置 pip，所以先安装 pip：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install python3-pip</span><br></pre></td></tr></table></figure>
+
+<img src="/web/ubuntu-python/1555486869608-1581426856520.png" class="" title="1555486869608-1581426856520">
+
+
+
+<img src="/web/ubuntu-python/1555486897199-1581426863488.png" class="" title="1555486897199-1581426863488">
+
+
+
+<p>安装虚拟环境：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip3 install virtualenv</span><br><span class="line">pip3 install virtualenvwrapper</span><br></pre></td></tr></table></figure>
+
+<img src="/web/ubuntu-python/1555492891577-1581426874460.png" class="" title="1555492891577-1581426874460">
+
+<p>安装完成了以后，接下来需要配置系统环境变量：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir <span class="variable">$HOME</span>/.virtualenvs</span><br></pre></td></tr></table></figure>
+
+<p>执行命令，打开并编辑 <code>~/.bashrc</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim  ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<img src="/web/ubuntu-python/1555493308420-1581426878406.png" class="" title="1555493308420-1581426878406">
+
+
+
+<p>文件末尾添加以下几行代码，<code>:wq</code> 保存退出：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> WORKON_HOME=<span class="variable">$HOME</span>/.virtualenvs</span><br><span class="line"><span class="built_in">export</span> VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3</span><br><span class="line"><span class="built_in">source</span> ~/.<span class="built_in">local</span>/bin/virtualenvwrapper.sh</span><br></pre></td></tr></table></figure>
+
+<img src="/web/ubuntu-python/1555495251155.png" class="" width="1555495251155">
+
+<p>刷新配置文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<img src="/web/ubuntu-python/1555493352631-1581426884879.png" class="" title="1555493352631-1581426884879">
+
+
+
+<img src="/web/ubuntu-python/1555495302952.png" class="" width="1555495302952">
+
+<p>最后测试是否安装成功</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">workon</span></span><br><span class="line"><span class="attribute">mkvirtualenv</span></span><br></pre></td></tr></table></figure>
+
+<img src="/web/ubuntu-python/1555495399898.png" class="" width="1555495399898">
+
+
+
+<p>如果出现上面的错误，是因为 virtualenv 这个基础依赖包被安装在默认 Python 目录下，做一个 virtualenv 的软连接到 <code>/usr/bin</code> 中给 Python 3 调用即可。</p>
+<p>首先还是用 find 找到 virtualenv 的位置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo find / -name <span class="string">"virtualenv"</span></span><br></pre></td></tr></table></figure>
+
+<img src="/web/ubuntu-python/1555495562038.png" class="" width="1555495562038">
+
+<p>创建软连接</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ln -s /home/moluo/.<span class="built_in">local</span>/bin/virtualenv /usr/bin/virtualenv</span><br></pre></td></tr></table></figure>
+
+<p>注意：<code>/home/moluo/.local/bin/virtualenv</code> 根据前面 find 查找出来的结果而定</p>
+<p>解决上面问题以后，再次执行就成功了。</p>
+<img src="/web/ubuntu-python/1555495835948.png" class="" width="1555495835948">
+
+
+
+<h3 id="MySQL"><a href="#MySQL" class="headerlink" title="MySQL"></a>MySQL</h3><p>通过从官方提供的 <code>mysql-apt-config.deb</code> 包进行 APT 源设置。</p>
+<p>MySQL 下载地址：<a href="https://dev.mysql.com/downloads/mysql/" target="_blank" rel="noopener">https://dev.mysql.com/downloads/mysql/</a></p>
+<img src="/web/ubuntu-python/1555483227691.png" class="" width="1555483227691">
+
+
+
+<img src="/web/ubuntu-python/1555483413283.png" class="" width="1555483413283">
+
+
+
+<img src="/web/ubuntu-python/1555483481421.png" class="" width="1555483481421">
+
+<p>APT 源下载地址：<a href="https://dev.mysql.com/downloads/repo/apt/" target="_blank" rel="noopener">https://dev.mysql.com/downloads/repo/apt/</a></p>
+<img src="/web/ubuntu-python/1555483637964.png" class="" width="1555483637964">
+
+
+
+<img src="/web/ubuntu-python/1555483666999.png" class="" width="1555483666999">
+
+
+
+<img src="/web/ubuntu-python/1555483797479.png" class="" width="1555483797479">
+
+
+
+<p>下载完成以后，默认 apt 源保存在了 Downloads 目录下：</p>
+<img src="/web/ubuntu-python/1555484649053.png" class="" width="1555484649053">
+
+
+
+<p>通过终端切换目录到 Downloads 目录下执行一下命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> Downloads/</span><br><span class="line">sudo dpkg -i mysql-apt-config_0.8.12-1_all.deb</span><br></pre></td></tr></table></figure>
+
+<img src="/web/ubuntu-python/1555485036396.png" class="" width="1555485036396">
+
+
+
+<img src="/web/ubuntu-python/1555485058132-1581426927873.png" class="" title="1555485058132-1581426927873">
+
+
+
+<img src="/web/ubuntu-python/1555485093085-1581426931225.png" class="" title="1555485093085-1581426931225">
+
+
+
+<p>按下方向键选择 OK 回车即可。</p>
+<img src="/web/ubuntu-python/1555496062646.png" class="" width="1555496062646">
+
+
+
+<p>完成后运行更新命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br></pre></td></tr></table></figure>
+
+<img src="/web/ubuntu-python/1555496477552-1581426937389.png" class="" title="1555496477552-1581426937389">
+
+
+
+<p>安装 MySQL：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install mysql-server</span><br></pre></td></tr></table></figure>
+
+<img src="/web/ubuntu-python/1555496520217-1581426941079.png" class="" title="1555496520217-1581426941079">
+
+
+
+<p>设置 root 账号的登录密码：</p>
+<img src="/web/ubuntu-python/1555485497312.png" class="" width="1555485497312">
+
+<img src="/web/ubuntu-python/1555496622098.png" class="" width="1555496622098">
+
+
+
+<p>经过上面操作，就完成了数据库的安装和配置。</p>
+<img src="/web/ubuntu-python/1555496747740-1581426959638.png" class="" title="1555496747740-1581426959638">
+
+
+
+<h3 id="navicat"><a href="#navicat" class="headerlink" title="navicat"></a>navicat</h3><p>从网盘上面下载navicat破解版压缩包到ubuntu</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">链接: https:<span class="comment">//pan.baidu.com/s/1VcrFp3dNgdiyGo4TFT6Wiw </span></span><br><span class="line">提取码: <span class="number">39</span>yt</span><br></pre></td></tr></table></figure>
+
+<img src="/web/ubuntu-python/1555558869882-1581426970659.png" class="" title="1555558869882-1581426970659">
+
+
+
+<p>双击压缩包，并把内部文件拖放到桌面上</p>
+<img src="/web/ubuntu-python/1555558912918.png" class="" width="1555558912918">
+
+
+
+<p>进入 navicat 目录，在终端打开输入以下命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./start_navicat</span><br></pre></td></tr></table></figure>
+
+<img src="/web/ubuntu-python/1555558990718.png" class="" width="1555558990718">
+
+
+
+<p>点击安装 Mono 和 Gecko：</p>
+<img src="/web/ubuntu-python/1555559056428.png" class="" width="1555559056428">
+
+<img src="/web/ubuntu-python/1555559963030.png" class="" width="1555559963030">
+
+
+
+<p>把桌面上解压出来的 navicat 目录复制到 <code>/opt</code> 目录下。桌面的删除即可。</p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">sudo</span> <span class="meta">cp</span> ~/Desktop/navicat120_premium_cs_x64  /<span class="meta">opt</span> -r</span><br></pre></td></tr></table></figure>
+
+<img src="/web/ubuntu-python/1555572438424.png" class="" width="1555572438424">
+
+
+
+<p>在 <code>/usr/share/applications</code> 目录下创建 navicat 的快捷方式文件，执行以下代码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/share/applications</span><br><span class="line">sudo vim navicat.desktop</span><br></pre></td></tr></table></figure>
+
+
+
+<p>文件代码如下，<code>:wq</code> 保存退出。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[Desktop Entry]</span><br><span class="line">Encoding=UTF-8</span><br><span class="line">Name=navicat</span><br><span class="line">Comment=The Smarter Way to manage dadabase</span><br><span class="line">Exec=/opt/navicat120_premium_cs_x64/start_navicat</span><br><span class="line">Icon=/opt/navicat120_premium_cs_x64/navicat.png</span><br><span class="line">Categories=Application;Database;MySQL;navicat</span><br><span class="line">Version=1.0</span><br><span class="line">Type=Application</span><br><span class="line">Terminal=0</span><br></pre></td></tr></table></figure>
+
+<img src="/web/ubuntu-python/1555572888816.png" class="" width="1555572888816">
+
+
+
+<p>接下来在应用程序中搜索 <code>navicat</code> 并设置到收藏列表中。</p>
+<img src="/web/ubuntu-python/1555573020937-1581427035728.png" class="" title="1555573020937-1581427035728">
+
+
+
+<h3 id="Postman"><a href="#Postman" class="headerlink" title="Postman"></a>Postman</h3><p>从官网下载 Postman 软件包，官网地址：<a href="https://www.getpostman.com/downloads/" target="_blank" rel="noopener">https://www.getpostman.com/downloads/</a></p>
+<img src="/web/ubuntu-python/1555580827498.png" class="" width="1555580827498">
+
+
+
+<p>安装 Postman 运行的依赖包</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install libgconf-2-4</span><br><span class="line">sudo apt-get install libcanberra-gtk-module</span><br></pre></td></tr></table></figure>
+
+<img src="/web/ubuntu-python/1555581235664-1581427057876.png" class="" title="1555581235664-1581427057876">
+
+<img src="/web/ubuntu-python/1555581250971-1581427063109.png" class="" title="1555581250971-1581427063109">
+
+
+
+<p>把下载回来的 Postman 从 <code>Downloads</code> 目录中解压并剪切到 <code>/opt</code> 目录下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/Downloads</span><br><span class="line">sudo tar -zxf Postman-linux-x64-7.0.7.tar.gz</span><br><span class="line">sudo mv Postman /opt</span><br></pre></td></tr></table></figure>
+
+<img src="/web/ubuntu-python/1555582465252.png" class="" width="1555582465252">
+
+
+
+<p>把官方上面的 logo 图片下载回来，<img src="ubuntu-python.assets/postman.svg" width="35">。并保存到软件目录 <code>/opt/Postman</code> 下。</p>
+<img src="/web/ubuntu-python/1555582656833.png" class="" width="1555582656833">
+
+
+
+<p>创建桌面快捷方式，创建快捷方式文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /usr/share/applications/postman.desktop</span><br></pre></td></tr></table></figure>
+
+<p>快捷方式文件代码如下，<code>:wq</code> 保存退出。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[Desktop Entry]</span><br><span class="line">Encoding=UTF-8</span><br><span class="line">Name=postman</span><br><span class="line">Comment=用于接口测试的一个工具</span><br><span class="line">Exec=/opt/Postman/Postman</span><br><span class="line">Icon=/opt/Postman/postman.svg</span><br><span class="line">Categories=Application;Web;MySQL;postman</span><br><span class="line">Version=1.0</span><br><span class="line">Type=Application</span><br><span class="line">Terminal=0</span><br></pre></td></tr></table></figure>
+
+
+
+<p>在应用程序中搜索 <code>postman</code>，并设置到收藏夹。</p>
+<img src="/web/ubuntu-python/1555582917726-1581427102604.png" class="" title="1555582917726-1581427102604">
+
+
+
+<h3 id="git"><a href="#git" class="headerlink" title="git"></a>git</h3><p>运行以下命令安装 git</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install git</span><br></pre></td></tr></table></figure>
+
+<img src="/web/ubuntu-python/1555583954368-1581427115278.png" class="" title="1555583954368-1581427115278">
+
+
+
+<p>安装完成了，可以查看下版本。</p>
+<img src="/web/ubuntu-python/1555584388674.png" class="" width="1555584388674">
+
+
+
+<h3 id="redis"><a href="#redis" class="headerlink" title="redis"></a>redis</h3><p>使用以下命令安装 redis</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install redis-server</span><br></pre></td></tr></table></figure>
+
+<img src="/web/ubuntu-python/1555585333786-1581427129706.png" class="" title="1555585333786-1581427129706">
+
+<p>配置文件地址：<code>/etc/redis/redis.conf</code></p>
+<h3 id="nvm"><a href="#nvm" class="headerlink" title="nvm"></a>nvm</h3><p>由于 node.js 的版本一直处于不断更新中，所以我们需要一个版本管理器来更好的使用 node.js。</p>
+<p>nvm 是一个开源的 node 版本管理器，通过它，你可以下载任意版本的 node.js，还可以在不同版本之间切换使用。</p>
+<p><strong>注意：安装 nvm 之前，要确保当前机子中不存在任何版本的 node，如果有，则卸载掉。</strong></p>
+<p>github：<a href="https://github.com/creationix/nvm" target="_blank" rel="noopener">https://github.com/creationix/nvm</a></p>
+<p>安装命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt install curl</span><br><span class="line">curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.34.0/install.sh | bash</span><br><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<img src="/web/ubuntu-python/1555898548578-1581427168780.png" class="" title="1555898548578-1581427168780">
+
+<img src="/web/ubuntu-python/1555898571439-1581427174747.png" class="" title="1555898571439-1581427174747">
+
+
+
+<h3 id="node"><a href="#node" class="headerlink" title="node"></a>node</h3><p>使用 nvm 的相关命令安装 node。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看官方提供的可安装node版本</span></span><br><span class="line">nvm ls-remote</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装执行版本的node,例如：nvm install v10.15.2</span></span><br><span class="line">nvm install &lt;version&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 卸载node版本，例如：nvm uninstall v10.15.2</span></span><br><span class="line">nvm uninstall &lt;version&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看已安装的node列表</span></span><br><span class="line">nvm ls</span><br><span class="line"></span><br><span class="line"><span class="comment"># 切换node版本，例如：nvm use v10.15.2</span></span><br><span class="line">nvm use &lt;version&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置默认版本，如果没有设置，则开机时默认node是没有启动的。</span></span><br><span class="line">nvm alias default v10<span class="number">.15</span><span class="number">.2</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看当前使用的版本</span></span><br><span class="line">nvm current</span><br></pre></td></tr></table></figure>
+
+<img src="/web/ubuntu-python/1555900488599.png" class="" width="1555900488599">
+
+<p>安装几个常用的 LTS 版本</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">nvm install v10.15.2</span><br><span class="line">nvm <span class="built_in">alias</span> default v10.15.2</span><br></pre></td></tr></table></figure>
+
+<img src="/web/ubuntu-python/1555900526360.png" class="" width="1555900526360">
+
+
+
+<h3 id="npm"><a href="#npm" class="headerlink" title="npm"></a>npm</h3><p>npm（node package manager）是 nodejs 的包管理器，用于 node 插件管理（包括安装、卸载、管理依赖等）。安装了 node 以后，就自动安装了 npm（不一定是最新版本）。</p>
+<p>官方：<a href="https://www.npmjs.com/" target="_blank" rel="noopener">https://www.npmjs.com</a></p>
+<p>文档：<a href="https://www.npmjs.com.cn/" target="_blank" rel="noopener">https://www.npmjs.com.cn/</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm --version</span><br></pre></td></tr></table></figure>
+
+<h3 id="cnpm"><a href="#cnpm" class="headerlink" title="cnpm"></a>cnpm</h3><p>默认情况下，npm 安装插件是从国外服务器下载，受网络影响大，可能出现网络异常。</p>
+<p>通过淘宝镜像加速 npm</p>
+<p><a href="http://npm.taobao.org/" target="_blank" rel="noopener">http://npm.taobao.org/</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 打印默认的 registry 地址</span></span><br><span class="line">npm config -g get registry</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置淘宝镜像</span></span><br><span class="line">npm config -g <span class="built_in">set</span> registry https://registry.npm.taobao.org</span><br></pre></td></tr></table></figure>
+
+<img src="/web/ubuntu-python/1555910269500.png" class="" width="1555910269500">
+
+
+
+<h3 id="vue-cli"><a href="#vue-cli" class="headerlink" title="vue-cli"></a>vue-cli</h3><p>使用前面已经安装好的 node 版本，进行安装。注意一旦安装以后，以后这个 vue-li 最好契合当前 node 版本。也就是说，运行接下来安装的 vue-cli 时，最好运行的就是本次跑的 node 版本。如果回头切换到其他版本 node 来运行 vue-cli，有可能因为版本不兼容出现不必要的 bug。</p>
+<p>文档：<a href="https://cli.vuejs.org/zh/guide/installation.html" target="_blank" rel="noopener">https://cli.vuejs.org/zh/guide/installation.html</a></p>
+<p>安装命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">npm install -g @vue/cli</span><br><span class="line">npm install -g @vue/cli-init  <span class="comment"># vue2.x版本需要安装桥接工具</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装完成可以查看版本</span></span><br><span class="line">vue -V</span><br><span class="line"></span><br><span class="line"><span class="comment"># 搭建项目</span></span><br><span class="line"><span class="comment"># vue2.x</span></span><br><span class="line">vue init webpack &lt;项目目录名&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># vue3.x</span></span><br><span class="line">vue create &lt;项目目录名&gt;</span><br></pre></td></tr></table></figure>
+
+<img src="/web/ubuntu-python/1555908358615.png" class="" width="1555908358615">
+
+<img src="/web/ubuntu-python/1555910720836-1581427271868.png" class="" title="1555910720836-1581427271868">
+
+
+
+<h3 id="nginx"><a href="#nginx" class="headerlink" title="nginx"></a>nginx</h3><p>安装命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install nginx</span><br></pre></td></tr></table></figure>
+
+<img src="/web/ubuntu-python/1555929756938-1581427278998.png" class="" title="1555929756938-1581427278998">
+
+
+
+<p>安装好的文件位置：</p>
+<figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">/usr/sbin/nginx # 主程序目录</span><br><span class="line"></span><br><span class="line">/etc/nginx # 存放配置文件目录</span><br><span class="line"></span><br><span class="line">/usr/share/nginx # 存放静态文件目录</span><br><span class="line"></span><br><span class="line">/etc/nginx/sites-available # 默认站点配置文件</span><br><span class="line"></span><br><span class="line">/var/log/nginx # 存放日志目录</span><br><span class="line"></span><br><span class="line">/var/www/html  # 默认站点根目录</span><br></pre></td></tr></table></figure>
+
+
+
+<p>相关操作：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 首次启动nginx服务器</span></span><br><span class="line">sudo /usr/sbin/nginx</span><br><span class="line"></span><br><span class="line"><span class="comment"># 停止nginx服务器</span></span><br><span class="line">sudo /usr/sbin/nginx -s stop</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重启nginx</span></span><br><span class="line">sudo /usr/sbin/nginx -s reload</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h3><p>更新 Ubuntu 的 apt 源,上面如果执行过可以忽略</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br></pre></td></tr></table></figure>
+
+<p>安装包允许 apt 通过 HTTPS 使用仓库</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install apt-transport-https ca-certificates curl software-properties-common</span><br></pre></td></tr></table></figure>
+
+<img src="/web/ubuntu-python/1559067730172.png" class="" width="1559067730172">
+
+
+
+<p>添加 Docker 官方 GPG key，网络不好的话，会报错，多执行几次即可。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -</span><br></pre></td></tr></table></figure>
+
+<p>设置 Docker 稳定版仓库，网络不好的话，会报错，多执行几次即可。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo add-apt-repository <span class="string">"deb [arch=amd64] https://download.docker.com/linux/ubuntu <span class="variable">$(lsb_release -cs)</span> stable"</span></span><br></pre></td></tr></table></figure>
+
+<p>添加 Docker 仓库后，更新 apt 源索引,注意，这里更新的源是关于 docker 的。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br></pre></td></tr></table></figure>
+
+<img src="/web/ubuntu-python/1559068011503.png" class="" width="1559068011503">
+
+
+
+<p>安装最新版 Docker CE（社区版）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install docker-ce</span><br></pre></td></tr></table></figure>
+
+<img src="/web/ubuntu-python/1559068087606.png" class="" width="1559068087606">
+
+
+
+<p>检查 Docker CE 是否安装正确，hello-world 是一个打印字符串的测试镜像，docker 会自动下载</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker run hello-world</span><br></pre></td></tr></table></figure>
+
+<img src="/web/ubuntu-python/1559068107255.png" class="" width="1559068107255">
+
+
+
+<h3 id="MongoDB"><a href="#MongoDB" class="headerlink" title="MongoDB"></a>MongoDB</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install mongodb</span><br></pre></td></tr></table></figure>
+
+<img src="/web/ubuntu-python/1559071678964.png" class="" width="1559071678964">
+
+<p>安装完成以后，mongodb 是默认开机自启的。可以通过 <code>mongdo</code> 命令进入 mongodb 的控制台验证是否安装成功了：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mongo</span><br></pre></td></tr></table></figure>
+
+
+
+<p>启动和关闭 mongodb 命令：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">service mongodb start</span><br><span class="line">service mongodb stop</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="Golang"><a href="#Golang" class="headerlink" title="Golang"></a>Golang</h3><p>Github地址：<a href="https://github.com/golang/go" target="_blank" rel="noopener">https://github.com/golang/go</a></p>
+<p>Golang官方网站：<a href="https://golang.org/" target="_blank" rel="noopener">https://golang.org/</a></p>
+<p>Golang中文官网：<a href="https://golang.google.cn/dl/" target="_blank" rel="noopener">https://golang.google.cn/dl/</a></p>
+<p>Golang安装包下载地址：<a href="https://dl.google.com/go/go1.12.5.linux-amd64.tar.gz" target="_blank" rel="noopener">https://dl.google.com/go/go1.12.5.linux-amd64.tar.gz</a></p>
+<p>注意：apt-get 也可以安装 Golang，但是安装的版本相对较低，因为 Golang 本身更新速度问题，所以我们使用手动下载安装包的方式来完成安装。</p>
+<img src="/web/ubuntu-python/1559991495887.png" class="" width="1559991495887">
+
+
+
+<p>下载压缩包 <code>go1.12.1.linux-amd64.tar.gz</code>，解压到 <code>/usr/local/</code> 目录下[这个目录是官方推荐的]。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/Downloads</span><br><span class="line">wget https://dl.google.com/go/go1.12.5.linux-amd64.tar.gz</span><br><span class="line">sudo tar -xzf go1.12.5.linux-amd64.tar.gz -C /usr/<span class="built_in">local</span></span><br></pre></td></tr></table></figure>
+
+<img src="/web/ubuntu-python/1559993384933.png" class="" width="1559993384933">
+
+
+
+<p>直接在终端运行 Golang 执行文件，检查版本，看是否能正常使用。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/<span class="built_in">local</span>/go/bin/go version</span><br></pre></td></tr></table></figure>
+
+<p>效果如下，证明安装成功。</p>
+<img src="/web/ubuntu-python/1559993708840.png" class="" width="1559993708840">
+
+
+
+<p>接下来，在 <code>~/.bashrc</code> 文件中配置 Golang 相关的环境变量。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim  ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<p>在文件末尾追加如下内容，<code>:wq</code> 保存退出</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> GOROOT=/usr/<span class="built_in">local</span>/go</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:<span class="variable">$GOROOT</span>/bin</span><br></pre></td></tr></table></figure>
+
+<img src="/web/ubuntu-python/1559994987016.png" class="" width="1559994987016">
+
+
+
+<p>刷新环境变量</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<img src="/web/ubuntu-python/1559995017833.png" class="" width="1559995017833">
+
+
+
+<p>再使用<code>go version</code>检测环境变量是否生效。</p>
+<img src="/web/ubuntu-python/1559995062084.png" class="" width="1559995062084">
+
+
+
+<p>开发时，很多工具代码不会全部都是由我们自己编写，这样的话实在太累了， 所以我们往往需要加载第三方类库代码到项目中调用，所以我们必须配置 <code>$GOPATH</code>，否则 go 命令不知道这些第三方代码要安装到什么位置。</p>
+<p><code>$GOPATH</code> 目录约定有三个子目录，在我们配置了 <code>$GOPATH</code> 以后，go 命令会在使用的时候自动帮我们生成。</p>
+<ul>
+<li><code>src</code> 目录，存放源代码。</li>
+<li><code>pkg</code> 目录，编译时生成的中间文件。</li>
+<li><code>bin</code> 目录，编译后生成的可执行文件。</li>
+</ul>
+<p>打开环境变量文件，进行配置。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim  ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<p>把 Golang 相关配置信息，修改为：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> GOROOT=/usr/<span class="built_in">local</span>/go</span><br><span class="line"><span class="built_in">export</span> GOPATH=<span class="variable">$HOME</span>/go</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$PATH</span>:<span class="variable">$GOROOT</span>/bin:<span class="variable">$GOPATH</span>/bin</span><br></pre></td></tr></table></figure>
+
+<p>刷新环境变量</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br></pre></td></tr></table></figure>
+
+<p>安装一个 beego 框架来测试一下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">go get github.com/astaxie/beego</span><br><span class="line">go get github.com/beego/bee</span><br></pre></td></tr></table></figure>
+
+<img src="/web/ubuntu-python/1560023751123.png" class="" width="1560023751123">
+
+<p>没有报错，我们可以到刚才设置的 <code>$GOPATH</code> 目录下，查看：</p>
+<img src="/web/ubuntu-python/1560024123309.png" class="" width="1560024123309">
+
+<p>左边是 <code>$GOPATH</code> 目录，右边是 <code>src</code> 目录，里面包含了 <code>beego</code> 框架的三个包。</p>
+<h3 id="Goland"><a href="#Goland" class="headerlink" title="Goland"></a>Goland</h3><p>官网下载地址：<a href="https://www.jetbrains.com/go/download/#section=linux" target="_blank" rel="noopener">https://www.jetbrains.com/go/download/#section=linux</a></p>
+<img src="/web/ubuntu-python/1560027047451.png" class="" width="1560027047451">
+
+
+
+<p>把下载回来的压缩包进行解压。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/Downloads</span><br><span class="line">wget https://download.jetbrains.com/go/goland-2019.1.3.tar.gz</span><br><span class="line">tar -zxvf goland-2019.1.3.tar.gz</span><br></pre></td></tr></table></figure>
+
+<img src="/web/ubuntu-python/1560025682569.png" class="" width="1560025682569">
+
+<p>把解压出来的文件剪切到 opt 目录下，并切换工作目录到 opt，启动 goland。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo mv ~/Downloads/GoLand-2019.1.3 /opt</span><br><span class="line"><span class="built_in">cd</span> /opt/GoLand-2019.1.3/bin</span><br><span class="line">sh goland.sh</span><br></pre></td></tr></table></figure>
+
+<img src="/web/ubuntu-python/1560027163923.png" class="" width="1560027163923">
+
+<p>参考以下网址进行激活：</p>
+<p><a href="http://idea.lanyus.com/" target="_blank" rel="noopener">http://idea.lanyus.com/</a></p>
+<img src="/web/ubuntu-python/1560027337315.png" class="" width="1560027337315">
+
+<p>出现如下窗口，则表示激活成功！</p>
+<img src="/web/ubuntu-python/1560027395430.png" class="" width="1560027395430">
+
+<p>在 <code>/etc/hosts</code> 下屏蔽网址。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/hosts</span><br></pre></td></tr></table></figure>
+
+<p>追加内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">0.0.0.0 account.jetbrains.com</span><br><span class="line">0.0.0.0 www.jetbrains.com</span><br></pre></td></tr></table></figure>
+
+<img src="/web/ubuntu-python/1560027576109.png" class="" width="1560027576109">
+
+
+
+<p>创建快捷方式，选择 <code>Tools</code>，<code>Create Desktop Entry...</code></p>
+<img src="/web/ubuntu-python/1560032506594.png" class="" width="1560032506594">
+
+
+
+<p>给所有用户创建快捷方式。</p>
+<img src="/web/ubuntu-python/1560032582257.png" class="" width="1560032582257">
+
+
+
+<p>在应用程序中搜索 <code>Goland</code>，并鼠标右键设置到收藏夹。</p>
+<img src="/web/ubuntu-python/1560032672351-1581427834094.png" class="" title="1560032672351-1581427834094">
+
+
+
+<h3 id="GitLab"><a href="#GitLab" class="headerlink" title="GitLab"></a>GitLab</h3><p>GitLab 是一个用于仓库管理系统的开源项目，使用 Git 作为代码管理工具，并在此基础上搭建起来的 web 服务。</p>
+<p>原版是英文的，我们这里安装中文汉化版。</p>
+<p>GitLab 官方网站地址：<a href="https://gitlab.com/" target="_blank" rel="noopener">https://gitlab.com/</a></p>
+<p>GitLab 中文社区地址：<a href="https://gitlab.com/xhang/gitlab" target="_blank" rel="noopener">https://gitlab.com/xhang/gitlab</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> ~/Downloads</span><br><span class="line">wget https://gitlab.com/xhang/gitlab/-/archive/10-8-stable-zh/gitlab-10-8-stable-zh.tar.bz2</span><br></pre></td></tr></table></figure>
+
+
+
+<img src="/web/ubuntu-python/1560094084889.png" class="" width="1560094084889">
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/translation/raspberry-gpio-python-examples/installing/" rel="prev" title="PRi.GPIO 的安装">
+      <i class="fa fa-chevron-left"></i> PRi.GPIO 的安装
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/web/vue-common-command/" rel="next" title="Vue 指令系统的常用指令">
+      Vue 指令系统的常用指令 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Ubuntu-系统的安装"><span class="nav-number">1.</span> <span class="nav-text">Ubuntu 系统的安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更改系统语言为中文"><span class="nav-number">2.</span> <span class="nav-text">更改系统语言为中文</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#更改系统时区为亚洲-上海"><span class="nav-number">3.</span> <span class="nav-text">更改系统时区为亚洲&#x2F;上海</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调整分辨率"><span class="nav-number">4.</span> <span class="nav-text">调整分辨率</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装基本使用软件"><span class="nav-number">5.</span> <span class="nav-text">安装基本使用软件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Vim"><span class="nav-number">5.1.</span> <span class="nav-text">Vim</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ssh"><span class="nav-number">5.2.</span> <span class="nav-text">ssh</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Chrome"><span class="nav-number">5.3.</span> <span class="nav-text">Chrome</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#搜狗输入法"><span class="nav-number">5.4.</span> <span class="nav-text">搜狗输入法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PyCharm"><span class="nav-number">5.5.</span> <span class="nav-text">PyCharm</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Sublimetext-3"><span class="nav-number">5.6.</span> <span class="nav-text">Sublimetext 3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#virtualenv"><span class="nav-number">5.7.</span> <span class="nav-text">virtualenv</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL"><span class="nav-number">5.8.</span> <span class="nav-text">MySQL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#navicat"><span class="nav-number">5.9.</span> <span class="nav-text">navicat</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Postman"><span class="nav-number">5.10.</span> <span class="nav-text">Postman</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#git"><span class="nav-number">5.11.</span> <span class="nav-text">git</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#redis"><span class="nav-number">5.12.</span> <span class="nav-text">redis</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nvm"><span class="nav-number">5.13.</span> <span class="nav-text">nvm</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#node"><span class="nav-number">5.14.</span> <span class="nav-text">node</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#npm"><span class="nav-number">5.15.</span> <span class="nav-text">npm</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#cnpm"><span class="nav-number">5.16.</span> <span class="nav-text">cnpm</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#vue-cli"><span class="nav-number">5.17.</span> <span class="nav-text">vue-cli</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nginx"><span class="nav-number">5.18.</span> <span class="nav-text">nginx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Docker"><span class="nav-number">5.19.</span> <span class="nav-text">Docker</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MongoDB"><span class="nav-number">5.20.</span> <span class="nav-text">MongoDB</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Golang"><span class="nav-number">5.21.</span> <span class="nav-text">Golang</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Goland"><span class="nav-number">5.22.</span> <span class="nav-text">Goland</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GitLab"><span class="nav-number">5.23.</span> <span class="nav-text">GitLab</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="刘硕"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">刘硕</p>
+  <div class="site-description" itemprop="description">不成为自己讨厌的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">221</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:liushuo432@outlook.com" title="E-Mail → mailto:liushuo432@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/2436055290" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;2436055290" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备20001451号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘硕</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.2" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="/js/love.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/Epsilon2.1.model.json"},"display":{"superSample":2,"width":200,"height":400,"position":"left","hOffset":-30,"vOffset":-40},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>

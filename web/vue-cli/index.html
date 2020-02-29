@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="Tu5vqPaUb8svfkPx5eetJFD84ciQCcWVXNatdsWtj9Q">
+  <meta name="baidu-site-verification" content="baidu_verify_FBq9PG4BBb">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.1","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Vue CLI，即 Vue 的自动化工具，脚手架。可以帮我们用来编译单文件组件，是支撑我们庞大项目的基本架构。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue 自动化工具（VueCLI）脚手架">
+<meta property="og:url" content="https://sliu.vip/web/vue-cli/index.html">
+<meta property="og:site_name" content="刘硕的技术查阅手册">
+<meta property="og:description" content="Vue CLI，即 Vue 的自动化工具，脚手架。可以帮我们用来编译单文件组件，是支撑我们庞大项目的基本架构。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sliu.vip/web/vue-cli/1552357036022.png">
+<meta property="og:image" content="https://sliu.vip/web/vue-cli/1582285343873.png">
+<meta property="og:image" content="https://sliu.vip/web/vue-cli/1582285394797.png">
+<meta property="og:image" content="https://sliu.vip/web/vue-cli/1582285498564.png">
+<meta property="og:image" content="https://sliu.vip/web/vue-cli/page_structrue.png">
+<meta property="article:published_time" content="2020-02-16T01:07:49.000Z">
+<meta property="article:modified_time" content="2020-02-21T16:25:04.000Z">
+<meta property="article:author" content="刘硕">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="全栈开发">
+<meta property="article:tag" content="并发编程">
+<meta property="article:tag" content="网络编程">
+<meta property="article:tag" content="爬虫">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="自动化测试">
+<meta property="article:tag" content="Web开发">
+<meta property="article:tag" content="HTML">
+<meta property="article:tag" content="CSS">
+<meta property="article:tag" content="JavaScript">
+<meta property="article:tag" content="jQuery">
+<meta property="article:tag" content="Bootstrap">
+<meta property="article:tag" content="测试自动化">
+<meta property="article:tag" content="Selenium">
+<meta property="article:tag" content="postman">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="Vue">
+<meta property="article:tag" content="drf">
+<meta property="article:tag" content="django">
+<meta property="article:tag" content="文档翻译">
+<meta property="article:tag" content="PEP8">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sliu.vip/web/vue-cli/1552357036022.png">
+
+<link rel="canonical" href="https://sliu.vip/web/vue-cli/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>Vue 自动化工具（VueCLI）脚手架 | 刘硕的技术查阅手册</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f14f123935d6183fdd06f8f1c4bc378f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="刘硕的技术查阅手册" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">刘硕的技术查阅手册</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">Python 全栈开发学习笔记</h1>
+      
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-toc">
+
+    <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-fw fa-rss"></i>订阅</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/web/vue-cli/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          Vue 自动化工具（VueCLI）脚手架
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-16 09:07:49" itemprop="dateCreated datePublished" datetime="2020-02-16T09:07:49+08:00">2020-02-16</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-22 00:25:04" itemprop="dateModified" datetime="2020-02-22T00:25:04+08:00">2020-02-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <div class="post-description">Vue CLI，即 Vue 的自动化工具，脚手架。可以帮我们用来编译单文件组件，是支撑我们庞大项目的基本架构。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>前面学习了普通组件以后，接下来我们继续学习单文件组件则需要提前先安装准备一些组件开发工具。否则无法使用和学习单文件组件。</p>
+<p>一般情况下，单文件组件，我们运行在自动化工具 Vue CLI 中，可以帮我们编译单文件组件。所以我们需要在系统中先搭建 Vue CLI 工具。</p>
+<p>官网：<a href="https://cli.vuejs.org/zh/" target="_blank" rel="noopener">https://cli.vuejs.org/zh/</a></p>
+<p>Vue CLI 需要 <a href="https://nodejs.org/" target="_blank" rel="noopener">Node.js</a> 8.9 或更高版本（推荐 8.11.0+）。你可以使用 <a href="https://github.com/creationix/nvm" target="_blank" rel="noopener">nvm</a> 或 <a href="https://github.com/coreybutler/nvm-windows" target="_blank" rel="noopener">nvm-windows</a> 在同一台电脑中管理多个 Node 版本。</p>
+<p>nvm工具的下载和安装可以参考下面两篇文章：</p>
+<ul>
+<li><p>Windows：<a href="https://www.jianshu.com/p/d0e0935b150a" target="_blank" rel="noopener">https://www.jianshu.com/p/d0e0935b150a</a></p>
+</li>
+<li><p>macOS：<a href="https://www.jianshu.com/p/622ad36ee020" target="_blank" rel="noopener">https://www.jianshu.com/p/622ad36ee020</a></p>
+</li>
+</ul>
+<p>安装记录:</p>
+<p>打开：<a href="https://github.com/coreybutler/nvm-windows/releases" target="_blank" rel="noopener">https://github.com/coreybutler/nvm-windows/releases</a></p>
+<p>安装完成以后,先查看环境变量是否设置好了.</p>
+<img src="/web/vue-cli/1552357036022.png" class="" width="1552357036022">
+
+<p>常用的 nvm 命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">nvm list   <span class="comment"># 列出目前在nvm里面安装的所有node版本</span></span><br><span class="line">nvm install node版本号      <span class="comment"># 安装指定版本的node.js</span></span><br><span class="line">nvm uninstall node版本号    <span class="comment"># 卸载指定版本的node.js</span></span><br><span class="line">nvm use node版本号          <span class="comment"># 切换当前使用的node.js版本</span></span><br></pre></td></tr></table></figure>
+
+<p>如果使用 nvm 工具，则直接可以不用自己手动下载。如果使用 nvm 下载安装 node 的 npm 比较慢的时候，可以修改 nvm 的配置文件（在安装根目录下）：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># settings.txt</span></span><br><span class="line">root: C:\tool\nvm    # 这里的目录地址是安装nvm时自己设置的地址,要根据实际修改</span><br><span class="line">path: C:\tool\nodejs</span><br><span class="line">arch: 64</span><br><span class="line">proxy: none</span><br><span class="line">node_mirror: http://npm.taobao.org/mirrors/node/ </span><br><span class="line">npm_mirror: https://npm.taobao.org/mirrors/npm/</span><br></pre></td></tr></table></figure>
+
+<h2 id="安装-node-js"><a href="#安装-node-js" class="headerlink" title="安装 node.js"></a>安装 node.js</h2><p>Node.js 是一个新的后端（后台）语言，它的语法和 JavaScript 类似，所以可以说它是属于前端的后端语言，后端语言和前端语言的区别：</p>
+<ul>
+<li>运行环境：后端语言一般运行在服务器端，前端语言运行在客户端的浏览器上</li>
+<li>功能：后端语言可以操作文件，可以读写数据库，前端语言不能操作文件，不能读写数据库。</li>
+</ul>
+<p>我们一般安装 LTS（长线支持版本 Long-Time Support）：</p>
+<p>下载地址：<a href="https://nodejs.org/en/download/（上面已经安装了nvm，那么这里不用手动安装了）" target="_blank" rel="noopener">https://nodejs.org/en/download/（上面已经安装了nvm，那么这里不用手动安装了）</a></p>
+<p>node.js 的版本有两大分支：</p>
+<p>官方发布的 node.js 版本：0.xx.xx 这种版本号就是官方发布的版本</p>
+<p>社区发布的 node.js 版本：xx.xx.x 就是社区开发的版本</p>
+<p>Node.js 如果安装成功，可以查看Node.js的版本,在终端输入如下命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">node -v</span><br></pre></td></tr></table></figure>
+
+<h2 id="npm"><a href="#npm" class="headerlink" title="npm"></a>npm</h2><p>在安装node.js完成后，在node.js中会同时帮我们安装一个npm包管理器npm。我们可以借助npm命令来安装node.js的包。这个工具相当于python的pip管理器。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">npm install -g 包名              <span class="comment"># 安装模块   -g表示全局安装，如果没有-g，则表示在当前项目安装</span></span><br><span class="line">npm list                        <span class="comment"># 查看当前目录下已安装的node包</span></span><br><span class="line">npm view 包名 engines            <span class="comment"># 查看包所依赖的Node的版本 </span></span><br><span class="line">npm outdated                    <span class="comment"># 检查包是否已经过时，命令会列出所有已过时的包</span></span><br><span class="line">npm update 包名                  <span class="comment"># 更新node包</span></span><br><span class="line">npm uninstall 包名               <span class="comment"># 卸载node包</span></span><br><span class="line">npm 命令 -h                      <span class="comment"># 查看指定命令的帮助文档</span></span><br><span class="line">npm install -g npm              <span class="comment"># 升级npm</span></span><br></pre></td></tr></table></figure>
+
+<p>因为 npm 大多数服务是在外网，所以速度会比较慢，可以尝试着使用国内的阿里源：<a href="http://npm.taobao.org/" target="_blank" rel="noopener">http://npm.taobao.org/</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 临时使用</span></span><br><span class="line">npm install jquery --registry https://registry.npm.taobao.org</span><br><span class="line"></span><br><span class="line"><span class="comment"># 可以把这个选型配置到文件中，这样不用每一次都很麻烦</span></span><br><span class="line">npm config <span class="built_in">set</span> registry https://registry.npm.taobao.org</span><br><span class="line"></span><br><span class="line"><span class="comment"># 验证是否配置成功 </span></span><br><span class="line">npm config list</span><br><span class="line">    <span class="comment"># 或者</span></span><br><span class="line">npm config get registry</span><br><span class="line"></span><br><span class="line"><span class="comment"># 在任意目录下都可执行,--global是全局安装，不可省略</span></span><br><span class="line">npm install --global cnpm</span><br><span class="line">    <span class="comment"># 或者</span></span><br><span class="line">npm install -g cnpm --registry=https://registry.npm.taobao.org</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装后直接使用</span></span><br><span class="line">cnpm install jquery</span><br></pre></td></tr></table></figure>
+
+<h2 id="安装Vue-CLI"><a href="#安装Vue-CLI" class="headerlink" title="安装Vue CLI"></a>安装Vue CLI</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g vue-cli</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用-Vue-CLI-初始化创建前端项目"><a href="#使用-Vue-CLI-初始化创建前端项目" class="headerlink" title="使用 Vue CLI 初始化创建前端项目"></a>使用 Vue CLI 初始化创建前端项目</h2><h3 id="生成项目目录"><a href="#生成项目目录" class="headerlink" title="生成项目目录"></a>生成项目目录</h3><p>使用 Vue 自动化工具可以快速搭建单页应用项目目录。</p>
+<p>该工具为现代化的前端开发工作流提供了开箱即用的构建配置。只需几分钟即可创建并启动一个带热重载、保存时静态检查以及可用于生产环境的构建配置的项目：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 生成一个基于 webpack 模板的新项目</span></span><br><span class="line">vue init webpack 项目目录名</span><br><span class="line"><span class="comment"># 例如</span></span><br><span class="line">vue init webpack myproject</span><br></pre></td></tr></table></figure>
+
+<p>项目初始化过程中，会有如下的步骤：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">moluo@ubuntu:~/Desktop$ vue init webpack myproject</span><br><span class="line"></span><br><span class="line">? Project name myproject    <span class="comment"># 项目名，命令行已指定</span></span><br><span class="line">? Project description Very NB de Vue project    <span class="comment"># 项目描述</span></span><br><span class="line">? Author Shuo Liu    <span class="comment"># 作者</span></span><br><span class="line">? Vue build     <span class="comment"># 有下面两个选项。临时加编译，最多人用，我们也用这个；仅临时，不会缓存，比较慢</span></span><br><span class="line">❯ Runtime + Compiler: recommended <span class="keyword">for</span> most users </span><br><span class="line">  Runtime-only: about 6KB lighter min+gzip, but templates (or any Vue-specific H</span><br><span class="line">TML) are ONLY allowed <span class="keyword">in</span> .vue files - render <span class="built_in">functions</span> are required elsewhere </span><br><span class="line">? Install vue-router? No    <span class="comment"># 是否安装 vue-router，暂时不用，装了目录结构会有差别</span></span><br><span class="line">? Use ESLint to lint your code? No    <span class="comment"># 是否通过 ESLint校验代码，检查语法是否正确，新手不必选</span></span><br><span class="line">? Set up unit tests No    <span class="comment"># 是否选择安装单元测试组件，不需要</span></span><br><span class="line">? Setup e2e tests with Nightwatch? No   <span class="comment"># 是否用 e2e，也不用</span></span><br><span class="line">? Should we run `npm install` <span class="keyword">for</span> you after the project has been created? (recom</span><br><span class="line">mended) (Use arrow keys)    <span class="comment"># 使用 NPM 还是 Yarn 安装。Yarn 是新的用来取代npm的工具，按需选择。</span></span><br><span class="line">❯ Yes, use NPM </span><br><span class="line">  Yes, use Yarn </span><br><span class="line">  No, I will handle that myself</span><br></pre></td></tr></table></figure>
+
+<p>当出现这样的提示的时候，说明安装已经完成：</p>
+<img src="/web/vue-cli/1582285343873.png" class="" width="1582285343873">
+
+<p>项目初始化完成后，进入到项目目录中，运行命令启动项目：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 启动开发服务器 ctrl+c 停止服务</span></span><br><span class="line"><span class="built_in">cd</span> myproject</span><br><span class="line">npm run dev           <span class="comment"># 运行这个命令就可以启动node提供的测试http服务器</span></span><br></pre></td></tr></table></figure>
+
+<p>运行了上面代码以后,终端下会出现以下效果提示：</p>
+<img src="/web/vue-cli/1582285394797.png" class="" width="1582285394797">
+
+<p>浏览器访问：<code>http://localhost:8080/</code>，即可看到 Vue 项目的页面了：</p>
+<img src="/web/vue-cli/1582285498564.png" class="" width="1582285498564">
+
+<h3 id="项目目录结构"><a href="#项目目录结构" class="headerlink" title="项目目录结构"></a>项目目录结构</h3><ul>
+<li><p>src 主开发目录，要开发的单文件组件全部在这个目录下的 components 目录下</p>
+</li>
+<li><p>static 静态资源目录，所有的 css，js 文件放在这个文件夹</p>
+</li>
+<li><p>dist 项目打包发布文件夹，最后要上线单文件项目文件都在这个文件夹中（后面打包项目，让项目中的 vue 组件经过编译变成 js 代码以后，dist 就出现了）</p>
+</li>
+<li><p>node_modules 目录是 node 的包目录，</p>
+</li>
+<li><p>config 是配置目录，</p>
+</li>
+<li><p>build 是项目打包时依赖的目录</p>
+</li>
+<li><p>src/router 路由,后面需要我们在使用Router路由的时候,自己声明.</p>
+</li>
+</ul>
+<h3 id="项目执行流程图"><a href="#项目执行流程图" class="headerlink" title="项目执行流程图"></a>项目执行流程图</h3><img src="/web/vue-cli/page_structrue.png" class="" title="page_structrue">
+
+<p>整个项目是一个主文件 index.html，index.html 中会引入 src 文件夹中的 main.js，main.js 中会导入顶级单文件组件 App.vue，App.vue 中会通过组件嵌套或者路由来引用 components 文件夹中的其他单文件组件。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/bug-bible/vue-bug/NetworkError/" rel="prev" title="Network Error">
+      <i class="fa fa-chevron-left"></i> Network Error
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/web/vue-abc/" rel="next" title="vue.js 的快速入门使用">
+      vue.js 的快速入门使用 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装-node-js"><span class="nav-number">1.</span> <span class="nav-text">安装 node.js</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#npm"><span class="nav-number">2.</span> <span class="nav-text">npm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装Vue-CLI"><span class="nav-number">3.</span> <span class="nav-text">安装Vue CLI</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-Vue-CLI-初始化创建前端项目"><span class="nav-number">4.</span> <span class="nav-text">使用 Vue CLI 初始化创建前端项目</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#生成项目目录"><span class="nav-number">4.1.</span> <span class="nav-text">生成项目目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#项目目录结构"><span class="nav-number">4.2.</span> <span class="nav-text">项目目录结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#项目执行流程图"><span class="nav-number">4.3.</span> <span class="nav-text">项目执行流程图</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="刘硕"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">刘硕</p>
+  <div class="site-description" itemprop="description">不成为自己讨厌的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">221</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:liushuo432@outlook.com" title="E-Mail → mailto:liushuo432@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/2436055290" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;2436055290" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备20001451号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘硕</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.2" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="/js/love.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/Epsilon2.1.model.json"},"display":{"superSample":2,"width":200,"height":400,"position":"left","hOffset":-30,"vOffset":-40},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>

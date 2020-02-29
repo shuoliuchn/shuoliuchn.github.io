@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="Tu5vqPaUb8svfkPx5eetJFD84ciQCcWVXNatdsWtj9Q">
+  <meta name="baidu-site-verification" content="baidu_verify_FBq9PG4BBb">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.1","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="列表的定义同 整型、字符串 和 布尔值 一样，列表 也是 Python 中的基本数据结构之一。列表 的关键字是 list。在 Python 中，最常用的三种用来储存数据的数据结构分别是 字典、列表 和 字符串，可见它是十分重要的。 列表的作用更像是一种容器，形象一点说就是我们用的书包：  列表能储存大量数据 列表能储存不同数据类型的数据  与列表相对照，我们先来观察一下这样一个字符串：a &#x3D; &amp;#">
+<meta property="og:type" content="article">
+<meta property="og:title" content="列表">
+<meta property="og:url" content="https://sliu.vip/python-basic/list/index.html">
+<meta property="og:site_name" content="刘硕的技术查阅手册">
+<meta property="og:description" content="列表的定义同 整型、字符串 和 布尔值 一样，列表 也是 Python 中的基本数据结构之一。列表 的关键字是 list。在 Python 中，最常用的三种用来储存数据的数据结构分别是 字典、列表 和 字符串，可见它是十分重要的。 列表的作用更像是一种容器，形象一点说就是我们用的书包：  列表能储存大量数据 列表能储存不同数据类型的数据  与列表相对照，我们先来观察一下这样一个字符串：a &#x3D; &amp;#">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-02-15T05:52:15.000Z">
+<meta property="article:modified_time" content="2020-02-29T02:34:01.861Z">
+<meta property="article:author" content="刘硕">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="全栈开发">
+<meta property="article:tag" content="并发编程">
+<meta property="article:tag" content="网络编程">
+<meta property="article:tag" content="爬虫">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="自动化测试">
+<meta property="article:tag" content="Web开发">
+<meta property="article:tag" content="HTML">
+<meta property="article:tag" content="CSS">
+<meta property="article:tag" content="JavaScript">
+<meta property="article:tag" content="jQuery">
+<meta property="article:tag" content="Bootstrap">
+<meta property="article:tag" content="测试自动化">
+<meta property="article:tag" content="Selenium">
+<meta property="article:tag" content="postman">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="Vue">
+<meta property="article:tag" content="drf">
+<meta property="article:tag" content="django">
+<meta property="article:tag" content="文档翻译">
+<meta property="article:tag" content="PEP8">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://sliu.vip/python-basic/list/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>列表 | 刘硕的技术查阅手册</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f14f123935d6183fdd06f8f1c4bc378f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="刘硕的技术查阅手册" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">刘硕的技术查阅手册</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">Python 全栈开发学习笔记</h1>
+      
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-toc">
+
+    <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-fw fa-rss"></i>订阅</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/list/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          列表
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-15 13:52:15" itemprop="dateCreated datePublished" datetime="2020-02-15T13:52:15+08:00">2020-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="列表的定义"><a href="#列表的定义" class="headerlink" title="列表的定义"></a>列表的定义</h3><p>同 <code>整型</code>、<code>字符串</code> 和 <code>布尔值</code> 一样，<code>列表</code> 也是 Python 中的基本数据结构之一。<code>列表</code> 的关键字是 <code>list</code>。在 Python 中，最常用的三种用来储存数据的数据结构分别是 <code>字典</code>、<code>列表</code> 和 <code>字符串</code>，可见它是十分重要的。</p>
+<p>列表的作用更像是一种容器，形象一点说就是我们用的书包：</p>
+<ol>
+<li>列表能储存大量数据</li>
+<li>列表能储存不同数据类型的数据</li>
+</ol>
+<p>与列表相对照，我们先来观察一下这样一个字符串：<code>a = &#39;123alexTrue&#39;</code> 这个字符串中包含数字、字母和布尔值，但是表现出来的全都是字符串。我们虽然能够通过索引取到内容，但取到的值仍然是字符串。这就需要我们进行额外的判断转换操作。列表则不同，列表可以储存不同类型的数据，并且可以随时把它们直接取出来用。就像把东西装到书包里，用的时候直接取出来即可。</p>
+<p>我们可以通过如下方法定义一个列表：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="number">1</span>, <span class="string">'alex'</span>, <span class="literal">True</span>]</span><br></pre></td></tr></table></figure>
+
+<p>列表中的每个元素以逗号分隔。各个元素以原本的数据类型存储在列表中。</p>
+<p>列表是可变数据类型，因此可以对列表本身进行修改。与字符串方法不同，列表方法一般没有返回值，而是直接对原列表进行修改。所以一般也不需要使用变量接收返回值。</p>
+<h3 id="列表元素的增加"><a href="#列表元素的增加" class="headerlink" title="列表元素的增加"></a>列表元素的增加</h3><p>列表元素的增加主要有三种方法：<code>.append()</code>、<code>.insert()</code> 和 <code>.extend()</code>。</p>
+<p><code>.append()</code> 方法实在列表的末尾添加内容。<code>.append()</code> 的参数就是需要增加的列表元素：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="string">'Python学习手册'</span>, <span class="string">'核心编程'</span>]</span><br><span class="line">print(lst.append(<span class="string">"流畅的Python"</span>))</span><br><span class="line">print(lst)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="literal">None</span></span><br><span class="line">[<span class="string">'Python学习手册'</span>, <span class="string">'核心编程'</span>, <span class="string">'流畅的Python'</span>]</span><br></pre></td></tr></table></figure>
+
+<p><code>None</code> 在 Python 中是 <code>空</code> 的意思。<code>.append()</code> 方法的返回值为 <code>None</code>。而当我们打印列表 <code>lst</code> 时发现，列表已经被改变。这里我们可以得出结论：</p>
+<ul>
+<li>列表是可变数据类型</li>
+<li><code>.append()</code> 操作会直接对列表进行修改而不需要重新赋值</li>
+</ul>
+<p><code>.insert()</code> 方法用来向列表中插入数据。<code>.insert()</code> 方法有两个参数，<code>参数 1</code> 是要插入位置的 <code>索引值</code>，<code>参数 2</code> 是要插入的 <code>内容</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="string">'Python学习手册'</span>, <span class="string">'核心编程'</span>]</span><br><span class="line">lst.insert(<span class="number">1</span>, <span class="string">'流畅的Python'</span>)</span><br><span class="line">print(lst)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'Python学习手册'</span>, <span class="string">'流畅的Python'</span>, <span class="string">'核心编程'</span>]</span><br></pre></td></tr></table></figure>
+
+<p>实际操作中，不推荐使用 <code>.insert()</code> 方法。因为一旦使用这个方法，需要把插入位置后的每一个元素都后移一位，且发生索引值的变化，有可能给项目带来不可预测的影响。</p>
+<p><code>.extend()</code> 方法也是在列表的最后插入内容。<code>.extend()</code> 方法的参数必须是可迭代对象。执行 <code>.extend()</code> 方法时，会将参数内容 <code>迭代追加</code> 到列表结尾：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="string">'Python学习手册'</span>, <span class="string">'核心编程'</span>]</span><br><span class="line">lst.extend(<span class="string">'流畅的Python'</span>)</span><br><span class="line">print(lst)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'Python学习手册'</span>, <span class="string">'核心编程'</span>, <span class="string">'流'</span>, <span class="string">'畅'</span>, <span class="string">'的'</span>, <span class="string">'P'</span>, <span class="string">'y'</span>, <span class="string">'t'</span>, <span class="string">'h'</span>, <span class="string">'o'</span>, <span class="string">'n'</span>]</span><br></pre></td></tr></table></figure>
+
+<p><code>.extend()</code> 方法用来将多个数据 <em>批量</em>添加到列表末尾。</p>
+<h3 id="列表元素的删除"><a href="#列表元素的删除" class="headerlink" title="列表元素的删除"></a>列表元素的删除</h3><p>列表元素的删除主要有四种方法：<code>.remove()</code>、<code>.pop()</code>、<code>.clear()</code> 和 <code>del</code>。</p>
+<p><code>.remove()</code> 方法可以删除指定元素名的列表元素，它的参数是要删除元素的元素名：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="string">'大圣'</span>, <span class="string">'海芋'</span>, <span class="string">'新力'</span>, <span class="string">'一帆'</span>, <span class="string">'靓仔'</span>, <span class="string">'石淦'</span>]</span><br><span class="line">lst.remove(<span class="string">'新力'</span>)</span><br><span class="line">print(lst)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'大圣'</span>, <span class="string">'海芋'</span>, <span class="string">'一帆'</span>, <span class="string">'靓仔'</span>, <span class="string">'石淦'</span>]</span><br></pre></td></tr></table></figure>
+
+<p><code>.pop()</code> 方法如果不加参数的话，默认删除列表中的最后一个元素，并且有返回值，返回的内容是是被删除的元素。<code>.pop()</code> 是唯一一个有返回值的列表元素删除方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="string">'大圣'</span>, <span class="string">'海芋'</span>, <span class="string">'新力'</span>, <span class="string">'一帆'</span>, <span class="string">'靓仔'</span>, <span class="string">'石淦'</span>]</span><br><span class="line">print(lst.pop())</span><br><span class="line">print(lst)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">石淦</span><br><span class="line">[<span class="string">'大圣'</span>, <span class="string">'海芋'</span>, <span class="string">'新力'</span>, <span class="string">'一帆'</span>, <span class="string">'靓仔'</span>]</span><br></pre></td></tr></table></figure>
+
+<p><code>.pop()</code> 方法也可以通过输入索引参数的方法，删除指定位置的列表元素：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="string">'大圣'</span>, <span class="string">'海芋'</span>, <span class="string">'新力'</span>, <span class="string">'一帆'</span>, <span class="string">'靓仔'</span>, <span class="string">'石淦'</span>]</span><br><span class="line">print(lst.pop(<span class="number">1</span>))</span><br><span class="line">print(lst)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">海芋</span><br><span class="line">[<span class="string">'大圣'</span>, <span class="string">'新力'</span>, <span class="string">'一帆'</span>, <span class="string">'靓仔'</span>, <span class="string">'石淦'</span>]</span><br></pre></td></tr></table></figure>
+
+<p><code>.clear()</code> 方法用来将列表清空，最终会得到一个空列表：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="string">'大圣'</span>, <span class="string">'海芋'</span>, <span class="string">'新力'</span>, <span class="string">'一帆'</span>, <span class="string">'靓仔'</span>, <span class="string">'石淦'</span>]</span><br><span class="line">lst.clear()</span><br><span class="line">print(lst)</span><br><span class="line"></span><br><span class="line">输出的结果为： []</span><br></pre></td></tr></table></figure>
+
+<p><code>del</code> 是用来删除的关键字。<code>del</code> 后面直接跟列表名，会将列表整个删除掉：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="string">'大圣'</span>, <span class="string">'海芋'</span>, <span class="string">'新力'</span>, <span class="string">'一帆'</span>, <span class="string">'靓仔'</span>, <span class="string">'石淦'</span>]</span><br><span class="line"><span class="keyword">del</span> lst</span><br><span class="line">print(lst)</span><br></pre></td></tr></table></figure>
+
+<p>程序运行后报错：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"C:/Users/Sure/PyProject/day04/02 exercise.py"</span>, line <span class="number">31</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    print(lst)</span><br><span class="line">NameError: name <span class="string">'lst'</span> <span class="keyword">is</span> <span class="keyword">not</span> defined</span><br></pre></td></tr></table></figure>
+
+<p>程序报错，因为 <code>lst</code> 已经被从内从中整个移除。后来 <code>print</code> 调用 <code>lst</code> 时，找不到相应的内容，所以报错。</p>
+<p>也可以用 <code>del</code> 删除指定索引的列表元素：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="string">'大圣'</span>, <span class="string">'海芋'</span>, <span class="string">'新力'</span>, <span class="string">'一帆'</span>, <span class="string">'靓仔'</span>, <span class="string">'石淦'</span>]</span><br><span class="line"><span class="keyword">del</span> lst[<span class="number">2</span>]</span><br><span class="line">print(lst)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'大圣'</span>, <span class="string">'海芋'</span>, <span class="string">'一帆'</span>, <span class="string">'靓仔'</span>, <span class="string">'石淦'</span>]</span><br></pre></td></tr></table></figure>
+
+<p><code>del</code>也可以通过切片来批量删除多个列表元素：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="string">'大圣'</span>, <span class="string">'海芋'</span>, <span class="string">'新力'</span>, <span class="string">'一帆'</span>, <span class="string">'靓仔'</span>, <span class="string">'石淦'</span>]</span><br><span class="line"><span class="keyword">del</span> lst[<span class="number">1</span>:<span class="number">4</span>]</span><br><span class="line">print(lst)</span><br></pre></td></tr></table></figure>
+
+<p>输出结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'大圣'</span>, <span class="string">'靓仔'</span>, <span class="string">'石淦'</span>]</span><br></pre></td></tr></table></figure>
+
+<h3 id="列表元素的修改"><a href="#列表元素的修改" class="headerlink" title="列表元素的修改"></a>列表元素的修改</h3><p>列表元素可以通过索引值赋值直接修改：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="string">"大圣"</span>, <span class="string">"海煜"</span>, <span class="string">"新力"</span>, <span class="string">"一帆"</span>, <span class="string">"靓仔"</span>, <span class="string">"石淦"</span>]</span><br><span class="line">lst[<span class="number">2</span>] = <span class="string">'秀色可餐'</span></span><br><span class="line">print(lst)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'大圣'</span>, <span class="string">'海煜'</span>, <span class="string">'秀色可餐'</span>, <span class="string">'一帆'</span>, <span class="string">'靓仔'</span>, <span class="string">'石淦'</span>]</span><br></pre></td></tr></table></figure>
+
+<p>也可以通过列表的切片方法对列表元素进行批量修改：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="string">"大圣"</span>, <span class="string">"海煜"</span>, <span class="string">"新力"</span>, <span class="string">"一帆"</span>, <span class="string">"靓仔"</span>, <span class="string">"石淦"</span>]</span><br><span class="line">lst[<span class="number">1</span>:<span class="number">4</span>] = <span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span></span><br><span class="line">print(lst)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'大圣'</span>, <span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="string">'靓仔'</span>, <span class="string">'石淦'</span>]</span><br></pre></td></tr></table></figure>
+
+<p>切片获取的内容空间是连续的时候，修改时内容可以多可以少；切片获取的内容空间是不连续的时候，修改时内容必须一一对应：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="string">"大圣"</span>, <span class="string">"海煜"</span>, <span class="string">"新力"</span>, <span class="string">"一帆"</span>, <span class="string">"靓仔"</span>, <span class="string">"石淦"</span>]</span><br><span class="line">lst[<span class="number">1</span>:<span class="number">4</span>] = <span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>    <span class="comment"># 切片空间连续，可多</span></span><br><span class="line">print(lst)</span><br><span class="line">lst = [<span class="string">"大圣"</span>, <span class="string">"海煜"</span>, <span class="string">"新力"</span>, <span class="string">"一帆"</span>, <span class="string">"靓仔"</span>, <span class="string">"石淦"</span>]</span><br><span class="line">lst[<span class="number">1</span>:<span class="number">4</span>] = <span class="number">10</span>, <span class="number">20</span>    <span class="comment"># 切片空间连续，可少</span></span><br><span class="line">print(lst)</span><br><span class="line">lst = [<span class="string">"大圣"</span>, <span class="string">"海煜"</span>, <span class="string">"新力"</span>, <span class="string">"一帆"</span>, <span class="string">"靓仔"</span>, <span class="string">"石淦"</span>]</span><br><span class="line">lst[<span class="number">1</span>:<span class="number">5</span>:<span class="number">2</span>] = [<span class="string">'alex'</span>, <span class="string">'wusir'</span>]    <span class="comment"># 切片空间不连续，必须一一对应</span></span><br><span class="line">print(lst)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'大圣'</span>, <span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>, <span class="string">'靓仔'</span>, <span class="string">'石淦'</span>]</span><br><span class="line">[<span class="string">'大圣'</span>, <span class="number">10</span>, <span class="number">20</span>, <span class="string">'靓仔'</span>, <span class="string">'石淦'</span>]</span><br><span class="line">[<span class="string">'大圣'</span>, <span class="string">'alex'</span>, <span class="string">'新力'</span>, <span class="string">'wusir'</span>, <span class="string">'靓仔'</span>, <span class="string">'石淦'</span>]</span><br></pre></td></tr></table></figure>
+
+<h3 id="列表元素的查看"><a href="#列表元素的查看" class="headerlink" title="列表元素的查看"></a>列表元素的查看</h3><p>列表元素可以通过索引查询和 for 循环遍历两种方法查看：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="string">"大圣"</span>, <span class="string">"海煜"</span>, <span class="string">"新力"</span>, <span class="string">"一帆"</span>, <span class="string">"靓仔"</span>, <span class="string">"石淦"</span>]</span><br><span class="line">print(lst[<span class="number">3</span>])</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> lst:</span><br><span class="line">    print(i)</span><br></pre></td></tr></table></figure>
+
+<p>需要注意的是，进行切片操作时，获取的内容时切片的原数据本身。也就是说，切片不会改变数据类型。字符串切片后得到的还是字符串，列表切片后得到的还是列表：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="string">"大圣"</span>, <span class="string">"海煜"</span>, <span class="string">"新力"</span>, <span class="string">"一帆"</span>, <span class="string">"靓仔"</span>, <span class="string">"石淦"</span>]</span><br><span class="line">print(lst[<span class="number">1</span>:<span class="number">4</span>])</span><br><span class="line"></span><br><span class="line">a = <span class="string">'alex'</span></span><br><span class="line">print(a[<span class="number">1</span>:<span class="number">3</span>])</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'海煜'</span>, <span class="string">'新力'</span>, <span class="string">'一帆'</span>]</span><br><span class="line">le</span><br></pre></td></tr></table></figure>
+
+<h3 id="列表总结"><a href="#列表总结" class="headerlink" title="列表总结"></a>列表总结</h3><ul>
+<li>列表是可变数据类型，可迭代数据类型，有序的数据结构</li>
+<li>列表用来储存大量数据，并且可以储存不同数据类型</li>
+<li>列表就是一个容器</li>
+<li>列表储存的是元素的内存地址</li>
+</ul>
+<h3 id="列表的嵌套"><a href="#列表的嵌套" class="headerlink" title="列表的嵌套"></a>列表的嵌套</h3><p>因为列表可以储存各种数据类型的数据，那么列表当然也可以储存列表，这就造成了列表的嵌套。</p>
+<p>现在有这样一个相互嵌套的列表：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="number">1</span>, <span class="string">"alex"</span>, <span class="literal">True</span>, [<span class="string">"wusir"</span>, <span class="string">"污"</span>, [<span class="string">"嫂子"</span>,<span class="string">"衣服多"</span>]], [<span class="string">"alex"</span>, <span class="string">"吹nb"</span>, <span class="string">"熬鸡汤"</span>, [<span class="string">"嫂子"</span>, <span class="string">"教育"</span>, <span class="string">"从基层做起"</span>]]]</span><br></pre></td></tr></table></figure>
+
+<p>如果我们想调用其中的 <code>&quot;衣服多&quot;</code> 这个字符串，该怎么做呢？</p>
+<p>我们可以像下面这样逐层操作：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lst1 = lst[<span class="number">3</span>]</span><br><span class="line">lst2 = lst1[<span class="number">2</span>]</span><br><span class="line">lst3 = lst2[<span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+
+<p>这样，<code>lst3</code> 就是我们想要的 <code>&quot;衣服多&quot;</code> 字符串。</p>
+<p>但是这样的操作实在太过繁琐。我们发现，<code>lst1 = lst[3]</code>，既然如此，第二个式子我们可不可以把 <code>lst1[2]</code> 替换成 <code>lst[3][2]</code> 呢？那进一步说，我们可不可以直接通过 <code>lst[3][2][1]</code> 来调出 <code>&quot;衣服多&quot;</code> 字符串呢？</p>
+<p>答案是完全可以的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="number">1</span>, <span class="string">"alex"</span>, <span class="literal">True</span>, [<span class="string">"wusir"</span>, <span class="string">"污"</span>, [<span class="string">"嫂子"</span>, <span class="string">"衣服多"</span>]], [<span class="string">"alex"</span>, <span class="string">"吹nb"</span>, <span class="string">"熬鸡汤"</span>, [<span class="string">"嫂子"</span>, <span class="string">"教育"</span>, <span class="string">"从基层做起"</span>]]]</span><br><span class="line">print(lst[<span class="number">3</span>][<span class="number">2</span>][<span class="number">1</span>])</span><br><span class="line">print(lst[<span class="number">4</span>][<span class="number">3</span>][<span class="number">1</span>])</span><br></pre></td></tr></table></figure>
+
+<p>打印出的结果是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">衣服多</span><br><span class="line">教育</span><br></pre></td></tr></table></figure>
+
+<p>像这样调用嵌套在内层列表元素的方法也被称作 <code>降维</code>，就是将类似于 <code>[&quot;wusir&quot;, &quot;污&quot;, [&quot;嫂子&quot;, &quot;衣服多&quot;]</code> 的结构当作一个元素查看。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/python-basic/hashlib/" rel="prev" title="hashlib 模块">
+      <i class="fa fa-chevron-left"></i> hashlib 模块
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/web/json/" rel="next" title="JSON">
+      JSON <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#列表的定义"><span class="nav-number">1.</span> <span class="nav-text">列表的定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#列表元素的增加"><span class="nav-number">2.</span> <span class="nav-text">列表元素的增加</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#列表元素的删除"><span class="nav-number">3.</span> <span class="nav-text">列表元素的删除</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#列表元素的修改"><span class="nav-number">4.</span> <span class="nav-text">列表元素的修改</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#列表元素的查看"><span class="nav-number">5.</span> <span class="nav-text">列表元素的查看</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#列表总结"><span class="nav-number">6.</span> <span class="nav-text">列表总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#列表的嵌套"><span class="nav-number">7.</span> <span class="nav-text">列表的嵌套</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="刘硕"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">刘硕</p>
+  <div class="site-description" itemprop="description">不成为自己讨厌的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">221</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:liushuo432@outlook.com" title="E-Mail → mailto:liushuo432@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/2436055290" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;2436055290" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备20001451号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘硕</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.2" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="/js/love.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/Epsilon2.1.model.json"},"display":{"superSample":2,"width":200,"height":400,"position":"left","hOffset":-30,"vOffset":-40},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>

@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="Tu5vqPaUb8svfkPx5eetJFD84ciQCcWVXNatdsWtj9Q">
+  <meta name="baidu-site-verification" content="baidu_verify_FBq9PG4BBb">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.1","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Django REST framework 官方文档翻译之认证与权限，介绍 drf 权限组建的用法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="教程 4：认证 Authentication 和权限 Permission">
+<meta property="og:url" content="https://sliu.vip/translation/django-rest-framework-tutorial/authentication-permission/index.html">
+<meta property="og:site_name" content="刘硕的技术查阅手册">
+<meta property="og:description" content="Django REST framework 官方文档翻译之认证与权限，介绍 drf 权限组建的用法。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-02-26T11:27:38.000Z">
+<meta property="article:modified_time" content="2020-02-26T11:27:38.000Z">
+<meta property="article:author" content="刘硕">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="全栈开发">
+<meta property="article:tag" content="并发编程">
+<meta property="article:tag" content="网络编程">
+<meta property="article:tag" content="爬虫">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="自动化测试">
+<meta property="article:tag" content="Web开发">
+<meta property="article:tag" content="HTML">
+<meta property="article:tag" content="CSS">
+<meta property="article:tag" content="JavaScript">
+<meta property="article:tag" content="jQuery">
+<meta property="article:tag" content="Bootstrap">
+<meta property="article:tag" content="测试自动化">
+<meta property="article:tag" content="Selenium">
+<meta property="article:tag" content="postman">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="Vue">
+<meta property="article:tag" content="drf">
+<meta property="article:tag" content="django">
+<meta property="article:tag" content="文档翻译">
+<meta property="article:tag" content="PEP8">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://sliu.vip/translation/django-rest-framework-tutorial/authentication-permission/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>教程 4：认证 Authentication 和权限 Permission | 刘硕的技术查阅手册</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f14f123935d6183fdd06f8f1c4bc378f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="刘硕的技术查阅手册" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">刘硕的技术查阅手册</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">Python 全栈开发学习笔记</h1>
+      
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-toc">
+
+    <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-fw fa-rss"></i>订阅</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/translation/django-rest-framework-tutorial/authentication-permission/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          教程 4：认证 Authentication 和权限 Permission
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-26 19:27:38" itemprop="dateCreated datePublished" datetime="2020-02-26T19:27:38+08:00">2020-02-26</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91/" itemprop="url" rel="index"><span itemprop="name">官方文档翻译</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <div class="post-description">Django REST framework 官方文档翻译之认证与权限，介绍 drf 权限组建的用法。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>现在我们的 API 对何人能编辑或删除我们的代码段没有任何的限制。我们想要一些更高级的功能，为了确保：</p>
+<ul>
+<li><p>代码段总会和创建者关联起来。</p>
+</li>
+<li><p>只有授权认证了的用户可以创建代码段。</p>
+</li>
+<li><p>只有代码段的创建者才能更新或删除它。</p>
+</li>
+<li><p>未授权的请求可以获得完全的只读访问。</p>
+</li>
+</ul>
+<h2 id="给我们的模型增加信息"><a href="#给我们的模型增加信息" class="headerlink" title="给我们的模型增加信息"></a>给我们的模型增加信息</h2><p>我们要稍微修改一下我们的 <code>Snippet</code> 模型类。首先，让我们添加几个字段。这些字段中的一个将被用来指代创建代码段的用户。其他字段将被用来存储高亮的 HTM 语句代码。</p>
+<p>在 <code>models.py</code> 里，把下面两个字段添加到 <code>Snippet</code> 模块中。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">owner = models.ForeignKey(<span class="string">'auth.User'</span>, related_name=<span class="string">'snippets'</span>, on_delete=models.CASCADE)</span><br><span class="line">highlighted = models.TextField()</span><br></pre></td></tr></table></figure>
+
+<p>我们也需要确保当模型保存完毕后，我们使用 <code>pygments</code> 代码高亮库，把高亮字段迁移。</p>
+<p>我们需要额外导入一些包：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pygments.lexers <span class="keyword">import</span> get_lexer_by_name</span><br><span class="line"><span class="keyword">from</span> pygments.formatters.html <span class="keyword">import</span> HtmlFormatter</span><br><span class="line"><span class="keyword">from</span> pygments <span class="keyword">import</span> highlight</span><br></pre></td></tr></table></figure>
+
+<p>限制我们可以在我们的模型类中加入一个 <code>.save()</code> 方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">save</span><span class="params">(self, *args, **kwargs)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    使用 `pygments` 库来创建代码段的高亮 HTML 语句。</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    lexer = get_lexer_by_name(self.language)</span><br><span class="line">    linenos = <span class="string">'table'</span> <span class="keyword">if</span> self.linenos <span class="keyword">else</span> <span class="literal">False</span></span><br><span class="line">    options = &#123;<span class="string">'title'</span>: self.title&#125; <span class="keyword">if</span> self.title <span class="keyword">else</span> &#123;&#125;</span><br><span class="line">    formatter = HtmlFormatter(style=self.style, linenos=linenos,</span><br><span class="line">                              full=<span class="literal">True</span>, **options)</span><br><span class="line">    self.highlighted = highlight(self.code, lexer, formatter)</span><br><span class="line">    super(Snippet, self).save(*args, **kwargs)</span><br></pre></td></tr></table></figure>
+
+<p>做完上面这些事，我们就需要更新我们的数据库表。通常要做到这件事我们需要创建一个数据库迁移。但是出于本教程的目的，直接把数据库删了，然后重新来过。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">rm -f db.sqlite3</span><br><span class="line">rm -r snippets/migrations</span><br><span class="line">python manage.py makemigrations snippets</span><br><span class="line">python manage.py migrate</span><br></pre></td></tr></table></figure>
+
+<p>你或许也要创建几个不同的用户，用来测试 API。做这件事最快的方式就是使用 <code>createsuperuser</code> 命令。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python manage.py createsuperuser</span><br></pre></td></tr></table></figure>
+
+<h2 id="Adding-endpoints-for-our-User-models"><a href="#Adding-endpoints-for-our-User-models" class="headerlink" title="Adding endpoints for our User models"></a><a href="https://www.django-rest-framework.org/tutorial/4-authentication-and-permissions/#adding-endpoints-for-our-user-models" target="_blank" rel="noopener">Adding endpoints for our User models</a></h2><p>Now that we’ve got some users to work with, we’d better add representations of those users to our API. Creating a new serializer is easy. In <code>serializers.py</code> add:</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.contrib.auth.models import User</span><br><span class="line"></span><br><span class="line">class UserSerializer(serializers.ModelSerializer):</span><br><span class="line">    snippets = serializers.PrimaryKeyRelatedField(<span class="attribute">many</span>=<span class="literal">True</span>, <span class="attribute">queryset</span>=Snippet.objects.all())</span><br><span class="line"></span><br><span class="line">    class Meta:</span><br><span class="line">        model = User</span><br><span class="line">        fields = [<span class="string">'id'</span>, <span class="string">'username'</span>, <span class="string">'snippets'</span>]</span><br></pre></td></tr></table></figure>
+
+<p>Because <code>&#39;snippets&#39;</code> is a <em>reverse</em> relationship on the User model, it will not be included by default when using the <code>ModelSerializer</code> class, so we needed to add an explicit field for it.</p>
+<p>We’ll also add a couple of views to <code>views.py</code>. We’d like to just use read-only views for the user representations, so we’ll use the <code>ListAPIView</code> and <code>RetrieveAPIView</code> generic class-based views.</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.contrib.auth.models import User</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class UserList(generics.ListAPIView):</span><br><span class="line">    queryset = User.objects.all()</span><br><span class="line">    serializer_class = UserSerializer</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">class UserDetail(generics.RetrieveAPIView):</span><br><span class="line">    queryset = User.objects.all()</span><br><span class="line">    serializer_class = UserSerializer</span><br></pre></td></tr></table></figure>
+
+<p>Make sure to also import the <code>UserSerializer</code> class</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> snippets.serializers <span class="keyword">import</span> UserSerializer</span><br></pre></td></tr></table></figure>
+
+<p>Finally we need to add those views into the API, by referencing them from the URL conf. Add the following to the patterns in <code>snippets/urls.py</code>.</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">path('users/', views.<span class="module-access"><span class="module"><span class="identifier">UserList</span>.</span></span><span class="keyword">as</span><span class="constructor">_view()</span>),</span><br><span class="line">path('users/&lt;<span class="built_in">int</span>:pk&gt;/', views.<span class="module-access"><span class="module"><span class="identifier">UserDetail</span>.</span></span><span class="keyword">as</span><span class="constructor">_view()</span>),</span><br></pre></td></tr></table></figure>
+
+<h2 id="Associating-Snippets-with-Users"><a href="#Associating-Snippets-with-Users" class="headerlink" title="Associating Snippets with Users"></a><a href="https://www.django-rest-framework.org/tutorial/4-authentication-and-permissions/#associating-snippets-with-users" target="_blank" rel="noopener">Associating Snippets with Users</a></h2><p>Right now, if we created a code snippet, there’d be no way of associating the user that created the snippet, with the snippet instance. The user isn’t sent as part of the serialized representation, but is instead a property of the incoming request.</p>
+<p>The way we deal with that is by overriding a <code>.perform_create()</code> method on our snippet views, that allows us to modify how the instance save is managed, and handle any information that is implicit in the incoming request or requested URL.</p>
+<p>On the <code>SnippetList</code> view class, add the following method:</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">perform_create</span><span class="params">(<span class="keyword">self</span>, serializer)</span></span><span class="symbol">:</span></span><br><span class="line">    serializer.save(owner=<span class="keyword">self</span>.request.user)</span><br></pre></td></tr></table></figure>
+
+<p>The <code>create()</code> method of our serializer will now be passed an additional <code>&#39;owner&#39;</code> field, along with the validated data from the request.</p>
+<h2 id="Updating-our-serializer"><a href="#Updating-our-serializer" class="headerlink" title="Updating our serializer"></a><a href="https://www.django-rest-framework.org/tutorial/4-authentication-and-permissions/#updating-our-serializer" target="_blank" rel="noopener">Updating our serializer</a></h2><p>Now that snippets are associated with the user that created them, let’s update our <code>SnippetSerializer</code> to reflect that. Add the following field to the serializer definition in <code>serializers.py</code>:</p>
+<figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">owner = serializers.<span class="constructor">ReadOnlyField(<span class="params">source</span>='<span class="params">owner</span>.<span class="params">username</span>')</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Note</strong>: Make sure you also add <code>&#39;owner&#39;,</code> to the list of fields in the inner <code>Meta</code> class.</p>
+<p>This field is doing something quite interesting. The <code>source</code> argument controls which attribute is used to populate a field, and can point at any attribute on the serialized instance. It can also take the dotted notation shown above, in which case it will traverse the given attributes, in a similar way as it is used with Django’s template language.</p>
+<p>The field we’ve added is the untyped <code>ReadOnlyField</code> class, in contrast to the other typed fields, such as <code>CharField</code>, <code>BooleanField</code> etc… The untyped <code>ReadOnlyField</code> is always read-only, and will be used for serialized representations, but will not be used for updating model instances when they are deserialized. We could have also used <code>CharField(read_only=True)</code> here.</p>
+<h2 id="Adding-required-permissions-to-views"><a href="#Adding-required-permissions-to-views" class="headerlink" title="Adding required permissions to views"></a><a href="https://www.django-rest-framework.org/tutorial/4-authentication-and-permissions/#adding-required-permissions-to-views" target="_blank" rel="noopener">Adding required permissions to views</a></h2><p>Now that code snippets are associated with users, we want to make sure that only authenticated users are able to create, update and delete code snippets.</p>
+<p>REST framework includes a number of permission classes that we can use to restrict who can access a given view. In this case the one we’re looking for is <code>IsAuthenticatedOrReadOnly</code>, which will ensure that authenticated requests get read-write access, and unauthenticated requests get read-only access.</p>
+<p>First add the following import in the views module</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> rest_framework <span class="keyword">import</span> permissions</span><br></pre></td></tr></table></figure>
+
+<p>Then, add the following property to <strong>both</strong> the <code>SnippetList</code> and <code>SnippetDetail</code> view classes.</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">permission_classes</span> = [permissions.IsAuthenticatedOrReadOnly]</span><br></pre></td></tr></table></figure>
+
+<h2 id="Adding-login-to-the-Browsable-API"><a href="#Adding-login-to-the-Browsable-API" class="headerlink" title="Adding login to the Browsable API"></a><a href="https://www.django-rest-framework.org/tutorial/4-authentication-and-permissions/#adding-login-to-the-browsable-api" target="_blank" rel="noopener">Adding login to the Browsable API</a></h2><p>If you open a browser and navigate to the browsable API at the moment, you’ll find that you’re no longer able to create new code snippets. In order to do so we’d need to be able to login as a user.</p>
+<p>We can add a login view for use with the browsable API, by editing the URLconf in our project-level <code>urls.py</code> file.</p>
+<p>Add the following import at the top of the file:</p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.conf.urls <span class="keyword">import</span> <span class="keyword">include</span></span><br></pre></td></tr></table></figure>
+
+<p>And, at the end of the file, add a pattern to include the login and logout views for the browsable API.</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">urlpatterns += [</span><br><span class="line">    path(<span class="string">'api-auth/'</span>, <span class="keyword">include</span>(<span class="string">'rest_framework.urls'</span>)),</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<p>The <code>&#39;api-auth/&#39;</code> part of pattern can actually be whatever URL you want to use.</p>
+<p>Now if you open up the browser again and refresh the page you’ll see a ‘Login’ link in the top right of the page. If you log in as one of the users you created earlier, you’ll be able to create code snippets again.</p>
+<p>Once you’ve created a few code snippets, navigate to the ‘/users/‘ endpoint, and notice that the representation includes a list of the snippet ids that are associated with each user, in each user’s ‘snippets’ field.</p>
+<h2 id="Object-level-permissions"><a href="#Object-level-permissions" class="headerlink" title="Object level permissions"></a><a href="https://www.django-rest-framework.org/tutorial/4-authentication-and-permissions/#object-level-permissions" target="_blank" rel="noopener">Object level permissions</a></h2><p>Really we’d like all code snippets to be visible to anyone, but also make sure that only the user that created a code snippet is able to update or delete it.</p>
+<p>To do that we’re going to need to create a custom permission.</p>
+<p>In the snippets app, create a new file, <code>permissions.py</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> rest_framework <span class="keyword">import</span> permissions</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">IsOwnerOrReadOnly</span><span class="params">(permissions.BasePermission)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    Custom permission to only allow owners of an object to edit it.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">has_object_permission</span><span class="params">(self, request, view, obj)</span>:</span></span><br><span class="line">        <span class="comment"># Read permissions are allowed to any request,</span></span><br><span class="line">        <span class="comment"># so we'll always allow GET, HEAD or OPTIONS requests.</span></span><br><span class="line">        <span class="keyword">if</span> request.method <span class="keyword">in</span> permissions.SAFE_METHODS:</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># Write permissions are only allowed to the owner of the snippet.</span></span><br><span class="line">        <span class="keyword">return</span> obj.owner == request.user</span><br></pre></td></tr></table></figure>
+
+<p>Now we can add that custom permission to our snippet instance endpoint, by editing the <code>permission_classes</code> property on the <code>SnippetDetail</code> view class:</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">permission_classes</span> = [permissions.IsAuthenticatedOrReadOnly,</span><br><span class="line">                      IsOwnerOrReadOnly]</span><br></pre></td></tr></table></figure>
+
+<p>Make sure to also import the <code>IsOwnerOrReadOnly</code> class.</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> snippets.permissions <span class="keyword">import</span> IsOwnerOrReadOnly</span><br></pre></td></tr></table></figure>
+
+<p>Now, if you open a browser again, you find that the ‘DELETE’ and ‘PUT’ actions only appear on a snippet instance endpoint if you’re logged in as the same user that created the code snippet.</p>
+<h2 id="Authenticating-with-the-API"><a href="#Authenticating-with-the-API" class="headerlink" title="Authenticating with the API"></a><a href="https://www.django-rest-framework.org/tutorial/4-authentication-and-permissions/#authenticating-with-the-api" target="_blank" rel="noopener">Authenticating with the API</a></h2><p>Because we now have a set of permissions on the API, we need to authenticate our requests to it if we want to edit any snippets. We haven’t set up any <a href="https://www.django-rest-framework.org/api-guide/authentication/" target="_blank" rel="noopener">authentication classes</a>, so the defaults are currently applied, which are <code>SessionAuthentication</code> and <code>BasicAuthentication</code>.</p>
+<p>When we interact with the API through the web browser, we can login, and the browser session will then provide the required authentication for the requests.</p>
+<p>If we’re interacting with the API programmatically we need to explicitly provide the authentication credentials on each request.</p>
+<p>If we try to create a snippet without authenticating, we’ll get an error:</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">http POST http:<span class="regexp">//</span><span class="number">127.0</span>.<span class="number">0.1</span>:<span class="number">8000</span><span class="regexp">/snippets/</span> code=<span class="string">"print(123)"</span></span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">"detail"</span>: <span class="string">"Authentication credentials were not provided."</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>We can make a successful request by including the username and password of one of the users we created earlier.</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">http -a <span class="string">admin:</span>password123 POST <span class="string">http:</span><span class="comment">//127.0.0.1:8000/snippets/ code="print(789)"</span></span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">"id"</span>: <span class="number">1</span>,</span><br><span class="line">    <span class="string">"owner"</span>: <span class="string">"admin"</span>,</span><br><span class="line">    <span class="string">"title"</span>: <span class="string">"foo"</span>,</span><br><span class="line">    <span class="string">"code"</span>: <span class="string">"print(789)"</span>,</span><br><span class="line">    <span class="string">"linenos"</span>: <span class="literal">false</span>,</span><br><span class="line">    <span class="string">"language"</span>: <span class="string">"python"</span>,</span><br><span class="line">    <span class="string">"style"</span>: <span class="string">"friendly"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a><a href="https://www.django-rest-framework.org/tutorial/4-authentication-and-permissions/#summary" target="_blank" rel="noopener">Summary</a></h2><p>We’ve now got a fairly fine-grained set of permissions on our Web API, and end points for users of the system and for the code snippets that they have created.</p>
+<p>In <a href="https://www.django-rest-framework.org/tutorial/5-relationships-and-hyperlinked-apis/" target="_blank" rel="noopener">part 5</a> of the tutorial we’ll look at how we can tie everything together by creating an HTML endpoint for our highlighted snippets, and improve the cohesion of our API by using hyperlinking for the relationships within the system.</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/python-advanced/queue-rabbitmq/" rel="prev" title="消息队列和 RabbitMQ">
+      <i class="fa fa-chevron-left"></i> 消息队列和 RabbitMQ
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/project/renran-pc-build/" rel="next" title="荏苒资讯前端项目搭建">
+      荏苒资讯前端项目搭建 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#给我们的模型增加信息"><span class="nav-number">1.</span> <span class="nav-text">给我们的模型增加信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Adding-endpoints-for-our-User-models"><span class="nav-number">2.</span> <span class="nav-text">Adding endpoints for our User models</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Associating-Snippets-with-Users"><span class="nav-number">3.</span> <span class="nav-text">Associating Snippets with Users</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Updating-our-serializer"><span class="nav-number">4.</span> <span class="nav-text">Updating our serializer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Adding-required-permissions-to-views"><span class="nav-number">5.</span> <span class="nav-text">Adding required permissions to views</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Adding-login-to-the-Browsable-API"><span class="nav-number">6.</span> <span class="nav-text">Adding login to the Browsable API</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Object-level-permissions"><span class="nav-number">7.</span> <span class="nav-text">Object level permissions</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Authenticating-with-the-API"><span class="nav-number">8.</span> <span class="nav-text">Authenticating with the API</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Summary"><span class="nav-number">9.</span> <span class="nav-text">Summary</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="刘硕"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">刘硕</p>
+  <div class="site-description" itemprop="description">不成为自己讨厌的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">221</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:liushuo432@outlook.com" title="E-Mail → mailto:liushuo432@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/2436055290" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;2436055290" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备20001451号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘硕</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.2" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="/js/love.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/Epsilon2.1.model.json"},"display":{"superSample":2,"width":200,"height":400,"position":"left","hOffset":-30,"vOffset":-40},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>

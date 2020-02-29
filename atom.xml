@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>刘硕的技术查阅手册</title>
+  
+  <subtitle>Python 全栈开发学习笔记</subtitle>
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="https://sliu.vip/"/>
+  <updated>2020-02-29T16:55:49.000Z</updated>
+  <id>https://sliu.vip/</id>
+  
+  <author>
+    <name>刘硕</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>SweetAlert 弹窗工具</title>
+    <link href="https://sliu.vip/web/web-sweetalart/"/>
+    <id>https://sliu.vip/web/web-sweetalart/</id>
+    <published>2020-02-29T16:55:49.000Z</published>
+    <updated>2020-02-29T16:55:49.000Z</updated>
+    
+    <summary type="html">
+    
+      SweetAlert，一种比较美观的弹框提示模板，数据拿来即用的工具。
+    
+    </summary>
+    
+    
+      <category term="Web" scheme="https://sliu.vip/categories/Web/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>用户的登陆认证</title>
+    <link href="https://sliu.vip/project/renran-login/"/>
+    <id>https://sliu.vip/project/renran-login/</id>
+    <published>2020-02-29T16:54:49.000Z</published>
+    <updated>2020-02-29T16:54:49.000Z</updated>
+    
+    <summary type="html">
+    
+      荏苒登录模块的开发过程，包括页面的创建，以及登录的认证逻辑。使用的是 JWT 认证。
+    
+    </summary>
+    
+    
+      <category term="综合项目" scheme="https://sliu.vip/categories/%E7%BB%BC%E5%90%88%E9%A1%B9%E7%9B%AE/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>通过 CORS 解决跨域问题</title>
+    <link href="https://sliu.vip/project/renran-cors/"/>
+    <id>https://sliu.vip/project/renran-cors/</id>
+    <published>2020-02-29T16:53:26.000Z</published>
+    <updated>2020-02-29T16:53:26.000Z</updated>
+    
+    <summary type="html">
+    
+      因为我们要通过域名访问荏苒的前后端，所以需要进行一些设置，来允许这样的操作。而且由于前后端的域名不同，所以会有跨域问题，就需要使用 CORS 来解决。
+    
+    </summary>
+    
+    
+      <category term="综合项目" scheme="https://sliu.vip/categories/%E7%BB%BC%E5%90%88%E9%A1%B9%E7%9B%AE/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Django URL 路由</title>
+    <link href="https://sliu.vip/django/django-url/"/>
+    <id>https://sliu.vip/django/django-url/</id>
+    <published>2020-02-29T16:52:41.000Z</published>
+    <updated>2020-02-29T16:52:41.000Z</updated>
+    
+    <summary type="html">
+    
+      Django 的 URL 路由组件的使用方法，包括路由的写法，路由分发，名称空间等。
+    
+    </summary>
+    
+    
+      <category term="Django" scheme="https://sliu.vip/categories/Django/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>ORM 事务和锁</title>
+    <link href="https://sliu.vip/django/django-transaction-lock/"/>
+    <id>https://sliu.vip/django/django-transaction-lock/</id>
+    <published>2020-02-29T16:51:53.000Z</published>
+    <updated>2020-02-29T16:51:53.000Z</updated>
+    
+    <summary type="html">
+    
+      ORM 的事务和锁，也即是 MySQL 的事务和锁，为了保证操作的原子性，避免数据库出错。
+    
+    </summary>
+    
+    
+      <category term="Django" scheme="https://sliu.vip/categories/Django/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>ORM 执行原生 SQL 语句（了解）</title>
+    <link href="https://sliu.vip/django/django-sql/"/>
+    <id>https://sliu.vip/django/django-sql/</id>
+    <published>2020-02-29T16:50:56.000Z</published>
+    <updated>2020-02-29T16:50:56.000Z</updated>
+    
+    <summary type="html">
+    
+      Django 的 ORM 语句并不完善，有时候想要进行一些特殊操作，使用 ORM 无法实现，可以尝试着使用原生 SQL 语句解决问题。
+    
+    </summary>
+    
+    
+      <category term="Django" scheme="https://sliu.vip/categories/Django/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Django 外部脚本调用 models 数据库</title>
+    <link href="https://sliu.vip/django/django-script/"/>
+    <id>https://sliu.vip/django/django-script/</id>
+    <published>2020-02-29T16:49:52.000Z</published>
+    <updated>2020-02-29T16:49:52.000Z</updated>
+    
+    <summary type="html">
+    
+      如果我们想在 Django 的外部调用 model 模型对象，直接调用是不行的，需要将 Django 环境加入到系统中才可以。
+    
+    </summary>
+    
+    
+      <category term="Django" scheme="https://sliu.vip/categories/Django/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Django 模型 model 数据库 ORM 单表操作</title>
+    <link href="https://sliu.vip/django/django-orm-single/"/>
+    <id>https://sliu.vip/django/django-orm-single/</id>
+    <published>2020-02-29T16:49:26.000Z</published>
+    <updated>2020-02-29T16:49:26.000Z</updated>
+    
+    <summary type="html">
+    
+      ORM 的初识和单表操作，主要是单表的增删改查。
+    
+    </summary>
+    
+    
+      <category term="Django" scheme="https://sliu.vip/categories/Django/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Django ORM 多表增删改查</title>
+    <link href="https://sliu.vip/django/django-orm-multiple/"/>
+    <id>https://sliu.vip/django/django-orm-multiple/</id>
+    <published>2020-02-29T16:48:28.000Z</published>
+    <updated>2020-02-29T16:48:28.000Z</updated>
+    
+    <summary type="html">
+    
+      ORM 多表操作，包括多表关系的创建写法，多表的增删改查和链表操作等。
+    
+    </summary>
+    
+    
+      <category term="Django" scheme="https://sliu.vip/categories/Django/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>解决 Django 自定义用户模型之前就已经数据迁移的 BUG</title>
+    <link href="https://sliu.vip/django/django-migration-bug/"/>
+    <id>https://sliu.vip/django/django-migration-bug/</id>
+    <published>2020-02-29T16:47:48.000Z</published>
+    <updated>2020-02-29T16:47:48.000Z</updated>
+    
+    <summary type="html">
+    
+      Django 建议我们对于 AUTH_USER_MODEL 参数的设置一定要在第一次数据库迁移之前就设置好，否则后续使用可能出现未知错误。这里是解决这些错误的方式。
+    
+    </summary>
+    
+    
+      <category term="Django" scheme="https://sliu.vip/categories/Django/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>JsonResponse</title>
+    <link href="https://sliu.vip/django/django-jsonresponse/"/>
+    <id>https://sliu.vip/django/django-jsonresponse/</id>
+    <published>2020-02-29T16:46:09.000Z</published>
+    <updated>2020-02-29T16:46:09.000Z</updated>
+    
+    <summary type="html">
+    
+      网络通信，传播的只能是字符串。对于字典、列表等数据，需要序列化成字符串之后才能传输。使用 JsonResponse 方法，封装了序列化的过程，让我们传输字典和列表数据更加高效。
+    
+    </summary>
+    
+    
+      <category term="Django" scheme="https://sliu.vip/categories/Django/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Django 通过 form 表单和 ajax 上传文件</title>
+    <link href="https://sliu.vip/django/django-file-upload/"/>
+    <id>https://sliu.vip/django/django-file-upload/</id>
+    <published>2020-02-29T16:45:36.000Z</published>
+    <updated>2020-02-29T16:45:36.000Z</updated>
+    
+    <summary type="html">
+    
+      Django 文件上传的方式，包括表单上传和通过 ajax 上传。
+    
+    </summary>
+    
+    
+      <category term="Django" scheme="https://sliu.vip/categories/Django/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Cookie 和 session</title>
+    <link href="https://sliu.vip/django/django-cookie/"/>
+    <id>https://sliu.vip/django/django-cookie/</id>
+    <published>2020-02-29T16:44:57.000Z</published>
+    <updated>2020-02-29T16:44:57.000Z</updated>
+    
+    <summary type="html">
+    
+      Cookie 和 session 的基本原理和概念，以及如何通过 Django 操作 Cookie 和 session。
+    
+    </summary>
+    
+    
+      <category term="Django" scheme="https://sliu.vip/categories/Django/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Django 中使用 ajax</title>
+    <link href="https://sliu.vip/django/django-ajax/"/>
+    <id>https://sliu.vip/django/django-ajax/</id>
+    <published>2020-02-29T16:43:13.000Z</published>
+    <updated>2020-02-29T16:43:13.000Z</updated>
+    
+    <summary type="html">
+    
+      Django 中使用 ajax 发送异步请求的方法，以及解决 csrf 跨站请求伪造防御机制的方法。
+    
+    </summary>
+    
+    
+      <category term="Django" scheme="https://sliu.vip/categories/Django/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>InternalError</title>
+    <link href="https://sliu.vip/bug-bible/django-bug/InternalError/"/>
+    <id>https://sliu.vip/bug-bible/django-bug/InternalError/</id>
+    <published>2020-02-29T16:42:14.000Z</published>
+    <updated>2020-02-29T16:42:14.000Z</updated>
+    
+    <summary type="html">
+    
+      Django Bug 宝典之 Internal Error。最上面的一条错误是由于数据库的编码问题导致的，很典型。
+    
+    </summary>
+    
+    
+      <category term="Bug 宝典" scheme="https://sliu.vip/categories/Bug-%E5%AE%9D%E5%85%B8/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>RPC 的原理和简单使用</title>
+    <link href="https://sliu.vip/python-advanced/rpc/"/>
+    <id>https://sliu.vip/python-advanced/rpc/</id>
+    <published>2020-02-28T16:43:34.000Z</published>
+    <updated>2020-02-29T16:55:42.000Z</updated>
+    
+    <summary type="html">
+    
+      RPC，Remote Procedure Call，直译过来就是远程过程调用，是一种进程间的通信方式。占资源少，性能消耗低，传输效率高，但是实现起来比较复杂。
+    
+    </summary>
+    
+    
+      <category term="Python 进阶" scheme="https://sliu.vip/categories/Python-%E8%BF%9B%E9%98%B6/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>荏苒资讯前端项目搭建</title>
+    <link href="https://sliu.vip/project/renran-pc-build/"/>
+    <id>https://sliu.vip/project/renran-pc-build/</id>
+    <published>2020-02-27T17:06:36.000Z</published>
+    <updated>2020-02-28T16:43:26.000Z</updated>
+    
+    <summary type="html">
+    
+      荏苒资讯项目之前端项目框架的搭建和模板的使用。基本上是一些安装环境和复制粘贴的过程，流水线操作，没啥好说的。
+    
+    </summary>
+    
+    
+      <category term="综合项目" scheme="https://sliu.vip/categories/%E7%BB%BC%E5%90%88%E9%A1%B9%E7%9B%AE/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>教程 4：认证 Authentication 和权限 Permission</title>
+    <link href="https://sliu.vip/translation/django-rest-framework-tutorial/authentication-permission/"/>
+    <id>https://sliu.vip/translation/django-rest-framework-tutorial/authentication-permission/</id>
+    <published>2020-02-26T11:27:38.000Z</published>
+    <updated>2020-02-26T11:27:38.000Z</updated>
+    
+    <summary type="html">
+    
+      Django REST framework 官方文档翻译之认证与权限，介绍 drf 权限组建的用法。
+    
+    </summary>
+    
+    
+      <category term="官方文档翻译" scheme="https://sliu.vip/categories/%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>消息队列和 RabbitMQ</title>
+    <link href="https://sliu.vip/python-advanced/queue-rabbitmq/"/>
+    <id>https://sliu.vip/python-advanced/queue-rabbitmq/</id>
+    <published>2020-02-26T11:26:05.000Z</published>
+    <updated>2020-02-28T16:43:32.000Z</updated>
+    
+    <summary type="html">
+    
+      消息队列和 RabbitMQ 的用法。消息队列是针对生产者消费者模型的解决方案，解耦合。RabbitMQ 是一款经典的消息队列工具。
+    
+    </summary>
+    
+    
+      <category term="Python 进阶" scheme="https://sliu.vip/categories/Python-%E8%BF%9B%E9%98%B6/"/>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>教程 3：类视图 Class-based View</title>
+    <link href="https://sliu.vip/translation/django-rest-framework-tutorial/class-based-view/"/>
+    <id>https://sliu.vip/translation/django-rest-framework-tutorial/class-based-view/</id>
+    <published>2020-02-25T16:48:35.000Z</published>
+    <updated>2020-02-25T16:48:35.000Z</updated>
+    
+    <summary type="html">
+    
+      Django REST framework 官方文档翻译之类视图，使用类视图，利用扩展视图类和通用视图类的扩展子类，极大简化代码。
+    
+    </summary>
+    
+    
+      <category term="官方文档翻译" scheme="https://sliu.vip/categories/%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91/"/>
+    
+    
+  </entry>
+  
+</feed>

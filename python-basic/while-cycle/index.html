@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="Tu5vqPaUb8svfkPx5eetJFD84ciQCcWVXNatdsWtj9Q">
+  <meta name="baidu-site-verification" content="baidu_verify_FBq9PG4BBb">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.1","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="while 循环基本结构循环就是不断地重复着某件事情。while 是 while 循环的关键字。 while循环的基本结构： 12while 条件:缩进 循环体  典型 while 循环示例： 1234567print(1111)while True:   # 死循环    print(&quot;坚强&quot;)    print(&quot;过火&quot;)    print(&quot;鸡你太美&quot;)    print(&quot;大碗宽面&quot;)pr">
+<meta property="og:type" content="article">
+<meta property="og:title" content="while 循环">
+<meta property="og:url" content="https://sliu.vip/python-basic/while-cycle/index.html">
+<meta property="og:site_name" content="刘硕的技术查阅手册">
+<meta property="og:description" content="while 循环基本结构循环就是不断地重复着某件事情。while 是 while 循环的关键字。 while循环的基本结构： 12while 条件:缩进 循环体  典型 while 循环示例： 1234567print(1111)while True:   # 死循环    print(&quot;坚强&quot;)    print(&quot;过火&quot;)    print(&quot;鸡你太美&quot;)    print(&quot;大碗宽面&quot;)pr">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sliu.vip/python-basic/while-cycle/1567757718914.png">
+<meta property="og:image" content="https://sliu.vip/python-basic/while-cycle/1567758395997.png">
+<meta property="og:image" content="https://sliu.vip/python-basic/while-cycle/QQ%E5%9B%BE%E7%89%8720190906145135.png">
+<meta property="og:image" content="https://sliu.vip/python-basic/while-cycle/QQ%E5%9B%BE%E7%89%8720190906145142.png">
+<meta property="article:published_time" content="2020-02-15T05:53:10.000Z">
+<meta property="article:modified_time" content="2020-02-29T02:34:01.861Z">
+<meta property="article:author" content="刘硕">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="全栈开发">
+<meta property="article:tag" content="并发编程">
+<meta property="article:tag" content="网络编程">
+<meta property="article:tag" content="爬虫">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="自动化测试">
+<meta property="article:tag" content="Web开发">
+<meta property="article:tag" content="HTML">
+<meta property="article:tag" content="CSS">
+<meta property="article:tag" content="JavaScript">
+<meta property="article:tag" content="jQuery">
+<meta property="article:tag" content="Bootstrap">
+<meta property="article:tag" content="测试自动化">
+<meta property="article:tag" content="Selenium">
+<meta property="article:tag" content="postman">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="Vue">
+<meta property="article:tag" content="drf">
+<meta property="article:tag" content="django">
+<meta property="article:tag" content="文档翻译">
+<meta property="article:tag" content="PEP8">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sliu.vip/python-basic/while-cycle/1567757718914.png">
+
+<link rel="canonical" href="https://sliu.vip/python-basic/while-cycle/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>while 循环 | 刘硕的技术查阅手册</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f14f123935d6183fdd06f8f1c4bc378f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="刘硕的技术查阅手册" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">刘硕的技术查阅手册</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">Python 全栈开发学习笔记</h1>
+      
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-toc">
+
+    <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-fw fa-rss"></i>订阅</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/while-cycle/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          while 循环
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-15 13:53:10" itemprop="dateCreated datePublished" datetime="2020-02-15T13:53:10+08:00">2020-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="while-循环基本结构"><a href="#while-循环基本结构" class="headerlink" title="while 循环基本结构"></a>while 循环基本结构</h3><p>循环就是不断地重复着某件事情。<code>while</code> 是 while 循环的关键字。</p>
+<p>while循环的基本结构：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> 条件:</span><br><span class="line">缩进 循环体</span><br></pre></td></tr></table></figure>
+
+<p>典型 while 循环示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="number">1111</span>)</span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:   <span class="comment"># 死循环</span></span><br><span class="line">    print(<span class="string">"坚强"</span>)</span><br><span class="line">    print(<span class="string">"过火"</span>)</span><br><span class="line">    print(<span class="string">"鸡你太美"</span>)</span><br><span class="line">    print(<span class="string">"大碗宽面"</span>)</span><br><span class="line">print(<span class="number">333</span>)</span><br></pre></td></tr></table></figure>
+
+<p>上面的例子中，第一步，先打印 <code>1111</code>。第二步，进入 while 语句，判断 <code>while</code> 后的条件是否为真。<code>while</code> 后的语句是 <code>True</code>，为真，进入循环体中。第三步，打印 <code>坚强</code>。第四五六步分别打印出 <code>过火</code>、<code>鸡你太美</code> 和 <code>大碗宽面</code>。循环体中的内容运行完毕，程序又返回到 while 语句。第七步，继续判断 <code>while</code> 后的条件是否为真。然后继续进入循环体，重新打印内容。随后又返回到 while 语句中。因为 while 语句后面的条件一直都是 <code>True</code>，故而循环往复，永不停息，成为了死循环。最后一条的 <code>333</code> 永远也打印不出来。</p>
+<img src="/python-basic/while-cycle/1567757718914.png" class="" width="1567757718914">
+
+<h3 id="break-语句"><a href="#break-语句" class="headerlink" title="break 语句"></a>break 语句</h3><p>很显然，这样的死循环并不能满足我们日常编程的需要。如果能有办法限制循环次数，将会十分实用。在这里，我们可以引入 break 语句。break 可以终止当前循环。结合 if 条件语句，可以把死循环转换成有限的循环。例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 循环5次</span></span><br><span class="line">count = <span class="number">0</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:  <span class="comment"># 死循环</span></span><br><span class="line">    count = count + <span class="number">1</span>  <span class="comment"># 先执行 = 右边的内容</span></span><br><span class="line">    <span class="keyword">if</span> count == <span class="number">5</span>:</span><br><span class="line">        print(count)</span><br><span class="line">        <span class="keyword">break</span> <span class="comment"># 有限循环</span></span><br></pre></td></tr></table></figure>
+
+<p>运行的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">5</span></span><br></pre></td></tr></table></figure>
+
+<p>在这个例子中，我们先定义了一个变量 <code>count</code> 用来计数，也称为 <code>计数器</code>。每一次循环，<code>count</code> 就会增加 <code>1</code>。当 <code>count</code> 等于 <code>5</code> 时，if 语句的条件成立，打印出当前 <code>count</code> 的数值，运行 <code>break</code>，退出循环。我们就成功把死循环转换成了有限循环。</p>
+<img src="/python-basic/while-cycle/1567758395997.png" class="" width="1567758395997">
+
+<h3 id="continue-语句"><a href="#continue-语句" class="headerlink" title="continue 语句"></a>continue 语句</h3><p>除了 <code>break</code>，while 循环中还有一个很重要的语句 <code>continue</code>。<code>continue</code> 语句的意思是跳出本次循环，继续下次循环。用通俗的话来讲，<code>continue</code> 就是伪装成循环体中最后一行代码。例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">count = <span class="number">0</span></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:  <span class="comment"># 死循环</span></span><br><span class="line">    count = count + <span class="number">1</span>  <span class="comment"># 先执行 = 右边的内容</span></span><br><span class="line">    <span class="keyword">if</span> count == <span class="number">5</span>:</span><br><span class="line">        print(<span class="number">111</span>)</span><br><span class="line">        <span class="keyword">continue</span>  <span class="comment"># continue 就是伪装成循环体中最后一行代码</span></span><br><span class="line">    print(count)</span><br></pre></td></tr></table></figure>
+
+<p>很显然，这还是一个死循环。只不过当计数器 <code>count</code> 等于 <code>5</code> 的时候，会打印一次 <code>111</code>，并且这次的 <code>count</code>，也就是 <code>5</code>，不会被打印出来。</p>
+<img src="/python-basic/while-cycle/QQ%E5%9B%BE%E7%89%8720190906145135.png" class="" title="QQ图片20190906145135">
+
+<h3 id="条件控制循环"><a href="#条件控制循环" class="headerlink" title="条件控制循环"></a>条件控制循环</h3><p>除了通过使用 break 关键字来终止循环，我们还可以通过 while 后面的条件来控制循环次数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">count = <span class="number">0</span></span><br><span class="line"><span class="keyword">while</span> count &lt; <span class="number">2</span>:</span><br><span class="line">    print(count)</span><br><span class="line">    count = count + <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>打印出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0</span></span><br><span class="line"><span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>在上面的例子中，最开始计数器 <code>count</code> 的值为 <code>0</code>。然后运行到 while 条件，<code>count &lt; 2</code> 是成立的，于是进入循环体。首先把 <code>count</code> 的内容 <code>0</code> 打印出来，然后 <code>count</code> 增加 <code>1</code>，进入下一次循环。第二次循环也一样，打印 <code>1</code> 之后，<code>count</code> 变成了 <code>2</code>，再回到 while 判断语句。此时，<code>count &lt; 2</code> 不成立，循环终止。</p>
+<img src="/python-basic/while-cycle/QQ%E5%9B%BE%E7%89%8720190906145142.png" class="" title="QQ图片20190906145142">
+
+<h3 id="while-else-语句"><a href="#while-else-语句" class="headerlink" title="while else 语句"></a>while else 语句</h3><p>while 语句也有判断的行为，所以也可以配合 else 语句使用。while else 结构和 if else 结构很相似。只有当 while 后判断的条件不成立时，才会执行 else 中的语句。如果循环中没有 break，else 语句中的内容将在循环结束后执行；如果循环中有 break，else 语句中的内容有可能不被执行。观察下面两个例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="number">222</span>)</span><br><span class="line">count = <span class="number">0</span></span><br><span class="line"><span class="keyword">while</span> count &lt; <span class="number">3</span>:</span><br><span class="line">    print(count)</span><br><span class="line">    count = count + <span class="number">1</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    print(<span class="number">111</span>)</span><br><span class="line"><span class="comment"># 运行结果: 222 0 1 2 111</span></span><br><span class="line"></span><br><span class="line">print(<span class="number">222</span>)</span><br><span class="line">count = <span class="number">0</span></span><br><span class="line"><span class="keyword">while</span> count &lt; <span class="number">3</span>:</span><br><span class="line">    print(count)</span><br><span class="line">    count = count + <span class="number">1</span></span><br><span class="line">    <span class="keyword">break</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    print(<span class="number">111</span>)</span><br><span class="line"><span class="comment"># 运行结果: 222 0</span></span><br></pre></td></tr></table></figure>
+
+<p>在第一个例子中，经过三次循环后，计数器 <code>count</code> 的值将增加到 <code>3</code>。此时，条件 <code>count &lt; 3</code> 不再满足，跳出循环，执行 <code>else</code> 语句，打印出 <code>111</code> 来。而第二个例子中，在第一次循环中就遇到了 <code>break</code>，循环被强行终止，并没有再次判断 <code>count &lt; 3</code>，于是就不会进入到 <code>else</code> 中，<code>111</code> 便打印不出来。</p>
+<h3 id="while-循环小结"><a href="#while-循环小结" class="headerlink" title="while 循环小结"></a>while 循环小结</h3><ul>
+<li><p>while循环基本结构：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> 条件:</span><br><span class="line">缩进 循环体</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>break</code>：终止当前循环</p>
+</li>
+<li><p><code>continue</code>：跳出本次循环，继续下次循环（就是伪装成循环体中最后一行代码）</p>
+</li>
+<li><p><code>continue</code> 和 <code>break</code> 下方的代码都不会执行</p>
+</li>
+<li><p><code>while</code> 循环可以通过条件控制循环的次数</p>
+</li>
+<li><p><code>while</code> 语句可以和 <code>else</code> 语句配合使用，当 <code>while</code> 后的条件不满足时，将会运行 <code>else</code> 中的语句。</p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/python-basic/var-const-com/" rel="prev" title="变量、常量和注释">
+      <i class="fa fa-chevron-left"></i> 变量、常量和注释
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/translation/raspberry-gpio-python-examples/output/" rel="next" title="GPIO 输出">
+      GPIO 输出 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#while-循环基本结构"><span class="nav-number">1.</span> <span class="nav-text">while 循环基本结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#break-语句"><span class="nav-number">2.</span> <span class="nav-text">break 语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#continue-语句"><span class="nav-number">3.</span> <span class="nav-text">continue 语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#条件控制循环"><span class="nav-number">4.</span> <span class="nav-text">条件控制循环</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#while-else-语句"><span class="nav-number">5.</span> <span class="nav-text">while else 语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#while-循环小结"><span class="nav-number">6.</span> <span class="nav-text">while 循环小结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="刘硕"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">刘硕</p>
+  <div class="site-description" itemprop="description">不成为自己讨厌的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">221</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:liushuo432@outlook.com" title="E-Mail → mailto:liushuo432@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/2436055290" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;2436055290" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备20001451号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘硕</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.2" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="/js/love.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/Epsilon2.1.model.json"},"display":{"superSample":2,"width":200,"height":400,"position":"left","hOffset":-30,"vOffset":-40},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>

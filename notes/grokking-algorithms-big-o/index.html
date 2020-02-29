@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="Tu5vqPaUb8svfkPx5eetJFD84ciQCcWVXNatdsWtj9Q">
+  <meta name="baidu-site-verification" content="baidu_verify_FBq9PG4BBb">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.1","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="《图解算法》读书笔记之大 O 表示法。一个算法中极重要的概念，用来表示一个算法消耗时间的状况。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="大 O 表示法">
+<meta property="og:url" content="https://sliu.vip/notes/grokking-algorithms-big-o/index.html">
+<meta property="og:site_name" content="刘硕的技术查阅手册">
+<meta property="og:description" content="《图解算法》读书笔记之大 O 表示法。一个算法中极重要的概念，用来表示一个算法消耗时间的状况。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-big-o/1582183152573.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-big-o/1582185043657.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-big-o/1582279780670.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-big-o/1582279949871.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-big-o/1582280228579.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-big-o/1582280265916.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-big-o/1582280577466.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-big-o/1582280624165.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-big-o/1582280845892.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-big-o/1582280882446.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-big-o/1582280961804.png">
+<meta property="article:published_time" content="2020-02-20T16:29:39.000Z">
+<meta property="article:modified_time" content="2020-02-21T16:10:44.000Z">
+<meta property="article:author" content="刘硕">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="全栈开发">
+<meta property="article:tag" content="并发编程">
+<meta property="article:tag" content="网络编程">
+<meta property="article:tag" content="爬虫">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="自动化测试">
+<meta property="article:tag" content="Web开发">
+<meta property="article:tag" content="HTML">
+<meta property="article:tag" content="CSS">
+<meta property="article:tag" content="JavaScript">
+<meta property="article:tag" content="jQuery">
+<meta property="article:tag" content="Bootstrap">
+<meta property="article:tag" content="测试自动化">
+<meta property="article:tag" content="Selenium">
+<meta property="article:tag" content="postman">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="Vue">
+<meta property="article:tag" content="drf">
+<meta property="article:tag" content="django">
+<meta property="article:tag" content="文档翻译">
+<meta property="article:tag" content="PEP8">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sliu.vip/notes/grokking-algorithms-big-o/1582183152573.png">
+
+<link rel="canonical" href="https://sliu.vip/notes/grokking-algorithms-big-o/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>大 O 表示法 | 刘硕的技术查阅手册</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f14f123935d6183fdd06f8f1c4bc378f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="刘硕的技术查阅手册" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">刘硕的技术查阅手册</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">Python 全栈开发学习笔记</h1>
+      
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-toc">
+
+    <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-fw fa-rss"></i>订阅</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/notes/grokking-algorithms-big-o/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          大 O 表示法
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-21 00:29:39" itemprop="dateCreated datePublished" datetime="2020-02-21T00:29:39+08:00">2020-02-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-22 00:10:44" itemprop="dateModified" datetime="2020-02-22T00:10:44+08:00">2020-02-22</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B5%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习实践笔记</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <div class="post-description">《图解算法》读书笔记之大 O 表示法。一个算法中极重要的概念，用来表示一个算法消耗时间的状况。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="大-O-表示法的概念"><a href="#大-O-表示法的概念" class="headerlink" title="大 O 表示法的概念"></a>大 O 表示法的概念</h3><p>大 O 表示法指出了算法有多快。例如，假设列表包含 n 个元素。简单査找需要检查每个元素，因此需要执行 n 次操作。使用大 O 表示法，这个运行时间为 <code>O(n)</code>。单位秒呢？没有——大 O 表示法指的并非以秒为单位的速度。大 O 表示法让你能够比较操作数，它指出了算法运行时间的<strong>增速</strong>。</p>
+<p>同样地，为检查长度为 n 的列表，二分查找需要执行 $log_2(n)$ 次操作。使用大 O 表示法，这个运行时间可以用 $O(log\space n)$表示一般而言大 O 表示法像下面这样。之所以称为大 O 表示法，是因为操作数前有个大 O。</p>
+<img src="/notes/grokking-algorithms-big-o/1582183152573.png" class="" width="1582183152573">
+
+<p>大 O 表示法表示的是最糟情况下的运行时间。当然，除了最糟情况，有时也会考虑平均情况。</p>
+<p>一些常见的大 O 运行时间如下：</p>
+<ul>
+<li>$O(log\space n)$ ，也叫对数时间，这样的算法比如 <a href="/notes/grokking-algorithms-binary-search">二分查找</a> </li>
+<li>$O(n)$，也叫线性时间，比如简单查找</li>
+<li>$O(n * log\space n)$ ，比如快速排序——一种速度较快的排序算法</li>
+<li>$O(n^2)$，比如选择排序——一种速度较慢的排序算法</li>
+<li>$O(n!)$，比如旅行商问题的解决方案——一种非常慢的算法</li>
+</ul>
+<img src="/notes/grokking-algorithms-big-o/1582185043657.png" class="" width="1582185043657">
+
+<p>上述图表中的时间是基于每秒执行10 次操作计算得到的。这些数据并不准确，这里提供它们只是想让你对这些运行时间的差别有大致认识。实际上，计算机每秒执行的操作远不止10次。</p>
+<p>还有其他的运行时间，但这五种是最常见的。</p>
+<p>小结如下：</p>
+<ul>
+<li>算法的速度指的并非时间，而是操作数的增速。</li>
+<li>谈论算法的速度时，我们说的是随着输入的增加，其运行时间将以什么样的速度增加。</li>
+<li>算法的运行时间用大 O 表示法表示。</li>
+<li>$O(log \space n)$ 比 $O(n)$ 快，当需要搜索的元素越多时，前者比后者快得越多。</li>
+</ul>
+<h3 id="排序算法的运行时间"><a href="#排序算法的运行时间" class="headerlink" title="排序算法的运行时间"></a>排序算法的运行时间</h3><p>选择排序的运行时间为 $O(n^2)$，速度非常慢。合并排序（merge sort）的排序算法运行时间为 $O(n \space log \space n)$，比选择排序快得多！快速排序的情况比较棘手，在最糟情况下，其运行时间为 $O(n^2)$ 与选择排序一样慢！但这是最糟情况。在平均情况下，快速排序的运行时间为 $O(n \space log \space n)$。</p>
+<p>你可能会有如下疑问：这里说的最糟情况和平均情况是什么意思呢？若快速排序在平均情况下的运行时间为 $O(n \space log \space n)$，而合并排序的运行时间总是  $O(n \space log \space n)$，为何不使用合并排序？它不是更快吗？</p>
+<p>来看下面两个打印列表中元素的简单函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">print_items</span><span class="params">(arr: list)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> arr:</span><br><span class="line">        print(i)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">print_items([<span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">8</span>, <span class="number">10</span>])</span><br></pre></td></tr></table></figure>
+
+<p>这个函数遍历列表中的每个元素并将其打印出来。它迭代整个列表一次，因此运行时间为 $O(n)$。现在我们对这个函数进行修改，使其在打印每个元素前都休眠 1 秒钟：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">print_items2</span><span class="params">(arr: list)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> arr:</span><br><span class="line">        time.sleep(<span class="number">1</span>)</span><br><span class="line">        print(i)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">print_items2([<span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">8</span>, <span class="number">10</span>])</span><br></pre></td></tr></table></figure>
+
+<p>这个函数每次打印元素前都要休眠 1 秒。</p>
+<img src="/notes/grokking-algorithms-big-o/1582279780670.png" class="" width="1582279780670">
+
+<p>这两个函数的时间都是 $O(n)$，但是很明显，第一个函数运行速度要快很多。这是因为，事实上，我们使用大 O 表示法表示时间时，n 的含义是有一个常数系数的。</p>
+<img src="/notes/grokking-algorithms-big-o/1582279949871.png" class="" width="1582279949871">
+
+<p>C 是算法所需的固定时间量，被称为常量。例如，print_items 所需的时间可能是 10 毫秒 * n，而 print_items2 所需的时间为 1 秒 * n。</p>
+<p>通常不考虑这个常量，是因为对于时间复杂度不同的算法而言，当数据量很大时，这个常熟造成的影响微乎其微。</p>
+<p>比如假设时间复杂度为 $O(n)$ 的简单查找的时间常数为 10 毫秒，时间复杂度为 $O(log \space n)$ 的二分查找时间常数为 1 秒。</p>
+<img src="/notes/grokking-algorithms-big-o/1582280228579.png" class="" width="1582280228579">
+
+<p>那么如果在含有 40 亿个数据中查找数据的话，两种方法所需时间为：</p>
+<img src="/notes/grokking-algorithms-big-o/1582280265916.png" class="" width="1582280265916">
+
+<p>二分查找依然快很多，即便他的常量是简单查找的 100 倍。</p>
+<p>但有时候，常量的影响可能很大，对快速査找和合并査找来说就是如此。快速査找的常量比合并查找小，因此即便它们的运行时间都为 $O(n \space log \space n)$，快速査找的速度仍有可能会更快。实际上，快速査找的速度确实更快——因为相对于遇上最糟情况，它遇上平均情况的可能性要大得多。</p>
+<h3 id="平均情况和最糟情况"><a href="#平均情况和最糟情况" class="headerlink" title="平均情况和最糟情况"></a>平均情况和最糟情况</h3><p>快速排序的性能髙度依赖于你选择的基准值。假设你总是将第一个元素用作基准值，且要处理的数组是有序的。由于快速排序算法不检查输入数组是否有序，因此它依然尝试对其进行排序。</p>
+<img src="/notes/grokking-algorithms-big-o/1582280577466.png" class="" width="1582280577466">
+
+<p>注意，数组并没有被分成两半，相反，其中一个子数组始终为空，这导致调用栈非常长。</p>
+<p>现在假设你总是将中间的元素用作基准值，在这种情况下，调用栈如下。</p>
+<img src="/notes/grokking-algorithms-big-o/1582280624165.png" class="" width="1582280624165">
+
+<p>调用栈短得多！因为每次都将数组分成两半，所以不需要那么多递归调用。你很快就到达了基线条件，因此调用栈短得多。<br>第一个示例展示的是最糟情况，而第二个示例展示的是最佳情况。在最糟情况下，栈长为 $O(n)$，而在最佳情况下，栈长为 $O(n \space log \space n)$。<br>现在来看看栈的第一层。你将一个元素用作基准值，并将其他的元素划分到两个子数组中。这涉及数组中的全部 8 个元素，因此该操作的时间为 $O(n)$。在调用栈的第一层，涉及全部 8 个元素，但实际上，在调用栈的每层都涉及 $O(n)$ 个元素。</p>
+<img src="/notes/grokking-algorithms-big-o/1582280845892.png" class="" width="1582280845892">
+
+<p>对于最佳情况，每次也是涉及 $O(n)$ 个元素。</p>
+<img src="/notes/grokking-algorithms-big-o/1582280882446.png" class="" width="1582280882446">
+
+<p>因此，完成每层的任务，所需要的时间都为 $O(n)$。</p>
+<img src="/notes/grokking-algorithms-big-o/1582280961804.png" class="" width="1582280961804">
+
+<p>对于最理想情况，总层数为 $O(log \space n)$（用技术术语来讲，就是调用栈的高度为 $O(log \space n)$）。又因为每一层需要的时间为 $O(n)$，所以整个算法所需要的总时间为 $O(n) \space * \space O(log \space n)=O(n \space log \space n)$。</p>
+<p>对于最早情况，有 $O(n)$ 层，于是算法的运行时间为 $O(n) \space * \space O(n)$。</p>
+<p>知道吗？这里要告诉你的是，最佳情况也是平均情况。只要你每次都随机地选择一个数组元素作为基准值，快速排序的平均运行时间就将为 $O(n \space log \space n)$。快速排序是最快的排序算法之一，也是 D&amp;C 的典范。</p>
+<p>小结：</p>
+<ol>
+<li>实现快速排序时，请随机地选择用作基准值的元素。快速排序的平均运行时间为 $O(n \space log \space n)$</li>
+<li>大 O 表示法中的常量有时候事关重大，这就是快速排序比合并排序快的原因所在</li>
+<li>比较简单査找和二分查找时，常量几乎无关紧要。因为列表很长时， $O(log \space n)$ 的速度比 $O(n)$ 快得多</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/notes/grokking-algorithms-array-list/" rel="prev" title="数组和链表">
+      <i class="fa fa-chevron-left"></i> 数组和链表
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/notes/grokking-algorithms-binary-search/" rel="next" title="二分查找">
+      二分查找 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#大-O-表示法的概念"><span class="nav-number">1.</span> <span class="nav-text">大 O 表示法的概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#排序算法的运行时间"><span class="nav-number">2.</span> <span class="nav-text">排序算法的运行时间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#平均情况和最糟情况"><span class="nav-number">3.</span> <span class="nav-text">平均情况和最糟情况</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="刘硕"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">刘硕</p>
+  <div class="site-description" itemprop="description">不成为自己讨厌的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">221</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:liushuo432@outlook.com" title="E-Mail → mailto:liushuo432@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/2436055290" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;2436055290" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备20001451号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘硕</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.2" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '[object Object]';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+  <script type="text/javascript" src="/js/love.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/Epsilon2.1.model.json"},"display":{"superSample":2,"width":200,"height":400,"position":"left","hOffset":-30,"vOffset":-40},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>

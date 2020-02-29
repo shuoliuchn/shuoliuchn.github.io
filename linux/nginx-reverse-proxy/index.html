@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="Tu5vqPaUb8svfkPx5eetJFD84ciQCcWVXNatdsWtj9Q">
+  <meta name="baidu-site-verification" content="baidu_verify_FBq9PG4BBb">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.1","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="nginx 的反向代理。代理，在我们生活中很常见了，租房找中介，买票找黄牛，生活用品也都不是我们自己去生产，燃气是气厂提供，自来水是水厂提供。同样，web 服务往往也不是直接由后端框架提供服务，而是由 nginx 之类的 web 服务器代理的。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="nginx 的反向代理功能">
+<meta property="og:url" content="https://sliu.vip/linux/nginx-reverse-proxy/index.html">
+<meta property="og:site_name" content="刘硕的技术查阅手册">
+<meta property="og:description" content="nginx 的反向代理。代理，在我们生活中很常见了，租房找中介，买票找黄牛，生活用品也都不是我们自己去生产，燃气是气厂提供，自来水是水厂提供。同样，web 服务往往也不是直接由后端框架提供服务，而是由 nginx 之类的 web 服务器代理的。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sliu.vip/linux/nginx-reverse-proxy/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86.png">
+<meta property="og:image" content="https://sliu.vip/linux/nginx-reverse-proxy/image-20200207144737094.png">
+<meta property="og:image" content="https://sliu.vip/linux/nginx-reverse-proxy/image-20200207144915013.png">
+<meta property="og:image" content="https://sliu.vip/linux/nginx-reverse-proxy/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E9%85%8D%E7%BD%AE%E5%9B%BE.png">
+<meta property="og:image" content="https://sliu.vip/linux/nginx-reverse-proxy/1581251946284.png">
+<meta property="article:published_time" content="2020-02-17T10:29:13.000Z">
+<meta property="article:modified_time" content="2020-02-29T02:34:02.068Z">
+<meta property="article:author" content="刘硕">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="全栈开发">
+<meta property="article:tag" content="并发编程">
+<meta property="article:tag" content="网络编程">
+<meta property="article:tag" content="爬虫">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="自动化测试">
+<meta property="article:tag" content="Web开发">
+<meta property="article:tag" content="HTML">
+<meta property="article:tag" content="CSS">
+<meta property="article:tag" content="JavaScript">
+<meta property="article:tag" content="jQuery">
+<meta property="article:tag" content="Bootstrap">
+<meta property="article:tag" content="测试自动化">
+<meta property="article:tag" content="Selenium">
+<meta property="article:tag" content="postman">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="Vue">
+<meta property="article:tag" content="drf">
+<meta property="article:tag" content="django">
+<meta property="article:tag" content="文档翻译">
+<meta property="article:tag" content="PEP8">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sliu.vip/linux/nginx-reverse-proxy/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86.png">
+
+<link rel="canonical" href="https://sliu.vip/linux/nginx-reverse-proxy/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>nginx 的反向代理功能 | 刘硕的技术查阅手册</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f14f123935d6183fdd06f8f1c4bc378f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="刘硕的技术查阅手册" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">刘硕的技术查阅手册</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">Python 全栈开发学习笔记</h1>
+      
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-toc">
+
+    <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-fw fa-rss"></i>订阅</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/linux/nginx-reverse-proxy/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          nginx 的反向代理功能
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-17 18:29:13" itemprop="dateCreated datePublished" datetime="2020-02-17T18:29:13+08:00">2020-02-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-29 10:34:02" itemprop="dateModified" datetime="2020-02-29T10:34:02+08:00">2020-02-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <div class="post-description">nginx 的反向代理。代理，在我们生活中很常见了，租房找中介，买票找黄牛，生活用品也都不是我们自己去生产，燃气是气厂提供，自来水是水厂提供。同样，web 服务往往也不是直接由后端框架提供服务，而是由 nginx 之类的 web 服务器代理的。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="代理的概念"><a href="#代理的概念" class="headerlink" title="代理的概念"></a>代理的概念</h3><p>代理，也就请人帮自己做一件事。生活中，代理的情况其实非常常见，比如：</p>
+<ul>
+<li>房屋中介</li>
+<li>微商</li>
+<li>科学上网代理</li>
+<li>黄牛</li>
+</ul>
+<p>接下来，我们就以房屋中介为例，介绍一下代理的概念。</p>
+<p>第一种形式，直接联系房东。</p>
+<p>按照最直观的思路，我们要租房，当然要去找房东。直接联系到房东，找到我们想要的房屋资源。</p>
+<p>这样做自然对用户来说很方便，可以直接联系到房东，不会有中间商赚差价。而且可以直接联系房东，能做的事情就多了。</p>
+<p>但是对于房东来说，就不太喜欢这样了。首先，如果房子已经租出去了，就不希望在有人来打扰。但还会有很多人看着广告来向房东询问房屋信息。房东会不胜其烦。而且，一旦房子出了点什么问题，房客首先来找的当然是也只能是房东。这会让房东陷在租房过程中，无法抽身去做其他事，或者为更多人服务。</p>
+<p>对于 web 请求来说，也是如此。这种方式就是浏览器直接访问服务器的 django 进程。django 不光处理租房子，也就是动态请求，其他的日常琐事，也就是静态文件也要由 django 处理。后台 django 的压力就很大，就会很吃资源，而且服务的效果也不好。这种方式，就是没有代理的 web 服务模式。</p>
+<figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">老王想租房</span> --<span class="literal">-</span><span class="literal">-</span>&gt; <span class="comment">直接找到房东，找到我想要的资源</span> --<span class="literal">-</span>&gt; <span class="comment">没有任何性能丢失，很好</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">用户浏览器</span> --<span class="literal">-</span><span class="literal">-</span>&gt; <span class="comment">请求直接发给后台的django进程去处理</span></span><br></pre></td></tr></table></figure>
+
+<p>第二种形式，联系中介租房</p>
+<p>这次房东将房子托管给中介，委托中介帮忙把房子租出去。房客如果想租房，没办法直接联系到房东。无奈，他只好找中介帮忙。中介找到房东的房屋信息，按照约定的价格租给房客。</p>
+<p>具体的流程是这样的：</p>
+<figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">请求过程</span></span><br><span class="line"><span class="comment">老王想租房，找不到房东，找不到资源</span> --<span class="literal">-</span>&gt; <span class="comment">请求发给中介</span>--<span class="literal">-</span>&gt; <span class="comment">中介拿到房东的房源</span> </span><br><span class="line"><span class="comment">响应过程</span></span><br><span class="line"><span class="comment">老王拿到房源</span> &lt;--<span class="literal">-</span><span class="comment">中介给的房源</span> &lt;--<span class="literal">-</span><span class="comment">房东给的中介的资源</span></span><br></pre></td></tr></table></figure>
+
+<p>这样做的好处是，房东只需提供住房，不再需要为其他的事情操心。</p>
+<p>此时此刻，中介在用户的眼里，就是一个服务器（房东）。</p>
+<p>类似地，对于 web 请求，浏览器不直接访问到后端的 django。而是先由 nginx 处理请求，若是静态文件，则直接返回给浏览器，若是需要读取数据库的动态请求，方才将请求转发给后端的 django，django 通过 pymysql 读取数据。处理好数据后，django 将处理好的请求返回给 nginx，再传给浏览器。在浏览器眼里，nginx 就是服务端。</p>
+<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">反向代理的网站部署中的应用</span><br><span class="line"></span><br><span class="line">浏览器 -&gt;  nginx web服务器  -&gt;  django（后端到底有多少的机器，我们无需知道）</span><br></pre></td></tr></table></figure>
+
+<img src="/linux/nginx-reverse-proxy/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86.png" class="" title="反向代理">
+
+<h3 id="正向代理和反向代理"><a href="#正向代理和反向代理" class="headerlink" title="正向代理和反向代理"></a>正向代理和反向代理</h3><p>上面谈到的通过中介租房的代理形式，以及将请求通过 nginx 转发的代理形式，都是一种反向代理。</p>
+<p>反向代理，代理的是服务端。</p>
+<p>在用户眼里，中介就如同房东；在浏览器眼里，nginx 就是是服务端了，其实请求还是要转发给 django 的。</p>
+<p>至于正向代理，代理的是客户端。</p>
+<p>一个常见的例子是 vpn 连接。</p>
+<p>比如我在北京，但是访问不了国外的某些网站。</p>
+<p>但如果我在日本，是可以访问到这些网站的。</p>
+<p>那么如果我在北京，伪装成日本的身份，去访问国外网站。在国外网站的服务器眼里，请求是来自于日本的，而不是北京 ，就允许我们进行访问。</p>
+<p>这时在服务器看来，客户端是日本的代理服务器，而不是我们。</p>
+<p>总而言之，正向代理，代理的是客户端；反向代理，代理的是服务端。</p>
+<p>正、反向代理的图解</p>
+<img src="/linux/nginx-reverse-proxy/image-20200207144737094.png" class="" title="image-20200207144737094">
+
+
+
+<img src="/linux/nginx-reverse-proxy/image-20200207144915013.png" class="" title="image-20200207144915013">
+
+<h3 id="nginx-的反向代理配置"><a href="#nginx-的反向代理配置" class="headerlink" title="nginx 的反向代理配置"></a>nginx 的反向代理配置</h3><p>反向代理，也就是请求转发。代理服务器将浏览器发出的请求转发给资源服务器。用户通过访问代理服务器，获取到资源服务器的内容。</p>
+<h3 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h3><p>首先，需要准备 2 台 Linux 虚拟机（在 VMware 里安装 2 个 Linux机器），一台作为代理服务器，一台作为资源服务器：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">机器<span class="number">1</span>的ip  ：<span class="number">192.168</span><span class="number">.248</span><span class="number">.128</span>    （中介代理）（nginx，配置代理功能）</span><br><span class="line"></span><br><span class="line">机器<span class="number">2</span>的ip：  <span class="number">192.168</span><span class="number">.248</span><span class="number">.129</span>     （房东，资源服务器）（nginx，返回一个网站页面）</span><br></pre></td></tr></table></figure>
+
+<p>按道理讲，资源服务器应该部署的是 django 项目。但是为了方便起见，就先用 nginx 作演示了：</p>
+<img src="/linux/nginx-reverse-proxy/%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E9%85%8D%E7%BD%AE%E5%9B%BE.png" class="" title="反向代理配置图">
+
+<h3 id="中介，代理服务器配置"><a href="#中介，代理服务器配置" class="headerlink" title="中介，代理服务器配置"></a>中介，代理服务器配置</h3><ol>
+<li><p>首先配置中介代理，128 服务器。最先要安装一个 nginx：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install nginx -y</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>通过 yum 安装的 nginx，配置文件路径自动的生成在了这：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">vim</span> /etc/nginx/nginx.<span class="keyword">conf</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>找到第一个 server{} 标签，修改配置如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen       80 default_server;</span><br><span class="line">    listen       [::]:80 default_server;</span><br><span class="line">    server_name  _;</span><br><span class="line">    root         /usr/share/nginx/html;</span><br><span class="line"></span><br><span class="line">    # Load configuration files for the default server block.</span><br><span class="line">    include /etc/nginx/default.d/*.conf;</span><br><span class="line">    # 当请求是192.168.248.128，也就是代理服务器的时候，进入这个location路径匹配</span><br><span class="line">    location / &#123;</span><br><span class="line">        # 请求通过proxy_pass参数，转发给资源服务器，也就是129那台机器</span><br><span class="line">    	proxy_pass http://192.168.248.129;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    error_page 404 /404.html;</span><br><span class="line">    	location = /40x.html &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    error_page 500 502 503 504 /50x.html;</span><br><span class="line">    	location = /50x.html &#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>改完 <code>nginx.conf</code> 之后，保存退出，启动或平滑重启 nginx：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">nginx</span><br><span class="line"> <span class="comment"># 若nginx已经启动，则需要平滑重启</span></span><br><span class="line">nginx -s reload</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h3 id="房东，资源服务器配置"><a href="#房东，资源服务器配置" class="headerlink" title="房东，资源服务器配置"></a>房东，资源服务器配置</h3><ol>
+<li><p>还是要安装配置好 nginx。</p>
+</li>
+<li><p>修改 nginx.conf，返回一个页面，测试使用（其实啥也不用动，直接用默认就好）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen       80;</span><br><span class="line">    server_name  localhost;</span><br><span class="line"></span><br><span class="line">    <span class="comment">#charset koi8-r;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">#access_log  logs/host.access.log  main;</span></span><br><span class="line">    <span class="comment">#access_log  "pipe:rollback logs/host.access_log interval=1d baknum=7 maxsize=2G"  main;</span></span><br><span class="line"></span><br><span class="line">    location / &#123;</span><br><span class="line">        root   html;</span><br><span class="line">        index  index.html index.htm;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    error_page  404              /40x.html;</span><br><span class="line"></span><br><span class="line">    error_page   500 502 503 504  /50x.html;</span><br><span class="line">        location = /50x.html &#123;</span><br><span class="line">        root   html;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>因为改了配置文件，所以需要平滑重启 nginx：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nginx -s reload</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建首页内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">"&lt;meta charset='utf8'&gt;我是资源服务器 192.168.248.129"</span> &gt; /opt/tengine23/html/index.html</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h3 id="客户端访问代理服务器"><a href="#客户端访问代理服务器" class="headerlink" title="客户端访问代理服务器"></a>客户端访问代理服务器</h3><p>在浏览器中输入代理服务器的 IP，就可以访问到资源服务器了。</p>
+<img src="/linux/nginx-reverse-proxy/1581251946284.png" class="" width="1581251946284">
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/linux/nginx-multi-virtual-server/" rel="prev" title="nginx 的多虚拟主机配置">
+      <i class="fa fa-chevron-left"></i> nginx 的多虚拟主机配置
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/linux/nginx-virtual-server/" rel="next" title="nginx 的虚拟主机">
+      nginx 的虚拟主机 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#代理的概念"><span class="nav-number">1.</span> <span class="nav-text">代理的概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#正向代理和反向代理"><span class="nav-number">2.</span> <span class="nav-text">正向代理和反向代理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nginx-的反向代理配置"><span class="nav-number">3.</span> <span class="nav-text">nginx 的反向代理配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#环境准备"><span class="nav-number">4.</span> <span class="nav-text">环境准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#中介，代理服务器配置"><span class="nav-number">5.</span> <span class="nav-text">中介，代理服务器配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#房东，资源服务器配置"><span class="nav-number">6.</span> <span class="nav-text">房东，资源服务器配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#客户端访问代理服务器"><span class="nav-number">7.</span> <span class="nav-text">客户端访问代理服务器</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="刘硕"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">刘硕</p>
+  <div class="site-description" itemprop="description">不成为自己讨厌的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">221</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:liushuo432@outlook.com" title="E-Mail → mailto:liushuo432@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/2436055290" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;2436055290" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备20001451号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘硕</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.2" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="/js/love.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/Epsilon2.1.model.json"},"display":{"superSample":2,"width":200,"height":400,"position":"left","hOffset":-30,"vOffset":-40},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>

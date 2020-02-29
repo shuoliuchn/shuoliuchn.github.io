@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="Tu5vqPaUb8svfkPx5eetJFD84ciQCcWVXNatdsWtj9Q">
+  <meta name="baidu-site-verification" content="baidu_verify_FBq9PG4BBb">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.1","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="同驻留机制一样，深浅拷贝在编程中的应用其实也不是很多。但是我们依然需要了解。一方面是为了避免后期开发代码时出现问题却不知道原因，另一方面也是因为面试时几乎都会问到有关深浅拷贝的问题。 深浅拷贝主要分为三个方面：  什么是赋值 什么是浅拷贝 什么是深拷贝  赋值变量间赋值操作就是将多个变量的内存地址指向同一个数据的内存地址。例如，对于下面的代码： 123a &#x3D; 10b &#x3D; aprint(id(a),">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深浅拷贝">
+<meta property="og:url" content="https://sliu.vip/python-basic/copy-deep-copy/index.html">
+<meta property="og:site_name" content="刘硕的技术查阅手册">
+<meta property="og:description" content="同驻留机制一样，深浅拷贝在编程中的应用其实也不是很多。但是我们依然需要了解。一方面是为了避免后期开发代码时出现问题却不知道原因，另一方面也是因为面试时几乎都会问到有关深浅拷贝的问题。 深浅拷贝主要分为三个方面：  什么是赋值 什么是浅拷贝 什么是深拷贝  赋值变量间赋值操作就是将多个变量的内存地址指向同一个数据的内存地址。例如，对于下面的代码： 123a &#x3D; 10b &#x3D; aprint(id(a),">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sliu.vip/python-basic/copy-deep-copy/1568472157765.png">
+<meta property="og:image" content="https://sliu.vip/python-basic/copy-deep-copy/1568472544520.png">
+<meta property="og:image" content="https://sliu.vip/python-basic/copy-deep-copy/1568474596593.png">
+<meta property="og:image" content="https://sliu.vip/python-basic/copy-deep-copy/1568475345252.png">
+<meta property="og:image" content="https://sliu.vip/python-basic/copy-deep-copy/1568622652370.png">
+<meta property="og:image" content="https://sliu.vip/python-basic/copy-deep-copy/1568623172107.png">
+<meta property="og:image" content="https://sliu.vip/python-basic/copy-deep-copy/1568623732201.png">
+<meta property="og:image" content="https://sliu.vip/python-basic/copy-deep-copy/1568726333889.png">
+<meta property="article:published_time" content="2020-02-15T05:50:19.000Z">
+<meta property="article:modified_time" content="2020-02-29T02:34:01.866Z">
+<meta property="article:author" content="刘硕">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="全栈开发">
+<meta property="article:tag" content="并发编程">
+<meta property="article:tag" content="网络编程">
+<meta property="article:tag" content="爬虫">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="自动化测试">
+<meta property="article:tag" content="Web开发">
+<meta property="article:tag" content="HTML">
+<meta property="article:tag" content="CSS">
+<meta property="article:tag" content="JavaScript">
+<meta property="article:tag" content="jQuery">
+<meta property="article:tag" content="Bootstrap">
+<meta property="article:tag" content="测试自动化">
+<meta property="article:tag" content="Selenium">
+<meta property="article:tag" content="postman">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="Vue">
+<meta property="article:tag" content="drf">
+<meta property="article:tag" content="django">
+<meta property="article:tag" content="文档翻译">
+<meta property="article:tag" content="PEP8">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sliu.vip/python-basic/copy-deep-copy/1568472157765.png">
+
+<link rel="canonical" href="https://sliu.vip/python-basic/copy-deep-copy/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>深浅拷贝 | 刘硕的技术查阅手册</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f14f123935d6183fdd06f8f1c4bc378f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="刘硕的技术查阅手册" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">刘硕的技术查阅手册</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">Python 全栈开发学习笔记</h1>
+      
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-toc">
+
+    <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-fw fa-rss"></i>订阅</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/copy-deep-copy/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          深浅拷贝
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-15 13:50:19" itemprop="dateCreated datePublished" datetime="2020-02-15T13:50:19+08:00">2020-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>同驻留机制一样，深浅拷贝在编程中的应用其实也不是很多。但是我们依然需要了解。一方面是为了避免后期开发代码时出现问题却不知道原因，另一方面也是因为面试时几乎都会问到有关深浅拷贝的问题。</p>
+<p>深浅拷贝主要分为三个方面：</p>
+<ol>
+<li>什么是赋值</li>
+<li>什么是浅拷贝</li>
+<li>什么是深拷贝</li>
+</ol>
+<h3 id="赋值"><a href="#赋值" class="headerlink" title="赋值"></a>赋值</h3><p>变量间赋值操作就是将多个变量的内存地址指向同一个数据的内存地址。例如，对于下面的代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">10</span></span><br><span class="line">b = a</span><br><span class="line">print(id(a), id(b))</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1947042192</span> <span class="number">1947042192</span></span><br></pre></td></tr></table></figure>
+
+<p>a 和 b 的内存地址相同。这段赋值操作在内存中的程序是：首先，在内存中开辟一块内存空间储存整数 10，它的内存地址为 1947042192；然后，变量名 a 指向这个内存空间的内存地址；最后，变量名 b 同样指向这个内存地址。</p>
+<img src="/python-basic/copy-deep-copy/1568472157765.png" class="" width="1568472157765">
+
+<p>对于整型数据这样的不可变数据类型来说，此时，如果重新给 a 进行赋值，比如赋值为 11。将会新开辟一块内存空间来存储整型数据 11，然后 a 将指向 11 的内存地址（比如：1947042224），原来的指向将不再存在。而 b 仍然指向 10 的内存地址 1947042192：</p>
+<img src="/python-basic/copy-deep-copy/1568472544520.png" class="" width="1568472544520">
+
+<p>用代码来验证就是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">10</span></span><br><span class="line">b = a</span><br><span class="line">a = <span class="number">11</span></span><br><span class="line">print(id(a), id(b))</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1947042224</span> <span class="number">1947042192</span></span><br></pre></td></tr></table></figure>
+
+<p>对于可变数据类型的赋值操作则会有些例外。赋值操作的原则都是相同的，新变量名会指向已经存在的数据，而不是新开辟一块内存空间：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">lst1 = lst</span><br><span class="line">print(id(lst), id(lst1))</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> lst:</span><br><span class="line">    print(id(i))</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1334279969672</span> <span class="number">1334279969672</span></span><br><span class="line"><span class="number">1947041904</span></span><br><span class="line"><span class="number">1947041936</span></span><br><span class="line"><span class="number">1947041968</span></span><br></pre></td></tr></table></figure>
+
+<p>首先整型数字 1、2 和 3 分别开辟各自的内存空间。需要注意的是，列表中存储的是每个元素的内存地址，而不是元素本身。当整型数据内存空间开辟好了之后，又开辟了一块列表空间，其中存储的数据是三个整型数字的内存地址。然后，变量lst指向列表的内存地址 1334279969672。最后，赋值操作令变量 lst1 也指向该列表的内存地址 1334279969672。</p>
+<img src="/python-basic/copy-deep-copy/1568474596593.png" class="" width="1568474596593">
+
+<p>这些操作看起来繁琐许多，但实际上的原理还是赋值操作只是将不同的变量指向同一个数据的内存地址。</p>
+<p>但是现在，如果我们对 lst1 进行修改，比如增加一个新的元素 4，会发生什么呢？</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">print(id(lst))</span><br><span class="line">lst1 = lst</span><br><span class="line">lst1.append(<span class="number">4</span>)</span><br><span class="line">print(lst, lst1)</span><br><span class="line">print(id(lst), id(lst1))</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> lst:</span><br><span class="line">    print(id(i))</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">3009179196296</span></span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>] [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]</span><br><span class="line"><span class="number">3009179196296</span> <span class="number">3009179196296</span></span><br><span class="line"><span class="number">1947041904</span></span><br><span class="line"><span class="number">1947041936</span></span><br><span class="line"><span class="number">1947041968</span></span><br><span class="line"><span class="number">1947042000</span></span><br></pre></td></tr></table></figure>
+
+<p>我们发现发生了一件奇怪的事情：虽然我们只对 lst1 进行了修改，但是 lst 也同样发生了改变。</p>
+<p>这是因为列表是可变数据类型，当我们对列表进行操作时，不会改变列表的内存地址<a href="虽然再次运行内存地址较上次发生了变化，但那是因为每次运行都会重新开辟内存空间。上面的代码在赋值前打印了内存地址，与所有赋值操作后比较，仍然相同，可证明列表的内存地址没有改变。">^1</a>。使用 append 方法会在列表存储的内容中添加一个整型数据 4 的内存空间，但并不会改变变量 lst 和 lst1 指向列表内存的状态。故而，虽然只对 lst1 进行了修改，但是查看 lst 时，变化是相同的。</p>
+<img src="/python-basic/copy-deep-copy/1568475345252.png" class="" width="1568475345252">
+
+<p>举一个形象一点的例子就是，列表就好比是一个书包。最开始，这个书包归小明所有。后来，小明跟好朋友小芳共用了这个书包。小芳有一天在书包里装了一本书，虽然小明没有对这个书包做任何的操作，他依然能够看到自己的书包里多出了一本书来。</p>
+<p>对于字典等其他可变数据类型，道理都是相同的。对于可变数据类型的嵌套，也是一样：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key1'</span>: <span class="number">2</span>, <span class="string">'key2'</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]&#125;</span><br><span class="line">dic1 = dic</span><br><span class="line">dic1[<span class="string">'key2'</span>].append(<span class="number">4</span>)</span><br><span class="line">print(dic, dic1)</span><br></pre></td></tr></table></figure>
+
+<p>输出的内容为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="string">'key1'</span>: <span class="number">2</span>, <span class="string">'key2'</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]&#125; &#123;<span class="string">'key1'</span>: <span class="number">2</span>, <span class="string">'key2'</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]&#125;</span><br></pre></td></tr></table></figure>
+
+<p>总结起来就是：赋值就是让多个变量指向同一个内存地址，如果这个内存地址的数据是不可变数据类型，修改时会开辟新的内存空间（字符串，数字，布尔值，元组）；如果时可变的数据类型，会在原地址进行修改（列表，字典）。</p>
+<h3 id="浅拷贝"><a href="#浅拷贝" class="headerlink" title="浅拷贝"></a>浅拷贝</h3><p>与赋值略有差异的是，浅拷贝会将数据的外壳新开辟一块内存空间，在新的内存空间中存储的是最外层元素的内存地址。</p>
+<p>列表有一个 <code>.copy()</code> 方法，用来进行浅拷贝操作：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="number">1</span>, <span class="number">2</span>, [<span class="number">3</span>, <span class="number">4</span>]]</span><br><span class="line">lst1 = lst.copy()    <span class="comment">#拷贝 or 复制</span></span><br><span class="line">print(lst, lst1)</span><br><span class="line">print(id(lst), id(lst1))</span><br><span class="line">print(id(lst[<span class="number">0</span>]), id(lst1[<span class="number">0</span>]))</span><br><span class="line">print(id(lst[<span class="number">1</span>]), id(lst1[<span class="number">1</span>]))</span><br><span class="line">print(id(lst[<span class="number">2</span>]), id(lst1[<span class="number">2</span>]))</span><br><span class="line">print(id(lst[<span class="number">2</span>][<span class="number">0</span>]), id(lst1[<span class="number">2</span>][<span class="number">0</span>]))</span><br><span class="line">print(id(lst[<span class="number">2</span>][<span class="number">1</span>]), id(lst1[<span class="number">2</span>][<span class="number">1</span>]))</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">1</span>, <span class="number">2</span>, [<span class="number">3</span>, <span class="number">4</span>]] [<span class="number">1</span>, <span class="number">2</span>, [<span class="number">3</span>, <span class="number">4</span>]]</span><br><span class="line"><span class="number">2718491515720</span> <span class="number">2718491515912</span></span><br><span class="line"><span class="number">1945534576</span> <span class="number">1945534576</span></span><br><span class="line"><span class="number">1945534608</span> <span class="number">1945534608</span></span><br><span class="line"><span class="number">2718491515784</span> <span class="number">2718491515784</span></span><br><span class="line"><span class="number">1945534640</span> <span class="number">1945534640</span></span><br><span class="line"><span class="number">1945534672</span> <span class="number">1945534672</span></span><br></pre></td></tr></table></figure>
+
+<p>我们看到，除了最外层的壳子，也就是列表本身被新开辟了一块内存空间之外，无论列表中的元素是否可变，都只是复制了原来列表中元素的内存地址。</p>
+<p>最开始，列表 lst 开辟了一块地址为 2718491515720 的内存空间，其中，数字 1 被存储在地址 1945534576，数字 2 被存储在地址 1945534608，列表被存储在地址 2718491515784。列表中的数字 3 被存储在地址 1945534640，列表中的数字4被存储在地址 1945534672。当进行浅拷贝之后，为 lst1 新开辟一块内存地址为 2718491515912 的内存空间，其中存储的元素的内存地址跟 lst 中的元素相同。</p>
+<img src="/python-basic/copy-deep-copy/1568622652370.png" class="" width="1568622652370">
+
+<p>此时，如果我们对 lst1 进行增加操作，比如增加一个元素 5：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">lst1.append(<span class="number">5</span>)</span><br><span class="line">print(lst, lst1)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">1</span>, <span class="number">2</span>, [<span class="number">3</span>, <span class="number">4</span>]] [<span class="number">1</span>, <span class="number">2</span>, [<span class="number">3</span>, <span class="number">4</span>], <span class="number">5</span>]</span><br></pre></td></tr></table></figure>
+
+<p>只有 lst1 中增加了元素，lst 并没有发生变化。这是因为 lst 和 lst1 的内存地址不同，对 lst1 进行操作并不会影响到 lst。</p>
+<img src="/python-basic/copy-deep-copy/1568623172107.png" class="" width="1568623172107">
+
+<p>不过如果我们对列表中嵌套的列表进行增加操作，比如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="number">1</span>, <span class="number">2</span>, [<span class="number">3</span>, <span class="number">4</span>]]</span><br><span class="line">lst1 = lst.copy() </span><br><span class="line">lst1[<span class="number">-1</span>].append(<span class="number">5</span>)</span><br><span class="line">print(lst, lst1)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">1</span>, <span class="number">2</span>, [<span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]] [<span class="number">1</span>, <span class="number">2</span>, [<span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]]</span><br></pre></td></tr></table></figure>
+
+<p>不管是 lst 还是 lst1，它们的最后一个元素都是指向的列表 [3, 4] 的内存地址 2718491515784。当对这个列表进行修改时，尽管是使用 lst 进行的操作，lst1 调用列表时，仍然能发现列表的变化。</p>
+<img src="/python-basic/copy-deep-copy/1568623732201.png" class="" width="1568623732201">
+
+<p>除了使用 <code>.copy()</code> 方法，我们还可以通过切片来实现浅拷贝：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="number">2</span>, <span class="number">3</span>, [<span class="number">4</span>, <span class="number">5</span>], <span class="number">6</span>]</span><br><span class="line">lst1 = lst</span><br><span class="line">lst2 = lst[:]</span><br><span class="line">lst1[<span class="number">2</span>].append(<span class="number">6</span>)</span><br><span class="line">print(lst, lst1, lst2)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">2</span>, <span class="number">3</span>, [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>], <span class="number">6</span>] [<span class="number">2</span>, <span class="number">3</span>, [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>], <span class="number">6</span>] [<span class="number">2</span>, <span class="number">3</span>, [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>], <span class="number">6</span>]</span><br></pre></td></tr></table></figure>
+
+<h3 id="深拷贝"><a href="#深拷贝" class="headerlink" title="深拷贝"></a>深拷贝</h3><p>深拷贝之后的数据使用同我们主观认为的基本一致：对一个变量的修改不会影响到另一个变量的值。经过深拷贝后的两个变量虽然值相同，但是不受彼此影响。</p>
+<p>当然，这也不意味着深拷贝后的两个变量中的每个元素都是不同的。为了节省内存，经过深拷贝后的不可变元素仍然被两个变量共用。因为对不可变元素的改变一定会造成内存地址的变化，所以不需要单独开辟内存空间。但是对于可变元素，不管嵌套多少层，都会开辟新的内存空间。</p>
+<p>调用深拷贝方法需要导入一个 <code>copy</code> 模块：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> copy</span><br><span class="line">lst = [<span class="number">1000</span>, <span class="number">2</span>, [<span class="number">3</span>, <span class="number">4</span>]]</span><br><span class="line">lst1 = copy.deepcopy(lst)</span><br><span class="line">print(id(lst), id(lst1))</span><br><span class="line">print(id(lst[<span class="number">0</span>]), id(lst1[<span class="number">0</span>]))</span><br><span class="line">print(id(lst[<span class="number">1</span>]), id(lst1[<span class="number">1</span>]))</span><br><span class="line">print(id(lst[<span class="number">2</span>]), id(lst1[<span class="number">2</span>]))</span><br><span class="line">print(id(lst[<span class="number">2</span>][<span class="number">0</span>]), id(lst1[<span class="number">2</span>][<span class="number">0</span>]))</span><br><span class="line">print(id(lst[<span class="number">2</span>][<span class="number">1</span>]), id(lst1[<span class="number">2</span>][<span class="number">1</span>]))</span><br></pre></td></tr></table></figure>
+
+<p>返回的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2277137687880</span> <span class="number">2277137689160</span></span><br><span class="line"><span class="number">2277135326064</span> <span class="number">2277135326064</span></span><br><span class="line"><span class="number">1945534608</span> <span class="number">1945534608</span></span><br><span class="line"><span class="number">2277137687688</span> <span class="number">2277137689096</span></span><br><span class="line"><span class="number">1945534640</span> <span class="number">1945534640</span></span><br><span class="line"><span class="number">1945534672</span> <span class="number">1945534672</span></span><br></pre></td></tr></table></figure>
+
+<p>与我们前面谈到的一样，深拷贝后，两个变量会共用不可变数据，而可变数据类型则会开辟新空间。</p>
+<img src="/python-basic/copy-deep-copy/1568726333889.png" class="" width="1568726333889">
+
+<h3 id="深浅拷贝总结"><a href="#深浅拷贝总结" class="headerlink" title="深浅拷贝总结"></a>深浅拷贝总结</h3><p>赋值：多个变量名指向同一个内存地址</p>
+<p>浅拷贝：只对最外层的壳子开辟内存空间，拷贝第一层元素的内存地址。（列表中存储的是数据的内存地址，我们能看到数据是因为程序通过内存地址找到值，然后显示了出来）</p>
+<p>深拷贝：不可变数据共用，可变数据类型不管嵌套多少层都会开辟新空间</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/python-basic/operator/" rel="prev" title="运算符">
+      <i class="fa fa-chevron-left"></i> 运算符
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/python-basic/code/" rel="next" title="编码初识">
+      编码初识 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#赋值"><span class="nav-number">1.</span> <span class="nav-text">赋值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#浅拷贝"><span class="nav-number">2.</span> <span class="nav-text">浅拷贝</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#深拷贝"><span class="nav-number">3.</span> <span class="nav-text">深拷贝</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#深浅拷贝总结"><span class="nav-number">4.</span> <span class="nav-text">深浅拷贝总结</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="刘硕"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">刘硕</p>
+  <div class="site-description" itemprop="description">不成为自己讨厌的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">221</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:liushuo432@outlook.com" title="E-Mail → mailto:liushuo432@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/2436055290" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;2436055290" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备20001451号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘硕</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.2" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="/js/love.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/Epsilon2.1.model.json"},"display":{"superSample":2,"width":200,"height":400,"position":"left","hOffset":-30,"vOffset":-40},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>

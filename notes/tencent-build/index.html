@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="Tu5vqPaUb8svfkPx5eetJFD84ciQCcWVXNatdsWtj9Q">
+  <meta name="baidu-site-verification" content="baidu_verify_FBq9PG4BBb">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.1","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="腾讯云配置的笔记，里面包括我尝试安装 Python、MySQL、Java等东西的记录。因为当时所学有限，一切都在摸索，所以很杂很乱，但都是干货，拿来就能用的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="腾讯云环境配置">
+<meta property="og:url" content="https://sliu.vip/notes/tencent-build/index.html">
+<meta property="og:site_name" content="刘硕的技术查阅手册">
+<meta property="og:description" content="腾讯云配置的笔记，里面包括我尝试安装 Python、MySQL、Java等东西的记录。因为当时所学有限，一切都在摸索，所以很杂很乱，但都是干货，拿来就能用的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sliu.vip/notes/tencent-build/1575444255165.png">
+<meta property="og:image" content="https://sliu.vip/notes/tencent-build/1575444846647.png">
+<meta property="og:image" content="https://sliu.vip/notes/tencent-build/1575445171283.png">
+<meta property="og:image" content="https://sliu.vip/notes/tencent-build/1575445896599.png">
+<meta property="og:image" content="https://sliu.vip/notes/tencent-build/1575445938145.png">
+<meta property="og:image" content="https://sliu.vip/notes/tencent-build/1575446082251.png">
+<meta property="og:image" content="https://sliu.vip/notes/tencent-build/1575447201361.png">
+<meta property="og:image" content="https://sliu.vip/notes/tencent-build/1575452402454.png">
+<meta property="og:image" content="https://sliu.vip/notes/tencent-build/1575447282109.png">
+<meta property="og:image" content="https://sliu.vip/notes/tencent-build/1575451844433.png">
+<meta property="article:published_time" content="2020-02-17T10:48:33.000Z">
+<meta property="article:modified_time" content="2020-02-29T02:34:01.846Z">
+<meta property="article:author" content="刘硕">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="全栈开发">
+<meta property="article:tag" content="并发编程">
+<meta property="article:tag" content="网络编程">
+<meta property="article:tag" content="爬虫">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="自动化测试">
+<meta property="article:tag" content="Web开发">
+<meta property="article:tag" content="HTML">
+<meta property="article:tag" content="CSS">
+<meta property="article:tag" content="JavaScript">
+<meta property="article:tag" content="jQuery">
+<meta property="article:tag" content="Bootstrap">
+<meta property="article:tag" content="测试自动化">
+<meta property="article:tag" content="Selenium">
+<meta property="article:tag" content="postman">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="Vue">
+<meta property="article:tag" content="drf">
+<meta property="article:tag" content="django">
+<meta property="article:tag" content="文档翻译">
+<meta property="article:tag" content="PEP8">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sliu.vip/notes/tencent-build/1575444255165.png">
+
+<link rel="canonical" href="https://sliu.vip/notes/tencent-build/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>腾讯云环境配置 | 刘硕的技术查阅手册</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f14f123935d6183fdd06f8f1c4bc378f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="刘硕的技术查阅手册" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">刘硕的技术查阅手册</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">Python 全栈开发学习笔记</h1>
+      
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-toc">
+
+    <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-fw fa-rss"></i>订阅</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/notes/tencent-build/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          腾讯云环境配置
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-17 18:48:33" itemprop="dateCreated datePublished" datetime="2020-02-17T18:48:33+08:00">2020-02-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B5%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习实践笔记</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <div class="post-description">腾讯云配置的笔记，里面包括我尝试安装 Python、MySQL、Java等东西的记录。因为当时所学有限，一切都在摸索，所以很杂很乱，但都是干货，拿来就能用的</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>教程使用服务器：腾讯云 1核 2GB 1Mbps 基础入门版</p>
+<p>操作系统：Centos 7</p>
+<h2 id="登录终端服务器"><a href="#登录终端服务器" class="headerlink" title="登录终端服务器"></a>登录终端服务器</h2><p>登陆终端服务器有很多种方式，这里只介绍两种比较常用的：腾讯云控制台直接登录和 SSH 登录。</p>
+<h3 id="腾讯云控制台登录终端服务器"><a href="#腾讯云控制台登录终端服务器" class="headerlink" title="腾讯云控制台登录终端服务器"></a>腾讯云控制台登录终端服务器</h3><p>首先，登录 <a href="https://console.cloud.tencent.com/cvm/instance/" target="_blank" rel="noopener">腾讯云控制台</a> 。购买云服务器我就不介绍了吧，花钱的事他们弄得都很简单且一目了然。</p>
+<p>不出意外的话，在登陆进来之后，就能看见购买到的主机信息：</p>
+<img src="/notes/tencent-build/1575444255165.png" class="" width="1575444255165">
+
+<p>当然，如果没有看见主机也没关系，很可能是因为机房地址没有选对。在左上角<strong>实例</strong>的旁边可以选择机房地址。比如，我的机房是在上海，就选择上海。你的机房在哪就选哪里。</p>
+<img src="/notes/tencent-build/1575444846647.png" class="" width="1575444846647">
+
+<p>初次登陆，要给服务器设置密码，点击<strong>更多</strong> –&gt; <strong>密码/密钥</strong> –&gt; <strong>重置密码</strong>（也可能是<strong>设置密码</strong>之类的，反正跟密码有关就成）</p>
+<img src="/notes/tencent-build/1575445171283.png" class="" width="1575445171283">
+
+<p>重置密码也是要验证身份的，微信扫一扫即可，十分方便（不便中的方便）。然后按照要求重置密码即可。</p>
+<p>重置好密码，点击<strong>登录</strong>，输入刚刚设置的密码就可以登录到我们的云服务器中了：</p>
+<img src="/notes/tencent-build/1575445896599.png" class="" width="1575445896599">
+
+<p>登录进来后是这样的：</p>
+<img src="/notes/tencent-build/1575445938145.png" class="" width="1575445938145">
+
+<p>我的系统是 Centos 7，教程也主要是面向 Centos 7 做的。</p>
+<h3 id="SSH-登录"><a href="#SSH-登录" class="headerlink" title="SSH 登录"></a>SSH 登录</h3><p>除了使用腾讯云的网站控制台，我们也可以通过 SSH 更加灵活地操控我们的云服务器。</p>
+<p>首先需要下载 Xshell。建议使用官网的<a href="https://www.netsarang.com/en/free-for-home-school/" target="_blank" rel="noopener">下载地址</a>下载。对于个人和家庭使用是免费的。因为实在外网，所以下载速度十分慢，请一定耐心等待。千万记得，这种涉及到根本安全的软件一定要在官网下载。不要图一时方便，给未来留下隐患。</p>
+<p>另外，也建议同时把与 Xshell 同一个公司的 Xftp 下载，非常好用。</p>
+<p>下载好点击下一步安装即可。</p>
+<p>运行 Xshell，新建一个会话，主机那里写远程主机的 IP。</p>
+<img src="/notes/tencent-build/1575446082251.png" class="" width="1575446082251">
+
+<p>然后点击右面的用户身份验证，输入用户名和密码：</p>
+<img src="/notes/tencent-build/1575447201361.png" class="" width="1575447201361">
+
+<p>点击<strong>键盘</strong>，把 <strong>DELETE</strong> 和 <strong>BACKSPACE</strong> 键序列都设置成 <strong>ASCII 127</strong>。这样做是为了避免使用 Python 不能删除内容的麻烦：</p>
+<img src="/notes/tencent-build/1575452402454.png" class="" width="1575452402454">
+
+<p>点击连接，即可连接到我们的服务器了：</p>
+<img src="/notes/tencent-build/1575447282109.png" class="" width="1575447282109">
+
+<h2 id="安装-Python-3"><a href="#安装-Python-3" class="headerlink" title="安装 Python 3"></a>安装 Python 3</h2><p>因为本教程主要面向小白，所以，下面所有的操作请一步一步跟随，不要落下，也尽量不要改步骤，除非你知道自己在做什么。</p>
+<p>首先，到 <code>/usr/bin</code> 目录下查看系统安装的 Python 版本（一定要注意，是 <strong>usr</strong>，不是 <strong>user</strong>！）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_0_16_centos ~]<span class="comment"># cd /usr/bin</span></span><br><span class="line">[root@VM_0_16_centos bin]<span class="comment"># ls python*</span></span><br><span class="line">python  python2  python2.7</span><br></pre></td></tr></table></figure>
+
+<p>我的系统中只安装了 Python 2.7，需要再安装 Python 3 才能运行我的项目。</p>
+<p>如果你的系统中安装了 Python 3，可以忽略这一部分，直接到下面的数据库安装。</p>
+<p>在 <code>ls</code> 后面加上 <code>-al</code> 参数，我们可以看到这三个 Python 之间的联系：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">python  python2  python2.7</span><br><span class="line">[root@VM_0_16_centos bin]<span class="comment"># ls -al python*</span></span><br><span class="line">lrwxrwxrwx. 1 root root    7 Aug  8  2018 python -&gt; python2</span><br><span class="line">lrwxrwxrwx. 1 root root    9 Aug  8  2018 python2 -&gt; python2.7</span><br><span class="line">-rwxr-xr-x. 1 root root 7216 Apr 11  2018 python2.7</span><br></pre></td></tr></table></figure>
+
+<p>python 默认指向 python 2。这对我们并不友好，我们更希望让 python 指向 python 3。不过我们不要直接把它删除，而给这个 python 文件备份一下改个名字，以防日后遇到麻烦：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_0_16_centos bin]<span class="comment"># mv python python.bak</span></span><br></pre></td></tr></table></figure>
+
+<p>安装依赖：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_0_16_centos bin]<span class="comment"># yum -y install zlib-devel bzip2-devel openssl-devel openssl-static ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel libffi-devel lzma gcc</span></span><br><span class="line"></span><br><span class="line">[root@VM_0_16_centos bin]<span class="comment"># yum -y groupinstall "Development tools"</span></span><br></pre></td></tr></table></figure>
+
+<p>创建 <code>/usr/bin/python3</code> 目录：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_0_16_centos bin]<span class="comment"># mkdir /usr/local/python3</span></span><br></pre></td></tr></table></figure>
+
+<p>进入到刚刚创建的 python3 目录：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_0_16_centos bin]<span class="comment"># cd /usr/local/python3</span></span><br><span class="line">[root@VM_0_16_centos python3]<span class="comment"># ll</span></span><br><span class="line">total 0</span><br></pre></td></tr></table></figure>
+
+<p>然后下载 Python 安装包。我下载的是 3.6.8 版本，是一个长期维护的稳定版本。你也可以自己选择需要下载的 Python 版本，只要把连接中的<strong>两个</strong> 3.6.8 换成你需要的版本号即可：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_0_16_centos python3]<span class="comment"># wget https://www.python.org/ftp/python/3.6.8/Python-3.6.8.tgz</span></span><br></pre></td></tr></table></figure>
+
+<p>同样地，这是一个国外的网站，访问和下载的速度会比较慢，请耐心等待。</p>
+<p>下载完成后，会在当前目录出现一个 <code>Python-3.6.8.tgz</code> 压缩包，使用命令解压即可。同样地，如果你下载的是其他版本，注意将这里的 3.6.8 改成你下载的 Python 版本号：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_0_16_centos python3]<span class="comment"># tar -xvf Python-3.6.8.tgz</span></span><br></pre></td></tr></table></figure>
+
+<p>解压完成后进入解压好的文件目录中：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_0_16_centos python3]<span class="comment"># cd Python-3.6.8</span></span><br><span class="line">[root@VM_0_16_centos Python-3.6.8]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p>确保我们是在上面的那个解压好的文件中，然后指定 Python 的安装目录：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_0_16_centos Python-3.6.8]<span class="comment"># ./configure --prefix=/usr/local/python3Dir</span></span><br></pre></td></tr></table></figure>
+
+<p>上面这行代码的意思是，把 Python 的安装目录指定一下，这样的话，里面的一些 bin 目录、lib 目录就都会存放在这个目录下面。如果不指定这个安装目录的话，最后 Python 的安装文件将分散到 linux 的默认目录。我们指定安装目录，以后卸载的话直接删除目录就可以干净卸载了。</p>
+<p>确保我们所在的目录还是 /usr/bin/python3/Python-3.6.8，执行编译命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_0_16_centos Python-3.6.8]<span class="comment"># make</span></span><br></pre></td></tr></table></figure>
+
+<p>等待编译完成，开始安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_0_16_centos Python-3.6.8]<span class="comment"># make install</span></span><br></pre></td></tr></table></figure>
+
+<p>切换到我们刚刚指定的 Python 安装目录，可以看到里面已经有了文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_0_16_centos Python-3.6.8]<span class="comment"># cd /usr/local/python3Dir</span></span><br><span class="line">[root@VM_0_16_centos python3Dir]<span class="comment"># ll</span></span><br><span class="line">total 16</span><br><span class="line">drwxr-xr-x 2 root root 4096 Dec  4 17:14 bin</span><br><span class="line">drwxr-xr-x 3 root root 4096 Dec  4 17:14 include</span><br><span class="line">drwxr-xr-x 4 root root 4096 Dec  4 17:14 lib</span><br><span class="line">drwxr-xr-x 3 root root 4096 Dec  4 17:14 share</span><br><span class="line">[root@VM_0_16_centos python3Dir]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p>然后，我们切换到 <code>/usr/bin</code> 目录，给我们的 Python 3 建立一个名为 python 的软连接：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_0_16_centos python3Dir]<span class="comment"># cd /usr/bin</span></span><br><span class="line">[root@VM_0_16_centos bin]<span class="comment"># ln -s /usr/local/python3Dir/bin/python3 /usr/bin/python</span></span><br></pre></td></tr></table></figure>
+
+<p>不出意外的话，此时已经可以正常使用 Python 3 了。</p>
+<p>但是注意，事情尚为结束！Centos 的 yum 依赖于 python 2，但是我们把 python 的指向改成了 python 3，会造成兼容性的问题，需要我们额外进行一些配置。</p>
+<p>另外，下面的操作需要使用 vi 操作，像我一样不懂 vi 的同学，一定要看仔细了，要不然一定会被这东西搞晕的。</p>
+<p>首先，确保你的输入法是英文输入法，然后输入命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_0_16_centos bin]<span class="comment"># vi /usr/bin/yum</span></span><br></pre></td></tr></table></figure>
+
+<p>在跳出的新界面中，不要乱按，听我的指示！</p>
+<p>现在，按下键盘上的字母 <code>i</code> 键。如果一切都是按步骤操作的话，现在你应该已经可以编辑文件了。</p>
+<p>此时，把文档的第一行 <code>#!/usr/bin/python</code> 改成 <code>#!/usr/bin/python2.7</code>。别的地方不要改。</p>
+<p>然后，按下 <code>Esc</code> 键退出编辑。</p>
+<p>接下来，键入冒号 <code>:</code>，即 <code>shift + ;</code>，进入命令操作，注意左下角会有输入框出现：</p>
+<img src="/notes/tencent-build/1575451844433.png" class="" width="1575451844433">
+
+<p>输入 <code>wq</code> 后按下 <code>回车</code> 键，即可保存退出了。</p>
+<p>除了 /usr/bin/yum 文件，我们还需要将 <code>/usr/libexec/urlgrabber-ext-down</code> 和 <code>/usr/bin/yum-config-manager</code> 两个文件的第一行修改为 python2.7，修改方法跟上面一样：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_0_16_centos bin]<span class="comment"># vi /usr/libexec/urlgrabber-ext-down</span></span><br><span class="line">[root@VM_0_16_centos bin]<span class="comment"># vi /usr/bin/yum-config-manager</span></span><br></pre></td></tr></table></figure>
+
+<p>检查更新，看看 yum 是否好用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_0_16_centos bin]<span class="comment"># yum update</span></span><br></pre></td></tr></table></figure>
+
+<p>我们来查看一下链接情况：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_0_16_centos bin]<span class="comment"># ll -a python*</span></span><br><span class="line">lrwxrwxrwx  1 root root   33 Dec  4 17:18 python -&gt; /usr/<span class="built_in">local</span>/python3Dir/bin/python3</span><br><span class="line">lrwxrwxrwx. 1 root root    9 Aug  8  2018 python2 -&gt; python2.7</span><br><span class="line">-rwxr-xr-x. 1 root root 7216 Apr 11  2018 python2.7</span><br><span class="line">lrwxrwxrwx. 1 root root    7 Aug  8  2018 python.bak -&gt; python2</span><br></pre></td></tr></table></figure>
+
+<p>查看一下当前 Python 版本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_0_16_centos bin]<span class="comment"># python -V</span></span><br><span class="line">Python 3.6.8</span><br></pre></td></tr></table></figure>
+
+<p>我们还可以来一段 Hello World 代码测试一下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_0_16_centos bin]<span class="comment"># python</span></span><br><span class="line">Python 3.6.8 (default, Dec  4 2019, 17:12:30) </span><br><span class="line">[GCC 4.8.5 20150623 (Red Hat 4.8.5-36)] on linux</span><br><span class="line">Type <span class="string">"help"</span>, <span class="string">"copyright"</span>, <span class="string">"credits"</span> or <span class="string">"license"</span> <span class="keyword">for</span> more information.</span><br><span class="line">&gt;&gt;&gt; <span class="built_in">print</span>(<span class="string">'Hello World!'</span>)</span><br><span class="line">Hello World!</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="安装-MySQL-5-6"><a href="#安装-MySQL-5-6" class="headerlink" title="安装 MySQL 5.6"></a>安装 MySQL 5.6</h2><p>最新版本的 MySQL 是 8.0 版本，同样地，因为兼容性等问题，我们还是安装比较稳定经典的 5.6 版本。</p>
+<p>首先，查看系统中是否已经安装了 MySQL：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_0_16_centos ~]<span class="comment"># rpm -qa|grep mysql</span></span><br><span class="line">[root@VM_0_16_centos ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p>如果返回值为空，就说明没有安装 MySQL。</p>
+<p>注意：新版本的 CentOS 7 中，默认的数据库是 MariaDB。使用 <code>yum install mysql</code> 命令只是更新 MariaDB 数据库，而不是安装 MySQL。</p>
+<p>然后，看一下已经安装的 MariaDB 的版本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_0_16_centos ~]<span class="comment"># rpm -qa|grep -i mariadb</span></span><br><span class="line">mariadb-libs-5.5.64-1.el7.x86_64</span><br><span class="line">[root@VM_0_16_centos ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p>确认我们有安装 MariaDB，现在就可以把 MariaDB 卸载：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_0_16_centos ~]<span class="comment"># rpm -qa|grep mariadb|xargs rpm -e --nodeps</span></span><br><span class="line">[root@VM_0_16_centos ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p>命令执行得很快，也没有任何提示。</p>
+<p>我们可以通过之前的，查看 MariaDB 版本的方法，确认是否成功卸载：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_0_16_centos ~]<span class="comment"># rpm -qa|grep -i mariadb</span></span><br><span class="line">[root@VM_0_16_centos ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p>创建一个 <code>/usr/local/mysql</code> 的路径，并进入改文件夹中，稍后我们会把 MySQL 的安装包下载到这个目录下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_0_16_centos ~]<span class="comment"># mkdir /usr/local/mysql</span></span><br><span class="line">[root@VM_0_16_centos ~]<span class="comment"># cd /usr/local/mysql</span></span><br><span class="line">[root@VM_0_16_centos mysql]<span class="comment"># ll</span></span><br><span class="line">total 0</span><br></pre></td></tr></table></figure>
+
+<p>下载 MySQL 5.6 的安装包：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_0_16_centos mysql]<span class="comment"># wget http://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm</span></span><br></pre></td></tr></table></figure>
+
+<p>安装 <code>mysql-community-release-el7-5.noarch.rpm</code> 包：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_0_16_centos mysql]<span class="comment"># rpm -ivh mysql-community-release-el7-5.noarch.rpm</span></span><br></pre></td></tr></table></figure>
+
+<p>安装完成后，会在 <code>/etc/yum.repos.d/</code> 目录下新增 <code>mysql-community.repo</code> 和 <code>mysql-community-source.repo</code> 两个 yum 源文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_0_16_centos mysql]<span class="comment"># cd /etc/yum.repos.d</span></span><br><span class="line">[root@VM_0_16_centos yum.repos.d]<span class="comment"># ll</span></span><br><span class="line">total 44</span><br><span class="line">-rw-r--r-- 1 root root  614 Dec  4 15:07 CentOS-Base.repo</span><br><span class="line">-rw-r--r-- 1 root root 1309 Sep  5 21:05 CentOS-CR.repo</span><br><span class="line">-rw-r--r-- 1 root root  649 Sep  5 21:05 CentOS-Debuginfo.repo</span><br><span class="line">-rw-r--r-- 1 root root  230 Dec  4 15:07 CentOS-Epel.repo</span><br><span class="line">-rw-r--r-- 1 root root  314 Sep  5 21:05 CentOS-fasttrack.repo</span><br><span class="line">-rw-r--r-- 1 root root  630 Sep  5 21:05 CentOS-Media.repo</span><br><span class="line">-rw-r--r-- 1 root root 1331 Sep  5 21:05 CentOS-Sources.repo</span><br><span class="line">-rw-r--r-- 1 root root 6639 Sep  5 21:05 CentOS-Vault.repo</span><br><span class="line">-rw-r--r-- 1 root root 1209 Jan 29  2014 mysql-community.repo</span><br><span class="line">-rw-r--r-- 1 root root 1060 Jan 29  2014 mysql-community-source.repo</span><br></pre></td></tr></table></figure>
+
+<p>最后两个文件就是了。</p>
+<p>查看可用的 mysql 安装文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_0_16_centos yum.repos.d]<span class="comment"># yum repolist all|grep mysql</span></span><br><span class="line">mysql-connectors-community/x86_64 MySQL Connectors Community     enabled:    131</span><br><span class="line">mysql-connectors-community-source MySQL Connectors Community - S disabled</span><br><span class="line">mysql-tools-community/x86_64      MySQL Tools Community          enabled:    100</span><br><span class="line">mysql-tools-community-source      MySQL Tools Community - Source disabled</span><br><span class="line">mysql55-community/x86_64          MySQL 5.5 Community Server     disabled</span><br><span class="line">mysql55-community-source          MySQL 5.5 Community Server - S disabled</span><br><span class="line">mysql56-community/x86_64          MySQL 5.6 Community Server     enabled:    496</span><br><span class="line">mysql56-community-source          MySQL 5.6 Community Server - S disabled</span><br><span class="line">mysql57-community-dmr/x86_64      MySQL 5.7 Community Server Dev disabled</span><br><span class="line">mysql57-community-dmr-source      MySQL 5.7 Community Server Dev disabled</span><br></pre></td></tr></table></figure>
+
+<p>接下来，就可以使用 yum 安装 MySQL 了：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_0_16_centos yum.repos.d]<span class="comment"># yum install mysql-server</span></span><br></pre></td></tr></table></figure>
+
+<p>问是否 OK 的话，选 y 即可。</p>
+<p>同样的问题再次出现，MySQL 也是外网，需要给他点时间下载。</p>
+<p>下载完成后，检查 MySQL 是否安装成功：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_0_16_centos yum.repos.d]<span class="comment"># rpm -qa|grep mysql</span></span><br><span class="line">mysql-community-client-5.6.46-2.el7.x86_64</span><br><span class="line">mysql-community-server-5.6.46-2.el7.x86_64</span><br><span class="line">mysql-community-common-5.6.46-2.el7.x86_64</span><br><span class="line">mysql-community-libs-5.6.46-2.el7.x86_64</span><br><span class="line">mysql-community-release-el7-5.noarch</span><br><span class="line">[root@VM_0_16_centos yum.repos.d]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<p>MySQL 5.6.46 版本已经成功安装。</p>
+<p>启动和关闭 MySQL 服务相关的命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">systemctl start mysqld.service <span class="comment">#启动 mysql</span></span><br><span class="line">systemctl restart mysqld.service <span class="comment">#重启 mysql</span></span><br><span class="line">systemctl stop mysqld.service <span class="comment">#停止 mysql</span></span><br><span class="line">systemctl <span class="built_in">enable</span> mysqld.service <span class="comment">#设置 mysql 开机启动</span></span><br></pre></td></tr></table></figure>
+
+<p>此刻，已经完成了 MySQL 的安装。</p>
+<p>接下来就是配置 MySQL 数据库：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_0_16_centos etc]<span class="comment"># vi /etc/my.cnf</span></span><br></pre></td></tr></table></figure>
+
+<p>参考配置：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">[mysqld]</span><br><span class="line">character-set-server=utf8</span><br><span class="line">default-storage-engine=INNODB</span><br><span class="line">datadir=/var/lib/mysql</span><br><span class="line">socket=/var/lib/mysql/mysql.sock</span><br><span class="line">symbolic-links=0</span><br><span class="line">sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES</span><br><span class="line"></span><br><span class="line">[mysqld_safe]</span><br><span class="line"><span class="built_in">log</span>-error=/var/<span class="built_in">log</span>/mysqld.log</span><br><span class="line">pid-file=/var/run/mysqld/mysqld.pid</span><br><span class="line"></span><br><span class="line">[client]</span><br><span class="line">default-character-set=utf8</span><br></pre></td></tr></table></figure>
+
+<h2 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h2><h3 id="安装PIP"><a href="#安装PIP" class="headerlink" title="安装PIP"></a>安装PIP</h3><p>下载 PIP 安装包：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_0_16_centos etc]<span class="comment"># mkdir /usr/local/pip</span></span><br><span class="line">[root@VM_0_16_centos etc]<span class="comment"># cd /usr/local/pip</span></span><br><span class="line">[root@VM_0_16_centos pip]<span class="comment"># wget https://bootstrap.pypa.io/get-pip.py</span></span><br></pre></td></tr></table></figure>
+
+<p>安装 PIP：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_0_16_centos pip]<span class="comment"># python get-pip.py</span></span><br></pre></td></tr></table></figure>
+
+<p>Django 和其他 Python 第三方包就可以使用 pip 直接安装了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@VM_0_16_centos pip]<span class="comment"># python -m pip install pymysql</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="pip-国内源"><a href="#pip-国内源" class="headerlink" title="pip 国内源"></a>pip 国内源</h3><p>这里是一些国内的 pip 镜像：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">阿里云 https://mirrors.aliyun.com/pypi/simple/</span><br><span class="line">中国科技大学 https://pypi.mirrors.ustc.edu.cn/simple/</span><br><span class="line">清华大学 https://pypi.tuna.tsinghua.edu.cn/simple/</span><br><span class="line">豆瓣(douban) http://pypi.douban.com/simple/</span><br><span class="line">中国科学技术大学 http://pypi.mirrors.ustc.edu.cn/simple/</span><br><span class="line">华中理工大学：http://pypi.hustunique.com/</span><br><span class="line">山东理工大学：http://pypi.sdutlinux.org/</span><br></pre></td></tr></table></figure>
+
+<p>使用国内源可以避免因服务器在国外而导致下载速度过慢的问题：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pyspider</span><br></pre></td></tr></table></figure>
+
+<h3 id="安装依赖库"><a href="#安装依赖库" class="headerlink" title="安装依赖库"></a>安装依赖库</h3><p>把我们需要的依赖库都找到是很麻烦的，不小心忘记某个库还会报错。</p>
+<p>好在 pip 有 freeze 方法，我们可以直接把本地的环境导出到文件中：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip freeze &gt; requirements.txt</span><br></pre></td></tr></table></figure>
+
+<p>然后，将 requirements.txt 文件上传到云端，就可以批量安装我们需要的依赖库了：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install -r requirements.txt</span><br></pre></td></tr></table></figure>
+
+<h3 id="部署-Django-应用"><a href="#部署-Django-应用" class="headerlink" title="部署 Django 应用"></a>部署 Django 应用</h3><p>首先要同步数据库，然后尝试着运行 Django 项目：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo python3 manage.py runserver 0.0.0.0:80</span><br></pre></td></tr></table></figure>
+
+<p>在后台运行 django 应用，不随腾讯云 web 会话断开而关闭应用：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo nohup python3 manage.py runserver 0.0.0.0:80 &amp;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>nohup（no hang up）用途：不挂断地运行命令</p>
+</li>
+<li><p>&amp;用途：在后台运行</p>
+</li>
+</ul>
+<p>若想查看后台 Django 进程的运行情况，可以使用命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -ef|grep <span class="string">"python"</span></span><br></pre></td></tr></table></figure>
+
+<p>输出结果中，就包含我们刚刚输入的命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root     12374  8836  0 17:58 pts/0    00:00:00 sudo nohup python3 manage.py runserver 0.0.0.0:80</span><br><span class="line">root     12375 12374  0 17:58 pts/0    00:00:00 python3 manage.py runserver 0.0.0.0:80</span><br><span class="line">root     12378 12375  1 17:58 pts/0    00:00:00 /usr/bin/python3 manage.py runserver 0.0.0.0:80</span><br></pre></td></tr></table></figure>
+
+<p>若要杀死 Django 进程，可以使用命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">kill</span> -s 9 12378</span><br></pre></td></tr></table></figure>
+
+<p>其中，12378 是最后一个 Django 命令的进程号，也就是真正运行中的进程。</p>
+<p>对于后台运行的进程最好自定义进程名，省的找不到，可以在 manage.py 文件中加上进程名定义：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    <span class="keyword">import</span> setproctitle</span><br><span class="line">    setproctitle.setproctitle(<span class="string">"xxxx"</span>)</span><br><span class="line"><span class="keyword">except</span>:</span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+
+<p>然后就可以通过命令过滤出对应的后台进程了：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -A | grep <span class="string">"xxxx"</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="部署数据库"><a href="#部署数据库" class="headerlink" title="部署数据库"></a>部署数据库</h3><p>安装 MySQL:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install mysql-server</span><br></pre></td></tr></table></figure>
+
+<p>数据库的启动/关闭/重启：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo service mysql start</span><br><span class="line">sudo service mysql stop</span><br><span class="line">sudo service mysql restart</span><br></pre></td></tr></table></figure>
+
+<p>数据库密码修改：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set password &#x3D; password(&#39;123&#39;);</span><br></pre></td></tr></table></figure>
+
+<p>数据库备份：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mysqldump -u username -p --databases dbname2 dbname2 &gt; Backup.sql</span><br></pre></td></tr></table></figure>
+
+<p>数据库还原：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mysqlhotcopy [option] dbname1 dbname2 backupDir</span><br></pre></td></tr></table></figure>
+
+<p>设置数据库的登陆方式为密码认证：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">USE mysql;</span><br><span class="line">UPDATE user SET plugin&#x3D;&#39;mysql_native_password&#39; WHERE user&#x3D;&#39;root&#39;;</span><br><span class="line">FLUSH PRIVILEGES;</span><br><span class="line">exit;</span><br></pre></td></tr></table></figure>
+
+<h2 id="部署-Java-环境"><a href="#部署-Java-环境" class="headerlink" title="部署 Java 环境"></a>部署 Java 环境</h2><h3 id="安装-Java"><a href="#安装-Java" class="headerlink" title="安装 Java"></a>安装 Java</h3><p>首先，查看是否已经安装了 Java：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -version</span><br></pre></td></tr></table></figure>
+
+<p>从结果上看，并没有：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Command <span class="string">'java'</span> not found, but can be installed with:</span><br><span class="line"></span><br><span class="line">sudo apt install default-jre            </span><br><span class="line">sudo apt install openjdk-11-jre-headless</span><br><span class="line">sudo apt install openjdk-8-jre-headless</span><br></pre></td></tr></table></figure>
+
+<p>不过他也给了我们提示命令。这些命令都是安装 Java jre，也就是运行环境的，可以应付我们绝大多数的使用环境。如果没有特殊需求，可以直接安装默认的 default-jre。为了确保兼容性，也可以安装 openjdk-8：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install openjdk-8-jre</span><br></pre></td></tr></table></figure>
+
+<p>我们也可以安装 Java 8 jdk，也就是开发套件，期间需要输入 y 确认安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install openjdk-8-jdk</span><br></pre></td></tr></table></figure>
+
+<p>输入命令 java -version 即可查看当前 Java 版本号：</p>
+<p>许多 Java 写的程序使用 JAVA_HOME 变量来确定 Java 的安装位置，所以我们需要在环境变量中设置 JAVA_HOME 变量。</p>
+<p>首先，使用命令确定 Java 的安装位置：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo update-alternatives --config java</span><br></pre></td></tr></table></figure>
+
+<p>从结果来看，我的 Java 安装在了 <code>/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">There is only one alternative <span class="keyword">in</span> link group java (providing /usr/bin/java): /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java</span><br><span class="line">Nothing to configure.</span><br></pre></td></tr></table></figure>
+
+<p>打开 <code>/etc/environment</code> 环境变量文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo nano /etc/environment</span><br></pre></td></tr></table></figure>
+
+<p>在文件的末尾添加 JAVA_HOME 参数：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">JAVA_HOME=<span class="string">"/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java"</span></span><br></pre></td></tr></table></figure>
+
+<p>对于 nano 编辑器来说，<code>ctrl + o</code> 保存，<code>ctrl + x</code> 退出。</p>
+<p>重新加载此文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">source</span> /etc/environment</span><br></pre></td></tr></table></figure>
+
+<p>验证是否成功添加 JAVA_HOME 至环境变量：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="variable">$JAVA_HOME</span></span><br></pre></td></tr></table></figure>
+
+<p>响应数据确实是我们 Java 所在的路径，安装成功：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java</span><br></pre></td></tr></table></figure>
+
+<h3 id="安装-Node-js"><a href="#安装-Node-js" class="headerlink" title="安装 Node.js"></a>安装 <code>Node.js</code></h3><p>输入下面的命令可直接安装 <code>node.js</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">curl -sL https://deb.nodesource.com/setup_9.x | sudo -E bash -</span><br><span class="line">sudo apt-get install -y nodejs</span><br></pre></td></tr></table></figure>
+
+<p>查看 Java、node 和 npm 版本已确认安装成功：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ubuntu@VM-0-16-ubuntu:~$ java -version</span><br><span class="line">openjdk version <span class="string">"1.8.0_232"</span></span><br><span class="line">OpenJDK Runtime Environment (build 1.8.0_232-8u232-b09-0ubuntu1~18.04.1-b09)</span><br><span class="line">OpenJDK 64-Bit Server VM (build 25.232-b09, mixed mode)</span><br><span class="line">ubuntu@VM-0-16-ubuntu:~$ node -v</span><br><span class="line">v12.14.1</span><br><span class="line">ubuntu@VM-0-16-ubuntu:~$ npm -version</span><br><span class="line">6.13.4</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="参考网站"><a href="#参考网站" class="headerlink" title="参考网站"></a>参考网站</h2><ol>
+<li><a href="https://www.cnblogs.com/simuhunluo/p/7704765.html" target="_blank" rel="noopener">Centos 7安装python3</a></li>
+<li><a href="https://blog.csdn.net/chaojiwanwan/article/details/71439066" target="_blank" rel="noopener">Centos中Python升级为3.X时yum出现except OSError, e: ^ SyntaxError: invalid syntax问题</a></li>
+<li><a href="https://www.cnblogs.com/softwaretesting/archive/2011/07/12/2104435.html" target="_blank" rel="noopener">Vim命令合集</a></li>
+<li><a href="https://blog.csdn.net/Harith/article/details/17691137" target="_blank" rel="noopener">yum except KeyboardInterrupt, e: 错误</a></li>
+<li><a href="https://blog.csdn.net/pengjunlee/article/details/81212250" target="_blank" rel="noopener">CentOS7下使用YUM安装MySQL5.6</a></li>
+<li><a href="https://www.cnblogs.com/wqpkita/p/7248525.html" target="_blank" rel="noopener">让python pip使用国内镜像</a></li>
+<li><a href="https://www.cnblogs.com/LanTianYou/p/9482362.html" target="_blank" rel="noopener">腾讯云快速完成python3.6开发环境搭建与django应用部署</a></li>
+<li><a href="https://blog.csdn.net/Rnger/article/details/79907884" target="_blank" rel="noopener">Django项目后台不挂断运行</a></li>
+<li><a href="https://blog.csdn.net/woshizoe/article/details/24991589" target="_blank" rel="noopener">django&amp;python&amp;linux后台运行</a></li>
+<li><a href="https://www.cnblogs.com/kissdodog/p/4174421.html" target="_blank" rel="noopener">MySQL 数据备份与还原</a></li>
+<li><a href="https://www.cnblogs.com/feiffy/p/9825122.html" target="_blank" rel="noopener">ERROR 1698 (28000): Access denied for user ‘root’@’localhost’</a></li>
+<li><a href="https://cloud.tencent.com/developer/article/1162527" target="_blank" rel="noopener">如何在Ubuntu 18.04上安装Java</a></li>
+<li><a href="https://www.jianshu.com/p/c8929bea5fba" target="_blank" rel="noopener">ubuntu安装nodejs</a></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/linux/yum/" rel="prev" title="Linux 的软件包管理工具 yum">
+      <i class="fa fa-chevron-left"></i> Linux 的软件包管理工具 yum
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/python-basic/hanz_count/" rel="next" title="使用 Python 统计中文字符的数量">
+      使用 Python 统计中文字符的数量 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#登录终端服务器"><span class="nav-number">1.</span> <span class="nav-text">登录终端服务器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#腾讯云控制台登录终端服务器"><span class="nav-number">1.1.</span> <span class="nav-text">腾讯云控制台登录终端服务器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SSH-登录"><span class="nav-number">1.2.</span> <span class="nav-text">SSH 登录</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装-Python-3"><span class="nav-number">2.</span> <span class="nav-text">安装 Python 3</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装-MySQL-5-6"><span class="nav-number">3.</span> <span class="nav-text">安装 MySQL 5.6</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#环境配置"><span class="nav-number">4.</span> <span class="nav-text">环境配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装PIP"><span class="nav-number">4.1.</span> <span class="nav-text">安装PIP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pip-国内源"><span class="nav-number">4.2.</span> <span class="nav-text">pip 国内源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装依赖库"><span class="nav-number">4.3.</span> <span class="nav-text">安装依赖库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#部署-Django-应用"><span class="nav-number">4.4.</span> <span class="nav-text">部署 Django 应用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#部署数据库"><span class="nav-number">4.5.</span> <span class="nav-text">部署数据库</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#部署-Java-环境"><span class="nav-number">5.</span> <span class="nav-text">部署 Java 环境</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-Java"><span class="nav-number">5.1.</span> <span class="nav-text">安装 Java</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-Node-js"><span class="nav-number">5.2.</span> <span class="nav-text">安装 Node.js</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考网站"><span class="nav-number">6.</span> <span class="nav-text">参考网站</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="刘硕"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">刘硕</p>
+  <div class="site-description" itemprop="description">不成为自己讨厌的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">221</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:liushuo432@outlook.com" title="E-Mail → mailto:liushuo432@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/2436055290" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;2436055290" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备20001451号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘硕</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.2" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="/js/love.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/Epsilon2.1.model.json"},"display":{"superSample":2,"width":200,"height":400,"position":"left","hOffset":-30,"vOffset":-40},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>

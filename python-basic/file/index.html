@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="Tu5vqPaUb8svfkPx5eetJFD84ciQCcWVXNatdsWtj9Q">
+  <meta name="baidu-site-verification" content="baidu_verify_FBq9PG4BBb">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.1","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="文件操作初识我们写的程序代码运行过程中的中间数据和最后的结果，都是存储在内存中。当我们终止程序之后，这些数据也都随之消失。 但是很多时候，我们需要将获得的数据存储起来，供以后使用。如果能把内存中的中间数据转移到硬盘中存储，当程序再次运行时就可以调用上次运行的结果。这就涉及到了 Python 中的文件操作。 文件操作模式我们常用的文件操作模式总共有九种：  r 只读文本 w 清空写文本 a 追加写文">
+<meta property="og:type" content="article">
+<meta property="og:title" content="文件操作">
+<meta property="og:url" content="https://sliu.vip/python-basic/file/index.html">
+<meta property="og:site_name" content="刘硕的技术查阅手册">
+<meta property="og:description" content="文件操作初识我们写的程序代码运行过程中的中间数据和最后的结果，都是存储在内存中。当我们终止程序之后，这些数据也都随之消失。 但是很多时候，我们需要将获得的数据存储起来，供以后使用。如果能把内存中的中间数据转移到硬盘中存储，当程序再次运行时就可以调用上次运行的结果。这就涉及到了 Python 中的文件操作。 文件操作模式我们常用的文件操作模式总共有九种：  r 只读文本 w 清空写文本 a 追加写文">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sliu.vip/python-basic/file/1568711064745.png">
+<meta property="article:published_time" content="2020-02-15T05:43:36.000Z">
+<meta property="article:modified_time" content="2020-02-29T02:34:01.866Z">
+<meta property="article:author" content="刘硕">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="全栈开发">
+<meta property="article:tag" content="并发编程">
+<meta property="article:tag" content="网络编程">
+<meta property="article:tag" content="爬虫">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="自动化测试">
+<meta property="article:tag" content="Web开发">
+<meta property="article:tag" content="HTML">
+<meta property="article:tag" content="CSS">
+<meta property="article:tag" content="JavaScript">
+<meta property="article:tag" content="jQuery">
+<meta property="article:tag" content="Bootstrap">
+<meta property="article:tag" content="测试自动化">
+<meta property="article:tag" content="Selenium">
+<meta property="article:tag" content="postman">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="Vue">
+<meta property="article:tag" content="drf">
+<meta property="article:tag" content="django">
+<meta property="article:tag" content="文档翻译">
+<meta property="article:tag" content="PEP8">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sliu.vip/python-basic/file/1568711064745.png">
+
+<link rel="canonical" href="https://sliu.vip/python-basic/file/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>文件操作 | 刘硕的技术查阅手册</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f14f123935d6183fdd06f8f1c4bc378f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="刘硕的技术查阅手册" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">刘硕的技术查阅手册</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">Python 全栈开发学习笔记</h1>
+      
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-toc">
+
+    <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-fw fa-rss"></i>订阅</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/file/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          文件操作
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-15 13:43:36" itemprop="dateCreated datePublished" datetime="2020-02-15T13:43:36+08:00">2020-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="文件操作初识"><a href="#文件操作初识" class="headerlink" title="文件操作初识"></a>文件操作初识</h3><p>我们写的程序代码运行过程中的中间数据和最后的结果，都是存储在内存中。当我们终止程序之后，这些数据也都随之消失。</p>
+<p>但是很多时候，我们需要将获得的数据存储起来，供以后使用。如果能把内存中的中间数据转移到硬盘中存储，当程序再次运行时就可以调用上次运行的结果。这就涉及到了 Python 中的文件操作。</p>
+<h3 id="文件操作模式"><a href="#文件操作模式" class="headerlink" title="文件操作模式"></a>文件操作模式</h3><p>我们常用的文件操作模式总共有九种：</p>
+<ul>
+<li>r 只读文本</li>
+<li>w 清空写文本</li>
+<li>a 追加写文本    非常重要</li>
+<li>rb 只读字节    主要应用在爬虫中</li>
+<li>wb 清空写字节</li>
+<li>ab 追加写字节   非常重要</li>
+<li>r+ 读写    重要</li>
+<li>w+ 清空写读</li>
+<li>a+ 追加写读</li>
+</ul>
+<h3 id="文件操作步骤"><a href="#文件操作步骤" class="headerlink" title="文件操作步骤"></a>文件操作步骤</h3><p>文件操作一般都要先进行四步的准备工作：</p>
+<ol>
+<li>找到文件的路径</li>
+<li>确定操作文件的模式</li>
+<li>文件的编码方式</li>
+<li>建立文件句柄</li>
+</ol>
+<h4 id="文件路径"><a href="#文件路径" class="headerlink" title="文件路径"></a>文件路径</h4><p>文件路径有两种表示方法：绝对路径和相对路径。</p>
+<p>绝对路径是相对于当前运行文件所在的目录，目标文件所在的位置。在相对目录中，使用 <code>.</code> 表示当前路径；使用 <code>..</code> 表示上一级路径。</p>
+<p>例如：在 <code>Python_26</code> 文件夹中，有 <code>day07</code> 和 <code>day08</code> 两个文件夹。运行的 <code>py</code> 文件 <code>day08.py</code> 在 <code>day08</code> 中，而想要调用的文件 <code>萝莉小护士联系电话.txt</code> 在 <code>day07</code> 中，就需要这样表示目标文件的相对路径：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'..\day07\萝莉小护士联系电话.txt'</span></span><br></pre></td></tr></table></figure>
+
+<p>因为当前的工作目录是 <code>Python_26\day08</code>，而目标文件在 <code>Python_26\day07</code> 中，我们就需要使用 <code>..</code> 返回到 <code>day08</code> 的父目录 <code>Python_26</code> 中，然后进入 <code>day07</code> 中找到目标文件。</p>
+<img src="/python-basic/file/1568711064745.png" class="" width="1568711064745">
+
+<p>除了相对路径之外，我们还可以通过绝对路径找到文件。绝对路径是从磁盘根目录开始查找文件，例如： <code>C:\Python_26\day07\萝莉小护士的联系方式.txt</code>。</p>
+<p>如果涉及程序的协同操作，最好使用相对路径。这样当我们把文件转移到别的电脑上时，就不会担心路径会发生变化的问题。</p>
+<p>我们可以使用 os 模块找到当前的工作路径：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line">print(os.getcwd())</span><br></pre></td></tr></table></figure>
+
+<p>在路径中会使用 <code>\</code> 来分隔两层目录。但是 <code>\</code> 直接连接某些字母可能会有特殊含义，比如 <code>\n</code> 表示换行，<code>\t</code> 表示制表符等。</p>
+<p>为了避免歧义，我们就需要通过转义来消除这些特殊含义。有两种方法可以进行转义。第一种是使用 <code>\\</code> 来指代一个可以显示的 <code>\</code>，例如：<code>&#39;C:\\Python_26\\day07\\萝莉小护士的联系方式.txt&#39;</code>。</p>
+<p>但是如果路径比较深的话，就需要替换很多的 <code>\</code>，费时费力。这时，我们可以通过在字符串前加一个 <code>r</code> 来转义，例如：<code>r&#39;C:\Python_26\day07\萝莉小护士的联系方式.txt&#39;</code>。</p>
+<h3 id="编码方式"><a href="#编码方式" class="headerlink" title="编码方式"></a>编码方式</h3><p>文件的存储格式一般都是 utf-8。</p>
+<p>Windows 操作系统使用的是 gbk 编码；Linux 和 macOS 使用的是 utf-8 编码。</p>
+<h3 id="创建文件句柄"><a href="#创建文件句柄" class="headerlink" title="创建文件句柄"></a>创建文件句柄</h3><p>当我们确定好了文件的路径、操作模式和编码方式之后，就可以建立一个文件句柄了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">f = open(<span class="string">'萝莉小护士的联系方式.txt'</span>, mode=<span class="string">'r'</span>, encoding=<span class="string">'utf-8'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>上面这行代码的意思是：创建一个文件句柄 <code>f</code>，文件的位置与工作路径相同，文件名为 <code>萝莉小护士的联系方式.txt</code>，以 <code>只读</code> 方式打开，文件的编码模式为 <code>utf-8</code>。</p>
+<p>文件的打开操作是通过 Python 向操作系统发送指令。</p>
+<h3 id="文件的读取"><a href="#文件的读取" class="headerlink" title="文件的读取"></a>文件的读取</h3><p>有了文件句柄，我们就可以对文件进行操作。直接打印文件句柄并不能显示出文件的内容：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">print(f)</span><br><span class="line"></span><br><span class="line">输出的结果为：&lt;_io.TextIOWrapper name=<span class="string">'萝莉小护士的联系方式.txt'</span> mode=<span class="string">'r'</span> encoding=<span class="string">'utf-8'</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<p>我们需要一个 <code>.read()</code> 方法来讲文件读取出来：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(f.read())</span><br></pre></td></tr></table></figure>
+
+<p><code>.read()</code> 方法会将文件中光标所在的位置开始到文件末尾的内容全部读取出来，读取完毕后，光标会位于最后的位置。如果此时不进行任何其他转移光标的操作，再次调用 <code>.read()</code> 方法将不能获得任何内容。</p>
+<p><code>.read()</code> 方法中可以输入参数来控制需要获取到的字符数目：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(f.read(<span class="number">3</span>))</span><br></pre></td></tr></table></figure>
+
+<p>需要注意的是，每一行文字末尾的换行符 <code>\n</code> 也会被算作是一个字符。</p>
+<p><code>.read()</code> 方法会一次性读取文件中所有内容。除此之外，我们也可以使用 <code>.readline()</code> 方法，一次只读取一行内容，这个方法也是从光标位置开始读取文件内容：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(f.readline())</span><br></pre></td></tr></table></figure>
+
+<p><code>.readlines()</code> 方法可以将文件中的每一行都读取出来，以字符串的形式存储到要给列表当中：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(f.readlines())</span><br></pre></td></tr></table></figure>
+
+<p>此外，文件句柄本身也是一个可迭代对象，每次迭代返回的内容为文件中每一行的内容：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> f:</span><br><span class="line">    print(line)</span><br></pre></td></tr></table></figure>
+
+<h3 id="文件的写入"><a href="#文件的写入" class="headerlink" title="文件的写入"></a>文件的写入</h3><p>文件的写入只有一个方法 <code>.write()</code>，写入的内容只能为字符串。文件的写入需要文件以可写入的方式（w 和 a）打开：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">f = open(<span class="string">"test"</span>,<span class="string">"w"</span>,encoding=<span class="string">"utf-8"</span>)</span><br><span class="line">f.write(<span class="string">"\n今天"</span>)</span><br><span class="line">f.write(<span class="string">"\n明天"</span>)</span><br><span class="line">f.write(<span class="string">"\n后天"</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="光标操作"><a href="#光标操作" class="headerlink" title="光标操作"></a>光标操作</h3><p>光标用来标识文件操作的起始位置。一般来说，光标起始位置为文件的头部，当进行读写操作时，光标位置会随之转移。如果我们接下来还有读写操作，将会从上次结束的位置开始进行。</p>
+<p>如果我们想要将光标移动到一个新的位置，就需要使用到 <code>.seek()</code> 方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">f.seek(<span class="number">0</span>, <span class="number">0</span>)    <span class="comment"># 将光标移动到文件头部</span></span><br><span class="line">f.seek(<span class="number">0</span>, <span class="number">1</span>)    <span class="comment"># 将光标移动到当前位置</span></span><br><span class="line">f.seek(<span class="number">0</span>, <span class="number">2</span>)    <span class="comment"># 将光标移动到文件末尾</span></span><br></pre></td></tr></table></figure>
+
+<p>除了上述三种比较极端的移动方法，我们还可以自定义光标移动到的位置：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">f.seek(<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+
+<p>需要注意的是，这里的 3 指的是从开头数的第 3 个字节，而不是第 3 个字符。既然是字节，就需要考虑编码的问题。例如，gbk 编码的中文字符要移动 2 个字节，而 utf-8 编码的中文字符要移动 3 个字节。</p>
+<p>通过使用 <code>.tell()</code> 方法，可以查看光标位置。返回的值是从文件头开始到当前位置的字节数目：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">f.tell()</span><br></pre></td></tr></table></figure>
+
+<h3 id="文件的保存和关闭"><a href="#文件的保存和关闭" class="headerlink" title="文件的保存和关闭"></a>文件的保存和关闭</h3><p>Windows 系统中，文件会自动保存。但是对于 Linux 系统，只有当内存中的内容达到阈值时，才会进行保存。为了保证我们的文件安全，就需要及时对文件进行存储。</p>
+<p><code>.flush()</code> 方法也叫刷新。每使用一次刷新方法，就会将改变的数据存储到硬盘中。在每一次比较关键的文件读取操作前后，都可以使用 <code>.flush()</code> 操作确保数据安全：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">f.flush()</span><br></pre></td></tr></table></figure>
+
+<p>在文件的最后，一般都要使用 <code>.close()</code> 方法把文件关闭，将数据存储到硬盘中，并释放内存空间：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">f.close()</span><br></pre></td></tr></table></figure>
+
+<h3 id="with-方法创建文件句柄"><a href="#with-方法创建文件句柄" class="headerlink" title="with 方法创建文件句柄"></a><code>with</code> 方法创建文件句柄</h3><p>使用赋值方式创建文件句柄，在文件操作结束后，需要使用 <code>.close()</code> 方法来关闭文件。这就平白增添了一个步骤。</p>
+<p>如果使用 with 方法，则不需要关闭文件，with 子句结束后，文件会自动关闭：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> open(<span class="string">'test'</span>, <span class="string">'w'</span>, encoding=<span class="string">'utf-8'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f.write(<span class="string">'123'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>with 方法还有一个好处是，可以同时创建多个文件句柄：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">f = open(<span class="string">"test1"</span>,<span class="string">"a"</span>,encoding=<span class="string">"gbk"</span>)</span><br><span class="line">f.write(<span class="string">"嘿嘿"</span>)</span><br><span class="line">f.close()</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">"test1"</span>,<span class="string">"r"</span>,encoding=<span class="string">"gbk"</span>) <span class="keyword">as</span> f,\</span><br><span class="line">        open(<span class="string">"test"</span>,<span class="string">"r"</span>,encoding=<span class="string">"utf-8"</span>)<span class="keyword">as</span> f1:</span><br><span class="line">    print(f.read())</span><br><span class="line">    print(f1.read())</span><br></pre></td></tr></table></figure>
+
+<h3 id="文件操作模式细节"><a href="#文件操作模式细节" class="headerlink" title="文件操作模式细节"></a>文件操作模式细节</h3><p>r 是只读模式，用来读取文件内容，不会对原文件进行任何修改。</p>
+<p>rb 模式用来只读字节文件，在爬虫中会有应用。</p>
+<p>w模式是清空写，当文件存在时会清空文件，文件不存在时创建文件：</p>
+<ol>
+<li>打开文件时自动清空文件内容</li>
+<li>写入内容，可以多次写入，每次写入都是在末尾追加</li>
+<li>只有打开文件时会清空文件内容</li>
+<li>通过移动光标，可以修改写入位置，如果该位置有内容，会造成覆盖</li>
+</ol>
+<p>wb 模式是清空写字节，也是在爬虫中有所应用。</p>
+<p>a 模式是追加写，当文件存在时会清空文件，文件不存在时创建文件。不管光标在哪里，都只会在最后追加内容：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">f = open(<span class="string">"test"</span>,<span class="string">"a"</span>,encoding=<span class="string">"utf-8"</span>)</span><br><span class="line">f.write(<span class="string">"啦啦啦"</span>)</span><br></pre></td></tr></table></figure>
+
+<p>r+ 是读写模式，可读可写，原文件不会被清空，但是光标的初始位置会在文件的头部，如果不移动光标的话，新加入的内容会覆盖掉原来的文件内容：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">f = open(<span class="string">"test"</span>,<span class="string">"r+"</span>,encoding=<span class="string">"utf-8"</span>)</span><br><span class="line">a = f.read()</span><br><span class="line">print(a)</span><br><span class="line">f.write(<span class="string">"这是读写"</span>)</span><br></pre></td></tr></table></figure>
+
+<p>w+ 是清空写读模式，打开文件时还是会将文件清空。后续的操作不会重新清空文件：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">f = open(<span class="string">"test"</span>,<span class="string">"w+"</span>,encoding=<span class="string">"utf-8"</span>)</span><br><span class="line">f.write(<span class="string">"哈哈哈"</span>)</span><br><span class="line">f.seek(<span class="number">0</span>,<span class="number">0</span>)   <span class="comment"># 移动光标   移动到文件的头部</span></span><br><span class="line">print(f.read())</span><br></pre></td></tr></table></figure>
+
+<p>这里有个细节，因为写入完成后，光标的位置在文件的最后，需要将光标移动到文件头，再使用 <code>.read()</code> 方法才能读取到写入的文件内容。</p>
+<p>a+ 是追加写读模式，所有内容无论光标在哪里，都只会添加到文件的末尾：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">f = open(<span class="string">"test"</span>,<span class="string">"a+"</span>,encoding=<span class="string">"utf-8"</span>)</span><br><span class="line">f.write(<span class="string">"嘿嘿"</span>)</span><br><span class="line">f.seek(<span class="number">0</span>,<span class="number">0</span>)   <span class="comment"># 移动光标   移动到文件的头部</span></span><br><span class="line">print(f.read())</span><br></pre></td></tr></table></figure>
+
+<p>最常使用的文件操作模式有：r、w、a、a+（没文件时）和 r+（覆盖一些内容）。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/python-basic/re/" rel="prev" title="re 模块和正则表达式">
+      <i class="fa fa-chevron-left"></i> re 模块和正则表达式
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/python-basic/flow-control/" rel="next" title="流程控制语句">
+      流程控制语句 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#文件操作初识"><span class="nav-number">1.</span> <span class="nav-text">文件操作初识</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件操作模式"><span class="nav-number">2.</span> <span class="nav-text">文件操作模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件操作步骤"><span class="nav-number">3.</span> <span class="nav-text">文件操作步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#文件路径"><span class="nav-number">3.1.</span> <span class="nav-text">文件路径</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#编码方式"><span class="nav-number">4.</span> <span class="nav-text">编码方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建文件句柄"><span class="nav-number">5.</span> <span class="nav-text">创建文件句柄</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件的读取"><span class="nav-number">6.</span> <span class="nav-text">文件的读取</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件的写入"><span class="nav-number">7.</span> <span class="nav-text">文件的写入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#光标操作"><span class="nav-number">8.</span> <span class="nav-text">光标操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件的保存和关闭"><span class="nav-number">9.</span> <span class="nav-text">文件的保存和关闭</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#with-方法创建文件句柄"><span class="nav-number">10.</span> <span class="nav-text">with 方法创建文件句柄</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文件操作模式细节"><span class="nav-number">11.</span> <span class="nav-text">文件操作模式细节</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="刘硕"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">刘硕</p>
+  <div class="site-description" itemprop="description">不成为自己讨厌的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">221</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:liushuo432@outlook.com" title="E-Mail → mailto:liushuo432@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/2436055290" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;2436055290" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备20001451号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘硕</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.2" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="/js/love.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/Epsilon2.1.model.json"},"display":{"superSample":2,"width":200,"height":400,"position":"left","hOffset":-30,"vOffset":-40},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>

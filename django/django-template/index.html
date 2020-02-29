@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="Tu5vqPaUb8svfkPx5eetJFD84ciQCcWVXNatdsWtj9Q">
+  <meta name="baidu-site-verification" content="baidu_verify_FBq9PG4BBb">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.1","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Django 的模板渲染，是 Django template 的核心内容。因为有了模板渲染语法，Django 可以生成前端页面，从而建立起前后端不分离的项目。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Django 模板 template">
+<meta property="og:url" content="https://sliu.vip/django/django-template/index.html">
+<meta property="og:site_name" content="刘硕的技术查阅手册">
+<meta property="og:description" content="Django 的模板渲染，是 Django template 的核心内容。因为有了模板渲染语法，Django 可以生成前端页面，从而建立起前后端不分离的项目。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/oldboy-python-full-stack-26/19083026021/raw/master/week12/day49/day49%20Django%E6%A8%A1%E6%9D%BF%E6%B8%B2%E6%9F%93.assets/1574154069760.png">
+<meta property="article:published_time" content="2020-02-25T16:42:21.000Z">
+<meta property="article:modified_time" content="2020-02-29T16:51:50.000Z">
+<meta property="article:author" content="刘硕">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="全栈开发">
+<meta property="article:tag" content="并发编程">
+<meta property="article:tag" content="网络编程">
+<meta property="article:tag" content="爬虫">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="自动化测试">
+<meta property="article:tag" content="Web开发">
+<meta property="article:tag" content="HTML">
+<meta property="article:tag" content="CSS">
+<meta property="article:tag" content="JavaScript">
+<meta property="article:tag" content="jQuery">
+<meta property="article:tag" content="Bootstrap">
+<meta property="article:tag" content="测试自动化">
+<meta property="article:tag" content="Selenium">
+<meta property="article:tag" content="postman">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="Vue">
+<meta property="article:tag" content="drf">
+<meta property="article:tag" content="django">
+<meta property="article:tag" content="文档翻译">
+<meta property="article:tag" content="PEP8">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/oldboy-python-full-stack-26/19083026021/raw/master/week12/day49/day49%20Django%E6%A8%A1%E6%9D%BF%E6%B8%B2%E6%9F%93.assets/1574154069760.png">
+
+<link rel="canonical" href="https://sliu.vip/django/django-template/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>Django 模板 template | 刘硕的技术查阅手册</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f14f123935d6183fdd06f8f1c4bc378f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="刘硕的技术查阅手册" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">刘硕的技术查阅手册</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">Python 全栈开发学习笔记</h1>
+      
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-toc">
+
+    <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-fw fa-rss"></i>订阅</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/django/django-template/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          Django 模板 template
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-26 00:42:21" itemprop="dateCreated datePublished" datetime="2020-02-26T00:42:21+08:00">2020-02-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-01 00:51:50" itemprop="dateModified" datetime="2020-03-01T00:51:50+08:00">2020-03-01</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Django/" itemprop="url" rel="index"><span itemprop="name">Django</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <div class="post-description">Django 的模板渲染，是 Django template 的核心内容。因为有了模板渲染语法，Django 可以生成前端页面，从而建立起前后端不分离的项目。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="settings-配置"><a href="#settings-配置" class="headerlink" title="settings 配置"></a>settings 配置</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">TEMPLATES = [</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">'BACKEND'</span>: <span class="string">'django.template.backends.django.DjangoTemplates'</span>,</span><br><span class="line">        <span class="string">'DIRS'</span>: [os.path.join(BASE_DIR, <span class="string">'templates'</span>)]  <span class="comment">#别忘了配置这个路径</span></span><br><span class="line">        ,</span><br><span class="line">        <span class="string">'APP_DIRS'</span>: <span class="literal">True</span>,</span><br><span class="line">        <span class="string">'OPTIONS'</span>: &#123;</span><br><span class="line">            <span class="string">'context_processors'</span>: [</span><br><span class="line">                <span class="string">'django.template.context_processors.debug'</span>,</span><br><span class="line">                <span class="string">'django.template.context_processors.request'</span>,</span><br><span class="line">                <span class="string">'django.contrib.auth.context_processors.auth'</span>,</span><br><span class="line">                <span class="string">'django.contrib.messages.context_processors.messages'</span>,</span><br><span class="line">            ],</span><br><span class="line">        &#125;,</span><br><span class="line">    &#125;,</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<h3 id="模板语法"><a href="#模板语法" class="headerlink" title="模板语法"></a>模板语法</h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123; 变量 &#125;&#125;  &#123;% 逻辑 %&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="万能的句点号"><a href="#万能的句点号" class="headerlink" title="万能的句点号 ."></a>万能的句点号 <code>.</code></h3><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>&#123;&#123; num &#125;&#125;<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>&#123;&#123; s &#125;&#125;<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>&#123;&#123; l1.1 &#125;&#125;<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>&#123;&#123; d1.number &#125;&#125;<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>&#123;&#123; a.yue &#125;&#125;<span class="tag">&lt;/<span class="name">h1</span>&gt;</span>  <span class="comment">&lt;!-- 注意，调用方法时不能加括号，所以如果方法带参数就没法用了 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>&#123;&#123; a.xx &#125;&#125;<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><code>views.py</code> 的写法</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">home</span><span class="params">(request)</span>:</span></span><br><span class="line"></span><br><span class="line">    num = <span class="number">100</span></span><br><span class="line">    s = <span class="string">'hello my girl I love you'</span></span><br><span class="line">    l1 = [<span class="number">11</span>,<span class="number">22</span>,<span class="number">33</span>]</span><br><span class="line">    d1 = &#123;<span class="string">'name'</span>:<span class="string">'冠希哥'</span>,<span class="string">'number'</span>:<span class="number">1000</span>&#125;</span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">A</span>:</span></span><br><span class="line">        balance = <span class="number">2000</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">            self.xx = <span class="string">'oo'</span></span><br><span class="line">        <span class="function"><span class="keyword">def</span> <span class="title">yue</span><span class="params">(self)</span>:</span></span><br><span class="line">            <span class="keyword">return</span> <span class="string">'how much!'</span></span><br><span class="line">    a = A()</span><br><span class="line">    <span class="comment"># render(&#123;'xx':'oo'&#125;)</span></span><br><span class="line">    <span class="keyword">return</span> render(request,<span class="string">'home.html'</span>,&#123;<span class="string">'num'</span>:num,<span class="string">'s'</span>:s,<span class="string">'l1'</span>:l1,<span class="string">'d1'</span>:d1,<span class="string">'a'</span>:a&#125;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="过滤器"><a href="#过滤器" class="headerlink" title="过滤器"></a>过滤器</h3><p>过滤器用法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123; 变量|过滤器名称:&#39;参数&#39; &#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>不是所有过滤器都有参数，没参数的话写法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123; 变量|过滤器名称 &#125;&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="内置过滤器"><a href="#内置过滤器" class="headerlink" title="内置过滤器"></a>内置过滤器</h4><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>&#123;&#123; s|truncatechars:n &#125;&#125;<span class="tag">&lt;/<span class="name">h1</span>&gt;</span> # 过滤器里面的参数都可以写后端返回的变量</span><br><span class="line"></span><br><span class="line">default -- <span class="tag">&lt;<span class="name">h1</span>&gt;</span>&#123;&#123; xx|default:'抱歉,没有数据!!' &#125;&#125;<span class="tag">&lt;/<span class="name">h1</span>&gt;</span> # 默认值</span><br><span class="line">length  -- <span class="tag">&lt;<span class="name">h1</span>&gt;</span>&#123;&#123; l1|length &#125;&#125;<span class="tag">&lt;/<span class="name">h1</span>&gt;</span>  # 获取变量数据长度</span><br><span class="line">filesizeformat -- <span class="tag">&lt;<span class="name">h2</span>&gt;</span>&#123;&#123; file_size|filesizeformat &#125;&#125;<span class="tag">&lt;/<span class="name">h2</span>&gt;</span> # 大小按照人类可读的显示</span><br><span class="line">slice -- <span class="tag">&lt;<span class="name">h2</span>&gt;</span>&#123;&#123; s|slice:'0:7' &#125;&#125;<span class="tag">&lt;/<span class="name">h2</span>&gt;</span> #切片 顾头不顾腚</span><br><span class="line">date -- <span class="tag">&lt;<span class="name">h3</span>&gt;</span>&#123;&#123; now|date:'Y-m-d H:i:s' &#125;&#125;<span class="tag">&lt;/<span class="name">h3</span>&gt;</span>  # 日期格式化显示</span><br><span class="line">safe -- <span class="tag">&lt;<span class="name">h1</span>&gt;</span>&#123;&#123; a_tag|safe &#125;&#125;<span class="tag">&lt;/<span class="name">h1</span>&gt;</span> # 数据：a_tag = "<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">'http://www.baidu.com'</span>&gt;</span>百度<span class="tag">&lt;/<span class="name">a</span>&gt;</span>"</span><br><span class="line">truncatechars -- <span class="tag">&lt;<span class="name">h1</span>&gt;</span>&#123;&#123; s|truncatechars:'6' &#125;&#125;<span class="tag">&lt;/<span class="name">h1</span>&gt;</span>   # 如果字符串字符多于指定的字符数量，那么会被截断。可用来截取长文本为一行。</span><br><span class="line">join -- <span class="tag">&lt;<span class="name">h1</span>&gt;</span>&#123;&#123; l1|join:'+' &#125;&#125;<span class="tag">&lt;/<span class="name">h1</span>&gt;</span>    # 将数组拼接成字符串</span><br></pre></td></tr></table></figure>
+
+<h5 id="safe-介绍"><a href="#safe-介绍" class="headerlink" title="safe 介绍"></a>safe 介绍</h5><p>Django 的模板中在进行模板渲染的时候会对 HTML 标签和 JS 等语法标签进行自动转义。原因显而易见，这样是为了安全。Django 担心这是用户添加的数据，比如如果有人给你评论的时候写了一段 js 代码。这个评论一提交，js 代码就执行啦。这样你是不是可以搞一些坏事儿了，写个弹窗的死循环，那浏览器还能用吗，是不是会一直弹窗啊。这叫做 xss 攻击。所以浏览器不让你这么搞，给你转义了。但是有的时候我们可能不希望这些 HTML 元素被转义，比如我们做一个内容管理系统，后台添加的文章中是经过修饰的，这些修饰可能是通过一个类似于 FCKeditor 编辑加注了 HTML 修饰符的文本，如果自动转义的话显示的就是保护 HTML 标签的源文件。为了在 Django 中关闭 HTML 的自动转义有两种方式，如果是一个单独的变量我们可以通过过滤器 <code>|safe</code> 的方式告诉 Django 这段代码是安全的不必转义。</p>
+<h3 id="标签"><a href="#标签" class="headerlink" title="标签"></a>标签</h3><h4 id="for-循环标签"><a href="#for-循环标签" class="headerlink" title="for 循环标签"></a>for 循环标签</h4><p>示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">&lt;ul&gt;</span><br><span class="line">    &#123;% for i in l1 %&#125;  # 循环列表</span><br><span class="line">        &lt;li&gt;&#123;&#123; i &#125;&#125;&lt;&#x2F;li&gt;</span><br><span class="line">    &#123;% endfor %&#125;</span><br><span class="line">&lt;&#x2F;ul&gt;</span><br><span class="line"></span><br><span class="line">&lt;ul&gt;</span><br><span class="line">    &#123;% for i in l1 reversed %&#125;  # 翻转循环列表时</span><br><span class="line">        &lt;li&gt;&#123;&#123; i &#125;&#125;&lt;&#x2F;li&gt;</span><br><span class="line">    &#123;% endfor %&#125;</span><br><span class="line">&lt;&#x2F;ul&gt;</span><br><span class="line"></span><br><span class="line">&lt;ol&gt;</span><br><span class="line">    &#123;% for key in d1.keys %&#125;  # 循环字典的键</span><br><span class="line">        &lt;li&gt;&#123;&#123; key &#125;&#125;&lt;&#x2F;li&gt;</span><br><span class="line"></span><br><span class="line">    &#123;% endfor %&#125;</span><br><span class="line">    &#123;% for key in d1.values %&#125; # 循环字典的值</span><br><span class="line">        &lt;li&gt;&#123;&#123; key &#125;&#125;&lt;&#x2F;li&gt;</span><br><span class="line"></span><br><span class="line">    &#123;% endfor %&#125;</span><br><span class="line">    &#123;% for key,value in d1.items %&#125; # 循环字典的键值对</span><br><span class="line">&#123;#        &#123;&#123; forloop.counter &#125;&#125;#&#125;</span><br><span class="line">        &lt;li&gt;&#123;&#123; forloop.last &#125;&#125;&gt;&gt;&gt;&gt;&#123;&#123; key &#125;&#125;---&#123;&#123; value &#125;&#125;&lt;&#x2F;li&gt;</span><br><span class="line">        &#123;% for foo in d1.hobby %&#125;</span><br><span class="line">            &#123;&#123; forloop.parentloop.counter &#125;&#125;---&#123;&#123; forloop.counter &#125;&#125;&lt;a href&#x3D;&quot;&quot;&gt;&#123;&#123; foo &#125;&#125;&lt;&#x2F;a&gt;</span><br><span class="line"></span><br><span class="line">        &#123;% endfor %&#125;</span><br><span class="line"></span><br><span class="line">    &#123;% endfor %&#125;</span><br><span class="line"></span><br><span class="line">&lt;&#x2F;ol&gt;</span><br></pre></td></tr></table></figure>
+
+<p>forloop 计数</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">forloop</span><span class="selector-class">.counter</span>            当前循环的索引值(从1开始)，<span class="selector-tag">forloop</span>是循环器，通过点来使用功能</span><br><span class="line"><span class="selector-tag">forloop</span><span class="selector-class">.counter0</span>           当前循环的索引值（从0开始）</span><br><span class="line"><span class="selector-tag">forloop</span><span class="selector-class">.revcounter</span>         当前循环的倒序索引值（从1开始）</span><br><span class="line"><span class="selector-tag">forloop</span><span class="selector-class">.revcounter0</span>        当前循环的倒序索引值（从0开始）</span><br><span class="line"><span class="selector-tag">forloop</span><span class="selector-class">.first</span>              当前循环是不是第一次循环（布尔值）</span><br><span class="line"><span class="selector-tag">forloop</span><span class="selector-class">.last</span>               当前循环是不是最后一次循环（布尔值）</span><br><span class="line"><span class="selector-tag">forloop</span><span class="selector-class">.parentloop</span>         本层循环的外层循环的对象，再通过上面的几个属性来显示外层循环的计数等</span><br></pre></td></tr></table></figure>
+
+<p>empty 判断迭代对象是否为空</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;% for i in l1 %&#125; #当没有数据时,会生成empty的内容</span><br><span class="line">	&lt;li&gt;&#123;&#123; i &#125;&#125;&lt;&#x2F;li&gt;</span><br><span class="line">&#123;% empty %&#125;</span><br><span class="line">	&lt;p&gt;啥数据也没有!&lt;&#x2F;p&gt;</span><br><span class="line">&#123;% endfor %&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="if-标签"><a href="#if-标签" class="headerlink" title="if 标签"></a>if 标签</h4><p>if 语句支持 <code>and</code>、<code>or</code>、<code>==</code>、<code>&gt;</code>、<code>&lt;</code>、<code>!=</code>、<code>&lt;=</code>、<code>&gt;=</code>、<code>in</code>、<code>not in</code>、<code>is</code>、<code>is not</code>判断，注意条件两边都有空格。</p>
+<h5 id="单条件判断"><a href="#单条件判断" class="headerlink" title="单条件判断"></a>单条件判断</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;% if num &#x3D;&#x3D; 11 %&#125;</span><br><span class="line">    &lt;a href&#x3D;&quot;&quot;&gt;详细些&lt;&#x2F;a&gt;</span><br><span class="line">&#123;% else %&#125;</span><br><span class="line">    &lt;p&gt;hahahhahah&lt;&#x2F;p&gt;</span><br><span class="line">&#123;% endif %&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="多条件判断"><a href="#多条件判断" class="headerlink" title="多条件判断"></a>多条件判断</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;% if num &gt; 100 or num &lt; 0 %&#125;</span><br><span class="line">	&lt;p&gt;无效&lt;&#x2F;p&gt;  &lt;!--不满足条件，不会生成这个标签--&gt;</span><br><span class="line">&#123;% elif num &gt; 80 and num &lt; 100 %&#125;</span><br><span class="line">	&lt;p&gt;优秀&lt;&#x2F;p&gt;</span><br><span class="line">&#123;% else %&#125;  &lt;!--也是在if标签结构里面的--&gt;</span><br><span class="line">	&lt;p&gt;凑活吧&lt;&#x2F;p&gt;</span><br><span class="line">&#123;% endif %&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="结合过滤来使用"><a href="#结合过滤来使用" class="headerlink" title="结合过滤来使用"></a>结合过滤来使用</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;% if user_list|length &gt; 5 %&#125;  &lt;!--结合过滤器来使用--&gt;</span><br><span class="line">七座豪华SUV</span><br><span class="line">&#123;% else %&#125;</span><br><span class="line">黄包车</span><br><span class="line">&#123;% endif %&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="with-标签"><a href="#with-标签" class="headerlink" title="with 标签"></a>with 标签</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;h1&gt;</span><br><span class="line">    &#123;% with l2.1.name as sb  %&#125;  # 给长的数据调用起名字,只能在with标签内部使用</span><br><span class="line">        &#123;&#123; sb &#125;&#125;  </span><br><span class="line">        &lt;a href&#x3D;&quot;&quot;&gt;&#123;&#123; sb &#125;&#125;&lt;&#x2F;a&gt;</span><br><span class="line">    &#123;% endwith %&#125;</span><br><span class="line">&#123;#    &#123;&#123; l2.1.name &#125;&#125;#&#125;</span><br><span class="line">&lt;&#x2F;h1&gt;</span><br><span class="line"></span><br><span class="line">&#123;% with total&#x3D;business.employees.count %&#125;</span><br><span class="line">    &#123;&#123; total &#125;&#125; &lt;!--只能在with语句体内用--&gt;</span><br><span class="line">&#123;% endwith %&#125;</span><br></pre></td></tr></table></figure>
+
+<p>需要注意的是，要记得使用 endwith 标签闭合 with 标签，而且别名只在一对闭合的 with 标签中起作用。</p>
+<h4 id="csrf-token-通过-csrf-认证机制"><a href="#csrf-token-通过-csrf-认证机制" class="headerlink" title="csrf_token 通过 csrf 认证机制"></a>csrf_token 通过 csrf 认证机制</h4><p>当使用 Django 框架以 post 方式提交表单的时候，会报错。还记得我们在 settings 里面的中间件配置里面把一个 csrf 的防御机制给注销了。但我们真正该做的不是注销它，而是应该学会怎么使用它，并且不让自己的操作被 forbiden。通过 csrf_token 标签就能搞定。</p>
+<p>这个标签用于防止跨站请求伪造（Cross-site request forgery，csrf）。</p>
+<p>在页面的 form 表单里面（注意是在 form 表单里面）任何位置写上</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% csrf_token %&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这个东西模板渲染的时候替换成了隐藏的 <code>&lt;input type=&quot;hidden&quot; name=&quot;csrfmiddlewaretoken&quot; value=&quot;8J4z1wiUEXt0gJSN59dLMnktrXFW0hv7m4d40Mtl37D7vJZfrxLir9L3jSTDjtG8&quot;&gt;</code> 标签。这个标签的值是个随机字符串。提交表单的时候，这个东西也被提交了。因为这个东西是后端渲染的时候给页面加上的，那么当你通过我给你的 form 表单提交数据的时候，你带着这个内容我就认识你，不带着，我就禁止你。因为后台我们 django 也存着这个东西，和你这个值相同的一个值，可以做对应验证是不是我给你的 token。</p>
+<p>存储这个值的东西我们后面再学，你先知道一下就行了，就像一个我们后台给这个用户的一个通行证，如果你用户没有按照我给你的这个正常的页面来 post 提交表单数据，或者说你没有先去请求我这个登陆页面，而是直接模拟请求来提交数据，那么我就能知道，你这个请求是非法的，反爬虫或者恶意攻击我的网站，以后将中间件的时候我们在细说这个东西，但是现在你要明白怎么回事，明白为什么 Django 会加这一套防御。</p>
+<h5 id="post-爬虫"><a href="#post-爬虫" class="headerlink" title="post 爬虫"></a>post 爬虫</h5><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">ret = requests.post(<span class="string">'http://127.0.0.1:8000/login/'</span>, data=&#123;</span><br><span class="line">    <span class="string">'uname'</span>:<span class="string">'chao'</span>,</span><br><span class="line">    <span class="string">'pwd'</span>:<span class="string">'123'</span>,</span><br><span class="line">&#125;)</span><br><span class="line">print(ret.content.decode(<span class="string">'utf-8'</span>))</span><br></pre></td></tr></table></figure>
+
+<h3 id="模板继承"><a href="#模板继承" class="headerlink" title="模板继承"></a>模板继承</h3><p>Django 模版引擎中最强大也是最复杂的部分就是模版继承了。模版继承可以让您创建一个基本的“骨架”模版，它包含您站点中的全部元素，并且可以定义能够被子模版覆盖的 blocks 。</p>
+<p>定义模板：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">href</span>=<span class="string">"style.css"</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>&#123;% block title %&#125;My amazing site&#123;%/span&gt; endblock %&#125;<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"sidebar"</span>&gt;</span></span><br><span class="line">        &#123;% block sidebar %&#125;</span><br><span class="line">        <span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"/"</span>&gt;</span>Home<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"/blog/"</span>&gt;</span>Blog<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">        &#123;% endblock %&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"content"</span>&gt;</span></span><br><span class="line">        &#123;% block content %&#125;&#123;% endblock %&#125;</span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>这个模版，我们把它叫作 <code>base.html</code>， 它定义了一个可以用于两列排版页面的简单 HTML 骨架。“子模版”的工作是用它们的内容填充空的 blocks。</p>
+<p>在这个例子中， block 标签定义了三个可以被子模版内容填充的 block。 block 告诉模版引擎： 子模版可能会覆盖掉模版中的这些位置。</p>
+<p>子模版可能看起来是这样的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;% extends &quot;base.html&quot; %&#125;</span><br><span class="line"> </span><br><span class="line">&#123;% block title %&#125;My amazing blog&#123;% endblock %&#125;</span><br><span class="line"> </span><br><span class="line">&#123;% block content %&#125;</span><br><span class="line">&#123;% for entry in blog_entries %&#125;</span><br><span class="line">    &lt;h2&gt;&#123;&#123; entry.title &#125;&#125;&lt;&#x2F;h2&gt;</span><br><span class="line">    &lt;p&gt;&#123;&#123; entry.body &#125;&#125;&lt;&#x2F;p&gt;</span><br><span class="line">&#123;% endfor %&#125;</span><br><span class="line">&#123;% endblock %&#125;</span><br></pre></td></tr></table></figure>
+
+<p>extends 标签是这里的关键。它告诉模版引擎，这个模版“继承”了另一个模版。当模版系统处理这个模版时，首先，它将定位父模版——在此例中，就是 <code>base.html</code>。</p>
+<p>那时，模版引擎将注意到 <code>base.html</code> 中的三个 block 标签，并用子模版中的内容来替换这些 block。</p>
+<h4 id="block-super"><a href="#block-super" class="headerlink" title="block.super"></a>block.super</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;% block content %&#125;</span><br><span class="line">    &#123;&#123; block.super &#125;&#125; # 将模板中的content这个名称的块中的内容拿过来</span><br><span class="line">    菜单1的内容</span><br><span class="line">&#123;% endblock %&#125;</span><br></pre></td></tr></table></figure>
+
+<p>为了更好的可读性，你也可以给你的 endblock 标签一个 <em>名字</em> 。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;% block content %&#125;</span><br><span class="line">...</span><br><span class="line">&#123;% endblock content %&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="组件"><a href="#组件" class="headerlink" title="组件"></a>组件</h3><ol>
+<li>写好一个组件 <code>.html</code> 文件</li>
+<li>在使用这个组件的 <code>html</code> 文件中写上下面的内容</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% include &#39;zujian.html&#39; %&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="自定义标签和过滤器"><a href="#自定义标签和过滤器" class="headerlink" title="自定义标签和过滤器"></a>自定义标签和过滤器</h3><ol>
+<li><p>在app应用文件夹中创建 <code>templatetags</code> 文件夹，模块名只能是 <code>templatetags</code></p>
+</li>
+<li><p>创建任意 .py 文件，如：<code>my_tags.py</code></p>
+</li>
+<li><p>文件中写上以下内容，自定义过滤器（参数最多两个）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django <span class="keyword">import</span> template</span><br><span class="line">register = template.Library()  <span class="comment">#register变量名称必须是它</span></span><br><span class="line"><span class="meta">@register.filter  </span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">oo</span><span class="params">(v1,v2)</span>:</span></span><br><span class="line">    print(v1)</span><br><span class="line">    <span class="keyword">return</span> v2 + v1 + <span class="string">'oo'</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>使用，在 html 文件中写上下面的代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;% load mytags %&#125;</span><br><span class="line">&lt;h1&gt;&#123;&#123; name|oo:&#39;xxxx&#39; &#125;&#125;&lt;&#x2F;h1&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>自定义标签，流程和上面一样，但是装饰器变了，使用也不同</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@register.simple_tag</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">ootag</span><span class="params">(v1,v2,v3)</span>:</span>  <span class="comment">#参数没有限制</span></span><br><span class="line">    print(v1,v2,v3)</span><br><span class="line">    <span class="keyword">return</span> v1 + <span class="string">'ootag!!'</span> + v2 + v3</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>自定义标签的用法</p>
+<figure class="highlight django"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="template-tag">&#123;% <span class="name"><span class="name">load</span></span> mytags %&#125;</span></span><br><span class="line"><span class="xml"><span class="tag">&lt;<span class="name">h1</span>&gt;</span></span><span class="template-tag">&#123;% <span class="name">ootag</span> name 'sss' '1111'%&#125;</span><span class="xml"><span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>inclusion_tag，组件标签，详见图解:</p>
+<p><img src="https://gitee.com/oldboy-python-full-stack-26/19083026021/raw/master/week12/day49/day49%20Django%E6%A8%A1%E6%9D%BF%E6%B8%B2%E6%9F%93.assets/1574154069760.png" alt="1574154069760"></p>
+</li>
+</ol>
+<h3 id="静态文件配置"><a href="#静态文件配置" class="headerlink" title="静态文件配置"></a>静态文件配置</h3><p>在项目中，js、css、jgp 图片等等都称为静态文件。<br>在 django 中的使用：</p>
+<ol>
+<li><p>配置。在 <code>settings</code> 配置文件中写上以下配置：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">STATIC_URL = <span class="string">'/static/'</span> <span class="comment">#127.0.0.1:8000/static/bootstrap/css.</span></span><br><span class="line"></span><br><span class="line">STATICFILES_DIRS = [</span><br><span class="line">    os.path.join(BASE_DIR,<span class="string">'jingtaiwenjianjia'</span>),    <span class="comment"># 文件夹名称尽量不要和别名的名称冲突</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>html</code> 文件中使用：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">href</span>=<span class="string">"/static/bootstrap-3.3.7-dist/css/bootstrap.min.css"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>相对路径引入静态文件时，前置斜杠必须加上。不管是什么，a标签也是一样，相对路径访问必须加上前面的斜杠。</p>
+</li>
+</ol>
+<p>除此之外，我们还可以在项目的子应用中创建一个名为 static 的文件夹，将静态文件放到里面。这时，不必再 <code>settings.py</code> 中进行任何配置。相较于上面的方式，这种方法更为常用。因为通过这种方式导入静态文件，PyCharm 会有操作提示。</p>
+<p>使用时，在 html 页面的最顶端，声明要加载静态文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;% load static %&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在标签中，可以直接使用 static 方法找到我们的静态文件：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">href</span>=<span class="string">"&#123;% static bootstrap-3.3.7-dist/css/bootstrap.min.css %&#125;"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>在 html 文件中的写法就是：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#123;% load static %&#125;</span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Title<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">href</span>=<span class="string">"&#123;% static 'bootstrap-3.3.7-dist/css/bootstrap.min.css' %&#125;"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"&#123;% static 'jquery.js' %&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"&#123;% static 'bootstrap-3.3.7-dist/js/bootstrap.min.js' %&#125;"</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/django/django-quickstart/" rel="prev" title="Django 初识">
+      <i class="fa fa-chevron-left"></i> Django 初识
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/django/django-views/" rel="next" title="Django 视图 view">
+      Django 视图 view <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#settings-配置"><span class="nav-number">1.</span> <span class="nav-text">settings 配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模板语法"><span class="nav-number">2.</span> <span class="nav-text">模板语法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#万能的句点号"><span class="nav-number">3.</span> <span class="nav-text">万能的句点号 .</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#过滤器"><span class="nav-number">4.</span> <span class="nav-text">过滤器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#内置过滤器"><span class="nav-number">4.1.</span> <span class="nav-text">内置过滤器</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#safe-介绍"><span class="nav-number">4.1.1.</span> <span class="nav-text">safe 介绍</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#标签"><span class="nav-number">5.</span> <span class="nav-text">标签</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#for-循环标签"><span class="nav-number">5.1.</span> <span class="nav-text">for 循环标签</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#if-标签"><span class="nav-number">5.2.</span> <span class="nav-text">if 标签</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#单条件判断"><span class="nav-number">5.2.1.</span> <span class="nav-text">单条件判断</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#多条件判断"><span class="nav-number">5.2.2.</span> <span class="nav-text">多条件判断</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#结合过滤来使用"><span class="nav-number">5.2.3.</span> <span class="nav-text">结合过滤来使用</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#with-标签"><span class="nav-number">5.3.</span> <span class="nav-text">with 标签</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#csrf-token-通过-csrf-认证机制"><span class="nav-number">5.4.</span> <span class="nav-text">csrf_token 通过 csrf 认证机制</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#post-爬虫"><span class="nav-number">5.4.1.</span> <span class="nav-text">post 爬虫</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模板继承"><span class="nav-number">6.</span> <span class="nav-text">模板继承</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#block-super"><span class="nav-number">6.1.</span> <span class="nav-text">block.super</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#组件"><span class="nav-number">7.</span> <span class="nav-text">组件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义标签和过滤器"><span class="nav-number">8.</span> <span class="nav-text">自定义标签和过滤器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#静态文件配置"><span class="nav-number">9.</span> <span class="nav-text">静态文件配置</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="刘硕"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">刘硕</p>
+  <div class="site-description" itemprop="description">不成为自己讨厌的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">221</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:liushuo432@outlook.com" title="E-Mail → mailto:liushuo432@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/2436055290" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;2436055290" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备20001451号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘硕</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.2" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="/js/love.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/Epsilon2.1.model.json"},"display":{"superSample":2,"width":200,"height":400,"position":"left","hOffset":-30,"vOffset":-40},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>

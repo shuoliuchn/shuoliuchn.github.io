@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="Tu5vqPaUb8svfkPx5eetJFD84ciQCcWVXNatdsWtj9Q">
+  <meta name="baidu-site-verification" content="baidu_verify_FBq9PG4BBb">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.1","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="字典初识我们来看下面的一个例子： 12name_lst &#x3D; [&quot;新力&quot;, &quot;一帆&quot;, &quot;海绵&quot;, &quot;秀&quot;]id_lst &#x3D; [18, 9, 25, 50]  其中，列表 name_lst 中存储的是同学的名字，id_lst 中存储的是对应同学的学号。例如，新力 的学号是 18。 如果我们要查找新力的学号，就要去另一个列表中找到其索引对应的学号值，例如： 12name_lst[0]id_lst[0]">
+<meta property="og:type" content="article">
+<meta property="og:title" content="字典">
+<meta property="og:url" content="https://sliu.vip/python-basic/dict/index.html">
+<meta property="og:site_name" content="刘硕的技术查阅手册">
+<meta property="og:description" content="字典初识我们来看下面的一个例子： 12name_lst &#x3D; [&quot;新力&quot;, &quot;一帆&quot;, &quot;海绵&quot;, &quot;秀&quot;]id_lst &#x3D; [18, 9, 25, 50]  其中，列表 name_lst 中存储的是同学的名字，id_lst 中存储的是对应同学的学号。例如，新力 的学号是 18。 如果我们要查找新力的学号，就要去另一个列表中找到其索引对应的学号值，例如： 12name_lst[0]id_lst[0]">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sliu.vip/python-basic/dict/%E5%AD%97%E5%85%B8setdefault%E6%96%B9%E6%B3%95.png">
+<meta property="article:published_time" content="2020-02-15T05:43:07.000Z">
+<meta property="article:modified_time" content="2020-02-29T02:34:01.866Z">
+<meta property="article:author" content="刘硕">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="全栈开发">
+<meta property="article:tag" content="并发编程">
+<meta property="article:tag" content="网络编程">
+<meta property="article:tag" content="爬虫">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="自动化测试">
+<meta property="article:tag" content="Web开发">
+<meta property="article:tag" content="HTML">
+<meta property="article:tag" content="CSS">
+<meta property="article:tag" content="JavaScript">
+<meta property="article:tag" content="jQuery">
+<meta property="article:tag" content="Bootstrap">
+<meta property="article:tag" content="测试自动化">
+<meta property="article:tag" content="Selenium">
+<meta property="article:tag" content="postman">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="Vue">
+<meta property="article:tag" content="drf">
+<meta property="article:tag" content="django">
+<meta property="article:tag" content="文档翻译">
+<meta property="article:tag" content="PEP8">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sliu.vip/python-basic/dict/%E5%AD%97%E5%85%B8setdefault%E6%96%B9%E6%B3%95.png">
+
+<link rel="canonical" href="https://sliu.vip/python-basic/dict/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>字典 | 刘硕的技术查阅手册</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f14f123935d6183fdd06f8f1c4bc378f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="刘硕的技术查阅手册" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">刘硕的技术查阅手册</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">Python 全栈开发学习笔记</h1>
+      
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-toc">
+
+    <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-fw fa-rss"></i>订阅</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/dict/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          字典
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-15 13:43:07" itemprop="dateCreated datePublished" datetime="2020-02-15T13:43:07+08:00">2020-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="字典初识"><a href="#字典初识" class="headerlink" title="字典初识"></a>字典初识</h3><p>我们来看下面的一个例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">name_lst = [<span class="string">"新力"</span>, <span class="string">"一帆"</span>, <span class="string">"海绵"</span>, <span class="string">"秀"</span>]</span><br><span class="line">id_lst = [<span class="number">18</span>, <span class="number">9</span>, <span class="number">25</span>, <span class="number">50</span>]</span><br></pre></td></tr></table></figure>
+
+<p>其中，列表 <code>name_lst</code> 中存储的是同学的名字，<code>id_lst</code> 中存储的是对应同学的学号。例如，<code>新力</code> 的学号是 <code>18</code>。</p>
+<p>如果我们要查找新力的学号，就要去另一个列表中找到其索引对应的学号值，例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">name_lst[<span class="number">0</span>]</span><br><span class="line">id_lst[<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+
+<p>这样的操作虽然也能满足我们的需求，但是显然有些繁琐。而且一旦任何一个列表中的索引发生了变化（比如进行了插入或者删除数据的操作），就要对另一个列表进行同样的改动，否则会造成混乱。</p>
+<p>如果我们使用字典来进行这一类操作，就可以避免这样的麻烦。</p>
+<p>字典也是 Python 中的基本数据类型之一。字典是 Python 中唯一一种包含键值对的数据类型。字典是一种键值对数据。</p>
+<p>字典在 Python 中的关键字是 <code>dict</code>。</p>
+<p>字典用来存储大量数据，数据量比列表存储的还要大。</p>
+<p>字典能够将数据和数据之间进行关联。</p>
+<p>字典的定义方法是这个样子的：<code>dic = {&#39;键&#39;: &#39;值&#39;}</code>，具体的例子就是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">"新力"</span>: [<span class="string">"开车"</span>, <span class="string">"唱"</span>, <span class="string">"跳"</span>], <span class="string">"一帆"</span>: <span class="number">9</span>, <span class="number">25</span>: <span class="string">"海绵"</span>, <span class="literal">True</span>: <span class="string">"秀"</span>, (<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>): <span class="string">"大圣"</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过键可以准确地找到其对应的值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(dic[<span class="string">"新力"</span>])</span><br></pre></td></tr></table></figure>
+
+<p>在这里补充一个概念，<code>哈希</code>：</p>
+<ul>
+<li>可变数据类型不可哈希</li>
+<li>不可变数据类型可哈希</li>
+</ul>
+<p>目前我们学到的可变数据类型有：列表和字典；不可变数据类型有：整型、字符串、布尔值和元组。</p>
+<p>字典的键必须是不可变数据类型（也就是可哈希）且唯一（字典中的键只能存在一个）。如果字典中的键出现了重复，后面的键值对会覆盖前面的键值对。</p>
+<p>字典的值可以是任意的数据类型。</p>
+<p>字典本身也是一个可变数据类型：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;&#123;<span class="string">'a'</span>: <span class="number">1</span>&#125;: <span class="string">'alex'</span>&#125;</span><br><span class="line">print(dic)</span><br></pre></td></tr></table></figure>
+
+<p>运行上面的代码会报错，错误原因是字典是不可哈希的数据类型。也就是说，字典是可变的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"C:/Users/Sure/PyProject/day05/01 exercise.py"</span>, line <span class="number">54</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    dic = &#123;&#123;<span class="string">'a'</span>: <span class="number">1</span>&#125;: <span class="string">'alex'</span>&#125;</span><br><span class="line">TypeError: unhashable type: <span class="string">'dict'</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="字典元素的增加"><a href="#字典元素的增加" class="headerlink" title="字典元素的增加"></a>字典元素的增加</h3><p>字典的增加操作可以通过 <code>dic[&quot;键&quot;] = &quot;值&quot;</code> 的方式实现：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">"key"</span>: <span class="number">1</span>&#125;</span><br><span class="line">dic[<span class="string">"alex"</span>] = <span class="number">89</span></span><br><span class="line">print(dic)</span><br></pre></td></tr></table></figure>
+
+<p>输出的内容为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="string">'key'</span>: <span class="number">1</span>, <span class="string">'alex'</span>: <span class="number">89</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这种通过赋值的方法增加变量的方法有些”暴力“，因为如果字典中原本存在相同的键，赋值操作将把原来的键对应的值替换为新值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key'</span>: <span class="number">1</span>, <span class="string">'alex'</span>: <span class="number">18</span>&#125;</span><br><span class="line">dic[<span class="string">"alex"</span>] = <span class="number">89</span></span><br><span class="line">print(dic)</span><br></pre></td></tr></table></figure>
+
+<p>输出的内容为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="string">'key'</span>: <span class="number">1</span>, <span class="string">'alex'</span>: <span class="number">89</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p>还有一种相对”温柔“的增加字典元素的方法，<code>.setdefault()</code>。通过这种方法，如果原字典中已经有了同样的键，返回值为改键对应的值，不会进行修改操作。如果原字典中不存在这样的值，将会增加新的键值对。值默认为 <code>None</code>，也可以自定义要添加的值。范围值为增加之后的键对应的新值。例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key'</span>: <span class="number">1</span>&#125;</span><br><span class="line">print(dic.setdefault(<span class="string">'key'</span>))</span><br><span class="line">print(dic.setdefault(<span class="string">'meet'</span>))</span><br><span class="line">print(dic.setdefault(<span class="string">'alex'</span>, <span class="number">89</span>))</span><br><span class="line">print(dic)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span></span><br><span class="line"><span class="literal">None</span></span><br><span class="line"><span class="number">89</span></span><br><span class="line">&#123;<span class="string">'key'</span>: <span class="number">1</span>, <span class="string">'meet'</span>: <span class="literal">None</span>, <span class="string">'alex'</span>: <span class="number">89</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p>对于 <code>.setdefault()</code> 的返回值，可以这样记忆：最终字典的键对应的值是什么，就返回什么。</p>
+<img src="/python-basic/dict/%E5%AD%97%E5%85%B8setdefault%E6%96%B9%E6%B3%95.png" class="" title="字典setdefault方法">
+
+<p><code>.setdefault()</code> 方法是通过两个步骤进行的：</p>
+<ol>
+<li>先通过减去字典中查找，如果键存在，返回对应的值，不会继续执行第二步；如果键不存在，返回将要赋给该键的值，默认为 <code>None</code>，去执行第二步。</li>
+<li>将键和值添加到字典中</li>
+</ol>
+<h3 id="字典的删除"><a href="#字典的删除" class="headerlink" title="字典的删除"></a>字典的删除</h3><p>字典的删除主要有 <code>.clear()</code>、<code>.pop()</code>、<code>.popitem()</code> 和 <code>del</code> 四种方法。</p>
+<p>需要注意的是，字典没有 <code>.remove()</code> 方法。</p>
+<p><code>.clear()</code> 方法用来清空字典，使用该方法后，会得到一个空字典：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key'</span>: <span class="number">1</span>, <span class="string">'dsb'</span>: <span class="string">'alex'</span>&#125;</span><br><span class="line">dic.clear()    <span class="comment"># 字典是可变数据类型，可以直接用方法来修改，不必重新赋值</span></span><br><span class="line">print(dic)</span><br><span class="line"></span><br><span class="line">输出的结果为：&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>.pop()</code> 方法需要输入想要删除的键作为参数，返回的是被删除的键对应的值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key'</span>: <span class="number">1</span>, <span class="string">'dsb'</span>: <span class="string">'alex'</span>&#125;</span><br><span class="line">print(dic.pop(<span class="string">'key'</span>))</span><br></pre></td></tr></table></figure>
+
+<p><code>.popitem()</code> 是随机删除。但是在 Python 3 和最新版本的 Python 2.7 中，默认删除字典的最后一组键值对，返回值为删除掉的键值对元组（注意，是元组，而不是像 <code>.pop()</code> 一样放回的是值）：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key'</span>: <span class="number">1</span>, <span class="string">'dsb'</span>: <span class="string">'alex'</span>&#125;</span><br><span class="line">print(dic.popitem())</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(<span class="string">'dsb'</span>, <span class="string">'alex'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>与列表不同的是，字典中没有 <code>remove</code> 方法。</p>
+<p>字典中 <code>del</code> 方法的用法和列表十分相似，如果不指定要删除的键，将会删除整个字典：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key'</span>: <span class="number">1</span>, <span class="string">'dsb'</span>: <span class="string">'alex'</span>&#125;</span><br><span class="line"><span class="keyword">del</span> dic</span><br><span class="line">print(dic)</span><br></pre></td></tr></table></figure>
+
+<p>代码运行后报错，因为dic已经被完全删除了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"C:/Users/Sure/PyProject/day05/01 exercise.py"</span>, line <span class="number">80</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    print(dic)</span><br><span class="line">NameError: name <span class="string">'dic'</span> <span class="keyword">is</span> <span class="keyword">not</span> defined</span><br></pre></td></tr></table></figure>
+
+<p>我们也可以通过指定键的方法，删除特定的键值对：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key'</span>: <span class="number">1</span>, <span class="string">'dsb'</span>: <span class="string">'alex'</span>&#125;</span><br><span class="line"><span class="keyword">del</span> dic[<span class="string">'dsb'</span>]</span><br><span class="line">print(dic)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="string">'key'</span>: <span class="number">1</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="字典的修改"><a href="#字典的修改" class="headerlink" title="字典的修改"></a>字典的修改</h3><p>字典的修改有两种形式，第一种是用暴力增加的方法 <code>dic[&#39;键&#39;] = &#39;值&#39;</code> 对已经存在的键进行修改；第二种是通过 <code>.update()</code> 方法来合并两个字典。</p>
+<p>使用 <code>dic[&#39;键&#39;] = &#39;值&#39;</code> 进行修改，当字典中存在指定的键时，该键对应的值将会被替换为新的值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">"key"</span>:<span class="number">1</span>,<span class="string">"dsb"</span>:<span class="string">"alex"</span>&#125;</span><br><span class="line">dic[<span class="string">"dsb"</span>] = <span class="string">"Alex"</span>  <span class="comment"># 修改</span></span><br><span class="line">dic[<span class="string">"ss"</span>] = <span class="string">"Alex"</span>   <span class="comment"># 增加</span></span><br><span class="line">print(dic)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="string">'key'</span>: <span class="number">1</span>, <span class="string">'dsb'</span>: <span class="string">'Alex'</span>, <span class="string">'ss'</span>: <span class="string">'Alex'</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>.update()</code> 方法可以将两个字典合并。<code>update</code> 中输入的字典的级别要高于前面的字典。也就是说，如果新输入的键已经在就字典中存在，该键对应的新值将对替换旧值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key'</span>: <span class="number">1</span>, <span class="string">'dsb'</span>:<span class="string">'alex'</span>&#125;</span><br><span class="line">dic.update(&#123;<span class="string">'key'</span>: <span class="number">2</span>, <span class="string">'meet'</span>: <span class="number">23</span>&#125;)</span><br><span class="line">print(dic)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="string">'key'</span>: <span class="number">2</span>, <span class="string">'dsb'</span>: <span class="string">'alex'</span>, <span class="string">'meet'</span>: <span class="number">23</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="字典的查找"><a href="#字典的查找" class="headerlink" title="字典的查找"></a>字典的查找</h3><p>字典可以直接通过键来查找值，不过这种查找方式相对“暴力”：当键存在时，返回对应的值；当键不存在时，程序会报错：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key'</span>: <span class="number">1</span>, <span class="string">'dsb'</span>: <span class="string">'alex'</span>&#125;</span><br><span class="line">print(dic[<span class="string">'dsb'</span>])	<span class="comment"># 返回'dsb'</span></span><br><span class="line">print(dic[<span class="string">'alex'</span>])	<span class="comment"># 程序报错</span></span><br></pre></td></tr></table></figure>
+
+<p>因为这种直接查找的方法当键不存在时会报错，有时我们需要使用 <code>.get()</code> 方法：当键存在时，返回键对应的值；当键不存在时，返回 None：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key'</span>: <span class="number">1</span>, <span class="string">'dsb'</span>: <span class="string">'alex'</span>&#125;</span><br><span class="line">print(dic[<span class="string">'dsb'</span>])	<span class="comment"># 返回'dsb'</span></span><br><span class="line">print(dic[<span class="string">'alex'</span>])	<span class="comment"># 返回None</span></span><br></pre></td></tr></table></figure>
+
+<p>我们甚至可以改变键不存在时的返回值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(dic.get(<span class="string">"alex"</span>, <span class="string">"没有找到啊"</span>))</span><br></pre></td></tr></table></figure>
+
+<p>我们也可以通过 <code>.keys()</code>、<code>.values()</code> 和 <code>.items()</code> 方法获取字典全部的键、值和键值对。这三个方法的返回值都是一种 <code>高仿列表</code>，可以迭代但不支持索引。我们可以通过list函数将返回的高仿列表转化为普通列表：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key'</span>: <span class="number">1</span>, <span class="string">'dsb'</span>: <span class="string">'alex'</span>&#125;</span><br><span class="line">print(dic.keys())</span><br><span class="line">print(dic.values())</span><br><span class="line">print(dic.items())</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> dic.keys():</span><br><span class="line">    print(i)</span><br><span class="line">print(list(dic.values()))</span><br></pre></td></tr></table></figure>
+
+<p>也可以使用 for 循环迭代字典，将会遍历字典的键：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key'</span>: <span class="number">1</span>, <span class="string">'dsb'</span>: <span class="string">'alex'</span>&#125;</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> dic:</span><br><span class="line">    print(i)</span><br></pre></td></tr></table></figure>
+
+<h3 id="字典的嵌套"><a href="#字典的嵌套" class="headerlink" title="字典的嵌套"></a>字典的嵌套</h3><p>有下面这样一个字典：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">house = &#123;</span><br><span class="line">    <span class="number">101</span>: &#123;<span class="number">1</span>: &#123;<span class="string">"皮裤男"</span>: &#123;<span class="string">"某女"</span>: [<span class="string">"小钢炮"</span>], <span class="string">"国际章"</span>: [<span class="string">"熊大"</span>, <span class="string">"熊二"</span>]&#125;,</span><br><span class="line">            <span class="number">2</span>: &#123;<span class="string">"林俊杰"</span>: [<span class="string">"磨牙"</span>]&#125;&#125;&#125;,</span><br><span class="line">    <span class="number">102</span>: &#123;<span class="number">1</span>: &#123;<span class="string">"皮裤女"</span>: &#123;<span class="string">"林宥嘉"</span>: [<span class="string">"说谎"</span>, <span class="string">"你是我的眼"</span>]&#125;&#125;,</span><br><span class="line">         <span class="number">2</span>: &#123;<span class="string">"王菲"</span>: [<span class="string">"天后"</span>, <span class="string">"传奇"</span>, <span class="string">"红豆"</span>, <span class="string">"笑忘书"</span>]&#125;&#125;,</span><br><span class="line">    <span class="number">103</span>: &#123;<span class="number">1</span>: &#123;<span class="string">"韦小宝"</span>: &#123;<span class="string">"阿珂"</span>: <span class="string">"刺客"</span>, <span class="string">"建宁"</span>: <span class="string">"公主"</span>, <span class="string">"双儿"</span>: <span class="string">"丫鬟"</span>, <span class="string">"教主老婆"</span>: <span class="string">"龙儿"</span>&#125;&#125;,</span><br><span class="line">         <span class="number">2</span>: &#123;<span class="string">"张无忌"</span>: &#123;<span class="string">"灭绝师太"</span>: <span class="string">"倚天剑"</span>, <span class="string">"金毛狮王"</span>: <span class="string">"屠龙刀"</span>, <span class="string">"张三丰"</span>: <span class="string">"太极拳"</span>&#125;&#125;&#125;,</span><br><span class="line">    <span class="number">104</span>: &#123;<span class="number">1</span>: &#123;<span class="string">"西游记"</span>: &#123;<span class="string">"大圣"</span>: <span class="string">"金箍撸撸棒"</span>, <span class="string">"唐僧"</span>: <span class="string">"叨逼叨"</span>, <span class="string">"八戒"</span>: <span class="string">"高老庄主任"</span>&#125;&#125;&#125;,</span><br><span class="line">    <span class="number">105</span>: &#123;<span class="number">1</span>: &#123;<span class="string">"水浒传"</span>: &#123;<span class="string">"武松"</span>: <span class="string">"打老虎"</span>, <span class="string">"鲁智笙"</span>: <span class="string">"拔树"</span>, <span class="string">"林冲"</span>: <span class="string">"教头"</span>, <span class="string">"宋江"</span>: <span class="string">"老大"</span>&#125;&#125;,</span><br><span class="line">         <span class="number">2</span>: &#123;<span class="string">"官场"</span>: &#123;<span class="string">"高俅"</span>: <span class="string">"足球"</span>&#125;&#125;&#125;,</span><br><span class="line">    <span class="number">106</span>: &#123;<span class="number">1</span>: &#123;<span class="string">"老男孩"</span>: &#123;<span class="string">"alex"</span>: <span class="string">"dsb"</span>, <span class="string">"wusir"</span>: <span class="string">"污"</span>, <span class="string">"宝元"</span>: <span class="string">"大卡车"</span>, <span class="string">"江毅"</span>: <span class="string">"兽"</span>&#125;&#125;&#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>要想找到里面的 <code>&quot;倚天剑&quot;</code> 的 <code>剑</code> 字和 <code>&quot;熊大&quot;</code> 的 <code>熊</code> 字，我们可以这样找到：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">print(house[<span class="number">103</span>][<span class="number">2</span>][<span class="string">'张无忌'</span>][<span class="string">'灭绝师太'</span>][<span class="number">2</span>])</span><br><span class="line">print(house[<span class="number">101</span>][<span class="number">1</span>][<span class="string">'皮裤男'</span>][<span class="string">'国际章'</span>][<span class="number">0</span>][<span class="number">0</span>])</span><br></pre></td></tr></table></figure>
+
+<p>从上面的例子中，我们就可以发现，字典相较于列表是很有优势的：</p>
+<ol>
+<li>字典查找内容更方便</li>
+<li>字典查找速度更快</li>
+</ol>
+<p>字典还可以简化流程控制的过程。</p>
+<p>举个例子，如果我们需要设计这样一个程序，用户输入编号，程序自动返回该编号对应的菜品。如果我们用 if 条件句来实现，将会非常繁琐：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    choose = int(input(<span class="string">"请输入数字（1-12）："</span>))</span><br><span class="line">    <span class="keyword">if</span> choose == <span class="number">1</span>:</span><br><span class="line">        print(<span class="string">'饺子'</span>)</span><br><span class="line">    <span class="keyword">elif</span> choose == <span class="number">2</span>:</span><br><span class="line">        print(<span class="string">'粥'</span>)</span><br><span class="line">    <span class="keyword">elif</span> choose == <span class="number">3</span>:</span><br><span class="line">        print(<span class="string">'面条'</span>)</span><br><span class="line">    <span class="keyword">elif</span> choose == <span class="number">4</span>:</span><br><span class="line">        print(<span class="string">'肉'</span>)</span><br><span class="line">    <span class="keyword">elif</span> choose == <span class="number">5</span>:</span><br><span class="line">        print(<span class="string">'土'</span>)</span><br><span class="line">    <span class="keyword">elif</span> choose == <span class="number">6</span>:</span><br><span class="line">        print(<span class="string">'东南风'</span>)</span><br><span class="line">    <span class="keyword">elif</span> choose == <span class="number">7</span>:</span><br><span class="line">        print(<span class="string">'切糕'</span>)</span><br><span class="line">    <span class="keyword">elif</span> choose == <span class="number">8</span>:</span><br><span class="line">        print(<span class="string">'烤全羊'</span>)</span><br><span class="line">    <span class="keyword">elif</span> choose == <span class="number">9</span>:</span><br><span class="line">        print(<span class="string">'烤骆驼'</span>)</span><br><span class="line">    <span class="keyword">elif</span> choose == <span class="number">10</span>:</span><br><span class="line">        print(<span class="string">'锅包肉'</span>)</span><br><span class="line">    <span class="keyword">elif</span> choose == <span class="number">11</span>:</span><br><span class="line">        print(<span class="string">'杀猪菜'</span>)</span><br><span class="line">    <span class="keyword">elif</span> choose == <span class="number">12</span>:</span><br><span class="line">        print(<span class="string">'乱炖'</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        print(<span class="string">'输入错误，请重新输入！'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>如果我们使用字典的方法，只需要这样即可：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">"1"</span>: <span class="string">"饺子"</span>,</span><br><span class="line">       <span class="string">"2"</span>: <span class="string">"粥"</span>,</span><br><span class="line">       <span class="string">"3"</span>: <span class="string">"面条"</span>,</span><br><span class="line">       <span class="string">"4"</span>: <span class="string">"肉"</span>,</span><br><span class="line">       <span class="string">"5"</span>: <span class="string">"土"</span>,</span><br><span class="line">       <span class="string">"6"</span>: <span class="string">"东南风"</span>,</span><br><span class="line">       <span class="string">"7"</span>: <span class="string">"切糕"</span>,</span><br><span class="line">       <span class="string">"8"</span>: <span class="string">"烤全羊"</span>,</span><br><span class="line">       <span class="string">"9"</span>: <span class="string">"烤骆驼"</span>,</span><br><span class="line">       <span class="string">"10"</span>: <span class="string">"锅包肉"</span>,</span><br><span class="line">       <span class="string">"11"</span>: <span class="string">"杀猪菜"</span>,</span><br><span class="line">       <span class="string">"12"</span>: <span class="string">"乱炖"</span></span><br><span class="line">       &#125;</span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    choose = input(<span class="string">"请输入数字（1-12）："</span>)</span><br><span class="line">    <span class="keyword">if</span> choose <span class="keyword">in</span> dic:</span><br><span class="line">        print(dic[choose])</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        print(<span class="string">'输入错误，请重新输入！'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>我们看到，使用字典之后，代码节省了不少，而且少了很多重复代码。以后如果需要增加或者删改列表，只需要在字典中进行操作即可，不需要对程序进行改动，后期维护也更为便利。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/translation/raspberry-gpio-python-examples/GPIO-function/" rel="prev" title="gpio_function（通道）">
+      <i class="fa fa-chevron-left"></i> gpio_function（通道）
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/python-basic/re/" rel="next" title="re 模块和正则表达式">
+      re 模块和正则表达式 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#字典初识"><span class="nav-number">1.</span> <span class="nav-text">字典初识</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字典元素的增加"><span class="nav-number">2.</span> <span class="nav-text">字典元素的增加</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字典的删除"><span class="nav-number">3.</span> <span class="nav-text">字典的删除</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字典的修改"><span class="nav-number">4.</span> <span class="nav-text">字典的修改</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字典的查找"><span class="nav-number">5.</span> <span class="nav-text">字典的查找</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#字典的嵌套"><span class="nav-number">6.</span> <span class="nav-text">字典的嵌套</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="刘硕"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">刘硕</p>
+  <div class="site-description" itemprop="description">不成为自己讨厌的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">221</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:liushuo432@outlook.com" title="E-Mail → mailto:liushuo432@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/2436055290" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;2436055290" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备20001451号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘硕</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.2" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="/js/love.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/Epsilon2.1.model.json"},"display":{"superSample":2,"width":200,"height":400,"position":"left","hOffset":-30,"vOffset":-40},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>

@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="Tu5vqPaUb8svfkPx5eetJFD84ciQCcWVXNatdsWtj9Q">
+  <meta name="baidu-site-verification" content="baidu_verify_FBq9PG4BBb">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.1","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Django REST Framework 官方文档翻译之请求和响应。DRF 在 Django 原有的 request 和 response 的基础上，为我们优化了请求和响应的方法，都挺好用的。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="教程 2：请求 Request 和响应 Response">
+<meta property="og:url" content="https://sliu.vip/translation/django-rest-framework-tutorial/requests-response/index.html">
+<meta property="og:site_name" content="刘硕的技术查阅手册">
+<meta property="og:description" content="Django REST Framework 官方文档翻译之请求和响应。DRF 在 Django 原有的 request 和 response 的基础上，为我们优化了请求和响应的方法，都挺好用的。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-02-24T16:35:44.000Z">
+<meta property="article:modified_time" content="2020-02-25T16:49:37.000Z">
+<meta property="article:author" content="刘硕">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="全栈开发">
+<meta property="article:tag" content="并发编程">
+<meta property="article:tag" content="网络编程">
+<meta property="article:tag" content="爬虫">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="自动化测试">
+<meta property="article:tag" content="Web开发">
+<meta property="article:tag" content="HTML">
+<meta property="article:tag" content="CSS">
+<meta property="article:tag" content="JavaScript">
+<meta property="article:tag" content="jQuery">
+<meta property="article:tag" content="Bootstrap">
+<meta property="article:tag" content="测试自动化">
+<meta property="article:tag" content="Selenium">
+<meta property="article:tag" content="postman">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="Vue">
+<meta property="article:tag" content="drf">
+<meta property="article:tag" content="django">
+<meta property="article:tag" content="文档翻译">
+<meta property="article:tag" content="PEP8">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://sliu.vip/translation/django-rest-framework-tutorial/requests-response/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>教程 2：请求 Request 和响应 Response | 刘硕的技术查阅手册</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f14f123935d6183fdd06f8f1c4bc378f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="刘硕的技术查阅手册" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">刘硕的技术查阅手册</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">Python 全栈开发学习笔记</h1>
+      
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-toc">
+
+    <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-fw fa-rss"></i>订阅</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/translation/django-rest-framework-tutorial/requests-response/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          教程 2：请求 Request 和响应 Response
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-25 00:35:44" itemprop="dateCreated datePublished" datetime="2020-02-25T00:35:44+08:00">2020-02-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-26 00:49:37" itemprop="dateModified" datetime="2020-02-26T00:49:37+08:00">2020-02-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91/" itemprop="url" rel="index"><span itemprop="name">官方文档翻译</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <div class="post-description">Django REST Framework 官方文档翻译之请求和响应。DRF 在 Django 原有的 request 和 response 的基础上，为我们优化了请求和响应的方法，都挺好用的。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>从此刻开始，我们才真正涉及 REST framework 的核心部分。让我们介绍几个极其重要的结构组件（building blocks）。</p>
+<h2 id="请求对象-Request"><a href="#请求对象-Request" class="headerlink" title="请求对象 Request"></a>请求对象 Request</h2><p>引入一个 <code>Request</code> 对象扩展了常规的 <code>HttpRequest</code>，提供更灵活的请求解析。<code>Request</code> 对象的核心功能是 <code>request.data</code> 属性，跟 <code>request.POST</code> 有点像，但是对于操作 Web API 来说更有用。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">request.POST  <span class="comment"># 仅处理表单数据。仅对 'POST' 方法有效。</span></span><br><span class="line">request.data  <span class="comment"># 处理任意数据。'POST'、'PUT' 和 'PATCH' 方法都能用</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="响应对象-Response"><a href="#响应对象-Response" class="headerlink" title="响应对象 Response"></a>响应对象 Response</h2><p>REST framework 也提供了一个 <code>Response</code> 对象。它是 <code>TemplateResponse</code> 类型，接收为渲染的内容，通过使用内容协议来确定正确的内容类型（content type）返回给客户端。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> Response(data)  <span class="comment"># 渲染为客户端请求的内容类型。</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="状态码"><a href="#状态码" class="headerlink" title="状态码"></a>状态码</h2><p>在视图中使用数字化的状态码未必总会被明显阅读到，而且即便你得到一个错误的状态码也很容易忽视。REST framework 在 <code>status</code> 模块中给每个状态码都提供了更加明确的标识符，比如 <code>HTTP_400_BAD_REQUEST</code>。始终使用这些而不是数字标识符无疑是明智之举。</p>
+<h2 id="API-视图封装-wrapper"><a href="#API-视图封装-wrapper" class="headerlink" title="API 视图封装 wrapper"></a>API 视图封装 wrapper</h2><p>REST framework 提供两个用于编写 API 视图的封装。</p>
+<ol>
+<li><code>@api_view</code> 装饰器用于处理函数视图（function based views）。</li>
+<li><code>APIView</code> 类用于处理类视图（class-based views）。</li>
+</ol>
+<p>这些封装器（wrapper）提供了几个功能，比如确保在你在视图中接收到 <code>Request</code> 实例对象，并且给 <code>Response</code> 对象增加语句，从而内容协议能够被执行。</p>
+<p>封装器也提供了一些行为，比如在恰当的时候返回 <code>405 Method Not Allowed</code> 响应，也会处理任何在获取到异常输入的 <code>request.data</code> 时引发的 <code>ParseError</code> 解析异常。</p>
+<h2 id="把它们全都拼凑起来"><a href="#把它们全都拼凑起来" class="headerlink" title="把它们全都拼凑起来"></a>把它们全都拼凑起来</h2><p>好了，让我们继续，开始用这些新组件稍微重构一下我们的视图（views）。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> rest_framework <span class="keyword">import</span> status</span><br><span class="line"><span class="keyword">from</span> rest_framework.decorators <span class="keyword">import</span> api_view</span><br><span class="line"><span class="keyword">from</span> rest_framework.response <span class="keyword">import</span> Response</span><br><span class="line"><span class="keyword">from</span> snippets.models <span class="keyword">import</span> Snippet</span><br><span class="line"><span class="keyword">from</span> snippets.serializers <span class="keyword">import</span> SnippetSerializer</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@api_view(['GET', 'POST'])</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">snippet_list</span><span class="params">(request)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    列举所有代码段，或者创建一个新的代码段。</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">if</span> request.method == <span class="string">'GET'</span>:</span><br><span class="line">        snippets = Snippet.objects.all()</span><br><span class="line">        serializer = SnippetSerializer(snippets, many=<span class="literal">True</span>)</span><br><span class="line">        <span class="keyword">return</span> Response(serializer.data)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">elif</span> request.method == <span class="string">'POST'</span>:</span><br><span class="line">        serializer = SnippetSerializer(data=request.data)</span><br><span class="line">        <span class="keyword">if</span> serializer.is_valid():</span><br><span class="line">            serializer.save()</span><br><span class="line">            <span class="keyword">return</span> Response(serializer.data, status=status.HTTP_201_CREATED)</span><br><span class="line">        <span class="keyword">return</span> Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)</span><br></pre></td></tr></table></figure>
+
+<p>我们的实例视图是对之前视图的一个优化。它更加简明一点，而且现在的代码同我们过去操作的 Forms API 非常相似了。我们也在使用名称化的状态码，这使得响应的含义更加显而易见。</p>
+<p>这里是针对一个单独的代码段的视图，在 <code>views.py</code> 模块中。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@api_view(['GET', 'PUT', 'DELETE'])</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">snippet_detail</span><span class="params">(request, pk)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    获取、更新或者删除一个代码段。</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        snippet = Snippet.objects.get(pk=pk)</span><br><span class="line">    <span class="keyword">except</span> Snippet.DoesNotExist:</span><br><span class="line">        <span class="keyword">return</span> Response(status=status.HTTP_404_NOT_FOUND)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> request.method == <span class="string">'GET'</span>:</span><br><span class="line">        serializer = SnippetSerializer(snippet)</span><br><span class="line">        <span class="keyword">return</span> Response(serializer.data)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">elif</span> request.method == <span class="string">'PUT'</span>:</span><br><span class="line">        serializer = SnippetSerializer(snippet, data=request.data)</span><br><span class="line">        <span class="keyword">if</span> serializer.is_valid():</span><br><span class="line">            serializer.save()</span><br><span class="line">            <span class="keyword">return</span> Response(serializer.data)</span><br><span class="line">        <span class="keyword">return</span> Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">elif</span> request.method == <span class="string">'DELETE'</span>:</span><br><span class="line">        snippet.delete()</span><br><span class="line">        <span class="keyword">return</span> Response(status=status.HTTP_204_NO_CONTENT)</span><br></pre></td></tr></table></figure>
+
+<p>这应该都很熟悉了——这跟常规的 Django 视图没什么不同。</p>
+<p>注意我们不再将我们的请求和响应与得到的内容类型明确绑定。<code>request.data</code> 不但可以处理获得的 <code>json</code> 请求，也能够处理其他格式。类似地，我们返回带着数据的响应对象，而让 REST framework 帮我们把响应渲染成正选的内容类型。</p>
+<h2 id="给我们的-URL-添加可选的格式后缀"><a href="#给我们的-URL-添加可选的格式后缀" class="headerlink" title="给我们的 URL 添加可选的格式后缀"></a>给我们的 URL 添加可选的格式后缀</h2><p>针对我们的响应不再硬性关联到单个内容类型这一情况，让我们为 API 端点添加对格式后缀的支持。使用格式后缀给我们明确指明格式的 URL，这意味着我们的 API 将能够处理 <a href="http://example.com/api/items/4.json" target="_blank" rel="noopener">http://example.com/api/items/4.json</a> 这样的 URL。</p>
+<p>让我们以给两个视图都加上一个 <code>format</code> 关键字参数开始，就像这样。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">snippet_list</span><span class="params">(request, format=None)</span>:</span></span><br></pre></td></tr></table></figure>
+
+<p>和</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">snippet_detail</span><span class="params">(request, pk, format=None)</span>:</span></span><br></pre></td></tr></table></figure>
+
+<p>现在，稍微更新一下 <code>snippets/urls.py</code> 文件，在已经存在的 URL 后面追加一系列的 <code>format_suffix_patterns</code>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.urls <span class="keyword">import</span> path</span><br><span class="line"><span class="keyword">from</span> rest_framework.urlpatterns <span class="keyword">import</span> format_suffix_patterns</span><br><span class="line"><span class="keyword">from</span> snippets <span class="keyword">import</span> views</span><br><span class="line"></span><br><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">'snippets/'</span>, views.snippet_list),</span><br><span class="line">    path(<span class="string">'snippets/&lt;int:pk&gt;'</span>, views.snippet_detail),</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">urlpatterns = format_suffix_patterns(urlpatterns)</span><br></pre></td></tr></table></figure>
+
+<p>我们不必加入这些额外的 url 模式，不过这给我们提供一个简单整洁的方式查看一个特定的格式。</p>
+<h2 id="它看起来如何？"><a href="#它看起来如何？" class="headerlink" title="它看起来如何？"></a>它看起来如何？</h2><p>继续，从命令行测试 API，就像我们在 <a href="/translation/django-rest-framework-tutorial/serialization">教程第 1 部分</a> 做的那样。一切都似曾相识，不过如果发送无效的请求，我们已经能够得到一些更好的错误处理。</p>
+<p>我们可以得到所有代码段的列表，就像之前那样。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">http http://<span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">8000</span>/snippets/</span><br><span class="line"></span><br><span class="line">HTTP/<span class="number">1.1</span> <span class="number">200</span> OK</span><br><span class="line">...</span><br><span class="line">[</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="string">"id"</span>: <span class="number">1</span>,</span><br><span class="line">    <span class="string">"title"</span>: <span class="string">""</span>,</span><br><span class="line">    <span class="string">"code"</span>: <span class="string">"foo = \"bar\"\n"</span>,</span><br><span class="line">    <span class="string">"linenos"</span>: false,</span><br><span class="line">    <span class="string">"language"</span>: <span class="string">"python"</span>,</span><br><span class="line">    <span class="string">"style"</span>: <span class="string">"friendly"</span></span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="string">"id"</span>: <span class="number">2</span>,</span><br><span class="line">    <span class="string">"title"</span>: <span class="string">""</span>,</span><br><span class="line">    <span class="string">"code"</span>: <span class="string">"print(\"hello, world\")\n"</span>,</span><br><span class="line">    <span class="string">"linenos"</span>: false,</span><br><span class="line">    <span class="string">"language"</span>: <span class="string">"python"</span>,</span><br><span class="line">    <span class="string">"style"</span>: <span class="string">"friendly"</span></span><br><span class="line">  &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<p>我们既可以通过使用请求头的方式控制我们想要拿回的响应格式：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http http://127.0.0.1:8000/snippets/ Accept:application/json  <span class="comment"># 请求 JSON</span></span><br><span class="line">http http://127.0.0.1:8000/snippets/ Accept:text/html         <span class="comment"># 请求 HTML</span></span><br></pre></td></tr></table></figure>
+
+<p>也可以通过末尾加上格式后缀：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http http://127.0.0.1:8000/snippets.json  <span class="comment"># JSON 后缀</span></span><br><span class="line">http http://127.0.0.1:8000/snippets.api   <span class="comment"># 可浏览器查看的 API 后缀</span></span><br></pre></td></tr></table></figure>
+
+<p>类似地，通过使用 <code>Content-Type</code> 请求头，我们可以控制我们发送求情的格式。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># POST 方法发送表单数据</span></span><br><span class="line">http --form POST http://<span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">8000</span>/snippets/ code=<span class="string">"print(123)"</span></span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">"id"</span>: <span class="number">3</span>,</span><br><span class="line">  <span class="string">"title"</span>: <span class="string">""</span>,</span><br><span class="line">  <span class="string">"code"</span>: <span class="string">"print(123)"</span>,</span><br><span class="line">  <span class="string">"linenos"</span>: false,</span><br><span class="line">  <span class="string">"language"</span>: <span class="string">"python"</span>,</span><br><span class="line">  <span class="string">"style"</span>: <span class="string">"friendly"</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># POST 方法发送 JSON 数据</span></span><br><span class="line">http --json POST http://<span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">8000</span>/snippets/ code=<span class="string">"print(456)"</span></span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">    <span class="string">"id"</span>: <span class="number">4</span>,</span><br><span class="line">    <span class="string">"title"</span>: <span class="string">""</span>,</span><br><span class="line">    <span class="string">"code"</span>: <span class="string">"print(456)"</span>,</span><br><span class="line">    <span class="string">"linenos"</span>: false,</span><br><span class="line">    <span class="string">"language"</span>: <span class="string">"python"</span>,</span><br><span class="line">    <span class="string">"style"</span>: <span class="string">"friendly"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果你在上面的 <code>http</code> 请求中加上一个 <code>--debug</code> 开关，你将能在请求头中看到请求类型。</p>
+<p>现在去浏览器中打开 API，访问 <a href="http://127.0.0.1:8000/snippets/。" target="_blank" rel="noopener">http://127.0.0.1:8000/snippets/。</a></p>
+<h3 id="可浏览器访问性"><a href="#可浏览器访问性" class="headerlink" title="可浏览器访问性"></a>可浏览器访问性</h3><p>因为 API 是基于客户端的请求来选择响应的内容类型，所以当浏览器访问资源时，它将默认返回一个 HTML 格式的资源语句。这允许 API 返回一个完全可浏览器访问的 HTML 语句。</p>
+<p>得到一个可浏览器访问的 API 是一个巨大的可用性胜利，这使得开发和使用你的 API 更加容易。这也极大地降低了其他开发者研究和使用你的 API 的门槛。</p>
+<p>参见 <a href="https://www.django-rest-framework.org/topics/browsable-api/" target="_blank" rel="noopener">可浏览器访问的 api</a> 话题获取更多关于可浏览器访问的 API 特性和如何定制它的信息。</p>
+<h2 id="接下来做什么？"><a href="#接下来做什么？" class="headerlink" title="接下来做什么？"></a>接下来做什么？</h2><p>在 <a href="/translation/django-rest-framework-tutorial/class-based-view">教程的第 3 部分</a>，我们将会开始使用类视图（class-based views），并且管窥通用视图是如何减少我们要写的代码量的。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/django/drf-throttling-filtering/" rel="prev" title="限流 Throttling 和过滤 Filtering">
+      <i class="fa fa-chevron-left"></i> 限流 Throttling 和过滤 Filtering
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/django/django-http/" rel="next" title="HTTP 协议">
+      HTTP 协议 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#请求对象-Request"><span class="nav-number">1.</span> <span class="nav-text">请求对象 Request</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#响应对象-Response"><span class="nav-number">2.</span> <span class="nav-text">响应对象 Response</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#状态码"><span class="nav-number">3.</span> <span class="nav-text">状态码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#API-视图封装-wrapper"><span class="nav-number">4.</span> <span class="nav-text">API 视图封装 wrapper</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#把它们全都拼凑起来"><span class="nav-number">5.</span> <span class="nav-text">把它们全都拼凑起来</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#给我们的-URL-添加可选的格式后缀"><span class="nav-number">6.</span> <span class="nav-text">给我们的 URL 添加可选的格式后缀</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#它看起来如何？"><span class="nav-number">7.</span> <span class="nav-text">它看起来如何？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#可浏览器访问性"><span class="nav-number">7.1.</span> <span class="nav-text">可浏览器访问性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#接下来做什么？"><span class="nav-number">8.</span> <span class="nav-text">接下来做什么？</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="刘硕"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">刘硕</p>
+  <div class="site-description" itemprop="description">不成为自己讨厌的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">221</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:liushuo432@outlook.com" title="E-Mail → mailto:liushuo432@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/2436055290" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;2436055290" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备20001451号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘硕</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.2" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="/js/love.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/Epsilon2.1.model.json"},"display":{"superSample":2,"width":200,"height":400,"position":"left","hOffset":-30,"vOffset":-40},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>

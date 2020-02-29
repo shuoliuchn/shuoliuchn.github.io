@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="Tu5vqPaUb8svfkPx5eetJFD84ciQCcWVXNatdsWtj9Q">
+  <meta name="baidu-site-verification" content="baidu_verify_FBq9PG4BBb">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.1","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="ORM 多表操作，包括多表关系的创建写法，多表的增删改查和链表操作等。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Django ORM 多表增删改查">
+<meta property="og:url" content="https://sliu.vip/django/django-orm-multiple/index.html">
+<meta property="og:site_name" content="刘硕的技术查阅手册">
+<meta property="og:description" content="ORM 多表操作，包括多表关系的创建写法，多表的增删改查和链表操作等。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-02-29T16:48:28.000Z">
+<meta property="article:modified_time" content="2020-02-29T16:48:28.000Z">
+<meta property="article:author" content="刘硕">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="全栈开发">
+<meta property="article:tag" content="并发编程">
+<meta property="article:tag" content="网络编程">
+<meta property="article:tag" content="爬虫">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="自动化测试">
+<meta property="article:tag" content="Web开发">
+<meta property="article:tag" content="HTML">
+<meta property="article:tag" content="CSS">
+<meta property="article:tag" content="JavaScript">
+<meta property="article:tag" content="jQuery">
+<meta property="article:tag" content="Bootstrap">
+<meta property="article:tag" content="测试自动化">
+<meta property="article:tag" content="Selenium">
+<meta property="article:tag" content="postman">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="Vue">
+<meta property="article:tag" content="drf">
+<meta property="article:tag" content="django">
+<meta property="article:tag" content="文档翻译">
+<meta property="article:tag" content="PEP8">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://sliu.vip/django/django-orm-multiple/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>Django ORM 多表增删改查 | 刘硕的技术查阅手册</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f14f123935d6183fdd06f8f1c4bc378f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="刘硕的技术查阅手册" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">刘硕的技术查阅手册</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">Python 全栈开发学习笔记</h1>
+      
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-toc">
+
+    <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-fw fa-rss"></i>订阅</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/django/django-orm-multiple/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          Django ORM 多表增删改查
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-03-01 00:48:28" itemprop="dateCreated datePublished" datetime="2020-03-01T00:48:28+08:00">2020-03-01</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Django/" itemprop="url" rel="index"><span itemprop="name">Django</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <div class="post-description">ORM 多表操作，包括多表关系的创建写法，多表的增删改查和链表操作等。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="创建关系字段"><a href="#创建关系字段" class="headerlink" title="创建关系字段"></a>创建关系字段</h2><p>ORM 通过使用字段的方式创建多表关系。常用的多表关系有：</p>
+<ul>
+<li>ForeignKey 外键，一对多关系字段</li>
+<li>OneToOneField 一对一关系字段</li>
+<li>ManyToManyField 多对多关系字段</li>
+</ul>
+<p>直接看 <code>models.py</code> 代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Author</span><span class="params">(models.Model)</span>:</span></span><br><span class="line">    name=models.CharField(max_length=<span class="number">32</span>)</span><br><span class="line">    age=models.IntegerField()</span><br><span class="line">    <span class="comment"># 一对一</span></span><br><span class="line">    ad=models.OneToOneField(to=<span class="string">"AuthorDetail"</span>, to_field=<span class="string">"id"</span>, on_delete=models.CASCADE)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># to_field="id"  可以不写,默认找主键</span></span><br><span class="line">    <span class="comment"># to="AuthorDetail",  to=可以不用写</span></span><br><span class="line">    <span class="comment"># on_delete=models.CASCADE  默认是级联删除,想做级联更新,直接去数据库修改表结构</span></span><br><span class="line">    <span class="comment"># on_delete=models.SET_NULL  也可以设置成删除置空</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AuthorDetail</span><span class="params">(models.Model)</span>:</span></span><br><span class="line">    birthday=models.DateField()</span><br><span class="line">    telephone=models.CharField(max_length=<span class="number">16</span>)</span><br><span class="line">    addr=models.CharField(max_length=<span class="number">64</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Publish</span><span class="params">(models.Model)</span>:</span></span><br><span class="line">    name=models.CharField(max_length=<span class="number">32</span>)</span><br><span class="line">    city=models.CharField(max_length=<span class="number">32</span>)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Book</span><span class="params">(models.Model)</span>:</span></span><br><span class="line">    title = models.CharField(max_length=<span class="number">32</span>)</span><br><span class="line">    publishDate=models.DateField()</span><br><span class="line">    price=models.DecimalField(max_digits=<span class="number">5</span>, decimal_places=<span class="number">2</span>)</span><br><span class="line">    <span class="comment"># 外键和多对多</span></span><br><span class="line">    publishs=models.ForeignKey(to=<span class="string">"Publish"</span>, to_field=<span class="string">"id"</span>, on_delete=models.CASCADE)</span><br><span class="line">    authors=models.ManyToManyField(to=<span class="string">'Author'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>基本的建表语句与单表操作一致。多个表关系有一对一、一对多和多对多，分别可以用下面这三种方式创建：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 一对一，外键 + 唯一</span></span><br><span class="line">ad=models.OneToOneField(to=<span class="string">"AuthorDetail"</span>, to_field=<span class="string">"id"</span>, on_delete=models.CASCADE)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 一对多，外键</span></span><br><span class="line">publishs=models.ForeignKey(to=<span class="string">"Publish"</span>, to_field=<span class="string">"id"</span>, on_delete=models.CASCADE)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 多对多，创建第三张表</span></span><br><span class="line">authors=models.ManyToManyField(to=<span class="string">'Author'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>操作一对一或一对多的关联表的时候，我们可以通过类属性或者表字段的形式来进行操作，字段名通常是 <code>类属性名 + 下划线 + 外键名</code>：</p>
+<ul>
+<li>类属性：<code>ad</code>、<code>publishs</code></li>
+<li>表字段：<code>ad_id</code>、<code>publishs_id</code></li>
+</ul>
+<p>对于多对多的关系，可以直接操作新生成的第三张表，表名为 <code>应用名 + 下划线 + 当前表名 + 下划线 + 属性名</code> ，也可以通过类属性和表字段来操作第三张表：</p>
+<ul>
+<li>类属性：<code>authors</code></li>
+<li>表名：<code>app01_book_authors</code></li>
+<li>表字段:   <code>id</code>、<code>author_id</code>、<code>book_id</code></li>
+</ul>
+<p>其具体用法会在下面详细讨论。</p>
+<h2 id="多表增删改查"><a href="#多表增删改查" class="headerlink" title="多表增删改查"></a>多表增删改查</h2><h3 id="增加"><a href="#增加" class="headerlink" title="增加"></a>增加</h3><h4 id="一对一"><a href="#一对一" class="headerlink" title="一对一"></a>一对一</h4><p>如前所述，一对一增加数据可以通过使用类属性或表字段的方式添加与另一个表相关联的字段：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">models.AuthorDetail.objects.create(</span><br><span class="line">    birthday=<span class="string">'2018-11-11'</span>,</span><br><span class="line">    telephone=<span class="string">'15122220000'</span>,</span><br><span class="line">    addr=<span class="string">'北京'</span>,</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">models.Author.objects.create(</span><br><span class="line">    name=<span class="string">'金龙'</span>,</span><br><span class="line">    age=<span class="number">2</span>,</span><br><span class="line">    ad=models.AuthorDetail.objects.get(id=<span class="number">1</span>),    <span class="comment"># 类属性</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">models.Author.objects.create(</span><br><span class="line">    name=<span class="string">'金龙2'</span>,</span><br><span class="line">    age=<span class="number">2</span>,</span><br><span class="line">    ad_id=<span class="number">2</span>,    <span class="comment"># 表字段</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h4 id="一对多"><a href="#一对多" class="headerlink" title="一对多"></a>一对多</h4><p>增加的话，一对多跟一对一的道理是一样的，可以通过类属性或表字段添加：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">models.Book.objects.create(</span><br><span class="line">    title=<span class="string">'白洁'</span>,</span><br><span class="line">    publishDate=<span class="string">'2011-01-01'</span>,</span><br><span class="line">    price=<span class="number">200</span>,</span><br><span class="line">    publishs=models.Publish.objects.get(id=<span class="number">1</span>)    <span class="comment"># 类属性</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">models.Book.objects.create(</span><br><span class="line">    title=<span class="string">'白洁第二部'</span>,</span><br><span class="line">    publishDate=<span class="string">'2011-01-01'</span>,</span><br><span class="line">    price=<span class="number">300</span>,</span><br><span class="line">    publishs_id=<span class="number">1</span>    <span class="comment"># 表字段</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h4 id="多对多"><a href="#多对多" class="headerlink" title="多对多"></a>多对多</h4><p>一本书可能会有多个作者，一个作者也可能写很多本书。比如，编号为 1 的书是编号为 1 和 2 的两个作者所著，那么在作者与书籍的关系表中，我们就应该创建书1对作者 1 和书 1 对作者 2 两条关系，就像这样：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">+----+---------+-----------+</span><br><span class="line">| id | book_id | author_id |</span><br><span class="line">+----+---------+-----------+</span><br><span class="line">|  1 |       1 |         1 |</span><br><span class="line">|  2 |       1 |         2 |</span><br><span class="line">+----+---------+-----------+</span><br></pre></td></tr></table></figure>
+
+<p>具体的操作用两种方式，一种是通过对象添加，另一种是通过值直接添加</p>
+<h5 id="通过-object-对象添加"><a href="#通过-object-对象添加" class="headerlink" title="通过 object 对象添加"></a>通过 object 对象添加</h5><p>通过找到作者的 object 对象，使用 add 方法添加：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">book_obj = models.Book.objects.get(id=<span class="number">1</span>)</span><br><span class="line">author1 = models.Author.objects.get(id=<span class="number">1</span>)</span><br><span class="line">author2 = models.Author.objects.get(id=<span class="number">2</span>)</span><br><span class="line">book_obj.authors.add(author1, author2)</span><br><span class="line"><span class="comment"># book_obj.authors.add(*[author1, author2])</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="通过主键-id-添加"><a href="#通过主键-id-添加" class="headerlink" title="通过主键 id 添加"></a>通过主键 id 添加</h5><p>通过作者 id，直接添加书籍的作者信息：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">book_obj = models.Book.objects.get(id=<span class="number">1</span>)</span><br><span class="line">book_obj.authors.add(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line"><span class="comment"># book_obj.authors.add(*[1, 2])</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="删除"><a href="#删除" class="headerlink" title="删除"></a>删除</h3><h4 id="一对一和一对多"><a href="#一对一和一对多" class="headerlink" title="一对一和一对多"></a>一对一和一对多</h4><p>一对一和一对多的删除都是找到 object 对象之后，直接 delete 删除：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">models.Author.objects.get(id=<span class="number">1</span>).delete()</span><br></pre></td></tr></table></figure>
+
+<h4 id="多对多-1"><a href="#多对多-1" class="headerlink" title="多对多"></a>多对多</h4><p>多对多的删除需要使用 query 对象进行操作：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">book_obj = models.Book.objects.get(id=<span class="number">1</span>)    <span class="comment"># 找到id为1的书</span></span><br><span class="line">book_obj.authors.remove(<span class="number">3</span>)  <span class="comment">#删除id为1的书与id为3的作者之间的关系</span></span><br><span class="line">book_obj.authors.remove(<span class="number">2</span>, <span class="number">3</span>) <span class="comment"># 删除id为1的书与id为2和3的作者之间的关系</span></span><br><span class="line">book_obj.authors.clear()  <span class="comment"># 清空id为1的书的所有作者信息</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="修改"><a href="#修改" class="headerlink" title="修改"></a>修改</h3><h4 id="一对一和一对多-1"><a href="#一对一和一对多-1" class="headerlink" title="一对一和一对多"></a>一对一和一对多</h4><p>修改 update，一对多和一对一操作时和单表的是一样的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">models.Book.objects.filter(id=<span class="number">1</span>).update(</span><br><span class="line">    title=<span class="string">'白洁新版'</span>,</span><br><span class="line">    <span class="comment"># publishs=models.Publish.objects.get(id=3),</span></span><br><span class="line">    publishs_id=<span class="number">3</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h4 id="多对多-2"><a href="#多对多-2" class="headerlink" title="多对多"></a>多对多</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">book_obj.authors.set([<span class="string">'4'</span>,])  <span class="comment"># 先清空再添加 clear+add</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="查询"><a href="#查询" class="headerlink" title="查询"></a>查询</h3><h4 id="基于对象的跨表查询"><a href="#基于对象的跨表查询" class="headerlink" title="基于对象的跨表查询"></a>基于对象的跨表查询</h4><h5 id="一对一-1"><a href="#一对一-1" class="headerlink" title="一对一"></a>一对一</h5><h6 id="正向查询"><a href="#正向查询" class="headerlink" title="正向查询"></a>正向查询</h6><p>查询金龙 2 这个作者的家庭住址</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">author_obj = models.Author.objects.get(name=<span class="string">'金龙2'</span>)</span><br><span class="line"><span class="comment"># author_obj.ad -- 直接拿到authordetail表中的那个条记录对象</span></span><br><span class="line">print(author_obj.ad.addr)</span><br></pre></td></tr></table></figure>
+
+<h6 id="反向查询"><a href="#反向查询" class="headerlink" title="反向查询"></a>反向查询</h6><p>查询电话号码以 151 开头的那个作者的姓名</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">authordetail_obj = models.AuthorDetail.objects.filter(telephone__startswith=<span class="string">'151'</span>).first()</span><br><span class="line">print(authordetail_obj.author.name)</span><br></pre></td></tr></table></figure>
+
+<h5 id="一对多-1"><a href="#一对多-1" class="headerlink" title="一对多"></a>一对多</h5><h6 id="正向查询-1"><a href="#正向查询-1" class="headerlink" title="正向查询"></a>正向查询</h6><p>白洁新版这本书是哪个出版社出版的</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">book_obj = models.Book.objects.filter(title=<span class="string">'白洁新版'</span>).first()</span><br><span class="line">print(book_obj.publishs.name)</span><br></pre></td></tr></table></figure>
+
+<h6 id="反向查询-1"><a href="#反向查询-1" class="headerlink" title="反向查询"></a>反向查询</h6><p>东京出版社出版了哪些书</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">pub_obj = models.Publish.objects.get(name=<span class="string">'东京出版社'</span>)</span><br><span class="line">books = pub_obj.book_set.all().values(<span class="string">'title'</span>)</span><br><span class="line"><span class="comment"># 东京出版社出版的名称中还有白洁的那些书</span></span><br><span class="line">books = pub_obj.book_set.filter(title__contains=<span class="string">'白洁'</span>).values(<span class="string">'title'</span>)</span><br><span class="line">print(books)</span><br></pre></td></tr></table></figure>
+
+<h5 id="多对多-3"><a href="#多对多-3" class="headerlink" title="多对多"></a>多对多</h5><h6 id="正向查询-2"><a href="#正向查询-2" class="headerlink" title="正向查询"></a>正向查询</h6><p>白洁新版这本书的作者都有谁</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">book_obj = models.Book.objects.filter(title=<span class="string">'白洁新版'</span>).first()</span><br><span class="line">authors = book_obj.authors.all().values(<span class="string">'name'</span>)</span><br><span class="line">print(authors)</span><br></pre></td></tr></table></figure>
+
+<h6 id="反向查询-2"><a href="#反向查询-2" class="headerlink" title="反向查询"></a>反向查询</h6><p>查询一下金龙 2 写了哪些书</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">jinlong2_obj = models.Author.objects.get(name=<span class="string">'金龙2'</span>)</span><br><span class="line">ret = jinlong2_obj.book_set.all().values(<span class="string">'title'</span>)</span><br><span class="line">print(ret)</span><br></pre></td></tr></table></figure>
+
+<h5 id="跨表查询总结"><a href="#跨表查询总结" class="headerlink" title="跨表查询总结"></a>跨表查询总结</h5><ul>
+<li>正向查询靠属性</li>
+<li>如果是一对一，反向查询靠小写类名</li>
+<li>一对多和多对多，反向查询靠小写类名_set</li>
+</ul>
+<h2 id="基于双下划线的跨表查询（join）"><a href="#基于双下划线的跨表查询（join）" class="headerlink" title="基于双下划线的跨表查询（join）"></a>基于双下划线的跨表查询（join）</h2><h3 id="一对一-2"><a href="#一对一-2" class="headerlink" title="一对一"></a>一对一</h3><h4 id="正向联表靠属性"><a href="#正向联表靠属性" class="headerlink" title="正向联表靠属性"></a>正向联表靠属性</h4><p>查询旭东的家庭住址</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ret = models.Author.objects.filter(name=<span class="string">'旭东'</span>).values(<span class="string">'ad__addr'</span>)</span><br><span class="line">print(ret)</span><br></pre></td></tr></table></figure>
+
+<p>如果用 SQL 语句表示，应该是这个样子的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select app01_authordetail.addr from app01_author inner join app01_authordetail on app01_author.ad_id &#x3D; app01_authordetail.id where app01_author.name&#x3D;&#39;旭东&#39;;</span><br></pre></td></tr></table></figure>
+
+<h4 id="反向连表类名小写"><a href="#反向连表类名小写" class="headerlink" title="反向连表类名小写"></a>反向连表类名小写</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ret = models.AuthorDetail.objects.filter(author__name=<span class="string">'旭东'</span>).values(<span class="string">'addr'</span>)</span><br><span class="line">print(ret)</span><br></pre></td></tr></table></figure>
+
+<h3 id="一对多-2"><a href="#一对多-2" class="headerlink" title="一对多"></a>一对多</h3><p>查询东京出版社出版了哪些书。</p>
+<p>如果直接使用 SQL 语句，应该写成：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select app01_book.title from app01_publish inner join app01_book on app01_publish.id &#x3D; app01_book.publishs_id where app01_publish.name&#x3D;&#39;东京出版社&#39;;</span><br></pre></td></tr></table></figure>
+
+<p>使用 ORM，则写成这样：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ret = models.Publish.objects.filter(name=<span class="string">'东京出版社'</span>).values(<span class="string">'book__title'</span>)</span><br><span class="line">print(ret)</span><br><span class="line">ret = models.Book.objects.filter(publishs__name=<span class="string">'东京出版社'</span>).values(<span class="string">'title'</span>)</span><br><span class="line">print(ret)</span><br></pre></td></tr></table></figure>
+
+<h3 id="多对多-4"><a href="#多对多-4" class="headerlink" title="多对多"></a>多对多</h3><p>查询一下金龙 2 写了哪些书</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ret = models.Book.objects.filter(authors__name=<span class="string">'金龙2'</span>).values(<span class="string">'title'</span>)</span><br><span class="line">print(ret)</span><br><span class="line"></span><br><span class="line">ret = models.Author.objects.filter(name=<span class="string">'金龙2'</span>).values(<span class="string">'book__title'</span>)</span><br><span class="line">print(ret)</span><br></pre></td></tr></table></figure>
+
+<h2 id="聚合查询"><a href="#聚合查询" class="headerlink" title="聚合查询"></a>聚合查询</h2><p>aggregate 聚合查询，结果是普通字典，queryset 的结束符。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.db.models <span class="keyword">import</span> Avg,Max,Min,Count,Sum</span><br><span class="line"></span><br><span class="line">obj = models.Book.objects.all().aggregate(a=Max(<span class="string">'price'</span>)) <span class="comment">#&#123;'price__avg': 200.0&#125;</span></span><br><span class="line">print(obj)</span><br><span class="line">Book.objects.aggregate(Avg(<span class="string">'price'</span>), Max(<span class="string">'price'</span>), Min(<span class="string">'price'</span>))</span><br></pre></td></tr></table></figure>
+
+<h2 id="分组查询"><a href="#分组查询" class="headerlink" title="分组查询"></a>分组查询</h2><p>分组查询，写成 SQL 语句应该是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">group by app01_book.publishs_id</span><br></pre></td></tr></table></figure>
+
+<p>例如：找出每个出版社出版的书的最高价格</p>
+<h3 id="先取值后分组"><a href="#先取值后分组" class="headerlink" title="先取值后分组"></a>先取值后分组</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ret = models.Book.objects.values(<span class="string">'publishs_id'</span>).annotate(m=Max(<span class="string">'price'</span>))</span><br><span class="line">print(ret)</span><br></pre></td></tr></table></figure>
+
+<p>总结：values写在annotate前面，意思是以values括号内的字段作为分组的依据。annotate里面是你要做的统计结果。这样，返回结果为queryset类型数据，里面是字典：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="string">'publishs_id'</span>:<span class="number">1</span>,<span class="string">'m'</span>:<span class="number">100</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="先分组后取值"><a href="#先分组后取值" class="headerlink" title="先分组后取值"></a>先分组后取值</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ret = models.Publish.objects.annotate(m=Max(<span class="string">'book__price'</span>)).values(<span class="string">'m'</span>, <span class="string">'name'</span>)</span><br><span class="line">print(ret)</span><br></pre></td></tr></table></figure>
+
+<p>总结：annotate直接写在了objects后面，意思是按照前面表的所有的数据（默认是id值）作为分组依据。结果返回的是前面这个表的所有models对象（model对象中包含了每个对象自己的统计结果），再通过values来取值。取值时可以直接写字段和统计结果的别名，也是queryset类型，里面是字典：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="string">'m'</span>: <span class="number">100</span>, <span class="string">'name'</span>: <span class="string">'东京出版社'</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p>查询每个作者的姓名以及出版的书的最高价格：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ret = models.Book.objects.values(<span class="string">'authors__name'</span>, <span class="string">'authors__id'</span>).annotate(m=Max(<span class="string">'price'</span>))  <span class="comment"># group by authors__name,authors__id</span></span><br><span class="line">print(ret)</span><br><span class="line"></span><br><span class="line">ret = models.Author.objects.annotate(m=Max(<span class="string">'book__price'</span>)).values(<span class="string">'name'</span>, <span class="string">'m'</span>)</span><br><span class="line">print(ret)</span><br></pre></td></tr></table></figure>
+
+<h2 id="F-查询"><a href="#F-查询" class="headerlink" title="F 查询"></a>F 查询</h2><p>F 查询结果是本表中两个字段的比较之后的符合条件的结果集。</p>
+<p>查询一下点赞数大于评论数的所有书籍。</p>
+<p>从前，我们也可以通过使用循环来找到：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">list1 = []</span><br><span class="line">books = models.Book.objects.all()</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> books:</span><br><span class="line">    <span class="keyword">if</span> i.dianzan &gt; i.comment:</span><br><span class="line">        list1.append(i)</span><br></pre></td></tr></table></figure>
+
+<p>如果使用F查询，代码会更加简洁直观：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ret = models.Book.objects.filter(dianzan__gt=F(<span class="string">'comment'</span>)).values(<span class="string">'title'</span>)</span><br><span class="line"></span><br><span class="line">ret = models.Book.objects.filter(dianzan__lt=F(<span class="string">'comment'</span>)).values(<span class="string">'title'</span>)</span><br><span class="line">print(ret)</span><br></pre></td></tr></table></figure>
+
+<p>本表字段进行四则运算：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">models.Book.objects.all().update(</span><br><span class="line">    price=F(<span class="string">'price'</span>) + <span class="number">20</span>  <span class="comment"># 支持四则运算</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h2 id="Q-查询"><a href="#Q-查询" class="headerlink" title="Q 查询"></a>Q 查询</h2><p>Q 查询用来进行逻辑运算，Q 的连接符：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&amp; -- and</span><br><span class="line">| -- or</span><br><span class="line">~ -- not，取反</span><br></pre></td></tr></table></figure>
+
+<p>查询一下点赞大于 300 或者价钱小于 300 的书</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ret = models.Book.objects.filter(Q(dianzan__gt=<span class="number">300</span>)|~Q(price__lt=<span class="number">500</span>),xx=<span class="string">'oo'</span>).values(<span class="string">'title'</span>)</span><br><span class="line"></span><br><span class="line">ret = models.Book.objects.filter(Q(dianzan__gt=<span class="number">300</span>)).values(<span class="string">'title'</span>)</span><br><span class="line"></span><br><span class="line">ret = models.Book.objects.filter(Q(Q(dianzan__gt=<span class="number">300</span>)|~Q(price__lt=<span class="number">500</span>))&amp;Q(xx=<span class="string">'oo'</span>)).values(<span class="string">'title'</span>)    <span class="comment"># Q查询能够进行各种复杂条件的拼接</span></span><br><span class="line">print(ret)</span><br></pre></td></tr></table></figure>
+
+<p>多表查询练习示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1 查询每个作者的姓名以及出版的书的最高价格</span></span><br><span class="line">ret = models.Author.objects.values(<span class="string">'id'</span>,<span class="string">'name'</span>).annotate(m=Max(<span class="string">'book__price'</span>))</span><br><span class="line"></span><br><span class="line">print(ret)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2 查询作者id大于2作者的姓名以及出版的书的最高价格</span></span><br><span class="line">ret = models.Author.objects.filter(id__gt=<span class="number">2</span>).values(<span class="string">'name'</span>).annotate(a=Max(<span class="string">'book__price'</span>))</span><br><span class="line">print(ret)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 3 查询作者id大于2或者作者年龄大于等于3岁的女作者的姓名以及出版的书的最高价格</span></span><br><span class="line">ret = models.Author.objects.filter(Q(id__gt=<span class="number">2</span>)|Q(Q(age__gte=<span class="number">3</span>)&amp;Q(sex=<span class="string">'女'</span>))).values(<span class="string">'name'</span>).annotate(a=Max(<span class="string">'book__price'</span>))</span><br><span class="line">print(ret)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 4 查询每个作者出版的书的最高价格 的平均值</span></span><br><span class="line">ret = models.Book.objects.values(<span class="string">'authors__name'</span>).annotate(m=Max(<span class="string">'price'</span>)).aggregate(a=Avg(<span class="string">'m'</span>))</span><br><span class="line">print(ret)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 5 每个作者出版的所有书的最高价格以及最高价格的那本书的名称</span></span><br><span class="line">ret = models.Book.objects.values(<span class="string">'authors__name'</span>).annotate(m=Max(<span class="string">'price'</span>))</span><br><span class="line">queryset(&#123;<span class="string">'authors__name'</span>:<span class="string">'xx'</span>,<span class="string">'m'</span>:<span class="number">100</span>&#125;,&#123;<span class="string">'authors__name'</span>:<span class="string">'xx'</span>,<span class="string">'m'</span>:<span class="number">100</span>&#125;,)</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/django/django-migration-bug/" rel="prev" title="解决 Django 自定义用户模型之前就已经数据迁移的 BUG">
+      <i class="fa fa-chevron-left"></i> 解决 Django 自定义用户模型之前就已经数据迁移的 BUG
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/django/django-orm-single/" rel="next" title="Django 模型 model 数据库 ORM 单表操作">
+      Django 模型 model 数据库 ORM 单表操作 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建关系字段"><span class="nav-number">1.</span> <span class="nav-text">创建关系字段</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多表增删改查"><span class="nav-number">2.</span> <span class="nav-text">多表增删改查</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#增加"><span class="nav-number">2.1.</span> <span class="nav-text">增加</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#一对一"><span class="nav-number">2.1.1.</span> <span class="nav-text">一对一</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#一对多"><span class="nav-number">2.1.2.</span> <span class="nav-text">一对多</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多对多"><span class="nav-number">2.1.3.</span> <span class="nav-text">多对多</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#通过-object-对象添加"><span class="nav-number">2.1.3.1.</span> <span class="nav-text">通过 object 对象添加</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#通过主键-id-添加"><span class="nav-number">2.1.3.2.</span> <span class="nav-text">通过主键 id 添加</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除"><span class="nav-number">2.2.</span> <span class="nav-text">删除</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#一对一和一对多"><span class="nav-number">2.2.1.</span> <span class="nav-text">一对一和一对多</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多对多-1"><span class="nav-number">2.2.2.</span> <span class="nav-text">多对多</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改"><span class="nav-number">2.3.</span> <span class="nav-text">修改</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#一对一和一对多-1"><span class="nav-number">2.3.1.</span> <span class="nav-text">一对一和一对多</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多对多-2"><span class="nav-number">2.3.2.</span> <span class="nav-text">多对多</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查询"><span class="nav-number">2.4.</span> <span class="nav-text">查询</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#基于对象的跨表查询"><span class="nav-number">2.4.1.</span> <span class="nav-text">基于对象的跨表查询</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#一对一-1"><span class="nav-number">2.4.1.1.</span> <span class="nav-text">一对一</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#正向查询"><span class="nav-number">2.4.1.1.1.</span> <span class="nav-text">正向查询</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#反向查询"><span class="nav-number">2.4.1.1.2.</span> <span class="nav-text">反向查询</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#一对多-1"><span class="nav-number">2.4.1.2.</span> <span class="nav-text">一对多</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#正向查询-1"><span class="nav-number">2.4.1.2.1.</span> <span class="nav-text">正向查询</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#反向查询-1"><span class="nav-number">2.4.1.2.2.</span> <span class="nav-text">反向查询</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#多对多-3"><span class="nav-number">2.4.1.3.</span> <span class="nav-text">多对多</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#正向查询-2"><span class="nav-number">2.4.1.3.1.</span> <span class="nav-text">正向查询</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#反向查询-2"><span class="nav-number">2.4.1.3.2.</span> <span class="nav-text">反向查询</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#跨表查询总结"><span class="nav-number">2.4.1.4.</span> <span class="nav-text">跨表查询总结</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基于双下划线的跨表查询（join）"><span class="nav-number">3.</span> <span class="nav-text">基于双下划线的跨表查询（join）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一对一-2"><span class="nav-number">3.1.</span> <span class="nav-text">一对一</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#正向联表靠属性"><span class="nav-number">3.1.1.</span> <span class="nav-text">正向联表靠属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#反向连表类名小写"><span class="nav-number">3.1.2.</span> <span class="nav-text">反向连表类名小写</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#一对多-2"><span class="nav-number">3.2.</span> <span class="nav-text">一对多</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多对多-4"><span class="nav-number">3.3.</span> <span class="nav-text">多对多</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#聚合查询"><span class="nav-number">4.</span> <span class="nav-text">聚合查询</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分组查询"><span class="nav-number">5.</span> <span class="nav-text">分组查询</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#先取值后分组"><span class="nav-number">5.1.</span> <span class="nav-text">先取值后分组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#先分组后取值"><span class="nav-number">5.2.</span> <span class="nav-text">先分组后取值</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#F-查询"><span class="nav-number">6.</span> <span class="nav-text">F 查询</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Q-查询"><span class="nav-number">7.</span> <span class="nav-text">Q 查询</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="刘硕"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">刘硕</p>
+  <div class="site-description" itemprop="description">不成为自己讨厌的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">221</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:liushuo432@outlook.com" title="E-Mail → mailto:liushuo432@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/2436055290" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;2436055290" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备20001451号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘硕</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.2" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="/js/love.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/Epsilon2.1.model.json"},"display":{"superSample":2,"width":200,"height":400,"position":"left","hOffset":-30,"vOffset":-40},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>

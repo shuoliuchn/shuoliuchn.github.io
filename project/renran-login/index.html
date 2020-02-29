@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="Tu5vqPaUb8svfkPx5eetJFD84ciQCcWVXNatdsWtj9Q">
+  <meta name="baidu-site-verification" content="baidu_verify_FBq9PG4BBb">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.1","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="荏苒登录模块的开发过程，包括页面的创建，以及登录的认证逻辑。使用的是 JWT 认证。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用户的登陆认证">
+<meta property="og:url" content="https://sliu.vip/project/renran-login/index.html">
+<meta property="og:site_name" content="刘硕的技术查阅手册">
+<meta property="og:description" content="荏苒登录模块的开发过程，包括页面的创建，以及登录的认证逻辑。使用的是 JWT 认证。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sliu.vip/project/renran-login/1582980963537.png">
+<meta property="og:image" content="https://sliu.vip/project/renran-login/1582982851097.png">
+<meta property="article:published_time" content="2020-02-29T16:54:49.000Z">
+<meta property="article:modified_time" content="2020-02-29T16:54:49.000Z">
+<meta property="article:author" content="刘硕">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="全栈开发">
+<meta property="article:tag" content="并发编程">
+<meta property="article:tag" content="网络编程">
+<meta property="article:tag" content="爬虫">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="自动化测试">
+<meta property="article:tag" content="Web开发">
+<meta property="article:tag" content="HTML">
+<meta property="article:tag" content="CSS">
+<meta property="article:tag" content="JavaScript">
+<meta property="article:tag" content="jQuery">
+<meta property="article:tag" content="Bootstrap">
+<meta property="article:tag" content="测试自动化">
+<meta property="article:tag" content="Selenium">
+<meta property="article:tag" content="postman">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="Vue">
+<meta property="article:tag" content="drf">
+<meta property="article:tag" content="django">
+<meta property="article:tag" content="文档翻译">
+<meta property="article:tag" content="PEP8">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sliu.vip/project/renran-login/1582980963537.png">
+
+<link rel="canonical" href="https://sliu.vip/project/renran-login/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>用户的登陆认证 | 刘硕的技术查阅手册</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f14f123935d6183fdd06f8f1c4bc378f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="刘硕的技术查阅手册" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">刘硕的技术查阅手册</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">Python 全栈开发学习笔记</h1>
+      
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-toc">
+
+    <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-fw fa-rss"></i>订阅</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/project/renran-login/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          用户的登陆认证
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-03-01 00:54:49" itemprop="dateCreated datePublished" datetime="2020-03-01T00:54:49+08:00">2020-03-01</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BB%BC%E5%90%88%E9%A1%B9%E7%9B%AE/" itemprop="url" rel="index"><span itemprop="name">综合项目</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <div class="post-description">荏苒登录模块的开发过程，包括页面的创建，以及登录的认证逻辑。使用的是 JWT 认证。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="前端显示登陆页面"><a href="#前端显示登陆页面" class="headerlink" title="前端显示登陆页面"></a>前端显示登陆页面</h2><h3 id="登录页组件"><a href="#登录页组件" class="headerlink" title="登录页组件"></a>登录页组件</h3><p><code>Login.vue</code> 组件代码：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br><span class="line">371</span><br><span class="line">372</span><br><span class="line">373</span><br><span class="line">374</span><br><span class="line">375</span><br><span class="line">376</span><br><span class="line">377</span><br><span class="line">378</span><br><span class="line">379</span><br><span class="line">380</span><br><span class="line">381</span><br><span class="line">382</span><br><span class="line">383</span><br><span class="line">384</span><br><span class="line">385</span><br><span class="line">386</span><br><span class="line">387</span><br><span class="line">388</span><br><span class="line">389</span><br><span class="line">390</span><br><span class="line">391</span><br><span class="line">392</span><br><span class="line">393</span><br><span class="line">394</span><br><span class="line">395</span><br><span class="line">396</span><br><span class="line">397</span><br><span class="line">398</span><br><span class="line">399</span><br><span class="line">400</span><br><span class="line">401</span><br><span class="line">402</span><br><span class="line">403</span><br><span class="line">404</span><br><span class="line">405</span><br><span class="line">406</span><br><span class="line">407</span><br><span class="line">408</span><br><span class="line">409</span><br><span class="line">410</span><br><span class="line">411</span><br><span class="line">412</span><br><span class="line">413</span><br><span class="line">414</span><br><span class="line">415</span><br><span class="line">416</span><br><span class="line">417</span><br><span class="line">418</span><br><span class="line">419</span><br><span class="line">420</span><br><span class="line">421</span><br><span class="line">422</span><br><span class="line">423</span><br><span class="line">424</span><br><span class="line">425</span><br><span class="line">426</span><br><span class="line">427</span><br><span class="line">428</span><br><span class="line">429</span><br><span class="line">430</span><br><span class="line">431</span><br><span class="line">432</span><br><span class="line">433</span><br><span class="line">434</span><br><span class="line">435</span><br><span class="line">436</span><br><span class="line">437</span><br><span class="line">438</span><br><span class="line">439</span><br><span class="line">440</span><br><span class="line">441</span><br><span class="line">442</span><br><span class="line">443</span><br><span class="line">444</span><br><span class="line">445</span><br><span class="line">446</span><br><span class="line">447</span><br><span class="line">448</span><br><span class="line">449</span><br><span class="line">450</span><br><span class="line">451</span><br><span class="line">452</span><br><span class="line">453</span><br><span class="line">454</span><br><span class="line">455</span><br><span class="line">456</span><br><span class="line">457</span><br><span class="line">458</span><br><span class="line">459</span><br><span class="line">460</span><br><span class="line">461</span><br><span class="line">462</span><br><span class="line">463</span><br><span class="line">464</span><br><span class="line">465</span><br><span class="line">466</span><br><span class="line">467</span><br><span class="line">468</span><br><span class="line">469</span><br><span class="line">470</span><br><span class="line">471</span><br><span class="line">472</span><br><span class="line">473</span><br><span class="line">474</span><br><span class="line">475</span><br><span class="line">476</span><br><span class="line">477</span><br><span class="line">478</span><br><span class="line">479</span><br><span class="line">480</span><br><span class="line">481</span><br><span class="line">482</span><br><span class="line">483</span><br><span class="line">484</span><br><span class="line">485</span><br><span class="line">486</span><br><span class="line">487</span><br><span class="line">488</span><br><span class="line">489</span><br><span class="line">490</span><br><span class="line">491</span><br><span class="line">492</span><br><span class="line">493</span><br><span class="line">494</span><br><span class="line">495</span><br><span class="line">496</span><br><span class="line">497</span><br><span class="line">498</span><br><span class="line">499</span><br><span class="line">500</span><br><span class="line">501</span><br><span class="line">502</span><br><span class="line">503</span><br><span class="line">504</span><br><span class="line">505</span><br><span class="line">506</span><br><span class="line">507</span><br><span class="line">508</span><br><span class="line">509</span><br><span class="line">510</span><br><span class="line">511</span><br><span class="line">512</span><br><span class="line">513</span><br><span class="line">514</span><br><span class="line">515</span><br><span class="line">516</span><br><span class="line">517</span><br><span class="line">518</span><br><span class="line">519</span><br><span class="line">520</span><br><span class="line">521</span><br><span class="line">522</span><br><span class="line">523</span><br><span class="line">524</span><br><span class="line">525</span><br><span class="line">526</span><br><span class="line">527</span><br><span class="line">528</span><br><span class="line">529</span><br><span class="line">530</span><br><span class="line">531</span><br><span class="line">532</span><br><span class="line">533</span><br><span class="line">534</span><br><span class="line">535</span><br><span class="line">536</span><br><span class="line">537</span><br><span class="line">538</span><br><span class="line">539</span><br><span class="line">540</span><br><span class="line">541</span><br><span class="line">542</span><br><span class="line">543</span><br><span class="line">544</span><br><span class="line">545</span><br><span class="line">546</span><br><span class="line">547</span><br><span class="line">548</span><br><span class="line">549</span><br><span class="line">550</span><br><span class="line">551</span><br><span class="line">552</span><br><span class="line">553</span><br><span class="line">554</span><br><span class="line">555</span><br><span class="line">556</span><br><span class="line">557</span><br><span class="line">558</span><br><span class="line">559</span><br><span class="line">560</span><br><span class="line">561</span><br><span class="line">562</span><br><span class="line">563</span><br><span class="line">564</span><br><span class="line">565</span><br><span class="line">566</span><br><span class="line">567</span><br><span class="line">568</span><br><span class="line">569</span><br><span class="line">570</span><br><span class="line">571</span><br><span class="line">572</span><br><span class="line">573</span><br><span class="line">574</span><br><span class="line">575</span><br><span class="line">576</span><br><span class="line">577</span><br><span class="line">578</span><br><span class="line">579</span><br><span class="line">580</span><br><span class="line">581</span><br><span class="line">582</span><br><span class="line">583</span><br><span class="line">584</span><br><span class="line">585</span><br><span class="line">586</span><br><span class="line">587</span><br><span class="line">588</span><br><span class="line">589</span><br><span class="line">590</span><br><span class="line">591</span><br><span class="line">592</span><br><span class="line">593</span><br><span class="line">594</span><br><span class="line">595</span><br><span class="line">596</span><br><span class="line">597</span><br><span class="line">598</span><br><span class="line">599</span><br><span class="line">600</span><br><span class="line">601</span><br><span class="line">602</span><br><span class="line">603</span><br><span class="line">604</span><br><span class="line">605</span><br><span class="line">606</span><br><span class="line">607</span><br><span class="line">608</span><br><span class="line">609</span><br><span class="line">610</span><br><span class="line">611</span><br><span class="line">612</span><br><span class="line">613</span><br><span class="line">614</span><br><span class="line">615</span><br><span class="line">616</span><br><span class="line">617</span><br><span class="line">618</span><br><span class="line">619</span><br><span class="line">620</span><br><span class="line">621</span><br><span class="line">622</span><br><span class="line">623</span><br><span class="line">624</span><br><span class="line">625</span><br><span class="line">626</span><br><span class="line">627</span><br><span class="line">628</span><br><span class="line">629</span><br><span class="line">630</span><br><span class="line">631</span><br><span class="line">632</span><br><span class="line">633</span><br><span class="line">634</span><br><span class="line">635</span><br><span class="line">636</span><br><span class="line">637</span><br><span class="line">638</span><br><span class="line">639</span><br><span class="line">640</span><br><span class="line">641</span><br><span class="line">642</span><br><span class="line">643</span><br><span class="line">644</span><br><span class="line">645</span><br><span class="line">646</span><br><span class="line">647</span><br><span class="line">648</span><br><span class="line">649</span><br><span class="line">650</span><br><span class="line">651</span><br><span class="line">652</span><br><span class="line">653</span><br><span class="line">654</span><br><span class="line">655</span><br><span class="line">656</span><br><span class="line">657</span><br><span class="line">658</span><br><span class="line">659</span><br><span class="line">660</span><br><span class="line">661</span><br><span class="line">662</span><br><span class="line">663</span><br><span class="line">664</span><br><span class="line">665</span><br><span class="line">666</span><br><span class="line">667</span><br><span class="line">668</span><br><span class="line">669</span><br><span class="line">670</span><br><span class="line">671</span><br><span class="line">672</span><br><span class="line">673</span><br><span class="line">674</span><br><span class="line">675</span><br><span class="line">676</span><br><span class="line">677</span><br><span class="line">678</span><br><span class="line">679</span><br><span class="line">680</span><br><span class="line">681</span><br><span class="line">682</span><br><span class="line">683</span><br><span class="line">684</span><br><span class="line">685</span><br><span class="line">686</span><br><span class="line">687</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"sign"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"logo"</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"/"</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"/static/image/nav-logo.png"</span> <span class="attr">alt</span>=<span class="string">"Logo"</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"main"</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">h4</span> <span class="attr">class</span>=<span class="string">"title"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"normal-title"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">"active"</span> <span class="attr">href</span>=<span class="string">"/login"</span>&gt;</span>登录<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">b</span>&gt;</span>·<span class="tag">&lt;/<span class="name">b</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">id</span>=<span class="string">"js-sign-up-btn"</span> <span class="attr">class</span>=<span class="string">""</span> <span class="attr">href</span>=<span class="string">"/register"</span>&gt;</span>注册<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">h4</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"js-sign-in-container"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">form</span> <span class="attr">id</span>=<span class="string">"new_session"</span> <span class="attr">action</span>=<span class="string">""</span> <span class="attr">method</span>=<span class="string">"post"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"input-prepend restyle js-normal"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">input</span> <span class="attr">placeholder</span>=<span class="string">"手机号或邮箱"</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">name</span>=<span class="string">"session[email_or_mobile_number]"</span> <span class="attr">id</span>=<span class="string">"session_email_or_mobile_number"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">"iconfont ic-user"</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 海外登录登录名输入框 --&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"input-prepend"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">input</span> <span class="attr">placeholder</span>=<span class="string">"密码"</span> <span class="attr">type</span>=<span class="string">"password"</span> <span class="attr">name</span>=<span class="string">"password"</span> <span class="attr">id</span>=<span class="string">"session_password"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">"iconfont ic-password"</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"remember-btn"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"checkbox"</span> <span class="attr">value</span>=<span class="string">"true"</span> <span class="attr">checked</span>=<span class="string">"checked"</span> <span class="attr">name</span>=<span class="string">"remember_me"</span> <span class="attr">id</span>=<span class="string">"session_remember_me"</span>&gt;</span><span class="tag">&lt;<span class="name">span</span>&gt;</span>记住我<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"forget-btn"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">""</span> <span class="attr">data-toggle</span>=<span class="string">"dropdown"</span> <span class="attr">href</span>=<span class="string">""</span>&gt;</span>登录遇到问题?<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">class</span>=<span class="string">"sign-in-button"</span> <span class="attr">id</span>=<span class="string">"sign-in-form-submit-btn"</span> <span class="attr">type</span>=<span class="string">"button"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">span</span> <span class="attr">id</span>=<span class="string">"sign-in-loading"</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">      登录</span><br><span class="line">    <span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- 更多登录方式 --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"more-sign"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h6</span>&gt;</span>社交帐号登录<span class="tag">&lt;/<span class="name">h6</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">li</span> <span class="attr">id</span>=<span class="string">"weibo-link-wrap"</span> <span class="attr">class</span>=<span class="string">""</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">a</span> <span class="attr">class</span>=<span class="string">"weibo"</span> <span class="attr">id</span>=<span class="string">"weibo-link"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">"iconfont ic-weibo"</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">id</span>=<span class="string">"weixin"</span> <span class="attr">class</span>=<span class="string">"weixin"</span> <span class="attr">target</span>=<span class="string">"_blank"</span> <span class="attr">href</span>=<span class="string">""</span>&gt;</span><span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">"iconfont ic-wechat"</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">id</span>=<span class="string">"qq"</span> <span class="attr">class</span>=<span class="string">"qq"</span> <span class="attr">target</span>=<span class="string">"_blank"</span> <span class="attr">href</span>=<span class="string">""</span>&gt;</span><span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">"iconfont ic-qq_connect"</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span><span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="javascript">    <span class="keyword">export</span> <span class="keyword">default</span> &#123;</span></span><br><span class="line"><span class="actionscript">        name: <span class="string">"Login"</span></span></span><br><span class="line">    &#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">scoped</span>&gt;</span></span><br><span class="line">input&#123;</span><br><span class="line">  outline: none;</span><br><span class="line">&#125;</span><br><span class="line"><span class="css">*, <span class="selector-pseudo">:after</span>, <span class="selector-pseudo">:before</span> &#123;</span></span><br><span class="line">    box-sizing: border-box;</span><br><span class="line">&#125;</span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> &#123;</span></span><br><span class="line">	height: 100%;</span><br><span class="line">	min-height: 750px;</span><br><span class="line">	text-align: center;</span><br><span class="line">	font-size: 14px;</span><br><span class="line"><span class="css">	<span class="selector-tag">background-color</span>: <span class="selector-id">#f1f1f1</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span><span class="selector-pseudo">:before</span> &#123;</span></span><br><span class="line">	content: "";</span><br><span class="line">	display: inline-block;</span><br><span class="line">	height: 85%;</span><br><span class="line">	vertical-align: middle</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.disable</span>,<span class="selector-class">.sign</span> <span class="selector-class">.disable-gray</span> &#123;</span></span><br><span class="line"><span class="css">	<span class="selector-tag">opacity</span>: <span class="selector-class">.5</span>;</span></span><br><span class="line">	pointer-events: none</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.disable-gray</span> &#123;</span></span><br><span class="line"><span class="css">	<span class="selector-tag">background-color</span>: <span class="selector-id">#969696</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.tooltip-error</span> &#123;</span></span><br><span class="line">	font-size: 14px;</span><br><span class="line">	line-height: 25px;</span><br><span class="line">	white-space: nowrap;</span><br><span class="line">	background: none</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.tooltip-error</span> <span class="selector-class">.tooltip-inner</span> &#123;</span></span><br><span class="line">	max-width: 280px;</span><br><span class="line"><span class="css">	<span class="selector-tag">color</span>: <span class="selector-id">#333</span>;</span></span><br><span class="line"><span class="css">	<span class="selector-tag">border</span>: 1<span class="selector-tag">px</span> <span class="selector-tag">solid</span> <span class="selector-id">#ea6f5a</span>;</span></span><br><span class="line"><span class="css">	<span class="selector-tag">background-color</span>: <span class="selector-id">#fff</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.tooltip-error</span> <span class="selector-class">.tooltip-inner</span> <span class="selector-tag">i</span> &#123;</span></span><br><span class="line">	position: static;</span><br><span class="line">	margin-right: 5px;</span><br><span class="line">	font-size: 20px;</span><br><span class="line"><span class="css">	<span class="selector-tag">color</span>: <span class="selector-id">#ea6f5a</span>;</span></span><br><span class="line">	vertical-align: middle</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.tooltip-error</span> <span class="selector-class">.tooltip-inner</span> <span class="selector-tag">span</span> &#123;</span></span><br><span class="line">	vertical-align: middle;</span><br><span class="line">	display: inline-block;</span><br><span class="line">	white-space: normal;</span><br><span class="line">	max-width: 230px</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.tooltip-error</span><span class="selector-class">.right</span> <span class="selector-class">.tooltip-arrow-border</span> &#123;</span></span><br><span class="line"><span class="css">	<span class="selector-tag">border-right-color</span>: <span class="selector-id">#ea6f5a</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.tooltip-error</span><span class="selector-class">.right</span> <span class="selector-class">.tooltip-arrow-bg</span> &#123;</span></span><br><span class="line">	left: 2px;</span><br><span class="line"><span class="css">	<span class="selector-tag">border-right-color</span>: <span class="selector-id">#fff</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.slide-error</span> &#123;</span></span><br><span class="line">	position: relative;</span><br><span class="line">	padding: 10px 0;</span><br><span class="line"><span class="css">	<span class="selector-tag">border</span>: 1<span class="selector-tag">px</span> <span class="selector-tag">solid</span> <span class="selector-id">#c8c8c8</span>;</span></span><br><span class="line">	border-radius: 4px</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.slide-error</span> <span class="selector-tag">i</span> &#123;</span></span><br><span class="line">	position: static!important;</span><br><span class="line">	margin-right: 10px;</span><br><span class="line"><span class="css">	<span class="selector-tag">color</span>: <span class="selector-id">#ea6f5a</span>!<span class="selector-tag">important</span>;</span></span><br><span class="line">	vertical-align: middle</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.slide-error</span> <span class="selector-tag">span</span> &#123;</span></span><br><span class="line">	font-size: 15px;</span><br><span class="line">	vertical-align: middle</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.slide-error</span> <span class="selector-tag">div</span> &#123;</span></span><br><span class="line">	margin-top: 10px;</span><br><span class="line">	font-size: 13px</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.slide-error</span> <span class="selector-tag">a</span> &#123;</span></span><br><span class="line"><span class="css">	<span class="selector-tag">color</span>: <span class="selector-id">#3194d0</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.js-sign-up-forbidden</span> &#123;</span></span><br><span class="line"><span class="css">	<span class="selector-tag">color</span>: <span class="selector-id">#999</span>;</span></span><br><span class="line">	padding: 80px 0 100px</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.js-sign-up-container</span> <span class="selector-class">.slide-error</span> &#123;</span></span><br><span class="line">	border-bottom: none;</span><br><span class="line">	border-radius: 0</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.logo</span> &#123;</span></span><br><span class="line">	position: absolute;</span><br><span class="line">	top: 56px;</span><br><span class="line">	margin-left: 50px</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.logo</span> <span class="selector-tag">img</span> &#123;</span></span><br><span class="line">	width: 100px</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.main</span> &#123;</span></span><br><span class="line">	width: 400px;</span><br><span class="line">	margin: 60px auto 0;</span><br><span class="line">	padding: 50px 50px 30px;</span><br><span class="line"><span class="css">	<span class="selector-tag">background-color</span>: <span class="selector-id">#fff</span>;</span></span><br><span class="line">	border-radius: 4px;</span><br><span class="line"><span class="css">	<span class="selector-tag">box-shadow</span>: 0 0 8<span class="selector-tag">px</span> <span class="selector-tag">rgba</span>(0,0,0,<span class="selector-class">.1</span>);</span></span><br><span class="line">	vertical-align: middle;</span><br><span class="line">	display: inline-block</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.reset-title</span>,<span class="selector-class">.sign</span> <span class="selector-class">.title</span> &#123;</span></span><br><span class="line">	margin: 0 auto 50px;</span><br><span class="line">	padding: 10px;</span><br><span class="line">	font-weight: 400;</span><br><span class="line"><span class="css">	<span class="selector-tag">color</span>: <span class="selector-id">#969696</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.reset-title</span> <span class="selector-tag">a</span>,<span class="selector-class">.sign</span> <span class="selector-class">.title</span> <span class="selector-tag">a</span> &#123;</span></span><br><span class="line">	padding: 10px;</span><br><span class="line"><span class="css">	<span class="selector-tag">color</span>: <span class="selector-id">#969696</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.reset-title</span> <span class="selector-tag">a</span><span class="selector-pseudo">:hover</span>,<span class="selector-class">.sign</span> <span class="selector-class">.title</span> <span class="selector-tag">a</span><span class="selector-pseudo">:hover</span> &#123;</span></span><br><span class="line"><span class="css">	<span class="selector-tag">border-bottom</span>: 2<span class="selector-tag">px</span> <span class="selector-tag">solid</span> <span class="selector-id">#ea6f5a</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.reset-title</span> <span class="selector-class">.active</span>,<span class="selector-class">.sign</span> <span class="selector-class">.title</span> <span class="selector-class">.active</span> &#123;</span></span><br><span class="line">	font-weight: 700;</span><br><span class="line"><span class="css">	<span class="selector-tag">color</span>: <span class="selector-id">#ea6f5a</span>;</span></span><br><span class="line"><span class="css">	<span class="selector-tag">border-bottom</span>: 2<span class="selector-tag">px</span> <span class="selector-tag">solid</span> <span class="selector-id">#ea6f5a</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.reset-title</span> <span class="selector-tag">b</span>,<span class="selector-class">.sign</span> <span class="selector-class">.title</span> <span class="selector-tag">b</span> &#123;</span></span><br><span class="line">	padding: 10px</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.reset-title</span> &#123;</span></span><br><span class="line"><span class="css">	<span class="selector-tag">color</span>: <span class="selector-id">#333</span>;</span></span><br><span class="line">	font-weight: 700</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-tag">form</span> &#123;</span></span><br><span class="line">	margin-bottom: 30px</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-tag">form</span> <span class="selector-class">.input-prepend</span> &#123;</span></span><br><span class="line">	position: relative;</span><br><span class="line">	width: 100%</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-tag">form</span> <span class="selector-class">.input-prepend</span> <span class="selector-tag">input</span> &#123;</span></span><br><span class="line">	width: 100%;</span><br><span class="line">	height: 50px;</span><br><span class="line">	margin-bottom: 0;</span><br><span class="line">	padding: 4px 12px 4px 35px;</span><br><span class="line"><span class="css">	<span class="selector-tag">border</span>: 1<span class="selector-tag">px</span> <span class="selector-tag">solid</span> <span class="selector-id">#c8c8c8</span>;</span></span><br><span class="line">	border-radius: 0 0 4px 4px;</span><br><span class="line"><span class="css">	<span class="selector-tag">background-color</span>: <span class="selector-tag">hsla</span>(0,0%,71%,<span class="selector-class">.1</span>);</span></span><br><span class="line">	vertical-align: middle</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-tag">form</span> <span class="selector-class">.input-prepend</span> <span class="selector-tag">i</span> &#123;</span></span><br><span class="line">	position: absolute;</span><br><span class="line">	top: 14px;</span><br><span class="line">	left: 10px;</span><br><span class="line">	font-size: 18px;</span><br><span class="line"><span class="css">	<span class="selector-tag">color</span>: <span class="selector-id">#969696</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-tag">form</span> <span class="selector-class">.input-prepend</span> <span class="selector-tag">span</span> &#123;</span></span><br><span class="line"><span class="css">	<span class="selector-tag">color</span>: <span class="selector-id">#333</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-tag">form</span> <span class="selector-class">.input-prepend</span> <span class="selector-class">.ic-show</span> &#123;</span></span><br><span class="line">	top: 18px;</span><br><span class="line">	left: auto;</span><br><span class="line">	right: 8px;</span><br><span class="line">	font-size: 12px</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-tag">form</span> <span class="selector-class">.geetest-placeholder</span> &#123;</span></span><br><span class="line">	height: 44px;</span><br><span class="line">	border-radius: 4px;</span><br><span class="line"><span class="css">	<span class="selector-tag">background-color</span>: <span class="selector-tag">hsla</span>(0,0%,71%,<span class="selector-class">.1</span>);</span></span><br><span class="line">	text-align: center;</span><br><span class="line">	line-height: 44px;</span><br><span class="line">	font-size: 14px;</span><br><span class="line"><span class="css">	<span class="selector-tag">color</span>: <span class="selector-id">#999</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-tag">form</span> <span class="selector-class">.restyle</span> &#123;</span></span><br><span class="line">	margin-bottom: 0</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-tag">form</span> <span class="selector-class">.restyle</span> <span class="selector-tag">input</span> &#123;</span></span><br><span class="line">	border-bottom: none;</span><br><span class="line">	border-radius: 4px 4px 0 0</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-tag">form</span> <span class="selector-class">.no-radius</span> <span class="selector-tag">input</span> &#123;</span></span><br><span class="line">	border-radius: 0</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-tag">form</span> <span class="selector-class">.slide-security-placeholder</span> &#123;</span></span><br><span class="line">	height: 32px;</span><br><span class="line"><span class="css">	<span class="selector-tag">background-color</span>: <span class="selector-tag">hsla</span>(0,0%,71%,<span class="selector-class">.1</span>);</span></span><br><span class="line">	border-radius: 4px</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-tag">form</span> <span class="selector-class">.slide-security-placeholder</span> <span class="selector-tag">p</span> &#123;</span></span><br><span class="line">	padding-top: 7px;</span><br><span class="line"><span class="css">	<span class="selector-tag">color</span>: <span class="selector-id">#999</span>;</span></span><br><span class="line">	margin-right: -7px</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.overseas-btn</span> &#123;</span></span><br><span class="line">	font-size: 14px;</span><br><span class="line"><span class="css">	<span class="selector-tag">color</span>: <span class="selector-id">#999</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.overseas-btn</span><span class="selector-pseudo">:hover</span> &#123;</span></span><br><span class="line"><span class="css">	<span class="selector-tag">color</span>: <span class="selector-id">#2f2f2f</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.remember-btn</span> &#123;</span></span><br><span class="line">	float: left;</span><br><span class="line">	margin: 15px 0</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.remember-btn</span> <span class="selector-tag">span</span> &#123;</span></span><br><span class="line">	margin-left: 5px;</span><br><span class="line">	font-size: 15px;</span><br><span class="line"><span class="css">	<span class="selector-tag">color</span>: <span class="selector-id">#969696</span>;</span></span><br><span class="line">	vertical-align: middle</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.forget-btn</span> &#123;</span></span><br><span class="line">	float: right;</span><br><span class="line">	position: relative;</span><br><span class="line">	margin: 15px 0;</span><br><span class="line">	font-size: 14px</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.forget-btn</span> <span class="selector-tag">a</span> &#123;</span></span><br><span class="line"><span class="css">	<span class="selector-tag">color</span>: <span class="selector-id">#999</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.forget-btn</span> <span class="selector-tag">a</span><span class="selector-pseudo">:hover</span> &#123;</span></span><br><span class="line"><span class="css">	<span class="selector-tag">color</span>: <span class="selector-id">#333</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.forget-btn</span> <span class="selector-class">.dropdown-menu</span> &#123;</span></span><br><span class="line">	top: 20px;</span><br><span class="line">	left: auto;</span><br><span class="line">	right: 0;</span><br><span class="line">	border-radius: 4px</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.forget-btn</span> <span class="selector-class">.dropdown-menu</span> <span class="selector-tag">a</span> &#123;</span></span><br><span class="line">	padding: 10px 20px;</span><br><span class="line"><span class="css">	<span class="selector-tag">color</span>: <span class="selector-id">#333</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-id">#sign-in-loading</span> &#123;</span></span><br><span class="line">	position: relative;</span><br><span class="line">	width: 20px;</span><br><span class="line">	height: 20px;</span><br><span class="line">	vertical-align: middle;</span><br><span class="line">	margin-top: -4px;</span><br><span class="line">	margin-right: 2px;</span><br><span class="line">	display: none</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-id">#sign-in-loading</span><span class="selector-pseudo">:after</span> &#123;</span></span><br><span class="line">	content: "";</span><br><span class="line">	position: absolute;</span><br><span class="line">	left: 0;</span><br><span class="line">	top: 0;</span><br><span class="line">	width: 100%;</span><br><span class="line">	height: 100%;</span><br><span class="line">	background-color: transparent</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-id">#sign-in-loading</span><span class="selector-pseudo">:before</span> &#123;</span></span><br><span class="line">	content: "";</span><br><span class="line">	position: absolute;</span><br><span class="line">	top: 50%;</span><br><span class="line">	left: 50%;</span><br><span class="line">	width: 20px;</span><br><span class="line">	height: 20px;</span><br><span class="line">	margin: -10px 0 0 -10px;</span><br><span class="line">	border-radius: 10px;</span><br><span class="line"><span class="css">	<span class="selector-tag">border</span>: 2<span class="selector-tag">px</span> <span class="selector-tag">solid</span> <span class="selector-id">#fff</span>;</span></span><br><span class="line">	border-bottom-color: transparent;</span><br><span class="line">	vertical-align: middle;</span><br><span class="line"><span class="css">	<span class="selector-tag">-webkit-animation</span>: <span class="selector-tag">rolling</span> <span class="selector-class">.8s</span> <span class="selector-tag">infinite</span> <span class="selector-tag">linear</span>;</span></span><br><span class="line"><span class="css">	<span class="selector-tag">animation</span>: <span class="selector-tag">rolling</span> <span class="selector-class">.8s</span> <span class="selector-tag">infinite</span> <span class="selector-tag">linear</span>;</span></span><br><span class="line">	z-index: 1</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.sign-in-button</span>,<span class="selector-class">.sign</span> <span class="selector-class">.sign-up-button</span> &#123;</span></span><br><span class="line">	margin-top: 20px;</span><br><span class="line">	width: 100%;</span><br><span class="line">	padding: 9px 18px;</span><br><span class="line">	font-size: 18px;</span><br><span class="line">	border: none;</span><br><span class="line">	border-radius: 25px;</span><br><span class="line"><span class="css">	<span class="selector-tag">color</span>: <span class="selector-id">#fff</span>;</span></span><br><span class="line"><span class="css">	<span class="selector-tag">background</span>: <span class="selector-id">#42c02e</span>;</span></span><br><span class="line">	cursor: pointer;</span><br><span class="line">	outline: none;</span><br><span class="line">	display: block;</span><br><span class="line">	clear: both</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.sign-in-button</span><span class="selector-pseudo">:hover</span>,<span class="selector-class">.sign</span> <span class="selector-class">.sign-up-button</span><span class="selector-pseudo">:hover</span> &#123;</span></span><br><span class="line"><span class="css">	<span class="selector-tag">background</span>: <span class="selector-id">#3db922</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.sign-in-button</span> &#123;</span></span><br><span class="line"><span class="css">	<span class="selector-tag">background</span>: <span class="selector-id">#3194d0</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.sign-in-button</span><span class="selector-pseudo">:hover</span> &#123;</span></span><br><span class="line"><span class="css">	<span class="selector-tag">background</span>: <span class="selector-id">#187cb7</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.btn-in-resend</span>,<span class="selector-class">.sign</span> <span class="selector-class">.btn-up-resend</span> &#123;</span></span><br><span class="line">	position: absolute;</span><br><span class="line">	top: 7px;</span><br><span class="line">	right: 7px;</span><br><span class="line">	width: 100px;</span><br><span class="line">	height: 36px;</span><br><span class="line">	font-size: 13px;</span><br><span class="line"><span class="css">	<span class="selector-tag">color</span>: <span class="selector-id">#fff</span>;</span></span><br><span class="line"><span class="css">	<span class="selector-tag">background-color</span>: <span class="selector-id">#42c02e</span>;</span></span><br><span class="line">	border-radius: 20px;</span><br><span class="line">	line-height: 36px</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.btn-in-resend</span> &#123;</span></span><br><span class="line"><span class="css">	<span class="selector-tag">background-color</span>: <span class="selector-id">#3194d0</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.sign-up-msg</span> &#123;</span></span><br><span class="line">	margin: 10px 0;</span><br><span class="line">	padding: 0;</span><br><span class="line">	text-align: center;</span><br><span class="line">	font-size: 12px;</span><br><span class="line">	line-height: 20px;</span><br><span class="line"><span class="css">	<span class="selector-tag">color</span>: <span class="selector-id">#969696</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.sign-up-msg</span> <span class="selector-tag">a</span>,<span class="selector-class">.sign</span> <span class="selector-class">.sign-up-msg</span> <span class="selector-tag">a</span><span class="selector-pseudo">:hover</span> &#123;</span></span><br><span class="line"><span class="css">	<span class="selector-tag">color</span>: <span class="selector-id">#3194d0</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.overseas</span> <span class="selector-tag">input</span> &#123;</span></span><br><span class="line">	padding-left: 110px!important</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.overseas</span> <span class="selector-class">.overseas-number</span> &#123;</span></span><br><span class="line">	position: absolute;</span><br><span class="line">	top: 0;</span><br><span class="line">	left: 0;</span><br><span class="line">	width: 100px;</span><br><span class="line">	height: 50px;</span><br><span class="line">	font-size: 18px;</span><br><span class="line"><span class="css">	<span class="selector-tag">color</span>: <span class="selector-id">#969696</span>;</span></span><br><span class="line"><span class="css">	<span class="selector-tag">border-right</span>: 1<span class="selector-tag">px</span> <span class="selector-tag">solid</span> <span class="selector-id">#c8c8c8</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.overseas</span> <span class="selector-class">.overseas-number</span> <span class="selector-tag">span</span> &#123;</span></span><br><span class="line">	margin-top: 17px;</span><br><span class="line">	padding-left: 35px;</span><br><span class="line">	text-align: left;</span><br><span class="line">	font-size: 14px;</span><br><span class="line">	display: block</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.overseas</span> <span class="selector-class">.dropdown-menu</span> &#123;</span></span><br><span class="line">	width: 100%;</span><br><span class="line">	max-height: 285px;</span><br><span class="line">	font-size: 14px;</span><br><span class="line">	border-radius: 0 0 4px 4px;</span><br><span class="line">	overflow-y: auto</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.overseas</span> <span class="selector-class">.dropdown-menu</span> <span class="selector-tag">li</span> <span class="selector-class">.nation-code</span> &#123;</span></span><br><span class="line">	width: 65px;</span><br><span class="line">	display: inline-block</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.overseas</span> <span class="selector-class">.dropdown-menu</span> <span class="selector-tag">li</span> <span class="selector-tag">a</span> &#123;</span></span><br><span class="line">	padding: 6px 20px;</span><br><span class="line">	font-size: 14px;</span><br><span class="line">	line-height: 20px</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.overseas</span> <span class="selector-class">.dropdown-menu</span> <span class="selector-tag">li</span> <span class="selector-tag">a</span><span class="selector-pseudo">::hover</span> &#123;</span></span><br><span class="line"><span class="css">	<span class="selector-tag">color</span>: <span class="selector-id">#fff</span>;</span></span><br><span class="line"><span class="css">	<span class="selector-tag">background-color</span>: <span class="selector-id">#f5f5f5</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.more-sign</span> &#123;</span></span><br><span class="line">	margin-top: 50px</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.more-sign</span> <span class="selector-tag">h6</span> &#123;</span></span><br><span class="line">	position: relative;</span><br><span class="line">	margin: 0 0 10px;</span><br><span class="line">	font-size: 12px;</span><br><span class="line"><span class="css">	<span class="selector-tag">color</span>: <span class="selector-id">#b5b5b5</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.more-sign</span> <span class="selector-tag">h6</span><span class="selector-pseudo">:before</span> &#123;</span></span><br><span class="line">	left: 30px</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.more-sign</span> <span class="selector-tag">h6</span><span class="selector-pseudo">:after</span>,<span class="selector-class">.sign</span> <span class="selector-class">.more-sign</span> <span class="selector-tag">h6</span><span class="selector-pseudo">:before</span> &#123;</span></span><br><span class="line">	content: "";</span><br><span class="line"><span class="css">	<span class="selector-tag">border-top</span>: 1<span class="selector-tag">px</span> <span class="selector-tag">solid</span> <span class="selector-id">#b5b5b5</span>;</span></span><br><span class="line">	display: block;</span><br><span class="line">	position: absolute;</span><br><span class="line">	width: 60px;</span><br><span class="line">	top: 5px</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.more-sign</span> <span class="selector-tag">h6</span><span class="selector-pseudo">:after</span> &#123;</span></span><br><span class="line">	right: 30px</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.more-sign</span> <span class="selector-tag">ul</span> &#123;</span></span><br><span class="line">	margin-bottom: 10px;</span><br><span class="line">	list-style: none</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.more-sign</span> <span class="selector-tag">ul</span> <span class="selector-tag">li</span> &#123;</span></span><br><span class="line">	margin: 0 5px;</span><br><span class="line">	display: inline-block</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.more-sign</span> <span class="selector-tag">ul</span> <span class="selector-tag">a</span> &#123;</span></span><br><span class="line">	width: 50px;</span><br><span class="line">	height: 50px;</span><br><span class="line">	line-height: 50px;</span><br><span class="line">	display: block</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.more-sign</span> <span class="selector-tag">ul</span> <span class="selector-tag">i</span> &#123;</span></span><br><span class="line">	font-size: 28px</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.more-sign</span> <span class="selector-class">.ic-weibo</span> &#123;</span></span><br><span class="line"><span class="css">	<span class="selector-tag">color</span>: <span class="selector-id">#e05244</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.more-sign</span> <span class="selector-class">.ic-wechat</span> &#123;</span></span><br><span class="line"><span class="css">	<span class="selector-tag">color</span>: <span class="selector-id">#00bb29</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.more-sign</span> <span class="selector-class">.ic-qq_connect</span> &#123;</span></span><br><span class="line"><span class="css">	<span class="selector-tag">color</span>: <span class="selector-id">#498ad5</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.more-sign</span> <span class="selector-class">.ic-douban</span> &#123;</span></span><br><span class="line"><span class="css">	<span class="selector-tag">color</span>: <span class="selector-id">#00820f</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.more-sign</span> <span class="selector-class">.ic-more</span> &#123;</span></span><br><span class="line"><span class="css">	<span class="selector-tag">color</span>: <span class="selector-id">#999</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.more-sign</span> <span class="selector-class">.weibo-loading</span> &#123;</span></span><br><span class="line">	pointer-events: none;</span><br><span class="line">	cursor: pointer;</span><br><span class="line">	position: relative</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.more-sign</span> <span class="selector-class">.weibo-loading</span><span class="selector-pseudo">:after</span> &#123;</span></span><br><span class="line">	content: "";</span><br><span class="line">	position: absolute;</span><br><span class="line">	left: 0;</span><br><span class="line">	top: 0;</span><br><span class="line">	width: 100%;</span><br><span class="line">	height: 100%;</span><br><span class="line"><span class="css">	<span class="selector-tag">background-color</span>: <span class="selector-id">#fff</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-tag">body</span><span class="selector-class">.reader-night-mode</span> <span class="selector-class">.sign</span> <span class="selector-class">.more-sign</span> <span class="selector-class">.weibo-loading</span><span class="selector-pseudo">:after</span> &#123;</span></span><br><span class="line"><span class="css">	<span class="selector-tag">background-color</span>: <span class="selector-id">#3f3f3f</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.more-sign</span> <span class="selector-class">.weibo-loading</span><span class="selector-pseudo">:before</span> &#123;</span></span><br><span class="line">	content: "";</span><br><span class="line">	position: absolute;</span><br><span class="line">	top: 50%;</span><br><span class="line">	left: 50%;</span><br><span class="line">	width: 20px;</span><br><span class="line">	height: 20px;</span><br><span class="line">	margin: -10px 0 0 -10px;</span><br><span class="line">	border-radius: 10px;</span><br><span class="line"><span class="css">	<span class="selector-tag">border</span>: 2<span class="selector-tag">px</span> <span class="selector-tag">solid</span> <span class="selector-id">#e05244</span>;</span></span><br><span class="line">	border-bottom-color: transparent;</span><br><span class="line">	vertical-align: middle;</span><br><span class="line"><span class="css">	<span class="selector-tag">-webkit-animation</span>: <span class="selector-tag">rolling</span> <span class="selector-class">.8s</span> <span class="selector-tag">infinite</span> <span class="selector-tag">linear</span>;</span></span><br><span class="line"><span class="css">	<span class="selector-tag">animation</span>: <span class="selector-tag">rolling</span> <span class="selector-class">.8s</span> <span class="selector-tag">infinite</span> <span class="selector-tag">linear</span>;</span></span><br><span class="line">	z-index: 1</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="keyword">@keyframes</span> rolling &#123;</span></span><br><span class="line">	0% &#123;</span><br><span class="line">		-webkit-transform: rotate(0deg);</span><br><span class="line">		transform: rotate(0deg)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	to &#123;</span><br><span class="line">		-webkit-transform: rotate(1turn);</span><br><span class="line">		transform: rotate(1turn)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="keyword">@-webkit-keyframes</span> rolling &#123;</span></span><br><span class="line">	0% &#123;</span><br><span class="line">		-webkit-transform: rotate(0deg)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	to &#123;</span><br><span class="line">		-webkit-transform: rotate(1turn)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.reset-password-input</span> &#123;</span></span><br><span class="line">	border-radius: 4px!important</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.return</span> &#123;</span></span><br><span class="line">	margin-left: -8px;</span><br><span class="line"><span class="css">	<span class="selector-tag">color</span>: <span class="selector-id">#969696</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.return</span><span class="selector-pseudo">:hover</span> &#123;</span></span><br><span class="line"><span class="css">	<span class="selector-tag">color</span>: <span class="selector-id">#333</span></span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.return</span> <span class="selector-tag">i</span> &#123;</span></span><br><span class="line">	margin-right: 5px</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.icheckbox_square-green</span> &#123;</span></span><br><span class="line">	display: inline-block;</span><br><span class="line">	*display: inline;</span><br><span class="line">	vertical-align: middle;</span><br><span class="line">	margin: 0;</span><br><span class="line">	padding: 0;</span><br><span class="line">	width: 18px;</span><br><span class="line">	height: 18px;</span><br><span class="line">	background: url(/static/image/green.png) no-repeat;</span><br><span class="line">	border: none;</span><br><span class="line">	cursor: pointer;</span><br><span class="line">	background-position: 0 0</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.icheckbox_square-green</span><span class="selector-class">.hover</span> &#123;</span></span><br><span class="line">	background-position: -20px 0</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.icheckbox_square-green</span><span class="selector-class">.checked</span> &#123;</span></span><br><span class="line">	background-position: -40px 0</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.icheckbox_square-green</span><span class="selector-class">.disabled</span> &#123;</span></span><br><span class="line">	background-position: -60px 0;</span><br><span class="line">	cursor: default</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.sign</span> <span class="selector-class">.icheckbox_square-green</span><span class="selector-class">.checked</span><span class="selector-class">.disabled</span> &#123;</span></span><br><span class="line">	background-position: -80px 0</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="css"><span class="selector-class">.geetest_panel_box</span>&gt;* &#123;</span></span><br><span class="line">	box-sizing: content-box</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="css"><span class="keyword">@media</span> (<span class="attribute">max-width:</span><span class="number">768px</span>) &#123;</span></span><br><span class="line">	body &#123;</span><br><span class="line">		min-width: 0</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"><span class="css">	<span class="selector-class">.sign</span> &#123;</span></span><br><span class="line">		height: auto;</span><br><span class="line">		min-height: 0;</span><br><span class="line">		background-color: transparent</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"><span class="css">	<span class="selector-class">.sign</span> <span class="selector-class">.logo</span> &#123;</span></span><br><span class="line">		display: none</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"><span class="css">	<span class="selector-class">.sign</span> <span class="selector-class">.main</span> &#123;</span></span><br><span class="line">		position: absolute;</span><br><span class="line">		left: 50%;</span><br><span class="line">		margin: 0 0 0 -200px;</span><br><span class="line">		box-shadow: none</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>把素材中的 <code>iconfont.css</code> 和 <code>iconfont.eof</code> 字体文件放到项目中引入进来。因为在别的页面也会使用到图标，所以我们直接的入口文件 <code>index.html</code> 或者 <code>main.js</code> 中全局引入。</p>
+<p>如果之前没有引入这两个文件的话，可以在 <code>main.js</code> 中插入下面的代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 全局导入字体图标</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">"../static/css/iconfont.css"</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">"../static/css/iconfont.eot"</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="绑定登陆页面路由地址"><a href="#绑定登陆页面路由地址" class="headerlink" title="绑定登陆页面路由地址"></a>绑定登陆页面路由地址</h3><p>在路由配置 <code>router/index.js</code> 中导入 Login 组件并注册：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> Vue <span class="keyword">from</span> <span class="string">"vue"</span></span><br><span class="line"><span class="keyword">import</span> Router <span class="keyword">from</span> <span class="string">"vue-router"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 导入需要注册路由的组件</span></span><br><span class="line"><span class="keyword">import</span> Home <span class="keyword">from</span> <span class="string">"../components/Home"</span></span><br><span class="line"><span class="keyword">import</span> Login <span class="keyword">from</span> <span class="string">"../components/Login"</span></span><br><span class="line">Vue.use(Router);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 配置路由列表</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">new</span> Router(&#123;</span><br><span class="line">  mode:<span class="string">"history"</span>,</span><br><span class="line">  routes:[</span><br><span class="line">    <span class="comment">// 路由列表</span></span><br><span class="line">		...</span><br><span class="line">    &#123;</span><br><span class="line">      path: <span class="string">'/login'</span>,</span><br><span class="line">      name: <span class="string">'Login'</span>,</span><br><span class="line">      component: Login,</span><br><span class="line">    &#125;,</span><br><span class="line">  ]</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h4 id="调整首页头部子组件中登陆按钮的链接信息"><a href="#调整首页头部子组件中登陆按钮的链接信息" class="headerlink" title="调整首页头部子组件中登陆按钮的链接信息"></a>调整首页头部子组件中登陆按钮的链接信息</h4><p>修改头部组件 <code>Header.vue</code> 中的登录链接，也顺便修改头部的 logo 链接为首页链接：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">router-link</span> <span class="attr">class</span>=<span class="string">"logo"</span> <span class="attr">to</span>=<span class="string">"/"</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"/static/image/nav-logo.png"</span> /&gt;</span><span class="tag">&lt;/<span class="name">router-link</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">router-link</span> <span class="attr">class</span>=<span class="string">"btn log-in"</span> <span class="attr">id</span>=<span class="string">"sign_in"</span> <span class="attr">to</span>=<span class="string">"/user/login"</span>&gt;</span>登录<span class="tag">&lt;/<span class="name">router-link</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>修改登陆组件 <code>Login.vue</code> 中的登录链接，还要顺便把头部的荏苒图片的链接修改为首页链接：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"logo"</span>&gt;</span><span class="tag">&lt;<span class="name">router-link</span> <span class="attr">to</span>=<span class="string">"/"</span>&gt;</span><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"/static/image/nav-logo.png"</span> <span class="attr">alt</span>=<span class="string">"Logo"</span>&gt;</span><span class="tag">&lt;/<span class="name">router-link</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">router-link</span> <span class="attr">class</span>=<span class="string">"active"</span> <span class="attr">to</span>=<span class="string">"/user/login"</span>&gt;</span>登录<span class="tag">&lt;/<span class="name">router-link</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="后端实现登陆认证"><a href="#后端实现登陆认证" class="headerlink" title="后端实现登陆认证"></a>后端实现登陆认证</h2><p>Django 默认已经提供了认证系统 Auth 模块。认证系统包含：</p>
+<ul>
+<li>用户管理</li>
+<li>权限（RBAC 权限机制 Role-Base Access Control，基于用户角色的访问控制机制）</li>
+<li>用户组</li>
+<li>密码哈希系统</li>
+<li>用户登录或内容显示的表单和视图</li>
+<li>一个可插拔的后台系统（admin 后台运营站点，实际开发中大部分人使用的是 xadmin 后台运营站点）</li>
+</ul>
+<p>Django 默认用户的认证机制依赖 session 机制。我们在项目中将引入 JWT 认证机制，将用户的身份凭据存放在 Token 中，然后对接 Django 的认证系统，帮助我们来实现：</p>
+<ul>
+<li>用户的数据模型</li>
+<li>用户密码的加密与验证</li>
+<li>用户的权限系统</li>
+</ul>
+<h3 id="Django-用户模型类"><a href="#Django-用户模型类" class="headerlink" title="Django 用户模型类"></a>Django 用户模型类</h3><p>Django 内置的用户模型文件： <code>django/contrib/auth/model.py</code></p>
+<p>Django 认证系统中提供了用户模型类 User 保存用户的数据，默认的 User 包含以下常见的基本字段：</p>
+<table>
+<thead>
+<tr>
+<th>字段名</th>
+<th>字段描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>username</td>
+<td>必选，150 个字符以内。用户名可能包含字母数字，<code>_</code>，<code>@</code>，<code>+</code> ，<code>.</code> 和 <code>-</code> 字符。</td>
+</tr>
+<tr>
+<td>first_name</td>
+<td>可选（<code>blank=True</code>），少于等于 30 个字符。</td>
+</tr>
+<tr>
+<td>last_name</td>
+<td>可选（<code>blank=True</code>），少于等于 30 个字符。</td>
+</tr>
+<tr>
+<td>email</td>
+<td>可选（<code>blank=True</code>），邮箱地址。</td>
+</tr>
+<tr>
+<td>password</td>
+<td>必选， 密码的哈希加密串 （Django 不保存原始密码）。原始密码可以无限长而且可以包含任意字符。</td>
+</tr>
+<tr>
+<td>groups</td>
+<td>与 Group 之间的多对多关系。</td>
+</tr>
+<tr>
+<td>user_permissions</td>
+<td>与 Permission 之间的多对多关系。</td>
+</tr>
+<tr>
+<td>is_staff</td>
+<td>布尔值，设置用户是否可以访问 Admin 站点。</td>
+</tr>
+<tr>
+<td>is_active</td>
+<td>布尔值，指示用户的账号是否激活。 它不是用来控制用户是否能够登录，而是描述一种帐号的使用状态。</td>
+</tr>
+<tr>
+<td>is_superuser</td>
+<td>是否是超级用户。超级用户具有所有权限。</td>
+</tr>
+<tr>
+<td>last_login</td>
+<td>用户最后一次登录的时间。</td>
+</tr>
+<tr>
+<td>date_joined</td>
+<td>账户创建的时间。 当账号创建时，默认设置为当前的 date/time。</td>
+</tr>
+</tbody></table>
+<h5 id="常用方法"><a href="#常用方法" class="headerlink" title="常用方法"></a>常用方法</h5><ul>
+<li><p><code>set_password(raw_password)</code></p>
+<p>设置用户的密码为给定的原始字符串，并负责密码的。 不会保存 User 对象。当 raw_password 为 None 时，密码将设置为一个不可用的密码。</p>
+</li>
+<li><p><code>check_password(raw_password)</code></p>
+<p>如果给定的 raw_password 是用户的真实密码，则返回 True，可以在校验用户密码时使用。</p>
+</li>
+</ul>
+<h5 id="管理器方法"><a href="#管理器方法" class="headerlink" title="管理器方法"></a>管理器方法</h5><p>管理器方法即可以通过 <code>User.objects.</code> 进行调用的方法。</p>
+<ul>
+<li><p><code>create_user(username, email=None, password=None, **extra_fields)</code></p>
+<p>创建、保存并返回一个 User 对象。</p>
+</li>
+<li><p><code>create_superuser(username, email, password, **extra_fields)</code></p>
+<p>与 <code>create_user()</code> 相同，但是设置 <code>is_staff</code> 和 <code>is_superuser</code> 为 <code>True</code>。</p>
+</li>
+</ul>
+<h3 id="创建用户模块的子应用"><a href="#创建用户模块的子应用" class="headerlink" title="创建用户模块的子应用"></a>创建用户模块的子应用</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> renranapi/apps</span><br><span class="line">python ../../manage.py startapp users</span><br></pre></td></tr></table></figure>
+
+<img src="/project/renran-login/1582980963537.png" class="" width="1582980963537">
+
+<p>在 <code>settings.py</code> 文件中注册子应用。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">INSTALLED_APPS = [</span><br><span class="line">		...</span><br><span class="line">  	<span class="string">'users'</span>,</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<p>如果像往常一样，我们按照上面的写法添加应用，Django 将无法识别，会报错。这是因为我们的应用没有放在项目的根目录下。我们当然可以把应用的路径写成 <code>&#39;renranapi.apps.users&#39;</code> 规避这个问题，但是未免太麻烦了些。如果以后我们有很多应用，就会造成代码大量重复。</p>
+<p>为了解决因为我们调整子应用保存目录以后导致 Django 无法识别子应用的BUG，我们可以把apps设置为导包路径</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="comment"># Build paths inside the project like this: os.path.join(BASE_DIR, ...)</span></span><br><span class="line">BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 把网站子应用所在目录设置为了导报路径</span></span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">sys.path.insert(<span class="number">0</span>, os.path.join(BASE_DIR, <span class="string">"apps"</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># ...中间省略一堆字</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Application definition</span></span><br><span class="line"></span><br><span class="line">INSTALLED_APPS = [</span><br><span class="line">    <span class="string">'django.contrib.admin'</span>,</span><br><span class="line">    <span class="string">'django.contrib.auth'</span>,</span><br><span class="line">    <span class="string">'django.contrib.contenttypes'</span>,</span><br><span class="line">    <span class="string">'django.contrib.sessions'</span>,</span><br><span class="line">    <span class="string">'django.contrib.messages'</span>,</span><br><span class="line">    <span class="string">'django.contrib.staticfiles'</span>,</span><br><span class="line"></span><br><span class="line">    <span class="string">'corsheaders'</span>,</span><br><span class="line"></span><br><span class="line">    <span class="string">'users'</span>,</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="comment"># ...后面省略</span></span><br></pre></td></tr></table></figure>
+
+<p>可以通过右键点击 users 应用文件夹，将这个文件夹标记为导报路径，这样 PyCharm 就不会对 users 文件夹飘黄处理了。</p>
+<img src="/project/renran-login/1582982851097.png" class="" width="1582982851097">
+
+<h3 id="创建自定义的用户模型类"><a href="#创建自定义的用户模型类" class="headerlink" title="创建自定义的用户模型类"></a>创建自定义的用户模型类</h3><p>Django 认证系统中提供的用户模型类及方法很方便，我们可以使用这个模型类，但是字段有些无法满足项目需求，如本项目中需要保存用户的手机号，需要给模型类添加额外的字段。</p>
+<p>Django 提供了 <code>django.contrib.auth.models.AbstractUser</code> 用户抽象模型类允许我们继承，扩展字段来使用 Django 认证系统的用户模型类。</p>
+<p>我们可以在 apps 中创建 Django 应用 users，并在配置文件中注册 users 应用。</p>
+<p>在创建好的应用 <code>models.py</code> 中定义用户的用户模型类。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.db <span class="keyword">import</span> models</span><br><span class="line"><span class="keyword">from</span> django.contrib.auth.models <span class="keyword">import</span> AbstractUser</span><br><span class="line"><span class="comment"># Create your models here.</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span><span class="params">(AbstractUser)</span>:</span></span><br><span class="line">    <span class="string">"""用户模型类"""</span></span><br><span class="line">    mobile = models.CharField(max_length=<span class="number">15</span>, null=<span class="literal">True</span>, unique=<span class="literal">True</span>, help_text=<span class="string">"手机号码"</span>,verbose_name=<span class="string">"手机号码"</span>)</span><br><span class="line">    wechat = models.CharField(max_length=<span class="number">100</span>, null=<span class="literal">True</span>, unique=<span class="literal">True</span>, help_text=<span class="string">"微信账号"</span>,verbose_name=<span class="string">"微信账号"</span>)</span><br><span class="line">    alipay = models.CharField(max_length=<span class="number">100</span>, null=<span class="literal">True</span>, unique=<span class="literal">True</span>, help_text=<span class="string">"支付宝账号"</span>,verbose_name=<span class="string">"支付宝账号"</span>)</span><br><span class="line">    qq_number = models.CharField(max_length=<span class="number">11</span>, null=<span class="literal">True</span>, unique=<span class="literal">True</span>, help_text=<span class="string">"QQ号"</span>,verbose_name=<span class="string">"QQ号"</span>)</span><br><span class="line">    <span class="comment"># 保存文件的子目录</span></span><br><span class="line">    avatar = models.ImageField(upload_to=<span class="string">"avatar"</span>, null=<span class="literal">True</span>, default=<span class="literal">None</span>, verbose_name=<span class="string">"头像"</span>)</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></span><br><span class="line">        db_table = <span class="string">"rr_users"</span></span><br><span class="line">        verbose_name = <span class="string">"用户信息"</span></span><br><span class="line">        verbose_name_plural = verbose_name</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.username</span><br></pre></td></tr></table></figure>
+
+<p>我们自定义的用户模型类还不能直接被 Django 的认证系统所识别，需要在配置文件中告知 Django 认证系统使用我们自定义的模型类。</p>
+<p>在配置文件 <code>settings/dev.py</code>，中进行设置：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 自定义用户模型，让django后面对于用户的操作，读取AUTH_USER_MODEL里的模型类</span></span><br><span class="line"><span class="comment"># 值的格式必须是"子应用目录.模型类名"。中间不要加models，有且只能有一个点</span></span><br><span class="line">AUTH_USER_MODEL = <span class="string">'users.User'</span></span><br></pre></td></tr></table></figure>
+
+<p><code>AUTH_USER_MODEL</code> 参数的设置以 <code>.</code> 来分隔，表示 <code>应用名.模型类名</code>。</p>
+<p>如果之前没有设置 apps 为导报路径，到了这里，还是要把它设置为导报路径，否则 users 是找不到的。</p>
+<p><strong>注意：Django 强烈建议我们对于 AUTH_USER_MODEL 参数的设置一定要在第一次数据库迁移之前就设置好，否则后续使用可能出现未知错误。</strong></p>
+<p>如果之前已经进行了数据库迁移，可以参考 <a href="../django/django-migration-bug">解决 Django 自定义用户模型之前就已经数据迁移的 BUG</a> 解决出现的问题。</p>
+<p>执行数据库迁移：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python manage.py makemigrations</span><br><span class="line">python manage.py migrate</span><br></pre></td></tr></table></figure>
+
+<h3 id="Django-REST-framework-JWT"><a href="#Django-REST-framework-JWT" class="headerlink" title="Django REST framework JWT"></a>Django REST framework JWT</h3><blockquote>
+<p>Json web token（JWT），是为了在网络应用环境间传递声明而执行的一种基于 JSON 的开放标准（RFC 7519)。该 token 被设计为紧凑且安全的，特别适用于分布式站点的单点登录（SSO）场景。JWT 的声明一般被用来在身份提供者和服务提供者间传递被认证的用户身份信息，以便于从资源服务器获取资源，也可以增加一些额外的其它业务逻辑所必须的声明信息，该 token 也可直接被用于认证，也可被加密。</p>
+</blockquote>
+<p>在用户注册或登录后，我们想记录用户的登录状态，或者为用户创建身份认证的凭证。我们不再使用 session 认证机制，而使用 Json Web Token 认证机制。</p>
+<h3 id="JWT-的构成"><a href="#JWT-的构成" class="headerlink" title="JWT 的构成"></a>JWT 的构成</h3><p>JWT 就一段字符串，由三段信息构成的，将这三段信息文本用<code>.</code>链接一起就构成了 JWT 字符串。就像这样：</p>
+<figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eyJhbGciOiJIUzI<span class="number">1</span><span class="symbol">NiIsInR5</span>cCI<span class="number">6</span>IkpX<span class="attr">VCJ9</span>.eyJzdWIiOiIxMj<span class="name">M0</span><span class="symbol">NTY3</span>ODkwIiwibmFtZSI<span class="number">6</span>Ikpva<span class="name">G4</span>gR<span class="name">G9</span>lIiwiYWRtaW<span class="number">4</span>iO<span class="symbol">nRydWV9</span>.TJVA<span class="number">95</span><span class="keyword">Or</span><span class="name">M7</span>E<span class="number">2</span>cBab<span class="number">30</span>RMHrHDcEfxjoYZgeFO<span class="symbol">NFh7</span>HgQ</span><br></pre></td></tr></table></figure>
+
+<p>第一部分我们称它为头部（header），第二部分我们称其为载荷（payload，类似于飞机上承载的物品），第三部分是签证（signature）。</p>
+<h3 id="header"><a href="#header" class="headerlink" title="header"></a>header</h3><p>JWT 的头部承载两部分信息：</p>
+<ul>
+<li>声明类型，这里是 JWT</li>
+<li>声明加密的算法 通常直接使用 HMAC SHA256</li>
+</ul>
+<p>完整的头部就像下面这样的 JSON：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">'typ'</span>: <span class="string">'JWT'</span>,</span><br><span class="line">  <span class="string">'alg'</span>: <span class="string">'HS256'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后将头部进行 base64 加密（该加密是可以对称解密的），构成了第一部分。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># python代码：</span></span><br><span class="line">headers = <span class="string">'&#123;"typ": "JWT", "alg": "HS256"&#125;'</span></span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line">header_str = base64.b64encode(headers.encode()).decode()</span><br><span class="line">print(header_str)</span><br><span class="line"><span class="comment"># 打印效果：</span></span><br><span class="line"><span class="comment"># eyJ0eXAiOiAiSldUIiwgImFsZyI6ICJIUzI1NiJ9</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="payload"><a href="#payload" class="headerlink" title="payload"></a>payload</h3><p>载荷就是存放有效信息的地方。这个名字像是特指飞机上承载的货品，这些有效信息包含三个部分</p>
+<ul>
+<li>标准声明</li>
+<li>公共声明</li>
+<li>私有声明</li>
+</ul>
+<p>标准中注册的声明 (建议但不强制使用) ：</p>
+<ul>
+<li>iss：jwt 签发者</li>
+<li>sub：jwt 所面向的用户</li>
+<li>aud：接收 jwt 的一方</li>
+<li>exp：jwt 的过期时间，这个过期时间必须要大于签发时间</li>
+<li>nbf：定义在什么时间之前，该jwt都是不可用的</li>
+<li>iat：jwt 的签发时间</li>
+<li>jti：jwt 的唯一身份标识，主要用来作为一次性 token，从而回避重放攻击</li>
+</ul>
+<p>公共的声明 ： 公共的声明可以添加任何的信息，一般添加用户的相关信息或其他业务需要的必要信息。但不建议添加敏感信息，因为该部分在客户端可解密。</p>
+<p>私有的声明 ： 私有声明是提供者和消费者所共同定义的声明。一般不建议存放敏感信息，因为 base64 是对称解密的，意味着该部分信息可以归类为明文信息。</p>
+<p>定义一个 payload:</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"sub"</span>: <span class="string">"1234567890"</span>,</span><br><span class="line">  <span class="attr">"name"</span>: <span class="string">"John Doe"</span>,</span><br><span class="line">  <span class="attr">"admin"</span>: <span class="literal">true</span>,</span><br><span class="line">  <span class="attr">"auth"</span>: <span class="string">"2dsg343sdaq223256ddd5454"</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后将其进行 base64 加密，得到 JWT 的第二部分。</p>
+<figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eyJzdWIiOiIxMj<span class="name">M0</span><span class="symbol">NTY3</span>ODkwIiwibmFtZSI<span class="number">6</span>Ikpva<span class="name">G4</span>gR<span class="name">G9</span>lIiwiYWRtaW<span class="number">4</span>iO<span class="symbol">nRydWV9</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="signature"><a href="#signature" class="headerlink" title="signature"></a>signature</h3><p>JWT 的第三部分是一个签证信息。这个签证信息的主要作用并非防止解密，而是为了防止别人恶意串改。由三部分组成：</p>
+<ul>
+<li>header（base64 后的）</li>
+<li>payload（base64后的）</li>
+<li>secret 密钥</li>
+</ul>
+<p>这个部分需要 base64 加密后的 header 和 base64 加密后的 payload 使用 <code>.</code> 连接组成的字符串，然后通过 header 中声明的加密方式进行加盐 <code>secret</code> 组合加密，然后就构成了 JWT 的第三部分。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// javascript如果要模拟生成你的jwttoken，可能可以采用以下代码生成[注意：伪代码]</span></span><br><span class="line"><span class="keyword">var</span> encodedString = base64UrlEncode(header) + <span class="string">'.'</span> + base64UrlEncode(payload);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> signature = HMACSHA256(encodedString, <span class="string">'secret'</span>); <span class="comment">// TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgQ</span></span><br></pre></td></tr></table></figure>
+
+<p>将这三部分用 <code>.</code> 连接成一个完整的字符串,构成了最终的 JWT：</p>
+<figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">eyJhbGciOiJIUzI<span class="number">1</span><span class="symbol">NiIsInR5</span>cCI<span class="number">6</span>IkpX<span class="attr">VCJ9</span>.eyJzdWIiOiIxMj<span class="name">M0</span><span class="symbol">NTY3</span>ODkwIiwibmFtZSI<span class="number">6</span>Ikpva<span class="name">G4</span>gR<span class="name">G9</span>lIiwiYWRtaW<span class="number">4</span>iO<span class="symbol">nRydWV9</span>.TJVA<span class="number">95</span><span class="keyword">Or</span><span class="name">M7</span>E<span class="number">2</span>cBab<span class="number">30</span>RMHrHDcEfxjoYZgeFO<span class="symbol">NFh7</span>HgQ</span><br></pre></td></tr></table></figure>
+
+<p>注意：secret 是保存在服务器端的，JWT 的签发生成也是在服务器端的。secret 是用来进行 JWT 的签发和 JWT 的验证。所以，它就是你服务端的私钥，在任何场景都不应该流露出去。一旦客户端得知这个 secret，那就意味着客户端可以自我签发 JWT 了。</p>
+<p>关于签发和核验 JWT，我们可以使用 Django REST framework JWT 扩展来完成。</p>
+<p>文档网站：<a href="http://getblimp.github.io/django-rest-framework-jwt/" target="_blank" rel="noopener">http://getblimp.github.io/django-rest-framework-jwt/</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/project/renran-cors/" rel="prev" title="通过 CORS 解决跨域问题">
+      <i class="fa fa-chevron-left"></i> 通过 CORS 解决跨域问题
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/web/web-sweetalart/" rel="next" title="SweetAlert 弹窗工具">
+      SweetAlert 弹窗工具 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前端显示登陆页面"><span class="nav-number">1.</span> <span class="nav-text">前端显示登陆页面</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#登录页组件"><span class="nav-number">1.1.</span> <span class="nav-text">登录页组件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#绑定登陆页面路由地址"><span class="nav-number">1.2.</span> <span class="nav-text">绑定登陆页面路由地址</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#调整首页头部子组件中登陆按钮的链接信息"><span class="nav-number">1.2.1.</span> <span class="nav-text">调整首页头部子组件中登陆按钮的链接信息</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#后端实现登陆认证"><span class="nav-number">2.</span> <span class="nav-text">后端实现登陆认证</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Django-用户模型类"><span class="nav-number">2.1.</span> <span class="nav-text">Django 用户模型类</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#常用方法"><span class="nav-number">2.1.0.1.</span> <span class="nav-text">常用方法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#管理器方法"><span class="nav-number">2.1.0.2.</span> <span class="nav-text">管理器方法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建用户模块的子应用"><span class="nav-number">2.2.</span> <span class="nav-text">创建用户模块的子应用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建自定义的用户模型类"><span class="nav-number">2.3.</span> <span class="nav-text">创建自定义的用户模型类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Django-REST-framework-JWT"><span class="nav-number">2.4.</span> <span class="nav-text">Django REST framework JWT</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JWT-的构成"><span class="nav-number">2.5.</span> <span class="nav-text">JWT 的构成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#header"><span class="nav-number">2.6.</span> <span class="nav-text">header</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#payload"><span class="nav-number">2.7.</span> <span class="nav-text">payload</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#signature"><span class="nav-number">2.8.</span> <span class="nav-text">signature</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="刘硕"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">刘硕</p>
+  <div class="site-description" itemprop="description">不成为自己讨厌的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">221</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:liushuo432@outlook.com" title="E-Mail → mailto:liushuo432@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/2436055290" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;2436055290" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备20001451号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘硕</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.2" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="/js/love.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/Epsilon2.1.model.json"},"display":{"superSample":2,"width":200,"height":400,"position":"left","hOffset":-30,"vOffset":-40},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>

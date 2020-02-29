@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="Tu5vqPaUb8svfkPx5eetJFD84ciQCcWVXNatdsWtj9Q">
+  <meta name="baidu-site-verification" content="baidu_verify_FBq9PG4BBb">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="https://fonts.loli.net/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.1","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="面向对象与继承面向对象思想有三大要素：  继承 封装 多态  面向对象编程（OOP）语言的一个重要功能就是“继承”：  它可以使用现有类的所有功能，并在无需重新编写原来类的情况下，对这些功能进行扩展 通过继承创建的新类被称为“子类”或“派生类”，被继承的类被称为“基类”、“父类”或“超类” 在 Python 中，同时支持单继承与多继承  继承的概念举个例子，我们现在像创建猪、狗和猫三个类，它们都有">
+<meta property="og:type" content="article">
+<meta property="og:title" content="继承（实现）关系">
+<meta property="og:url" content="https://sliu.vip/python-advanced/inheritance/index.html">
+<meta property="og:site_name" content="刘硕的技术查阅手册">
+<meta property="og:description" content="面向对象与继承面向对象思想有三大要素：  继承 封装 多态  面向对象编程（OOP）语言的一个重要功能就是“继承”：  它可以使用现有类的所有功能，并在无需重新编写原来类的情况下，对这些功能进行扩展 通过继承创建的新类被称为“子类”或“派生类”，被继承的类被称为“基类”、“父类”或“超类” 在 Python 中，同时支持单继承与多继承  继承的概念举个例子，我们现在像创建猪、狗和猫三个类，它们都有">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sliu.vip/python-advanced/inheritance/inherit.assets/1570786444427.png">
+<meta property="article:published_time" content="2020-02-15T05:46:16.000Z">
+<meta property="article:modified_time" content="2020-02-29T02:34:01.868Z">
+<meta property="article:author" content="刘硕">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="全栈开发">
+<meta property="article:tag" content="并发编程">
+<meta property="article:tag" content="网络编程">
+<meta property="article:tag" content="爬虫">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="自动化测试">
+<meta property="article:tag" content="Web开发">
+<meta property="article:tag" content="HTML">
+<meta property="article:tag" content="CSS">
+<meta property="article:tag" content="JavaScript">
+<meta property="article:tag" content="jQuery">
+<meta property="article:tag" content="Bootstrap">
+<meta property="article:tag" content="测试自动化">
+<meta property="article:tag" content="Selenium">
+<meta property="article:tag" content="postman">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="Vue">
+<meta property="article:tag" content="drf">
+<meta property="article:tag" content="django">
+<meta property="article:tag" content="文档翻译">
+<meta property="article:tag" content="PEP8">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sliu.vip/python-advanced/inheritance/inherit.assets/1570786444427.png">
+
+<link rel="canonical" href="https://sliu.vip/python-advanced/inheritance/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>继承（实现）关系 | 刘硕的技术查阅手册</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f14f123935d6183fdd06f8f1c4bc378f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="刘硕的技术查阅手册" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">刘硕的技术查阅手册</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">Python 全栈开发学习笔记</h1>
+      
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-toc">
+
+    <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-fw fa-rss"></i>订阅</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-advanced/inheritance/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          继承（实现）关系
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-15 13:46:16" itemprop="dateCreated datePublished" datetime="2020-02-15T13:46:16+08:00">2020-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python-%E8%BF%9B%E9%98%B6/" itemprop="url" rel="index"><span itemprop="name">Python 进阶</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="面向对象与继承"><a href="#面向对象与继承" class="headerlink" title="面向对象与继承"></a>面向对象与继承</h3><p>面向对象思想有三大要素：</p>
+<ol>
+<li>继承</li>
+<li>封装</li>
+<li>多态</li>
+</ol>
+<p>面向对象编程（OOP）语言的一个重要功能就是“继承”：</p>
+<ul>
+<li>它可以使用现有类的所有功能，并在无需重新编写原来类的情况下，对这些功能进行扩展</li>
+<li>通过继承创建的新类被称为“子类”或“派生类”，被继承的类被称为“基类”、“父类”或“超类”</li>
+<li>在 Python 中，同时支持单继承与多继承</li>
+</ul>
+<h3 id="继承的概念"><a href="#继承的概念" class="headerlink" title="继承的概念"></a>继承的概念</h3><p>举个例子，我们现在像创建猪、狗和猫三个类，它们都有名字和年龄属性，也都有一个叫的方法。不同的是，猪有吃的方法、狗有看家的方法、猫有抓老鼠的方法。按照之前的学习，我们会将代码写成这样：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Pig</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, age)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">bark</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'叫'</span>)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">eat</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'吃'</span>)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, age)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">bark</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'叫'</span>)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">guarding</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'看家'</span>)</span><br><span class="line">        </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cat</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, age)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">bark</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'叫'</span>)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">catch</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'抓老鼠'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>我们发现，虽然实现了需求，但是我们看到，这里面出现了大量的重复代码。如果我们能将这些重复代码封装起来，比如封装到一个动物类中，然后猪、狗和猫分别都继承这个动物类，就可以让代码更加简洁。</p>
+
+
+<p>具体的实现方法为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Animal</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, age)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">bark</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'叫'</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Pig</span><span class="params">(Animal)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">eat</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'吃'</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span><span class="params">(Animal)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">guarding</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'看家'</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cat</span><span class="params">(Animal)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">catch</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'抓老鼠'</span>)</span><br><span class="line">mimi = Cat(<span class="string">'咪咪'</span>, <span class="number">3</span>)</span><br><span class="line">print(mimi.name, mimi.age)</span><br><span class="line">mimi.bark()</span><br><span class="line">mimi.catch()</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">咪咪 <span class="number">3</span></span><br><span class="line">叫</span><br><span class="line">抓老鼠</span><br></pre></td></tr></table></figure>
+
+<p>实现继承之后，子类将继承父类的属性和方法。</p>
+<p>不难看出，继承关系的特点为：</p>
+<ul>
+<li>增加了类的耦合性（耦合性不宜多，宜精）</li>
+<li>减少了重复代码</li>
+<li>使得代码更加规范化，合理化</li>
+</ul>
+<p>组合与继承的对比：</p>
+<ul>
+<li>组合<ul>
+<li>组合是指在新类里面创建原有类的对象，重复利用已有类的功能，是 <code>has-a</code> 的关系（如：猫有腿）</li>
+<li>原来类的对象作为整体，以新类的属性的形式存在</li>
+</ul>
+</li>
+<li>继承<ul>
+<li>继承允许设计人员根据其他类的实现来定义一个类的实现，是 <code>is-a</code> 的关系（如：猫是动物）</li>
+<li>子类可以直接使用父类中的属性和方法，就好像父类的属性和方法已经存在于子类中了一样</li>
+</ul>
+</li>
+</ul>
+<p>Python 3 中使用的都是新式类，如果一个类谁都不继承，那么它默认继承 object 类。</p>
+<p>继承虽然很好用，但是不能滥用，像之前说的，耦合程度不宜过高，否则逻辑会十分混乱：</p>
+<ul>
+<li>不要轻易地使用继承，除非两个类之间是 <code>is-a</code> 关系</li>
+<li>不要单纯地为了实现代码的重用而使用继承，因为过多的继承会破坏代码的可维护性，当父类被修改的时候，会影响到所有继承自它的子类，从而增加程序的维护难度与成本</li>
+<li>总结起来就是：组装的时候使用组合，扩展的时候使用继承</li>
+</ul>
+<p>回到我们刚才的例子，猪、狗、猫三各类都只有动物一个父类，这种只有一个父类的继承方式，我们称作为单继承。在单继承中，子类可以继承父类的属性和方法，修改父类，所有子类都会受到影响。</p>
+<h3 id="isinstance-和-issubclass"><a href="#isinstance-和-issubclass" class="headerlink" title="isinstance 和 issubclass"></a><code>isinstance</code> 和 <code>issubclass</code></h3><ul>
+<li><code>isinstance</code>：<ul>
+<li>用于检查实例类型</li>
+<li><code>isinstance(对象, 类)</code>，用来判断对象是不是该类的实例对象</li>
+</ul>
+</li>
+<li><code>issubclass</code>：<ul>
+<li>用于检查类继承</li>
+<li><code>issubclass(类1, 类2)</code>，用来判断类1是否是类2的子类</li>
+</ul>
+</li>
+</ul>
+<h3 id="类与数据类型"><a href="#类与数据类型" class="headerlink" title="类与数据类型"></a>类与数据类型</h3><p>Python 与其他编程语言不同，当我们定义一个 class 的时候，我们实际上就定义了一个数据类型。我们定义的数据类型和 Python 自带的数据类型，比如 str、list、dict 没什么两样：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">print(isinstance(<span class="number">10</span>, int))</span><br><span class="line"></span><br><span class="line">输出的结果为： <span class="literal">True</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="重写父类方法"><a href="#重写父类方法" class="headerlink" title="重写父类方法"></a>重写父类方法</h3><p>如果父类中的方法在子类中不适用，我们可以对其进行重写：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Animal</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, age)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">bark</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'叫'</span>)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span><span class="params">(Animal)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">bark</span><span class="params">(self)</span>:</span>    <span class="comment"># 重写叫的方法</span></span><br><span class="line">        print(<span class="string">'汪汪汪！'</span>)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">guarding</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'看家'</span>)</span><br><span class="line">  </span><br><span class="line">wangwang = Dog(<span class="string">'汪汪'</span>, <span class="number">3</span>)</span><br><span class="line">print(wangwang.name)</span><br><span class="line">wangwang.bark()</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">汪汪</span><br><span class="line">汪汪汪！</span><br></pre></td></tr></table></figure>
+
+<p>重写父类方法的原理是，当示例调用方法时，会先在自己的类方法中查找，如果找不到，才会去父类中查找是否有相应的方法。如果在自己的类方法中找到了需要的方法，就不会去父类中查找，也就调用不到父类的同名方法，从而实现对父类中方法的重写</p>
+
+
+<h3 id="调用父类方法"><a href="#调用父类方法" class="headerlink" title="调用父类方法"></a>调用父类方法</h3><p>但是有些时候，我们不得已会写一些重名的方法，比如父类和子类都会有 <code>__init__</code> 构造方法。但是我们在调用子类方法的同时，也希望调用到父类中相应的方法。我们可以通过父类的类名直接调用：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Father</span>:</span></span><br><span class="line">    eye_num = <span class="number">2</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, age)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">live_like_yemen</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'打儿子'</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Son</span><span class="params">(Father)</span>:</span></span><br><span class="line">    hair_color = <span class="string">'蓝色'</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, age, sex)</span>:</span></span><br><span class="line">        Father.__init__(self, name, age)</span><br><span class="line">        self.sex = sex</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">live_like_yemen</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'打弟弟'</span>)</span><br><span class="line"></span><br><span class="line">xiaoming = Son(<span class="string">'小明'</span>, <span class="number">16</span>, <span class="string">'男'</span>)</span><br><span class="line">xiaoming.live_like_yemen()</span><br><span class="line">print(xiaoming.name)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">打弟弟</span><br><span class="line">小明</span><br></pre></td></tr></table></figure>
+
+<p>需要注意的是，在类中，self 永远指的是调用类的实例化对象。</p>
+<h3 id="super-方法"><a href="#super-方法" class="headerlink" title="super 方法"></a>super 方法</h3><p>在上面的例子中，如果没有 <code>Father.__init__(self, name, age)</code> 这行代码，在子类中就无法调用父类的构造方法，因为子类已经重写了构造方法。上面的方法虽然实现了预期的功能，但是并不符合开发规范。</p>
+<p>从子类中，调用父类中方法的关键字是 super，上述例子可修改为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Father</span>:</span></span><br><span class="line">    eye_num = <span class="number">2</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, age)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">live_like_yemen</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'打儿子'</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Son</span><span class="params">(Father)</span>:</span></span><br><span class="line">    hair_color = <span class="string">'蓝色'</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, age, sex)</span>:</span></span><br><span class="line">        super().__init__(name, age)    <span class="comment"># 也可以写为super(Son, self).__init__(name, age)</span></span><br><span class="line">        self.sex = sex</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">live_like_yemen</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'打弟弟'</span>)</span><br><span class="line"></span><br><span class="line">xiaoming = Son(<span class="string">'小明'</span>, <span class="number">16</span>, <span class="string">'男'</span>)</span><br><span class="line">xiaoming.live_like_yemen()</span><br><span class="line">print(xiaoming.name)</span><br></pre></td></tr></table></figure>
+
+<p>super 方法：</p>
+<ul>
+<li>子类如果编写了自己的构造方法，但是没有声明要调用父类的构造方法，而还需要父类的构造函数中初始化的一些属性，就会出现问题</li>
+<li>如果子类和父类都有构造函数，子类的构造函数其实是对父类的构造函数的重写。如果不显示调用父类构造函数，父类的构造函数便不会被执行</li>
+<li>解决方法：直接使用超类的类名调用超类构造方法，或者使用 super 函数 <code>super(当前类名, self).__init__()</code></li>
+</ul>
+<p>父类方法重写：</p>
+<ul>
+<li>子类可以重写父类中的方法</li>
+<li>通过 super 关键字可以调用父类中的方法</li>
+</ul>
+<h3 id="Python-中的多继承"><a href="#Python-中的多继承" class="headerlink" title="Python 中的多继承"></a>Python 中的多继承</h3><p>多重继承和多继承</p>
+<ul>
+<li><p>多重继承：包含多个间接父类</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span><span class="params">(object)</span>:</span> <span class="keyword">pass</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span><span class="params">(A)</span>:</span> <span class="keyword">pass</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span><span class="params">(B)</span>:</span> <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>多继承：有多个直接父类</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">X</span><span class="params">(object)</span>:</span> <span class="keyword">pass</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Y</span><span class="params">(object)</span>:</span> <span class="keyword">pass</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Z</span><span class="params">(object)</span>:</span> <span class="keyword">pass</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">M</span><span class="params">(X, Y, Z)</span>:</span> <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>大部分面向对象的编程语言（除了 C++）都只支持单继承，而不支持多继承</p>
+<ul>
+<li>多继承不仅增加了编程的复杂度，而且很容易导致一些莫名的错误<a href="在编程时，莫名其妙的错误最为可怕，因为不可预测，难以排除。">^1</a></li>
+</ul>
+</li>
+<li><p>Python 虽然在语法上明确支持多继承，但通常推荐如果不是很有必要，尽量不要使用多继承，而是使用单继承</p>
+<ul>
+<li>这样可以保证编程思路更清晰，而且可以避免很多麻烦</li>
+</ul>
+</li>
+<li><p>如果多个直接父类中包含了同名的方法</p>
+<ul>
+<li>排在前面的父类中的方法会“遮蔽“排在后面的父类中的同名方法</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">method</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'A_method'</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">method</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'B_method'</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span><span class="params">(A, B)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">c = C()</span><br><span class="line">c.method()</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">A_method</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="钻石继承和-MRO"><a href="#钻石继承和-MRO" class="headerlink" title="钻石继承和 MRO"></a>钻石继承和 MRO</h3><p>我们刚刚谈到，即便不使用 super 方法，直接使用父类的类名，同样可以实现对父类方法的调用。那为什么更推荐使用 super 方法呢？</p>
+<p>这是因为当涉及到比较复杂得多继承关系，比如钻石继承关系时，会出现间接父类会被初始化多次的情况。</p>
+<p><img src="inherit.assets/1570786444427.png" alt="1570786444427"></p>
+<p>比如，我们来看下面这个钻石继承的例子，如果我们使用父类的类名调用构造方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">YeYe</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'初始化爷爷类'</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">QinBa</span><span class="params">(YeYe)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'进入化亲爸类'</span>)</span><br><span class="line">        YeYe.__init__(self)</span><br><span class="line">        print(<span class="string">'初始化亲爸类'</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GanDie</span><span class="params">(YeYe)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'进入化干爹类'</span>)</span><br><span class="line">        YeYe.__init__(self)</span><br><span class="line">        print(<span class="string">'初始化干爹类'</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ErZi</span><span class="params">(QinBa, GanDie)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'进入化儿子类'</span>)</span><br><span class="line">        QinBa.__init__(self)</span><br><span class="line">        GanDie.__init__(self)</span><br><span class="line">        print(<span class="string">'初始化儿子类'</span>)</span><br><span class="line">erzi = ErZi()</span><br></pre></td></tr></table></figure>
+
+<p>我们看到，程序运行后，爷爷类被初始化了两次。</p>
+
+
+<p>这是因为，当创建儿子对象时，会执行它的构造函数。首先打印的是儿子类中初始化方法的代码，然后执行秦霸的构造方法。在亲爸的构造方法中，也是先打印代码，然后执行爷爷的构造方法。执行完爷爷的构造方法之后，程序继续执行亲爸中剩余的代码，然后回到儿子类中，执行干爹的构造方法。在干爹的构造方法中，又要调用爷爷的构造方法。然后打印剩余代码，直至结束。</p>
+
+
+<p>我们看到，第五步和第十步都是要调用爷爷的构造方法，爷爷类被初始化了两次。这种情况一来没有必要，会占用很大空间，二来，多次初始化也会带来程序逻辑的混乱。</p>
+<p>如果我们改用 super 函数来进行这样的操作，就不会有这些麻烦：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">YeYe</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'初始化爷爷类'</span>)</span><br><span class="line">        </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">QinBa</span><span class="params">(YeYe)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'进入亲爸类'</span>)</span><br><span class="line">        super().__init__()</span><br><span class="line">        print(<span class="string">'初始化亲爸类'</span>)</span><br><span class="line">        </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GanDie</span><span class="params">(YeYe)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'进入干爹类'</span>)</span><br><span class="line">        super().__init__()</span><br><span class="line">        print(<span class="string">'初始化干爹类'</span>)</span><br><span class="line">        </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ErZi</span><span class="params">(QinBa, GanDie)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'进入儿子类'</span>)</span><br><span class="line">        super().__init__()</span><br><span class="line">        print(<span class="string">'初始化儿子类'</span>)</span><br><span class="line">        </span><br><span class="line">erzi = ErZi()</span><br></pre></td></tr></table></figure>
+
+<p>首先，我们发现，在儿子类中，我们只用一行代码指代调用两个直接父类的构造方法。然后，从结果上看，此时，爷爷类只被初始化一次。</p>
+
+
+<p>而且我们发现，代码的运行情况与多个装饰器装饰一个函数的情况很类似，子类的代码包含着父类的代码，一层套一层的形式。</p>
+<p>要解释这个现象，就要引入 super 方法的查找方法：方法解析顺序列表，MRO[^2]。这个列表是 super 解析父类继承顺序的依据，通过 C3 算法实现。使用 C3 算法计算 MRO 列表的方法可以参考我翻译的 <a href="/translation/python-MRO">Python 新式类继承关系的 C3 算法</a> 官方文档。</p>
+<p>查看 mro 的方法有两种：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">类名.mro()</span><br><span class="line">对象名.__class__.mro()</span><br></pre></td></tr></table></figure>
+
+<p>前面例子中的 mro 为：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[&lt;class '__main__.ErZi'&gt;, &lt;class '__main__.QinBa'&gt;, &lt;class '__main__.GanDie'&gt;, &lt;class '__main__.YeYe'&gt;, &lt;class 'object'&gt;]</span><br></pre></td></tr></table></figure>
+
+<p>我们说过，super 后面什么都不写，默认和 <code>super(当前类名, self)</code> 的写法一样。但事实上，super 的参数除了可以写当前类名外，还可以写它的父类[^3]的类名。此时，会执行在方法解析顺序列表中，该类下一个类的方法。</p>
+<p>补充了这些知识，我们就可以解释上面的程序运行的顺序了。</p>
+
+
+<p>super 关键字详解：</p>
+<ul>
+<li>基本结构：<code>super(class[, object or class])</code></li>
+<li>Python 3 可以直接使用 <code>super().xxx</code> 代替 <code>super(class, self).xxx</code></li>
+<li>使用多继承时，会涉及到查找顺序（MRO）、钻石继承等问题<ul>
+<li>单继承时，<code>类名.__init__()</code> 的方式和 <code>super().__init__()</code> 的方式调用父类中的方法没有什么差别</li>
+<li>使用 <code>类名.__init__()</code> 的方式在钻石继承时，会遇到初始化混乱的问题</li>
+</ul>
+</li>
+</ul>
+<p>super 内核的 mro 方法：返回的是一个类的方法解析顺序表（顺序结构）</p>
+<ul>
+<li><p>我们定义的每一个类，Python 都会计算出一个方法解析顺序（MRO[^2]）列表这也是 super 在父类中查找成员的顺序，它是通过 C3 线性算法来实现的</p>
+</li>
+<li><p>每个父类[^3]都存在且只在其中出现一次</p>
+</li>
+<li><p>我们可以通过下面两种方式获得某个类的 mro 列表：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">类名.mro()</span><br><span class="line">对象名.__class__.mro()</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>当使用 <code>super(cls, obj)</code> 时，Python 会在 <code>obj</code> 的 <code>mro</code> 列表上搜索 <code>cls</code> 的下一个类</p>
+</li>
+<li><p>事实上，super 和父类没有实质性的关联，我们也不一定非要把 super 后面的参数写成自己类的名字和 self。我们甚至可以很灵活地给 super 传参数</p>
+<ul>
+<li><p><code>super(cls, obj)</code> 获得的是 <code>cls</code> 在 obj 的 <code>MRO</code> 列表中的下一个类，<code>cls</code> 可以是任何一个类，<code>obj</code> 可以是任何一个对象，只要合理即可</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">class</span> <span class="title">ErZi</span><span class="params">(Qinba,GanDie)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        super(ErZi, self).__init__()</span><br><span class="line">        print(<span class="string">'初始化儿子'</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在前面我们定义儿子类的时候，如果我们不想调用亲爸的 <code>__init__()</code>，而是要调用干爹的 <code>__init__()</code>，只需把 super 写成 <code>super(Qinba, self).__init__()</code>，也就是这样：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">YeYe</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'初始化爷爷类'</span>)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">QinBa</span><span class="params">(YeYe)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'进入亲爸类'</span>)</span><br><span class="line">        super().__init__()</span><br><span class="line">        print(<span class="string">'初始化亲爸类'</span>)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GanDie</span><span class="params">(YeYe)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'进入干爹类'</span>)</span><br><span class="line">        super().__init__()</span><br><span class="line">        print(<span class="string">'初始化干爹类'</span>)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ErZi</span><span class="params">(QinBa, GanDie)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'进入儿子类'</span>)</span><br><span class="line">        super(QinBa, self).__init__()</span><br><span class="line">        print(<span class="string">'初始化儿子类'</span>)</span><br><span class="line"></span><br><span class="line">erzi = ErZi()</span><br></pre></td></tr></table></figure>
+
+<p>其执行顺序为：</p>
+
+
+</li>
+</ul>
+</li>
+</ul>
+<p>[^2]: Method Resolution Order<br>[^3]: 包括直接父类和间接父类</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/python-advanced/encapsulation/" rel="prev" title="封装">
+      <i class="fa fa-chevron-left"></i> 封装
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/python-basic/resistant-mechanism/" rel="next" title="resistant-mechanism">
+      resistant-mechanism <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#面向对象与继承"><span class="nav-number">1.</span> <span class="nav-text">面向对象与继承</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#继承的概念"><span class="nav-number">2.</span> <span class="nav-text">继承的概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#isinstance-和-issubclass"><span class="nav-number">3.</span> <span class="nav-text">isinstance 和 issubclass</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#类与数据类型"><span class="nav-number">4.</span> <span class="nav-text">类与数据类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#重写父类方法"><span class="nav-number">5.</span> <span class="nav-text">重写父类方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#调用父类方法"><span class="nav-number">6.</span> <span class="nav-text">调用父类方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#super-方法"><span class="nav-number">7.</span> <span class="nav-text">super 方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python-中的多继承"><span class="nav-number">8.</span> <span class="nav-text">Python 中的多继承</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#钻石继承和-MRO"><span class="nav-number">9.</span> <span class="nav-text">钻石继承和 MRO</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="刘硕"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">刘硕</p>
+  <div class="site-description" itemprop="description">不成为自己讨厌的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">221</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:liushuo432@outlook.com" title="E-Mail → mailto:liushuo432@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/2436055290" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;2436055290" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备20001451号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘硕</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.2" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="/js/love.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/Epsilon2.1.model.json"},"display":{"superSample":2,"width":200,"height":400,"position":"left","hOffset":-30,"vOffset":-40},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>
