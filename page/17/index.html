@@ -1,0 +1,1585 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="Tu5vqPaUb8svfkPx5eetJFD84ciQCcWVXNatdsWtj9Q">
+  <meta name="baidu-site-verification" content="baidu_verify_FBq9PG4BBb">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"appID":"PXY1Z6GHKT","apiKey":"eb82f2e78e3053f26aa408e9caa96d93","indexName":"blog","hits":{"per_page":10},"labels":{"input_placeholder":"要查点什么(✿◡‿◡)","hits_empty":"没有找到任何关于 ${query} 的结果╥﹏╥...","hits_stats":"搜索到 ${hits} 条记录，用时 ${time} ms o(*￣▽￣*)ブ"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="不成为自己讨厌的人">
+<meta property="og:type" content="website">
+<meta property="og:title" content="刘硕的技术查阅手册">
+<meta property="og:url" content="https://sliu.vip/page/17/index.html">
+<meta property="og:site_name" content="刘硕的技术查阅手册">
+<meta property="og:description" content="不成为自己讨厌的人">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="刘硕">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="全栈开发">
+<meta property="article:tag" content="并发编程">
+<meta property="article:tag" content="网络编程">
+<meta property="article:tag" content="爬虫">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="自动化测试">
+<meta property="article:tag" content="Web开发">
+<meta property="article:tag" content="HTML">
+<meta property="article:tag" content="CSS">
+<meta property="article:tag" content="JavaScript">
+<meta property="article:tag" content="jQuery">
+<meta property="article:tag" content="Bootstrap">
+<meta property="article:tag" content="测试自动化">
+<meta property="article:tag" content="Selenium">
+<meta property="article:tag" content="postman">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="Vue">
+<meta property="article:tag" content="drf">
+<meta property="article:tag" content="django">
+<meta property="article:tag" content="文档翻译">
+<meta property="article:tag" content="PEP8">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://sliu.vip/page/17/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : true,
+    isPost : false
+  };
+</script>
+
+  <title>刘硕的技术查阅手册</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f14f123935d6183fdd06f8f1c4bc378f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="刘硕的技术查阅手册" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">刘硕的技术查阅手册</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">Python 全栈开发学习笔记</h1>
+      
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-toc">
+
+    <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-fw fa-rss"></i>订阅</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+  
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/translation/raspberry-gpio-python-examples/controlling-LED-and-switch/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/translation/raspberry-gpio-python-examples/controlling-LED-and-switch/" class="post-title-link" itemprop="url">GPIO 控制 LED 和开关</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-15 13:53:00" itemprop="dateCreated datePublished" datetime="2020-02-15T13:53:00+08:00">2020-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91/" itemprop="url" rel="index"><span itemprop="name">官方文档翻译</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>使用  <a href="https://gpiozero.readthedocs.io/" target="_blank" rel="noopener">GPIO Zero</a>  库，简单快速入门使用 Python 控制 GPIO 设备。</p>
+<h2 id="LED"><a href="#LED" class="headerlink" title="LED"></a>LED</h2><p>控制连接在 GPIO17 上的 LED，你可以使用这些代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> gpiozero <span class="keyword">import</span> LED</span><br><span class="line"><span class="keyword">from</span> time <span class="keyword">import</span> sleep</span><br><span class="line"></span><br><span class="line">led = LED(<span class="number">17</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    led.on()</span><br><span class="line">    sleep(<span class="number">1</span>)</span><br><span class="line">    led.off()</span><br><span class="line">    sleep(<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<p>在诸如 Thonny 之类的 IDE 中执行代码，就可以看见 LED 时亮时灭反复闪烁。</p>
+<p>LED 方法包括 <code>on()</code>、<code>off()</code>、<code>toggle()</code> 和 <code>blink()</code>。</p>
+<h2 id="按钮"><a href="#按钮" class="headerlink" title="按钮"></a>按钮</h2><p>读取连接到 GPIO2 上的按钮的状态，你可以使用这些代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> gpiozero <span class="keyword">import</span> Button</span><br><span class="line"><span class="keyword">from</span> time <span class="keyword">import</span> sleep</span><br><span class="line"></span><br><span class="line">button = Button(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    <span class="keyword">if</span> button.is_pressed:</span><br><span class="line">        print(<span class="string">"Pressed"</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        print(<span class="string">"Released"</span>)</span><br><span class="line">    sleep(<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<p>从功能上讲有 <code>is_pressed</code>和 <code>is_held</code> 属性；回调 <code>when_pressed</code>、<code>when_released</code> 和 <code>when_held</code>；方法 <code>wait_for_press()</code> 和 <code>wait_for_release</code>。</p>
+<h2 id="按钮-LED"><a href="#按钮-LED" class="headerlink" title="按钮 + LED"></a>按钮 + LED</h2><p>把 LED 和 按钮联用，你可以使用这些代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> gpiozero <span class="keyword">import</span> LED, Button</span><br><span class="line"></span><br><span class="line">led = LED(<span class="number">17</span>)</span><br><span class="line">button = Button(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    <span class="keyword">if</span> button.is_pressed:</span><br><span class="line">        led.on()</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        led.off()</span><br></pre></td></tr></table></figure>
+
+<p>也可以这样：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> gpiozero <span class="keyword">import</span> LED, Button</span><br><span class="line"></span><br><span class="line">led = LED(<span class="number">17</span>)</span><br><span class="line">button = Button(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    button.wait_for_press()</span><br><span class="line">    led.on()</span><br><span class="line">    button.wait_for_release()</span><br><span class="line">    led.off()</span><br></pre></td></tr></table></figure>
+
+<p>或者：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> gpiozero <span class="keyword">import</span> LED, Button</span><br><span class="line"></span><br><span class="line">led = LED(<span class="number">17</span>)</span><br><span class="line">button = Button(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">button.when_pressed = led.on</span><br><span class="line">button.when_released = led.off</span><br></pre></td></tr></table></figure>
+
+<h2 id="GPIO-Zero-文档"><a href="#GPIO-Zero-文档" class="headerlink" title="GPIO Zero 文档"></a>GPIO Zero 文档</h2><p>GPIO Zero 支持很多其他的 GPIO 设备。在 <a href="https://gpiozero.readthedocs.io/" target="_blank" rel="noopener">gpiozero.readthedocs.io</a> 可以找到这个库的完整文档。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-advanced/design-pattern/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/python-advanced/design-pattern/" class="post-title-link" itemprop="url">常见设计模式</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-15 13:52:53" itemprop="dateCreated datePublished" datetime="2020-02-15T13:52:53+08:00">2020-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python-%E8%BF%9B%E9%98%B6/" itemprop="url" rel="index"><span itemprop="name">Python 进阶</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>先想象一下这样一个场景：去麦当劳点餐，我们想吃麦辣鸡腿堡、薯条和可乐。我们当然可以单点，但是如果我们对收银小姐姐说，请给我一份麦辣鸡腿堡套餐，就会方便很多。套餐是餐厅和我们约定好了的一个规范，如果大家都按照这个规范来点餐，就能够提高点餐效率。</p>
+<p>创建套餐是提高点餐效率的可重复使用的解决方法。套餐可以重复被点，而且提高了顾客和服务员之间的共同效率。</p>
+<p>类似地，在编写程序的软件世界，对于统一情境，众多软件开发任意经过长时间总结出了最佳的可重用的解决方案，就是软件的设计模式。</p>
+<p>软件世界本没有设计模式，开发人员多了，开发得久了，也便总结出了设计模式。</p>
+<p>设计模式有很多很多种，对于不同的场景有不同的设计模式。这里只介绍两种非常常见的设计模式：单例模式和工厂模式。</p>
+<h3 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h3><p>我们从前学习的类创建对象时，每个对象都是开辟相互独立的内存空间，它们各自的实例属性和方法是互无联系互不影响的。但是有的时候，我们只想创建一个对象，不管被实例化多少次，使用的对象都是一个。</p>
+<p>比如在开发过程中，不同的程序员负责不同的模块。他们都需要使用到一个类对象，但是用了不同的名字。但是到后来当程序运行的时候，他们有需要这些对象都是同一个对象。这就需要用到单例模式。</p>
+<p>单例模式是保证一个类仅有一个实例的设计模式。</p>
+<p>单例模式保证了程序在不同位置都可以且尽可以取到同一个对象的实例：如果实例不存在，则会创建一个实例；如果对象存在，则会返回这个实力。</p>
+<p>创建单例模式之前，我们要先讨论一下 <code>__new__()</code> 方法。同 <code>__init__()</code> 方法一样，<code>__new__()</code> 方法也是在创建对象时自动运行的。不同的是，<code>__init__()</code> 方法用来初始化对象，而 <code>__new()__</code> 方法用来创建对象。</p>
+<p>换句话说，<code>__new__()</code> 方法在对象创建之前就会运行，它是一个类方法。它的返回值就是新创建的对象。</p>
+<p>有了这些基础，结合我们从前学过的东西，就可以创建一个单例模式的类了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span>:</span></span><br><span class="line">    <span class="comment"># 类属性，用来存放实例对象内存地址，同时也用来标记类是否已经被实例化，初始值为None</span></span><br><span class="line">    instance = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># cls用来指代类，args和kwargs用来接收参数，PyCharm默认填入，不必理会也不必修改</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__new__</span><span class="params">(cls, *args, **kwargs)</span>:</span></span><br><span class="line">        <span class="comment"># 如果没有实例化，就对其进行实例化操作，将实例化后的对象储存到类属性instance中</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> cls.instance:</span><br><span class="line">            <span class="comment"># 这里的参数只放cls，不能放*args和**kwargs</span></span><br><span class="line">            cls.instance = object.__new__(cls)</span><br><span class="line">        <span class="comment"># 不管开始的instance是否为空，此时它都已经储存了一个类对象，将其返回即可</span></span><br><span class="line">        <span class="keyword">return</span> cls.instance</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, age)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">xiaoli = Student(<span class="string">'小丽'</span>, <span class="number">16</span>)</span><br><span class="line">xiaoming = Student(<span class="string">'小明'</span>, <span class="number">18</span>)</span><br><span class="line">print(xiaoli.name)</span><br><span class="line">print(xiaoming.name)</span><br></pre></td></tr></table></figure>
+
+<p>输出结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">小明</span><br><span class="line">小明</span><br></pre></td></tr></table></figure>
+
+<p>需要注意的是，虽然不会创建新的实例对象，但是每当创建新对象时，初始化方法 <code>__init__()</code> 还是会执行的。因为是同一个对象，所以后面创建的实例属性就会覆盖从前创建的实例属性。</p>
+<p>因为单例模式太过常用且重要，所以我们往往将其单独写成一个类。继承这个单例模式类的新类也都会是单例模式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Singleton</span>:</span></span><br><span class="line">    instance = <span class="literal">None</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__new__</span><span class="params">(cls, *args, **kwargs)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> cls.instance:</span><br><span class="line">            cls.instance = object.__new__(cls)</span><br><span class="line">        <span class="keyword">return</span> cls.instance</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span><span class="params">(Singleton)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, age)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">xiaoli = Student(<span class="string">'小丽'</span>, <span class="number">16</span>)</span><br><span class="line">xiaoming = Student(<span class="string">'小明'</span>, <span class="number">18</span>)</span><br><span class="line">print(xiaoli.name)</span><br><span class="line">print(xiaoming.name)</span><br></pre></td></tr></table></figure>
+
+<h3 id="工厂模式"><a href="#工厂模式" class="headerlink" title="工厂模式"></a>工厂模式</h3><p>我们现在有这样一个需求：我们玩王者荣耀，想要一个物理伤害，射程远，可以持续输出的英雄。如果我们自己去找，很慢而且很麻烦。需要我们遍历所有人物的职业，然后才能确定射手类是我们想要的。</p>
+<p>但是我们其实可以把这件事情交给程序来做。只要我们提出需求（物理伤害，射程远，持续输出），程序自动给我们返回一个射手类的对象。这样就很方便了。</p>
+<p>这个帮我们创建类的类就是一个工厂类。这种编程模式，就是工厂模式。</p>
+<p>工厂模式就是不直接暴露对象的创建细节，而是通过一个共同的类来创建对象的模式，总共需要四个步骤：</p>
+<ol>
+<li>创建基类</li>
+<li>创建子类</li>
+<li>创建工厂类</li>
+<li>使用工厂模式</li>
+</ol>
+<p>事实上，工厂类中待我们选择的类并不要求非要继承自同一个父类。而且其实 Python 中所有类都继承自 project 类。所以前两步可以合并为一步，创建类。</p>
+<p>我们可以这样创建一个工厂模式的类：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建基类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_name</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.name</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建子类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Male</span><span class="params">(Person)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">'Hello Mr.'</span> + self.get_name()</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Female</span><span class="params">(Person)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">'Hello Miss'</span> + self.get_name()</span><br><span class="line">    </span><br><span class="line"><span class="comment"># 创建工厂类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Factory</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_person</span><span class="params">(self, name, gender=<span class="string">'M'</span>)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> gender == <span class="string">'M'</span>:</span><br><span class="line">            <span class="keyword">return</span> Male(name)</span><br><span class="line">        <span class="keyword">if</span> gender == <span class="string">'F'</span>:</span><br><span class="line">            <span class="keyword">return</span> Female(name)</span><br><span class="line">        </span><br><span class="line"><span class="comment"># 使用工厂模式</span></span><br><span class="line">factory = Factory()</span><br><span class="line">person = fcatory.get_person(<span class="string">'Bob'</span>, <span class="string">'M'</span>)</span><br><span class="line">print(person)</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/for-cycle/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/python-basic/for-cycle/" class="post-title-link" itemprop="url">for 循环</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-15 13:52:36" itemprop="dateCreated datePublished" datetime="2020-02-15T13:52:36+08:00">2020-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>与以死循环形式存在的 <code>while循环</code> 不同的是，<code>for循环</code> 往往以有限循环的形式存在。</p>
+<p><code>for循环</code> 的基本结构为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> XXX:</span><br><span class="line">    循环体</span><br></pre></td></tr></table></figure>
+
+<p>其中，</p>
+<ul>
+<li><code>for</code>：关键字</li>
+<li><code>i</code>：变量名</li>
+<li><code>in</code>：关键字</li>
+<li><code>xxx</code>：可迭代对象</li>
+</ul>
+<p>用已有的知识，如果我们想分别打印字符串 <code>&quot;alex&quot;</code> 中的每一个字符，可以使用 <code>while循环</code> 来实现：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">name = <span class="string">'alex'</span></span><br><span class="line">count = <span class="number">0</span></span><br><span class="line"><span class="keyword">while</span> count &lt; len(name):</span><br><span class="line">    print(name[count])</span><br><span class="line">    count += <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<p>这里补充一个知识点，函数 <code>len()</code> 是一个公共方法，它可以获得传入参数的长度：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>name = <span class="string">"alex"</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>len(name)</span><br><span class="line"><span class="number">4</span></span><br></pre></td></tr></table></figure>
+
+<p>如果使用 <code>for循环</code>，我们可以更简便地实现目的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">name = <span class="string">"alex"</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> name: <span class="comment"># 每次循环，for都会把取到的元素赋值给i</span></span><br><span class="line">    print(i) <span class="comment"># 打印变量i</span></span><br></pre></td></tr></table></figure>
+
+<p>看下面这样一个例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="string">"abcde"</span>:</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line">print(i)</span><br></pre></td></tr></table></figure>
+
+<p>最终打印出来的结果只有一个 <code>e</code>。那是因为 <code>for循环</code> 本质是一个 <code>赋值</code> 操作，每次循环都是将可迭代对象中的一个元素 <code>赋值</code> 给变量。当进行最后一次循环时，字符串 <code>&quot;abcde&quot;</code> 的最后一个元素 <code>&quot;e&quot;</code> 被赋值给了变量 <code>i</code>。循环结束，<code>i</code> 没有被重新 <code>赋值</code>。虽然打印的动作不在循环体中，但不影响打印出 <code>e</code> 的结果。</p>
+<p>for 循环打印九九乘法表：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">10</span>):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">10</span>):</span><br><span class="line">        <span class="keyword">if</span> i &gt;= j:</span><br><span class="line">            print(<span class="string">f"<span class="subst">&#123;j&#125;</span> * <span class="subst">&#123;i&#125;</span> = <span class="subst">&#123;i * j&#125;</span>"</span>, end=<span class="string">' '</span>)</span><br><span class="line">    print(<span class="string">''</span>)</span><br></pre></td></tr></table></figure>
+
+<p>思考题：</p>
+<p>下面的代码会打印出什么样的结果呢？</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">num = <span class="number">5</span></span><br><span class="line">count = <span class="number">1</span></span><br><span class="line"><span class="keyword">while</span> num:</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="string">"abc"</span>:</span><br><span class="line">        print(i + str(count))</span><br><span class="line">    count += <span class="number">1</span></span><br><span class="line">    num -= <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/range/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/python-basic/range/" class="post-title-link" itemprop="url">range</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-15 13:52:20" itemprop="dateCreated datePublished" datetime="2020-02-15T13:52:20+08:00">2020-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>在 Python 中，通过 range 可以达到循环数字的效果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">5</span>):</span><br><span class="line">    print(i)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">4</span></span><br></pre></td></tr></table></figure>
+
+<p>对于下面一行代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a = range(<span class="number">0</span>, <span class="number">5</span>)</span><br><span class="line">print(a)</span><br></pre></td></tr></table></figure>
+
+<p>在 Python 2 中，会打印出列表 <code>[0, 1, 2, 3, 4]</code>；在 Python 3 中则会被打印为 <code>range(0, 5)</code>。可以通过 <code>list()</code> 函数将 <code>range</code> 对象转化为列表：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a = range(<span class="number">0</span>, <span class="number">5</span>)</span><br><span class="line">print(list(a))</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]</span><br></pre></td></tr></table></figure>
+
+<p><code>range</code> 中的参数和 <code>切片</code> 极其相似，range 的索引是几，其对应的值就是几：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, <span class="number">51</span>, <span class="number">2</span>):</span><br><span class="line">    print(i)	<span class="comment"># 打印0-50间的所有偶数</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">51</span>, <span class="number">2</span>):</span><br><span class="line">    print(i)	<span class="comment"># 打印0-50间的所有奇数</span></span><br></pre></td></tr></table></figure>
+
+<p><code>range</code> 与 <code>切片</code> 所不同的是，<code>range</code> 的终止位置为负数时，表示的是负数位置，而不是从右向左数的位置：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">10</span>, <span class="number">-11</span>, <span class="number">-1</span>):</span><br><span class="line">    print(i)	<span class="comment"># 打印10到-10的数字</span></span><br></pre></td></tr></table></figure>
+
+<p>一般情况下，我们可以直接写入一个终止位置。这时，起始位置默认为 <code>0</code>，步长默认为 <code>1</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(list(range(<span class="number">5</span>)))</span><br></pre></td></tr></table></figure>
+
+<p>输出结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]</span><br></pre></td></tr></table></figure>
+
+<p>需要注意，如果要设置步长，一定要把变量写全，要包含起始位置。</p>
+<p>很显然，<code>range</code>是一个可迭代对象。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/web/json/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/web/json/" class="post-title-link" itemprop="url">JSON</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-15 13:52:16" itemprop="dateCreated datePublished" datetime="2020-02-15T13:52:16+08:00">2020-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web/" itemprop="url" rel="index"><span itemprop="name">Web</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>JSON 是  JavaScript Object Notation 的首字母缩写，单词的意思是 JavaScript 对象表示法。这里说的 JSON 指的是类似于 JavaScript 对象的一种数据格式。</p>
+<p>JSON 的作用：在不同的系统平台，或不同编程语言之间传递数据。</p>
+<h3 id="JSON-数据的语法"><a href="#JSON-数据的语法" class="headerlink" title="JSON 数据的语法"></a>JSON 数据的语法</h3><p>JSON 数据对象类似于 JavaScript 中的对象，但是它的键对应的值里面是没有函数方法的。值可以是普通变量，不支持undefined，值还可以是数组或者 JSON 对象。</p>
+<p>例如，原生的 JavaScript 对象这样表示，类似于 Python 中的字典：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> obj = &#123;</span><br><span class="line">  age:<span class="number">10</span>,</span><br><span class="line">  sex: <span class="string">'女'</span>,</span><br><span class="line">  work:<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">"好好学习"</span>,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>JSON 数据的对象格式，是没有方法的，只有属性：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"name"</span>:<span class="string">"tom"</span>,</span><br><span class="line">    <span class="attr">"age"</span>:<span class="number">18</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>JSON 数据也可以有数组格式：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">"tom"</span>,<span class="number">18</span>,<span class="string">"programmer"</span>]</span><br></pre></td></tr></table></figure>
+
+<p>复杂的 JSON 格式数据可以包含对象和数组的写法（除了例子中的自定义对象结构，数组结构也可以作为 JSON 传输数据）：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="attr">"name"</span>:<span class="string">"小明"</span>,</span><br><span class="line">  <span class="attr">"age"</span>:<span class="number">200</span>,</span><br><span class="line">  <span class="attr">"is_delete"</span>: <span class="literal">false</span>,</span><br><span class="line">  <span class="attr">"fav"</span>:[<span class="string">"code"</span>,<span class="string">"eat"</span>,<span class="string">"swim"</span>,<span class="string">"read"</span>],    </span><br><span class="line">  <span class="attr">"son"</span>:&#123;</span><br><span class="line">    <span class="attr">"name"</span>:<span class="string">"小小明"</span>,</span><br><span class="line">    <span class="attr">"age"</span>:<span class="number">100</span>,</span><br><span class="line">    <span class="attr">"lve"</span>:[<span class="string">"code"</span>,<span class="string">"eat"</span>]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>JSON 数据可以保存在 <code>.json</code> 文件中。一般一个 <code>.json</code> 文件里面只有一个 JSON 对象。</p>
+<p>关于 JSON 的总结：</p>
+<ol>
+<li><p>JSON 文件的后缀是 <code>.json</code></p>
+</li>
+<li><p>JSON 文件一般保存一个单一的 JSON 数据</p>
+</li>
+<li><p>JSON 数据的属性不能是方法或者 undefined，属性值只能：数值（整数、小数、布尔值）、字符串、JSON 和数组</p>
+</li>
+<li><p>JSON 数据只使用双引号、每一个属性成员之间使用逗号隔开，并且最后一个成员没有逗号。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"name"</span>:<span class="string">"小明"</span>,</span><br><span class="line">    <span class="attr">"age"</span>:<span class="number">200</span>,</span><br><span class="line">    <span class="attr">"fav"</span>:[<span class="string">"code"</span>,<span class="string">"eat"</span>,<span class="string">"swim"</span>,<span class="string">"read"</span>],</span><br><span class="line">    <span class="attr">"son"</span>:&#123;</span><br><span class="line">        <span class="attr">"name"</span>:<span class="string">"小小明"</span>,</span><br><span class="line">        <span class="attr">"age"</span>:<span class="number">100</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>工具：postman 可以用于测试开发的数据接口。</p>
+<h3 id="js-中提供的-JSON-数据转换方法"><a href="#js-中提供的-JSON-数据转换方法" class="headerlink" title="js 中提供的 JSON 数据转换方法"></a>js 中提供的 JSON 数据转换方法</h3><p>JavaScript 提供了一个 JSON 对象来操作 JSON 数据的数据转换.</p>
+<table>
+<thead>
+<tr>
+<th align="center">方法</th>
+<th align="center">参数</th>
+<th align="center">返回值</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">stringify</td>
+<td align="center">JSON 对象</td>
+<td align="center">字符串</td>
+<td>JSON 对象转成字符串</td>
+</tr>
+<tr>
+<td align="center">parse</td>
+<td align="center">字符串</td>
+<td align="center">JSON 对象</td>
+<td>字符串格式的 JSON 数据转成 JSON 对象</td>
+</tr>
+</tbody></table>
+<p>具体实例如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"zh-CN"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Title<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="actionscript">    <span class="comment">// JSON语法</span></span></span><br><span class="line"><span class="javascript">    <span class="keyword">let</span> humen = &#123;</span></span><br><span class="line"><span class="actionscript">        <span class="string">"username"</span>:<span class="string">"sure"</span>,</span></span><br><span class="line"><span class="actionscript">        <span class="string">"password"</span>:<span class="string">"1234567"</span>,</span></span><br><span class="line"><span class="actionscript">        <span class="string">"age"</span>:<span class="number">20</span>    <span class="comment">// 自定义对象这里可以有收尾的逗号，但JSON数据是不可以有这个逗号的</span></span></span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line"><span class="javascript">    <span class="built_in">console</span>.log(humen);    <span class="comment">// &#123;username: "sure", password: "1234567", age: 20&#125;</span></span></span><br><span class="line"><span class="javascript">    <span class="built_in">console</span>.log(<span class="keyword">typeof</span> humen);    <span class="comment">// object</span></span></span><br><span class="line"></span><br><span class="line"><span class="actionscript">    <span class="comment">// JSON对象提供对JSON格式数据的转换功能</span></span></span><br><span class="line"><span class="actionscript">    <span class="comment">// stringify(JSON对象)  # 用于把JSON转换成字符串</span></span></span><br><span class="line"><span class="javascript">    <span class="keyword">let</span> result = <span class="built_in">JSON</span>.stringify(humen);</span></span><br><span class="line"><span class="javascript">    <span class="built_in">console</span>.log(result);  <span class="comment">// &#123;"username":"sure","password":"1234567","age":20&#125;</span></span></span><br><span class="line"><span class="javascript">    <span class="built_in">console</span>.log(<span class="keyword">typeof</span> result);   <span class="comment">// string</span></span></span><br><span class="line"></span><br><span class="line"><span class="actionscript">    <span class="comment">// parse(字符串类型的JSON数据)  # 用于把字符串转成JSON对象</span></span></span><br><span class="line"><span class="javascript">    <span class="keyword">let</span> json_str = <span class="string">'&#123;"password":"1123","age":20,"name":"xiaobai"&#125;'</span>;</span></span><br><span class="line"><span class="javascript">    <span class="built_in">console</span>.log(json_str)    <span class="comment">// &#123;"password":"1123","age":20,"name":"xiaobai"&#125;</span></span></span><br><span class="line"><span class="javascript">    <span class="built_in">console</span>.log(<span class="keyword">typeof</span> json_str)   <span class="comment">// string</span></span></span><br><span class="line"></span><br><span class="line"><span class="javascript">    <span class="keyword">let</span> json_obj = <span class="built_in">JSON</span>.parse(json_str);</span></span><br><span class="line"><span class="javascript">    <span class="built_in">console</span>.log(json_obj);  <span class="comment">// &#123;password: "1123", age: 20, name: "xiaobai"&#125;</span></span></span><br><span class="line"><span class="javascript">    <span class="built_in">console</span>.log(<span class="keyword">typeof</span> json_obj)   <span class="comment">// object</span></span></span><br><span class="line"><span class="javascript">    <span class="built_in">console</span>.log(json_obj.age)    <span class="comment">// 20</span></span></span><br><span class="line"><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/list/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/python-basic/list/" class="post-title-link" itemprop="url">列表</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-15 13:52:15" itemprop="dateCreated datePublished" datetime="2020-02-15T13:52:15+08:00">2020-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="列表的定义"><a href="#列表的定义" class="headerlink" title="列表的定义"></a>列表的定义</h3><p>同 <code>整型</code>、<code>字符串</code> 和 <code>布尔值</code> 一样，<code>列表</code> 也是 Python 中的基本数据结构之一。<code>列表</code> 的关键字是 <code>list</code>。在 Python 中，最常用的三种用来储存数据的数据结构分别是 <code>字典</code>、<code>列表</code> 和 <code>字符串</code>，可见它是十分重要的。</p>
+<p>列表的作用更像是一种容器，形象一点说就是我们用的书包：</p>
+<ol>
+<li>列表能储存大量数据</li>
+<li>列表能储存不同数据类型的数据</li>
+</ol>
+<p>与列表相对照，我们先来观察一下这样一个字符串：<code>a = &#39;123alexTrue&#39;</code> 这个字符串中包含数字、字母和布尔值，但是表现出来的全都是字符串。我们虽然能够通过索引取到内容，但取到的值仍然是字符串。这就需要我们进行额外的判断转换操作。列表则不同，列表可以储存不同类型的数据，并且可以随时把它们直接取出来用。就像把东西装到书包里，用的时候直接取出来即可。</p>
+<p>我们可以通过如下方法定义一个列表：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="number">1</span>, <span class="string">'alex'</span>, <span class="literal">True</span>]</span><br></pre></td></tr></table></figure>
+
+<p>列表中的每个元素以逗号分隔。各个元素以原本的数据类型存储在列表中。</p>
+<p>列表是可变数据类型，因此可以对列表本身进行修改。与字符串方法不同，列表方法一般没有返回值，而是直接对原列表进行修改。所以一般也不需要使用变量接收返回值。</p>
+<h3 id="列表元素的增加"><a href="#列表元素的增加" class="headerlink" title="列表元素的增加"></a>列表元素的增加</h3><p>列表元素的增加主要有三种方法：<code>.append()</code>、<code>.insert()</code> 和 <code>.extend()</code>。</p>
+<p><code>.append()</code> 方法实在列表的末尾添加内容。<code>.append()</code> 的参数就是需要增加的列表元素：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="string">'Python学习手册'</span>, <span class="string">'核心编程'</span>]</span><br><span class="line">print(lst.append(<span class="string">"流畅的Python"</span>))</span><br><span class="line">print(lst)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="literal">None</span></span><br><span class="line">[<span class="string">'Python学习手册'</span>, <span class="string">'核心编程'</span>, <span class="string">'流畅的Python'</span>]</span><br></pre></td></tr></table></figure>
+
+<p><code>None</code> 在 Python 中是 <code>空</code> 的意思。<code>.append()</code> 方法的返回值为 <code>None</code>。而当我们打印列表 <code>lst</code> 时发现，列表已经被改变。这里我们可以得出结论：</p>
+<ul>
+<li>列表是可变数据类型</li>
+<li><code>.append()</code> 操作会直接对列表进行修改而不需要重新赋值</li>
+</ul>
+<p><code>.insert()</code> 方法用来向列表中插入数据。<code>.insert()</code> 方法有两个参数，<code>参数 1</code> 是要插入位置的 <code>索引值</code>，<code>参数 2</code> 是要插入的 <code>内容</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="string">'Python学习手册'</span>, <span class="string">'核心编程'</span>]</span><br><span class="line">lst.insert(<span class="number">1</span>, <span class="string">'流畅的Python'</span>)</span><br><span class="line">print(lst)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'Python学习手册'</span>, <span class="string">'流畅的Python'</span>, <span class="string">'核心编程'</span>]</span><br></pre></td></tr></table></figure>
+
+<p>实际操作中，不推荐使用 <code>.insert()</code> 方法。因为一旦使用这个方法，需要把插入位置后的每一个元素都后移一位，且发生索引值的变化，有可能给项目带来不可预测的影响。</p>
+<p><code>.extend()</code> 方法也是在列表的最后插入内容。<code>.extend()</code> 方法的参数必须是可迭代对象。执行 <code>.extend()</code> 方法时，会将参数内容 <code>迭代追加</code> 到列表结尾：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="string">'Python学习手册'</span>, <span class="string">'核心编程'</span>]</span><br><span class="line">lst.extend(<span class="string">'流畅的Python'</span>)</span><br><span class="line">print(lst)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'Python学习手册'</span>, <span class="string">'核心编程'</span>, <span class="string">'流'</span>, <span class="string">'畅'</span>, <span class="string">'的'</span>, <span class="string">'P'</span>, <span class="string">'y'</span>, <span class="string">'t'</span>, <span class="string">'h'</span>, <span class="string">'o'</span>, <span class="string">'n'</span>]</span><br></pre></td></tr></table></figure>
+
+<p><code>.extend()</code> 方法用来将多个数据 <em>批量</em>添加到列表末尾。</p>
+<h3 id="列表元素的删除"><a href="#列表元素的删除" class="headerlink" title="列表元素的删除"></a>列表元素的删除</h3><p>列表元素的删除主要有四种方法：<code>.remove()</code>、<code>.pop()</code>、<code>.clear()</code> 和 <code>del</code>。</p>
+<p><code>.remove()</code> 方法可以删除指定元素名的列表元素，它的参数是要删除元素的元素名：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="string">'大圣'</span>, <span class="string">'海芋'</span>, <span class="string">'新力'</span>, <span class="string">'一帆'</span>, <span class="string">'靓仔'</span>, <span class="string">'石淦'</span>]</span><br><span class="line">lst.remove(<span class="string">'新力'</span>)</span><br><span class="line">print(lst)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'大圣'</span>, <span class="string">'海芋'</span>, <span class="string">'一帆'</span>, <span class="string">'靓仔'</span>, <span class="string">'石淦'</span>]</span><br></pre></td></tr></table></figure>
+
+<p><code>.pop()</code> 方法如果不加参数的话，默认删除列表中的最后一个元素，并且有返回值，返回的内容是是被删除的元素。<code>.pop()</code> 是唯一一个有返回值的列表元素删除方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="string">'大圣'</span>, <span class="string">'海芋'</span>, <span class="string">'新力'</span>, <span class="string">'一帆'</span>, <span class="string">'靓仔'</span>, <span class="string">'石淦'</span>]</span><br><span class="line">print(lst.pop())</span><br><span class="line">print(lst)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">石淦</span><br><span class="line">[<span class="string">'大圣'</span>, <span class="string">'海芋'</span>, <span class="string">'新力'</span>, <span class="string">'一帆'</span>, <span class="string">'靓仔'</span>]</span><br></pre></td></tr></table></figure>
+
+<p><code>.pop()</code> 方法也可以通过输入索引参数的方法，删除指定位置的列表元素：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="string">'大圣'</span>, <span class="string">'海芋'</span>, <span class="string">'新力'</span>, <span class="string">'一帆'</span>, <span class="string">'靓仔'</span>, <span class="string">'石淦'</span>]</span><br><span class="line">print(lst.pop(<span class="number">1</span>))</span><br><span class="line">print(lst)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">海芋</span><br><span class="line">[<span class="string">'大圣'</span>, <span class="string">'新力'</span>, <span class="string">'一帆'</span>, <span class="string">'靓仔'</span>, <span class="string">'石淦'</span>]</span><br></pre></td></tr></table></figure>
+
+<p><code>.clear()</code> 方法用来将列表清空，最终会得到一个空列表：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="string">'大圣'</span>, <span class="string">'海芋'</span>, <span class="string">'新力'</span>, <span class="string">'一帆'</span>, <span class="string">'靓仔'</span>, <span class="string">'石淦'</span>]</span><br><span class="line">lst.clear()</span><br><span class="line">print(lst)</span><br><span class="line"></span><br><span class="line">输出的结果为： []</span><br></pre></td></tr></table></figure>
+
+<p><code>del</code> 是用来删除的关键字。<code>del</code> 后面直接跟列表名，会将列表整个删除掉：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="string">'大圣'</span>, <span class="string">'海芋'</span>, <span class="string">'新力'</span>, <span class="string">'一帆'</span>, <span class="string">'靓仔'</span>, <span class="string">'石淦'</span>]</span><br><span class="line"><span class="keyword">del</span> lst</span><br><span class="line">print(lst)</span><br></pre></td></tr></table></figure>
+
+<p>程序运行后报错：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"C:/Users/Sure/PyProject/day04/02 exercise.py"</span>, line <span class="number">31</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    print(lst)</span><br><span class="line">NameError: name <span class="string">'lst'</span> <span class="keyword">is</span> <span class="keyword">not</span> defined</span><br></pre></td></tr></table></figure>
+
+<p>程序报错，因为 <code>lst</code> 已经被从内从中整个移除。后来 <code>print</code> 调用 <code>lst</code> 时，找不到相应的内容，所以报错。</p>
+<p>也可以用 <code>del</code> 删除指定索引的列表元素：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="string">'大圣'</span>, <span class="string">'海芋'</span>, <span class="string">'新力'</span>, <span class="string">'一帆'</span>, <span class="string">'靓仔'</span>, <span class="string">'石淦'</span>]</span><br><span class="line"><span class="keyword">del</span> lst[<span class="number">2</span>]</span><br><span class="line">print(lst)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'大圣'</span>, <span class="string">'海芋'</span>, <span class="string">'一帆'</span>, <span class="string">'靓仔'</span>, <span class="string">'石淦'</span>]</span><br></pre></td></tr></table></figure>
+
+<p><code>del</code>也可以通过切片来批量删除多个列表元素：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="string">'大圣'</span>, <span class="string">'海芋'</span>, <span class="string">'新力'</span>, <span class="string">'一帆'</span>, <span class="string">'靓仔'</span>, <span class="string">'石淦'</span>]</span><br><span class="line"><span class="keyword">del</span> lst[<span class="number">1</span>:<span class="number">4</span>]</span><br><span class="line">print(lst)</span><br></pre></td></tr></table></figure>
+
+<p>输出结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'大圣'</span>, <span class="string">'靓仔'</span>, <span class="string">'石淦'</span>]</span><br></pre></td></tr></table></figure>
+
+<h3 id="列表元素的修改"><a href="#列表元素的修改" class="headerlink" title="列表元素的修改"></a>列表元素的修改</h3><p>列表元素可以通过索引值赋值直接修改：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="string">"大圣"</span>, <span class="string">"海煜"</span>, <span class="string">"新力"</span>, <span class="string">"一帆"</span>, <span class="string">"靓仔"</span>, <span class="string">"石淦"</span>]</span><br><span class="line">lst[<span class="number">2</span>] = <span class="string">'秀色可餐'</span></span><br><span class="line">print(lst)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'大圣'</span>, <span class="string">'海煜'</span>, <span class="string">'秀色可餐'</span>, <span class="string">'一帆'</span>, <span class="string">'靓仔'</span>, <span class="string">'石淦'</span>]</span><br></pre></td></tr></table></figure>
+
+<p>也可以通过列表的切片方法对列表元素进行批量修改：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="string">"大圣"</span>, <span class="string">"海煜"</span>, <span class="string">"新力"</span>, <span class="string">"一帆"</span>, <span class="string">"靓仔"</span>, <span class="string">"石淦"</span>]</span><br><span class="line">lst[<span class="number">1</span>:<span class="number">4</span>] = <span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span></span><br><span class="line">print(lst)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'大圣'</span>, <span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="string">'靓仔'</span>, <span class="string">'石淦'</span>]</span><br></pre></td></tr></table></figure>
+
+<p>切片获取的内容空间是连续的时候，修改时内容可以多可以少；切片获取的内容空间是不连续的时候，修改时内容必须一一对应：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="string">"大圣"</span>, <span class="string">"海煜"</span>, <span class="string">"新力"</span>, <span class="string">"一帆"</span>, <span class="string">"靓仔"</span>, <span class="string">"石淦"</span>]</span><br><span class="line">lst[<span class="number">1</span>:<span class="number">4</span>] = <span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>    <span class="comment"># 切片空间连续，可多</span></span><br><span class="line">print(lst)</span><br><span class="line">lst = [<span class="string">"大圣"</span>, <span class="string">"海煜"</span>, <span class="string">"新力"</span>, <span class="string">"一帆"</span>, <span class="string">"靓仔"</span>, <span class="string">"石淦"</span>]</span><br><span class="line">lst[<span class="number">1</span>:<span class="number">4</span>] = <span class="number">10</span>, <span class="number">20</span>    <span class="comment"># 切片空间连续，可少</span></span><br><span class="line">print(lst)</span><br><span class="line">lst = [<span class="string">"大圣"</span>, <span class="string">"海煜"</span>, <span class="string">"新力"</span>, <span class="string">"一帆"</span>, <span class="string">"靓仔"</span>, <span class="string">"石淦"</span>]</span><br><span class="line">lst[<span class="number">1</span>:<span class="number">5</span>:<span class="number">2</span>] = [<span class="string">'alex'</span>, <span class="string">'wusir'</span>]    <span class="comment"># 切片空间不连续，必须一一对应</span></span><br><span class="line">print(lst)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'大圣'</span>, <span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>, <span class="string">'靓仔'</span>, <span class="string">'石淦'</span>]</span><br><span class="line">[<span class="string">'大圣'</span>, <span class="number">10</span>, <span class="number">20</span>, <span class="string">'靓仔'</span>, <span class="string">'石淦'</span>]</span><br><span class="line">[<span class="string">'大圣'</span>, <span class="string">'alex'</span>, <span class="string">'新力'</span>, <span class="string">'wusir'</span>, <span class="string">'靓仔'</span>, <span class="string">'石淦'</span>]</span><br></pre></td></tr></table></figure>
+
+<h3 id="列表元素的查看"><a href="#列表元素的查看" class="headerlink" title="列表元素的查看"></a>列表元素的查看</h3><p>列表元素可以通过索引查询和 for 循环遍历两种方法查看：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="string">"大圣"</span>, <span class="string">"海煜"</span>, <span class="string">"新力"</span>, <span class="string">"一帆"</span>, <span class="string">"靓仔"</span>, <span class="string">"石淦"</span>]</span><br><span class="line">print(lst[<span class="number">3</span>])</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> lst:</span><br><span class="line">    print(i)</span><br></pre></td></tr></table></figure>
+
+<p>需要注意的是，进行切片操作时，获取的内容时切片的原数据本身。也就是说，切片不会改变数据类型。字符串切片后得到的还是字符串，列表切片后得到的还是列表：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="string">"大圣"</span>, <span class="string">"海煜"</span>, <span class="string">"新力"</span>, <span class="string">"一帆"</span>, <span class="string">"靓仔"</span>, <span class="string">"石淦"</span>]</span><br><span class="line">print(lst[<span class="number">1</span>:<span class="number">4</span>])</span><br><span class="line"></span><br><span class="line">a = <span class="string">'alex'</span></span><br><span class="line">print(a[<span class="number">1</span>:<span class="number">3</span>])</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'海煜'</span>, <span class="string">'新力'</span>, <span class="string">'一帆'</span>]</span><br><span class="line">le</span><br></pre></td></tr></table></figure>
+
+<h3 id="列表总结"><a href="#列表总结" class="headerlink" title="列表总结"></a>列表总结</h3><ul>
+<li>列表是可变数据类型，可迭代数据类型，有序的数据结构</li>
+<li>列表用来储存大量数据，并且可以储存不同数据类型</li>
+<li>列表就是一个容器</li>
+<li>列表储存的是元素的内存地址</li>
+</ul>
+<h3 id="列表的嵌套"><a href="#列表的嵌套" class="headerlink" title="列表的嵌套"></a>列表的嵌套</h3><p>因为列表可以储存各种数据类型的数据，那么列表当然也可以储存列表，这就造成了列表的嵌套。</p>
+<p>现在有这样一个相互嵌套的列表：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="number">1</span>, <span class="string">"alex"</span>, <span class="literal">True</span>, [<span class="string">"wusir"</span>, <span class="string">"污"</span>, [<span class="string">"嫂子"</span>,<span class="string">"衣服多"</span>]], [<span class="string">"alex"</span>, <span class="string">"吹nb"</span>, <span class="string">"熬鸡汤"</span>, [<span class="string">"嫂子"</span>, <span class="string">"教育"</span>, <span class="string">"从基层做起"</span>]]]</span><br></pre></td></tr></table></figure>
+
+<p>如果我们想调用其中的 <code>&quot;衣服多&quot;</code> 这个字符串，该怎么做呢？</p>
+<p>我们可以像下面这样逐层操作：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lst1 = lst[<span class="number">3</span>]</span><br><span class="line">lst2 = lst1[<span class="number">2</span>]</span><br><span class="line">lst3 = lst2[<span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+
+<p>这样，<code>lst3</code> 就是我们想要的 <code>&quot;衣服多&quot;</code> 字符串。</p>
+<p>但是这样的操作实在太过繁琐。我们发现，<code>lst1 = lst[3]</code>，既然如此，第二个式子我们可不可以把 <code>lst1[2]</code> 替换成 <code>lst[3][2]</code> 呢？那进一步说，我们可不可以直接通过 <code>lst[3][2][1]</code> 来调出 <code>&quot;衣服多&quot;</code> 字符串呢？</p>
+<p>答案是完全可以的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="number">1</span>, <span class="string">"alex"</span>, <span class="literal">True</span>, [<span class="string">"wusir"</span>, <span class="string">"污"</span>, [<span class="string">"嫂子"</span>, <span class="string">"衣服多"</span>]], [<span class="string">"alex"</span>, <span class="string">"吹nb"</span>, <span class="string">"熬鸡汤"</span>, [<span class="string">"嫂子"</span>, <span class="string">"教育"</span>, <span class="string">"从基层做起"</span>]]]</span><br><span class="line">print(lst[<span class="number">3</span>][<span class="number">2</span>][<span class="number">1</span>])</span><br><span class="line">print(lst[<span class="number">4</span>][<span class="number">3</span>][<span class="number">1</span>])</span><br></pre></td></tr></table></figure>
+
+<p>打印出的结果是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">衣服多</span><br><span class="line">教育</span><br></pre></td></tr></table></figure>
+
+<p>像这样调用嵌套在内层列表元素的方法也被称作 <code>降维</code>，就是将类似于 <code>[&quot;wusir&quot;, &quot;污&quot;, [&quot;嫂子&quot;, &quot;衣服多&quot;]</code> 的结构当作一个元素查看。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/hashlib/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/python-basic/hashlib/" class="post-title-link" itemprop="url">hashlib 模块</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-15 13:51:56" itemprop="dateCreated datePublished" datetime="2020-02-15T13:51:56+08:00">2020-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>hashlib 也称摘要算法或加密算法，其主要功能是对数据进行加密和校验文件的一致性。</p>
+<p>hashlib 支持的加密算法有：md5、sha1、sha256 和 sha512。加密复杂度和花费时间依次增加。</p>
+<p>加密算法的特点有：</p>
+<ol>
+<li>内容相同，密文一定相同；</li>
+<li>加密的密文是不可逆的；</li>
+<li>加密过程为：明文 –&gt; 字节 –&gt; 密文。</li>
+</ol>
+<p>简单的加密操作为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line">s = <span class="string">'abc'</span></span><br><span class="line">md5 = hashlib.md5()    <span class="comment"># 选择加密方式，初始化一个加密</span></span><br><span class="line">md5.update(s.encode(<span class="string">'utf-8'</span>))    <span class="comment"># 将要加密的内容，添加到m中</span></span><br><span class="line">print(md5.hexdigest())</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">900150983</span>cd24fb0d6963f7d28e17f72</span><br></pre></td></tr></table></figure>
+
+<p>也可以通过添加一些字符的方式，增加破解难度，称作加盐：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line">user = input(<span class="string">'username:'</span>)</span><br><span class="line">pwd = input(<span class="string">'pwd:'</span>)</span><br><span class="line">md5 = hashlib.md5(<span class="string">'oldboy'</span>.encode(<span class="string">'utf-8'</span>))    <span class="comment"># 加盐</span></span><br><span class="line">md5.update(pwd.encode(<span class="string">'utf-8'</span>))</span><br><span class="line">print(md5.hexdigest())</span><br></pre></td></tr></table></figure>
+
+<p>除了像上面那样设定固定的盐，我们还可以使用用户名来实现动态加盐：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line">user = input(<span class="string">'username:'</span>)</span><br><span class="line">pwd = input(<span class="string">'pwd:'</span>)</span><br><span class="line">md5 = hashlib.md5(user.encode(<span class="string">'utf-8'</span>))</span><br><span class="line">md5.update(pwd.encode(<span class="string">'utf-8'</span>))</span><br><span class="line">print(md5.hexdigest())</span><br></pre></td></tr></table></figure>
+
+<p>除了 md5 之外，也可以使用其他方式进行加密，操作是完全相同的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line">sha1 = hashlib.sha1()</span><br><span class="line">sha1.update(<span class="string">'alex'</span>.encode(<span class="string">'utf-8'</span>))</span><br><span class="line">print(sha1.hexdigest())</span><br></pre></td></tr></table></figure>
+
+<p>同样的内容使用同样的方法加密，即便使用不同的方式编码，最终加密出来的结果也是相同的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line">sha256 = hashlib.sha256()</span><br><span class="line">sha256.update(<span class="string">'wusir'</span>.encode(<span class="string">'utf-8'</span>))</span><br><span class="line">print(sha256.hexdigest())</span><br><span class="line"></span><br><span class="line">sha256 = hashlib.sha256()</span><br><span class="line">sha256.update(<span class="string">'wusir'</span>.encode(<span class="string">'gbk'</span>))</span><br><span class="line">print(sha256.hexdigest())</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">49</span>be7bb8561373ffbccbac435bbdfd6ba8d2f973ec7154b3ae7adf266b929ca9</span><br><span class="line"><span class="number">49</span>be7bb8561373ffbccbac435bbdfd6ba8d2f973ec7154b3ae7adf266b929ca9</span><br></pre></td></tr></table></figure>
+
+<p>虽然加密结果一致，但还是建议尽量使用 utf-8 进行编码。</p>
+<p>对于一个长字符串，同时输入和分段输入，得到的加密结果也是一样的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line">md5obj = hashlib.md5()</span><br><span class="line">md5obj.update(<span class="string">'alex'</span>.encode(<span class="string">'utf-8'</span>))</span><br><span class="line">md5obj.update(<span class="string">'wusir'</span>.encode(<span class="string">'utf-8'</span>))</span><br><span class="line">print(md5obj.hexdigest())</span><br><span class="line"></span><br><span class="line">md5obj = hashlib.md5()</span><br><span class="line">md5obj.update(<span class="string">'alexwusir'</span>.encode(<span class="string">'utf-8'</span>))</span><br><span class="line">print(md5obj.hexdigest())</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a5e646f24aa7314d8ba3dce048358e90</span><br><span class="line">a5e646f24aa7314d8ba3dce048358e90</span><br></pre></td></tr></table></figure>
+
+<p>因此，对于大文件来说，我们可以逐行加密来节省内存空间。</p>
+<p>总结起来，加密的基本结构为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line">md5obj = hashlib.md5(盐)</span><br><span class="line">md5obj.update(加密的内容.encode(<span class="string">'utf-8'</span>))</span><br><span class="line">print(md5obj.hexdigest())</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/show-suffix/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/python-basic/show-suffix/" class="post-title-link" itemprop="url">后缀名显示方法</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-15 13:51:53" itemprop="dateCreated datePublished" datetime="2020-02-15T13:51:53+08:00">2020-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>由于设置原因，我们可能看不到文件的后缀名。但有时我们又要用到后缀名，就需要通过设置，让后缀名显示出来。</p>
+<h3 id="Windows-系统通用"><a href="#Windows-系统通用" class="headerlink" title="Windows 系统通用"></a>Windows 系统通用</h3><p>如果文件后缀名默认没有显示，可以打开 <code>控制面板</code>，将查看方式调为 <code>大图标</code>。</p>
+<img src="/python-basic/show-suffix/py_setup_20.png" class="" title="py_setup_20">
+
+<p>找到 <code>资源管理器选项</code>（Win 7 中是 <code>文件夹选项</code>）</p>
+<img src="/python-basic/show-suffix/py_setup_21.png" class="" title="py_setup_21">
+
+<p>在 <code>查看</code> 标签中，将 <code>隐藏已知文件类型的扩展名</code> 前的复选框取消勾选，然后就能查看和编辑文件的扩展名了。</p>
+<img src="/python-basic/show-suffix/py_setup_22.png" class="" title="py_setup_22">
+
+<h3 id="Win-10-系统"><a href="#Win-10-系统" class="headerlink" title="Win 10 系统"></a>Win 10 系统</h3><p>win 10 系统显示后缀名就很容易了。直接点击文件资源管理器菜单栏中的 <code>查看</code> 选项卡，然后就有展示 <code>文件扩展名</code> 的选项了。</p>
+<img src="/python-basic/show-suffix/1579587639244.png" class="" width="1579587639244">
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/deconstruction/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/python-basic/deconstruction/" class="post-title-link" itemprop="url">解构</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-15 13:51:50" itemprop="dateCreated datePublished" datetime="2020-02-15T13:51:50+08:00">2020-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>我们刚刚提到了字典的 <code>.items()</code> 方法会返回键值对元组的键值对元组列表：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key'</span>: <span class="number">1</span>, <span class="string">'dsb'</span>: <span class="string">'alex'</span>&#125;</span><br><span class="line">print(dic.items())</span><br></pre></td></tr></table></figure>
+
+<p>输出的内容为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dict_items([(<span class="string">'key'</span>, <span class="number">1</span>), (<span class="string">'dsb'</span>, <span class="string">'alex'</span>)])</span><br></pre></td></tr></table></figure>
+
+<p>我们得到的是一个键值对列表，每个键值对以元组的形式存在。</p>
+<p>如果现在，我们需要提取其中的每个元素，可以这样操作：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key'</span>: <span class="number">1</span>, <span class="string">'dsb'</span>: <span class="string">'alex'</span>&#125;</span><br><span class="line">lst = list(dic.items())</span><br><span class="line">print(lst[<span class="number">0</span>][<span class="number">0</span>])</span><br><span class="line">print(lst[<span class="number">0</span>][<span class="number">1</span>])</span><br><span class="line">print(lst[<span class="number">1</span>][<span class="number">0</span>])</span><br><span class="line">print(lst[<span class="number">1</span>][<span class="number">1</span>])</span><br></pre></td></tr></table></figure>
+
+<p>虽然能够实现，但是十分繁琐，这就需要用到结构的方法。</p>
+<p>结构的基本样式是这样的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a, b = (<span class="number">10</span>, <span class="number">20</span>)</span><br><span class="line">print(a)</span><br><span class="line">print(b)</span><br></pre></td></tr></table></figure>
+
+<p>可以看出，<code>10</code> 和 <code>20</code> 的值分别被赋给了 <code>a</code> 和 <code>b</code>。这种将等号右面的数据分别赋值给等号前面的变量的方法，就是解构。</p>
+<p>在看下面的例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a, b = <span class="string">'你好'</span></span><br><span class="line">print(a)</span><br><span class="line">print(b)</span><br></pre></td></tr></table></figure>
+
+<p><code>a</code> 获取到了 <code>你</code>，<code>b</code> 获取到了 <code>好</code>。也就是说，结构不仅适用于元组，也适用于字符串。事实上，只要是可迭代的对象，都可以用来解构：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">a,b,c = [<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>]</span><br><span class="line">print(a)</span><br><span class="line">print(b)</span><br><span class="line">print(c)</span><br><span class="line"></span><br><span class="line">a,b = &#123;<span class="string">"key"</span>:<span class="number">1</span>,<span class="string">"key2"</span>:<span class="number">2</span>&#125;</span><br><span class="line">print(a)</span><br><span class="line">print(b)</span><br></pre></td></tr></table></figure>
+
+<p>需要注意的是，字典在进行迭代操作时，只会返回键，而不会返回值。</p>
+<p>结构时，等式左边的变量数要和右边的元素数目相等，否则就会报错。</p>
+<p>如果想要使用少数的变量来接收更多的元素，就需要使用 <code>*</code> 来将最后面的多个元素进行 <code>聚合</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a, b, *c = (<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>)</span><br><span class="line">print(a)</span><br><span class="line">print(b)</span><br><span class="line">print(c)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line">[<span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]</span><br></pre></td></tr></table></figure>
+
+<p><code>3</code>、<code>4</code>、<code>5</code> 和 <code>6</code> 被统一 <code>打包</code> 给了 <code>c</code>，<code>打包</code> 后的数据以 <code>列表</code> 的形式储存。</p>
+<p>返回前面字典的 <code>.items()</code> 方法返回值的使用上，如果用结构的方法，我们可以很容易地打印出键值对的内容来：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key1'</span>: <span class="number">1</span>, <span class="string">'key2'</span>: <span class="number">2</span>, <span class="string">'key3'</span>: <span class="number">3</span>, <span class="string">'key4'</span>: <span class="number">4</span>&#125;</span><br><span class="line"><span class="keyword">for</span> k, v <span class="keyword">in</span> dic.items():</span><br><span class="line">    print(k, v)</span><br></pre></td></tr></table></figure>
+
+<p>输出的内容为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">key1 <span class="number">1</span></span><br><span class="line">key2 <span class="number">2</span></span><br><span class="line">key3 <span class="number">3</span></span><br><span class="line">key4 <span class="number">4</span></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/environment-variable/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/python-basic/environment-variable/" class="post-title-link" itemprop="url">Windows 系统环境变量的配置</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-15 13:51:50" itemprop="dateCreated datePublished" datetime="2020-02-15T13:51:50+08:00">2020-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>Windows 系统中的可执行程序一般以 <code>exe</code> 做后缀。</p>
+<p>把 exe 文件所在的文件夹放在系统环境变量的 path 变量中，就可以使用终端直接输入程序名执行该程序了。</p>
+<p>例如，如果没有将 Python 所在目录放到环境变量中，在终端直接输入 python 命令就会提示 <code>‘python’ 不是内部或外部命令，也不是可运行的程序</code>：</p>
+<img src="/python-basic/environment-variable/py_setup_12.png" class="" title="py_setup_12">
+
+<p>要解决这个问题，可以将 Python 的安装目录放到环境变量中。</p>
+<p>右键 <code>此电脑</code> （也可能叫 <code>我的电脑</code>、<code>计算机</code>、<code>此电脑</code> 等等）图标，点击 <code>属性</code>。点击左侧的<code>高级系统设置</code>。</p>
+<img src="/python-basic/environment-variable/py_setup_14.png" class="" title="py_setup_14">
+
+<p>也可以使用小娜或者其他工具搜索 <code>高级系统设置</code>，直接打开。</p>
+<img src="/python-basic/environment-variable/1579578151110.png" class="" width="1579578151110">
+
+<p>选择 <code>环境变量</code></p>
+<img src="/python-basic/environment-variable/py_setup_15.png" class="" title="py_setup_15">
+
+<p>在 <code>系统环境变量</code> 中找到 <code>Path</code> 变量，点击 <code>编辑</code>。</p>
+<img src="/python-basic/environment-variable/py_setup_16.png" class="" title="py_setup_16">
+
+<p>点击 <code>新建</code>。</p>
+<img src="/python-basic/environment-variable/py_setup_17.png" class="" title="py_setup_17">
+
+<p>将 Python 的安装路径插入到 <code>环境变量</code> 中，点击 <code>确定</code>，退出编辑界面。</p>
+<img src="/python-basic/environment-variable/py_setup_18.png" class="" title="py_setup_18">
+
+<p>然后就可以在终端中直接使用 python 命令运行 Python 代码了。</p>
+<img src="/python-basic/environment-variable/1579587121571.png" class="" width="1579587121571">
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+  </div>
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/16/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/16/">16</a><span class="page-number current">17</span><a class="page-number" href="/page/18/">18</a><span class="space">&hellip;</span><a class="page-number" href="/page/23/">23</a><a class="extend next" rel="next" href="/page/18/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+  </nav>
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="刘硕"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">刘硕</p>
+  <div class="site-description" itemprop="description">不成为自己讨厌的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">221</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:liushuo432@outlook.com" title="E-Mail → mailto:liushuo432@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/2436055290" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;2436055290" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://wpa.qq.com/msgrd?v=3&uin=1696146913&site=qq&menu=yes" title="QQ → http:&#x2F;&#x2F;wpa.qq.com&#x2F;msgrd?v&#x3D;3&amp;uin&#x3D;1696146913&amp;site&#x3D;qq&amp;menu&#x3D;yes" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备20001451号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘硕</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.2" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="/js/love.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/Epsilon2.1.model.json"},"display":{"superSample":2,"width":200,"height":400,"position":"left","hOffset":-30,"vOffset":-40},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>

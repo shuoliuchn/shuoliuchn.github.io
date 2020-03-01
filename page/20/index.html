@@ -1,0 +1,1767 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="Tu5vqPaUb8svfkPx5eetJFD84ciQCcWVXNatdsWtj9Q">
+  <meta name="baidu-site-verification" content="baidu_verify_FBq9PG4BBb">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"appID":"PXY1Z6GHKT","apiKey":"eb82f2e78e3053f26aa408e9caa96d93","indexName":"blog","hits":{"per_page":10},"labels":{"input_placeholder":"要查点什么(✿◡‿◡)","hits_empty":"没有找到任何关于 ${query} 的结果╥﹏╥...","hits_stats":"搜索到 ${hits} 条记录，用时 ${time} ms o(*￣▽￣*)ブ"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="不成为自己讨厌的人">
+<meta property="og:type" content="website">
+<meta property="og:title" content="刘硕的技术查阅手册">
+<meta property="og:url" content="https://sliu.vip/page/20/index.html">
+<meta property="og:site_name" content="刘硕的技术查阅手册">
+<meta property="og:description" content="不成为自己讨厌的人">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="刘硕">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="全栈开发">
+<meta property="article:tag" content="并发编程">
+<meta property="article:tag" content="网络编程">
+<meta property="article:tag" content="爬虫">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="自动化测试">
+<meta property="article:tag" content="Web开发">
+<meta property="article:tag" content="HTML">
+<meta property="article:tag" content="CSS">
+<meta property="article:tag" content="JavaScript">
+<meta property="article:tag" content="jQuery">
+<meta property="article:tag" content="Bootstrap">
+<meta property="article:tag" content="测试自动化">
+<meta property="article:tag" content="Selenium">
+<meta property="article:tag" content="postman">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="Vue">
+<meta property="article:tag" content="drf">
+<meta property="article:tag" content="django">
+<meta property="article:tag" content="文档翻译">
+<meta property="article:tag" content="PEP8">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://sliu.vip/page/20/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : true,
+    isPost : false
+  };
+</script>
+
+  <title>刘硕的技术查阅手册</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f14f123935d6183fdd06f8f1c4bc378f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="刘硕的技术查阅手册" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">刘硕的技术查阅手册</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">Python 全栈开发学习笔记</h1>
+      
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-toc">
+
+    <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-fw fa-rss"></i>订阅</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+  
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/resistant-mechanism/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/python-basic/resistant-mechanism/" class="post-title-link" itemprop="url">resistant-mechanism</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-15 13:47:26" itemprop="dateCreated datePublished" datetime="2020-02-15T13:47:26+08:00">2020-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="Python-中的驻留机制：小数据池和代码块"><a href="#Python-中的驻留机制：小数据池和代码块" class="headerlink" title="Python 中的驻留机制：小数据池和代码块"></a>Python 中的驻留机制：小数据池和代码块</h3><p>Python 中的驻留机制主要有两个：小数据池和代码块。驻留机制并不是学习 Python 过程中特别重要的概念，我们学习小数据池的目的主要有两个方面：</p>
+<ol>
+<li>解决日后写代码过程中可能出现的疑惑。在后期开发中，能 <code>明确</code> 知道有些代码为什么不能正常使用</li>
+<li>找工作面试时或多或少可能被问到，关键时刻起到装 X 的作用</li>
+</ol>
+<p>先补充一个关键字 <code>is</code>。<code>is（是）</code> 和 <code>==（等于）</code> 的作用十分相似，我们在这里将它们进行一个对比：</p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">== ：</span></span><br><span class="line"><span class="code">	官方：判断等号两边的内容是否相同</span></span><br><span class="line"><span class="code">	白话：判断两个人的长相是不是一样</span></span><br><span class="line">is ：</span><br><span class="line"><span class="code">	官方：判断两边的内容是不是同一个</span></span><br><span class="line"><span class="code">	白话：判断这两个人是不是同一个人</span></span><br></pre></td></tr></table></figure>
+
+<p><code>is</code> 是通过 <code>内存地址</code> 进行判断，如果 <code>内存地址</code> 相同，返回 <code>True</code>；内存地址不同，返回 <code>False</code>。</p>
+<p>有了上面的补充，我们来看下面的这个例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">1000</span></span><br><span class="line">b = <span class="number">1000</span></span><br><span class="line">print(a == b)</span><br><span class="line">print(id(a), id(b))</span><br><span class="line">print(a <span class="keyword">is</span> b)	<span class="comment"># 判断a是不是b</span></span><br><span class="line"></span><br><span class="line">在PyCharm中的运行结果是：</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="number">2565251570544</span> <span class="number">2565251570544</span></span><br><span class="line"><span class="literal">True</span></span><br><span class="line">在终端中的运行结果是：</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="number">1407133449136</span> <span class="number">1407133448880</span></span><br><span class="line"><span class="literal">False</span></span><br></pre></td></tr></table></figure>
+
+<p>在 PyCharm 中运行时我们发现，虽然 a 和 b 分别赋值 1000，它们在内存中的地址居然是相同的。而在终端中运行同样的代码，却又得到了 a 与 b 不相同的结果。</p>
+<p>这是 Python 中的驻留机制造成的影响。Python 中，为了节省内存，会将一些小的数据驻留，当再次有变量获得相同的赋值时，不会开辟新的内存空间，而是指向原有的值所处的内存空间。</p>
+<p>在 PyCharm 中运行的是一个 py 文件，是一个代码块。在代码块中，只要是大于 -5 的数字都共用同一个内存地址。而在终端中每一行分别为一个代码块，两个赋值操作共用一个小数据池。在小数据池中，只有在 -5 ~ 256 范围的数字才会被驻留。</p>
+<p>小数据池和代码块的缓存机制是这样的：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">终端中测试的是小数据池的缓存机制：</span><br><span class="line">	数字：<span class="number">-5</span> ~ <span class="number">256</span></span><br><span class="line">	字符串：</span><br><span class="line">	定义时内容不能为中文和特殊符号，长度不限，只要内容相同，就会进行驻留</span><br><span class="line">	Python <span class="number">3.6</span>解释器字符串进行乘法时，也不能有中文字符和特殊符号，总长度不能超过<span class="number">20</span></span><br><span class="line">	Python <span class="number">3.7</span>解释器字符串进行乘法时，不能有中文字符和特殊符号，总长度不能超过<span class="number">4096</span></span><br><span class="line"></span><br><span class="line">PyCharm中测试的是代码块的缓存机制：</span><br><span class="line">	数字：<span class="number">-5</span> ~ 正无穷</span><br><span class="line">	字符串：</span><br><span class="line">	定义内容、长度均不限，只要内容相同，就会驻留</span><br><span class="line">	字符串进行乘法时，不能有中文字符和特殊符号，总长度不能超过<span class="number">20</span></span><br></pre></td></tr></table></figure>
+
+<p>对于字符串总长度的驻留情况，可以这样检验：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="string">'alex'</span> * <span class="number">6</span></span><br><span class="line">b = <span class="string">'alex'</span> * <span class="number">6</span></span><br><span class="line">print(a <span class="keyword">is</span> b)</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-advanced/inheritance/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/python-advanced/inheritance/" class="post-title-link" itemprop="url">继承（实现）关系</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-15 13:46:16" itemprop="dateCreated datePublished" datetime="2020-02-15T13:46:16+08:00">2020-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python-%E8%BF%9B%E9%98%B6/" itemprop="url" rel="index"><span itemprop="name">Python 进阶</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="面向对象与继承"><a href="#面向对象与继承" class="headerlink" title="面向对象与继承"></a>面向对象与继承</h3><p>面向对象思想有三大要素：</p>
+<ol>
+<li>继承</li>
+<li>封装</li>
+<li>多态</li>
+</ol>
+<p>面向对象编程（OOP）语言的一个重要功能就是“继承”：</p>
+<ul>
+<li>它可以使用现有类的所有功能，并在无需重新编写原来类的情况下，对这些功能进行扩展</li>
+<li>通过继承创建的新类被称为“子类”或“派生类”，被继承的类被称为“基类”、“父类”或“超类”</li>
+<li>在 Python 中，同时支持单继承与多继承</li>
+</ul>
+<h3 id="继承的概念"><a href="#继承的概念" class="headerlink" title="继承的概念"></a>继承的概念</h3><p>举个例子，我们现在像创建猪、狗和猫三个类，它们都有名字和年龄属性，也都有一个叫的方法。不同的是，猪有吃的方法、狗有看家的方法、猫有抓老鼠的方法。按照之前的学习，我们会将代码写成这样：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Pig</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, age)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">bark</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'叫'</span>)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">eat</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'吃'</span>)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, age)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">bark</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'叫'</span>)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">guarding</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'看家'</span>)</span><br><span class="line">        </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cat</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, age)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">bark</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'叫'</span>)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">catch</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'抓老鼠'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>我们发现，虽然实现了需求，但是我们看到，这里面出现了大量的重复代码。如果我们能将这些重复代码封装起来，比如封装到一个动物类中，然后猪、狗和猫分别都继承这个动物类，就可以让代码更加简洁。</p>
+
+
+<p>具体的实现方法为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Animal</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, age)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">bark</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'叫'</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Pig</span><span class="params">(Animal)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">eat</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'吃'</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span><span class="params">(Animal)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">guarding</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'看家'</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cat</span><span class="params">(Animal)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">catch</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'抓老鼠'</span>)</span><br><span class="line">mimi = Cat(<span class="string">'咪咪'</span>, <span class="number">3</span>)</span><br><span class="line">print(mimi.name, mimi.age)</span><br><span class="line">mimi.bark()</span><br><span class="line">mimi.catch()</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">咪咪 <span class="number">3</span></span><br><span class="line">叫</span><br><span class="line">抓老鼠</span><br></pre></td></tr></table></figure>
+
+<p>实现继承之后，子类将继承父类的属性和方法。</p>
+<p>不难看出，继承关系的特点为：</p>
+<ul>
+<li>增加了类的耦合性（耦合性不宜多，宜精）</li>
+<li>减少了重复代码</li>
+<li>使得代码更加规范化，合理化</li>
+</ul>
+<p>组合与继承的对比：</p>
+<ul>
+<li>组合<ul>
+<li>组合是指在新类里面创建原有类的对象，重复利用已有类的功能，是 <code>has-a</code> 的关系（如：猫有腿）</li>
+<li>原来类的对象作为整体，以新类的属性的形式存在</li>
+</ul>
+</li>
+<li>继承<ul>
+<li>继承允许设计人员根据其他类的实现来定义一个类的实现，是 <code>is-a</code> 的关系（如：猫是动物）</li>
+<li>子类可以直接使用父类中的属性和方法，就好像父类的属性和方法已经存在于子类中了一样</li>
+</ul>
+</li>
+</ul>
+<p>Python 3 中使用的都是新式类，如果一个类谁都不继承，那么它默认继承 object 类。</p>
+<p>继承虽然很好用，但是不能滥用，像之前说的，耦合程度不宜过高，否则逻辑会十分混乱：</p>
+<ul>
+<li>不要轻易地使用继承，除非两个类之间是 <code>is-a</code> 关系</li>
+<li>不要单纯地为了实现代码的重用而使用继承，因为过多的继承会破坏代码的可维护性，当父类被修改的时候，会影响到所有继承自它的子类，从而增加程序的维护难度与成本</li>
+<li>总结起来就是：组装的时候使用组合，扩展的时候使用继承</li>
+</ul>
+<p>回到我们刚才的例子，猪、狗、猫三各类都只有动物一个父类，这种只有一个父类的继承方式，我们称作为单继承。在单继承中，子类可以继承父类的属性和方法，修改父类，所有子类都会受到影响。</p>
+<h3 id="isinstance-和-issubclass"><a href="#isinstance-和-issubclass" class="headerlink" title="isinstance 和 issubclass"></a><code>isinstance</code> 和 <code>issubclass</code></h3><ul>
+<li><code>isinstance</code>：<ul>
+<li>用于检查实例类型</li>
+<li><code>isinstance(对象, 类)</code>，用来判断对象是不是该类的实例对象</li>
+</ul>
+</li>
+<li><code>issubclass</code>：<ul>
+<li>用于检查类继承</li>
+<li><code>issubclass(类1, 类2)</code>，用来判断类1是否是类2的子类</li>
+</ul>
+</li>
+</ul>
+<h3 id="类与数据类型"><a href="#类与数据类型" class="headerlink" title="类与数据类型"></a>类与数据类型</h3><p>Python 与其他编程语言不同，当我们定义一个 class 的时候，我们实际上就定义了一个数据类型。我们定义的数据类型和 Python 自带的数据类型，比如 str、list、dict 没什么两样：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">print(isinstance(<span class="number">10</span>, int))</span><br><span class="line"></span><br><span class="line">输出的结果为： <span class="literal">True</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="重写父类方法"><a href="#重写父类方法" class="headerlink" title="重写父类方法"></a>重写父类方法</h3><p>如果父类中的方法在子类中不适用，我们可以对其进行重写：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Animal</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, age)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">bark</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'叫'</span>)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span><span class="params">(Animal)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">bark</span><span class="params">(self)</span>:</span>    <span class="comment"># 重写叫的方法</span></span><br><span class="line">        print(<span class="string">'汪汪汪！'</span>)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">guarding</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'看家'</span>)</span><br><span class="line">  </span><br><span class="line">wangwang = Dog(<span class="string">'汪汪'</span>, <span class="number">3</span>)</span><br><span class="line">print(wangwang.name)</span><br><span class="line">wangwang.bark()</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">汪汪</span><br><span class="line">汪汪汪！</span><br></pre></td></tr></table></figure>
+
+<p>重写父类方法的原理是，当示例调用方法时，会先在自己的类方法中查找，如果找不到，才会去父类中查找是否有相应的方法。如果在自己的类方法中找到了需要的方法，就不会去父类中查找，也就调用不到父类的同名方法，从而实现对父类中方法的重写</p>
+
+
+<h3 id="调用父类方法"><a href="#调用父类方法" class="headerlink" title="调用父类方法"></a>调用父类方法</h3><p>但是有些时候，我们不得已会写一些重名的方法，比如父类和子类都会有 <code>__init__</code> 构造方法。但是我们在调用子类方法的同时，也希望调用到父类中相应的方法。我们可以通过父类的类名直接调用：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Father</span>:</span></span><br><span class="line">    eye_num = <span class="number">2</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, age)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">live_like_yemen</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'打儿子'</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Son</span><span class="params">(Father)</span>:</span></span><br><span class="line">    hair_color = <span class="string">'蓝色'</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, age, sex)</span>:</span></span><br><span class="line">        Father.__init__(self, name, age)</span><br><span class="line">        self.sex = sex</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">live_like_yemen</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'打弟弟'</span>)</span><br><span class="line"></span><br><span class="line">xiaoming = Son(<span class="string">'小明'</span>, <span class="number">16</span>, <span class="string">'男'</span>)</span><br><span class="line">xiaoming.live_like_yemen()</span><br><span class="line">print(xiaoming.name)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">打弟弟</span><br><span class="line">小明</span><br></pre></td></tr></table></figure>
+
+<p>需要注意的是，在类中，self 永远指的是调用类的实例化对象。</p>
+<h3 id="super-方法"><a href="#super-方法" class="headerlink" title="super 方法"></a>super 方法</h3><p>在上面的例子中，如果没有 <code>Father.__init__(self, name, age)</code> 这行代码，在子类中就无法调用父类的构造方法，因为子类已经重写了构造方法。上面的方法虽然实现了预期的功能，但是并不符合开发规范。</p>
+<p>从子类中，调用父类中方法的关键字是 super，上述例子可修改为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Father</span>:</span></span><br><span class="line">    eye_num = <span class="number">2</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, age)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">live_like_yemen</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'打儿子'</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Son</span><span class="params">(Father)</span>:</span></span><br><span class="line">    hair_color = <span class="string">'蓝色'</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, age, sex)</span>:</span></span><br><span class="line">        super().__init__(name, age)    <span class="comment"># 也可以写为super(Son, self).__init__(name, age)</span></span><br><span class="line">        self.sex = sex</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">live_like_yemen</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'打弟弟'</span>)</span><br><span class="line"></span><br><span class="line">xiaoming = Son(<span class="string">'小明'</span>, <span class="number">16</span>, <span class="string">'男'</span>)</span><br><span class="line">xiaoming.live_like_yemen()</span><br><span class="line">print(xiaoming.name)</span><br></pre></td></tr></table></figure>
+
+<p>super 方法：</p>
+<ul>
+<li>子类如果编写了自己的构造方法，但是没有声明要调用父类的构造方法，而还需要父类的构造函数中初始化的一些属性，就会出现问题</li>
+<li>如果子类和父类都有构造函数，子类的构造函数其实是对父类的构造函数的重写。如果不显示调用父类构造函数，父类的构造函数便不会被执行</li>
+<li>解决方法：直接使用超类的类名调用超类构造方法，或者使用 super 函数 <code>super(当前类名, self).__init__()</code></li>
+</ul>
+<p>父类方法重写：</p>
+<ul>
+<li>子类可以重写父类中的方法</li>
+<li>通过 super 关键字可以调用父类中的方法</li>
+</ul>
+<h3 id="Python-中的多继承"><a href="#Python-中的多继承" class="headerlink" title="Python 中的多继承"></a>Python 中的多继承</h3><p>多重继承和多继承</p>
+<ul>
+<li><p>多重继承：包含多个间接父类</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span><span class="params">(object)</span>:</span> <span class="keyword">pass</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span><span class="params">(A)</span>:</span> <span class="keyword">pass</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span><span class="params">(B)</span>:</span> <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>多继承：有多个直接父类</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">X</span><span class="params">(object)</span>:</span> <span class="keyword">pass</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Y</span><span class="params">(object)</span>:</span> <span class="keyword">pass</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Z</span><span class="params">(object)</span>:</span> <span class="keyword">pass</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">M</span><span class="params">(X, Y, Z)</span>:</span> <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>大部分面向对象的编程语言（除了 C++）都只支持单继承，而不支持多继承</p>
+<ul>
+<li>多继承不仅增加了编程的复杂度，而且很容易导致一些莫名的错误<a href="在编程时，莫名其妙的错误最为可怕，因为不可预测，难以排除。">^1</a></li>
+</ul>
+</li>
+<li><p>Python 虽然在语法上明确支持多继承，但通常推荐如果不是很有必要，尽量不要使用多继承，而是使用单继承</p>
+<ul>
+<li>这样可以保证编程思路更清晰，而且可以避免很多麻烦</li>
+</ul>
+</li>
+<li><p>如果多个直接父类中包含了同名的方法</p>
+<ul>
+<li>排在前面的父类中的方法会“遮蔽“排在后面的父类中的同名方法</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">method</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'A_method'</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">method</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'B_method'</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span><span class="params">(A, B)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">c = C()</span><br><span class="line">c.method()</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">A_method</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h3 id="钻石继承和-MRO"><a href="#钻石继承和-MRO" class="headerlink" title="钻石继承和 MRO"></a>钻石继承和 MRO</h3><p>我们刚刚谈到，即便不使用 super 方法，直接使用父类的类名，同样可以实现对父类方法的调用。那为什么更推荐使用 super 方法呢？</p>
+<p>这是因为当涉及到比较复杂得多继承关系，比如钻石继承关系时，会出现间接父类会被初始化多次的情况。</p>
+<p><img src="inherit.assets/1570786444427.png" alt="1570786444427"></p>
+<p>比如，我们来看下面这个钻石继承的例子，如果我们使用父类的类名调用构造方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">YeYe</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'初始化爷爷类'</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">QinBa</span><span class="params">(YeYe)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'进入化亲爸类'</span>)</span><br><span class="line">        YeYe.__init__(self)</span><br><span class="line">        print(<span class="string">'初始化亲爸类'</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GanDie</span><span class="params">(YeYe)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'进入化干爹类'</span>)</span><br><span class="line">        YeYe.__init__(self)</span><br><span class="line">        print(<span class="string">'初始化干爹类'</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ErZi</span><span class="params">(QinBa, GanDie)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'进入化儿子类'</span>)</span><br><span class="line">        QinBa.__init__(self)</span><br><span class="line">        GanDie.__init__(self)</span><br><span class="line">        print(<span class="string">'初始化儿子类'</span>)</span><br><span class="line">erzi = ErZi()</span><br></pre></td></tr></table></figure>
+
+<p>我们看到，程序运行后，爷爷类被初始化了两次。</p>
+
+
+<p>这是因为，当创建儿子对象时，会执行它的构造函数。首先打印的是儿子类中初始化方法的代码，然后执行秦霸的构造方法。在亲爸的构造方法中，也是先打印代码，然后执行爷爷的构造方法。执行完爷爷的构造方法之后，程序继续执行亲爸中剩余的代码，然后回到儿子类中，执行干爹的构造方法。在干爹的构造方法中，又要调用爷爷的构造方法。然后打印剩余代码，直至结束。</p>
+
+
+<p>我们看到，第五步和第十步都是要调用爷爷的构造方法，爷爷类被初始化了两次。这种情况一来没有必要，会占用很大空间，二来，多次初始化也会带来程序逻辑的混乱。</p>
+<p>如果我们改用 super 函数来进行这样的操作，就不会有这些麻烦：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">YeYe</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'初始化爷爷类'</span>)</span><br><span class="line">        </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">QinBa</span><span class="params">(YeYe)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'进入亲爸类'</span>)</span><br><span class="line">        super().__init__()</span><br><span class="line">        print(<span class="string">'初始化亲爸类'</span>)</span><br><span class="line">        </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GanDie</span><span class="params">(YeYe)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'进入干爹类'</span>)</span><br><span class="line">        super().__init__()</span><br><span class="line">        print(<span class="string">'初始化干爹类'</span>)</span><br><span class="line">        </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ErZi</span><span class="params">(QinBa, GanDie)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'进入儿子类'</span>)</span><br><span class="line">        super().__init__()</span><br><span class="line">        print(<span class="string">'初始化儿子类'</span>)</span><br><span class="line">        </span><br><span class="line">erzi = ErZi()</span><br></pre></td></tr></table></figure>
+
+<p>首先，我们发现，在儿子类中，我们只用一行代码指代调用两个直接父类的构造方法。然后，从结果上看，此时，爷爷类只被初始化一次。</p>
+
+
+<p>而且我们发现，代码的运行情况与多个装饰器装饰一个函数的情况很类似，子类的代码包含着父类的代码，一层套一层的形式。</p>
+<p>要解释这个现象，就要引入 super 方法的查找方法：方法解析顺序列表，MRO[^2]。这个列表是 super 解析父类继承顺序的依据，通过 C3 算法实现。使用 C3 算法计算 MRO 列表的方法可以参考我翻译的 <a href="/translation/python-MRO">Python 新式类继承关系的 C3 算法</a> 官方文档。</p>
+<p>查看 mro 的方法有两种：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">类名.mro()</span><br><span class="line">对象名.__class__.mro()</span><br></pre></td></tr></table></figure>
+
+<p>前面例子中的 mro 为：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[&lt;class '__main__.ErZi'&gt;, &lt;class '__main__.QinBa'&gt;, &lt;class '__main__.GanDie'&gt;, &lt;class '__main__.YeYe'&gt;, &lt;class 'object'&gt;]</span><br></pre></td></tr></table></figure>
+
+<p>我们说过，super 后面什么都不写，默认和 <code>super(当前类名, self)</code> 的写法一样。但事实上，super 的参数除了可以写当前类名外，还可以写它的父类[^3]的类名。此时，会执行在方法解析顺序列表中，该类下一个类的方法。</p>
+<p>补充了这些知识，我们就可以解释上面的程序运行的顺序了。</p>
+
+
+<p>super 关键字详解：</p>
+<ul>
+<li>基本结构：<code>super(class[, object or class])</code></li>
+<li>Python 3 可以直接使用 <code>super().xxx</code> 代替 <code>super(class, self).xxx</code></li>
+<li>使用多继承时，会涉及到查找顺序（MRO）、钻石继承等问题<ul>
+<li>单继承时，<code>类名.__init__()</code> 的方式和 <code>super().__init__()</code> 的方式调用父类中的方法没有什么差别</li>
+<li>使用 <code>类名.__init__()</code> 的方式在钻石继承时，会遇到初始化混乱的问题</li>
+</ul>
+</li>
+</ul>
+<p>super 内核的 mro 方法：返回的是一个类的方法解析顺序表（顺序结构）</p>
+<ul>
+<li><p>我们定义的每一个类，Python 都会计算出一个方法解析顺序（MRO[^2]）列表这也是 super 在父类中查找成员的顺序，它是通过 C3 线性算法来实现的</p>
+</li>
+<li><p>每个父类[^3]都存在且只在其中出现一次</p>
+</li>
+<li><p>我们可以通过下面两种方式获得某个类的 mro 列表：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">类名.mro()</span><br><span class="line">对象名.__class__.mro()</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>当使用 <code>super(cls, obj)</code> 时，Python 会在 <code>obj</code> 的 <code>mro</code> 列表上搜索 <code>cls</code> 的下一个类</p>
+</li>
+<li><p>事实上，super 和父类没有实质性的关联，我们也不一定非要把 super 后面的参数写成自己类的名字和 self。我们甚至可以很灵活地给 super 传参数</p>
+<ul>
+<li><p><code>super(cls, obj)</code> 获得的是 <code>cls</code> 在 obj 的 <code>MRO</code> 列表中的下一个类，<code>cls</code> 可以是任何一个类，<code>obj</code> 可以是任何一个对象，只要合理即可</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">class</span> <span class="title">ErZi</span><span class="params">(Qinba,GanDie)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        super(ErZi, self).__init__()</span><br><span class="line">        print(<span class="string">'初始化儿子'</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在前面我们定义儿子类的时候，如果我们不想调用亲爸的 <code>__init__()</code>，而是要调用干爹的 <code>__init__()</code>，只需把 super 写成 <code>super(Qinba, self).__init__()</code>，也就是这样：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">YeYe</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'初始化爷爷类'</span>)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">QinBa</span><span class="params">(YeYe)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'进入亲爸类'</span>)</span><br><span class="line">        super().__init__()</span><br><span class="line">        print(<span class="string">'初始化亲爸类'</span>)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GanDie</span><span class="params">(YeYe)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'进入干爹类'</span>)</span><br><span class="line">        super().__init__()</span><br><span class="line">        print(<span class="string">'初始化干爹类'</span>)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ErZi</span><span class="params">(QinBa, GanDie)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'进入儿子类'</span>)</span><br><span class="line">        super(QinBa, self).__init__()</span><br><span class="line">        print(<span class="string">'初始化儿子类'</span>)</span><br><span class="line"></span><br><span class="line">erzi = ErZi()</span><br></pre></td></tr></table></figure>
+
+<p>其执行顺序为：</p>
+
+
+</li>
+</ul>
+</li>
+</ul>
+<p>[^2]: Method Resolution Order<br>[^3]: 包括直接父类和间接父类</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-advanced/encapsulation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/python-advanced/encapsulation/" class="post-title-link" itemprop="url">封装</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-15 13:45:39" itemprop="dateCreated datePublished" datetime="2020-02-15T13:45:39+08:00">2020-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python-%E8%BF%9B%E9%98%B6/" itemprop="url" rel="index"><span itemprop="name">Python 进阶</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>“封装”就是将抽象得到的数据和行为相结合，形成一个有机整体</p>
+<ul>
+<li>元组，列表，字典等等：数据的封装，通过引用去使用数据</li>
+<li>函数：算法的封装<ul>
+<li>如果没有函数，功能要靠每一行代码去直接执行</li>
+<li>没有函数的话，耦合度会很高，复用性很差，开发效率也非常低</li>
+</ul>
+</li>
+</ul>
+<p>封装的目的是简化编程和增加安全性</p>
+<ul>
+<li>使用者不必关系具体的实现细节</li>
+<li>通过接口（万能的点 <code>.</code>）</li>
+<li>还可以给予特定的访问权限来使用类的成员</li>
+<li>明确区分内外<ul>
+<li><code>类的实现者</code> 可以修改内部封装的东西而不影响外部调用者</li>
+<li><code>外部调用者</code> 只需要直到自己可以使用该类对象的哪些功能</li>
+</ul>
+</li>
+</ul>
+<p>私有属性和私有方法</p>
+<ul>
+<li>标识符以双下划线 <code>__</code> 开头的是私有成员，在外部不可以直接用这种属性或方法名调用，子类中也不能访问到这个数据</li>
+<li>可以提供外界访问的接口<ul>
+<li>将不需要对外提供的内容都隐藏起来</li>
+<li>把属性都隐藏，提供公共方法对其访问</li>
+</ul>
+</li>
+<li>双下划线开头的属性在继承给子类时，子类是无法覆盖的</li>
+</ul>
+<p>私有方法示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, age)</span>:</span></span><br><span class="line">        self.__name = name</span><br><span class="line">        self.__age = age</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_age</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.__age</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">set_age</span><span class="params">(self, age)</span>:</span></span><br><span class="line">        self.__age = age</span><br><span class="line">xiaoming = Person(<span class="string">'小明'</span>, <span class="number">17</span>)</span><br><span class="line"><span class="comment"># print(xiaoming.__age)    # 程序会报错，找不到__age属性</span></span><br><span class="line">print(xiaoming.get_age())</span><br><span class="line">xiaoming.set_age(<span class="number">20</span>)</span><br><span class="line">print(xiaoming.get_age())</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">17</span></span><br><span class="line"><span class="number">20</span></span><br></pre></td></tr></table></figure>
+
+<p>私有属性和私有方法并不是绝对不可以在外部访问和修改。我们可以通过在私有属性或方法名前加上 <code>_类名</code>，就可以调用私有属性和方法了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, age)</span>:</span></span><br><span class="line">        self.__name = name</span><br><span class="line">        self.__age = age</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_age</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.__age</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">set_age</span><span class="params">(self, age)</span>:</span></span><br><span class="line">        self.__age = age</span><br><span class="line">xiaoming = Person(<span class="string">'小明'</span>, <span class="number">17</span>)</span><br><span class="line">print(xiaoming._Person__age)</span><br><span class="line">xiaoming._Person__age = <span class="number">20</span></span><br><span class="line">print(xiaoming._Person__age)</span><br></pre></td></tr></table></figure>
+
+<p>破解私有属性和私有方法：</p>
+<ul>
+<li>在名称前加上 <code>_类名</code></li>
+<li>其实双下划线仅仅是一种变形操作：<ul>
+<li>类中所有双下划线开头的名称如 <code>__x</code> 都会自动变形成：<code>_类名__x</code> 的形式</li>
+</ul>
+</li>
+</ul>
+<p>封装总结</p>
+<ul>
+<li>对外隐藏类内的具体实现，只提供接口，供外界使用</li>
+<li>可以将属性和方法设置成私有的，<code>__</code>，设置成私有后，类内部可以访问，类外部无法访问</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/linux/vmware-net-type/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/linux/vmware-net-type/" class="post-title-link" itemprop="url">VMware 的网络连接类型</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-15 13:45:04" itemprop="dateCreated datePublished" datetime="2020-02-15T13:45:04+08:00">2020-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-29 10:34:02" itemprop="dateModified" datetime="2020-02-29T10:34:02+08:00">2020-02-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <img src="/linux/vmware-net-type/1580797811596.png" class="" width="1580797811596">
+
+<h3 id="桥接"><a href="#桥接" class="headerlink" title="桥接"></a>桥接</h3><p>桥接方式就是，虚拟机安装好之后，和宿主机公用一个局域网段</p>
+<ul>
+<li>宿主机：<code>192.168.178.142</code></li>
+<li>虚拟机也是这个网段，可能会自动分配一个 <code>192.168.178.150</code> 地址</li>
+<li>虚拟机和宿主机在网络层面是平级的</li>
+<li>桥接相当于，教室内，又多了一个同学，占用一个 IP 地址</li>
+<li>同一局域网内的 IP 地址的范围是有限的，比如 0~255</li>
+<li>都用桥接，可能会发生 IP 抢夺，以及 IP 不够用的问题</li>
+</ul>
+<h3 id="NAT"><a href="#NAT" class="headerlink" title="NAT"></a>NAT</h3><p>NAT 上网方式是，基于宿主机的网卡，再生成一个局域网段，外网就无法和虚拟机之间通信了</p>
+<ul>
+<li>宿主机是 <code>192.168.178.142</code> 地址</li>
+<li>NAT 生成一个新的局域网。假设是 <code>192.168.11.10</code></li>
+<li>不会发生 IP 抢夺事件了</li>
+</ul>
+<h3 id="仅主机模式"><a href="#仅主机模式" class="headerlink" title="仅主机模式"></a>仅主机模式</h3><p>相当于单机模式</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/time-datetime/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/python-basic/time-datetime/" class="post-title-link" itemprop="url">time 和 datetime 模块</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-15 13:44:55" itemprop="dateCreated datePublished" datetime="2020-02-15T13:44:55+08:00">2020-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="time-模块"><a href="#time-模块" class="headerlink" title="time 模块"></a><code>time</code> 模块</h3><p>time 模块，也就是时间模块，用来进行一些与时间有关的操作。其使用方法为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line">print(time.time())   <span class="comment"># 时间戳 浮点数</span></span><br><span class="line">print(time.sleep(<span class="number">2</span>)) <span class="comment"># 秒 进行睡眠</span></span><br></pre></td></tr></table></figure>
+
+<p>时间分类:</p>
+<ol>
+<li>时间戳     — 用于进行计算</li>
+<li>结构化时间 — 给程序员查看使用（命名元组）</li>
+<li>字符串时间 — 给用户查看的</li>
+</ol>
+<p>时间模块的基本方法有：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">t = time.time()         <span class="comment"># 用于获取当前时间戳</span></span><br><span class="line">print(time.localtime(t))   <span class="comment"># 将时间戳转成结构化时间</span></span><br><span class="line">t = time.localtime()     <span class="comment"># 将时间戳转成结构化时间,不写默认是当前时间戳</span></span><br><span class="line">print(time.mktime(t))    <span class="comment"># 将结构化时间转成时间戳</span></span><br><span class="line">t = time.localtime()</span><br><span class="line">print(time.strftime(<span class="string">"%Y-%m-%d %H:%M:%S"</span>,t))  <span class="comment"># 将结构化时间转换成字符串时间</span></span><br><span class="line">str_time = <span class="string">"2019-9-1 12:23:06"</span></span><br><span class="line">print(time.strptime(str_time,<span class="string">"%Y-%m-%d %H:%M:%S"</span>)) <span class="comment"># 将字符串时间转换成结构化时间</span></span><br><span class="line">print(time.strftime(<span class="string">"%Y-%m-%d %H:%M:%S"</span>,time.localtime()))    <span class="comment"># 将结构化时间转化为字符串时间</span></span><br><span class="line">str_time = <span class="string">"2019-9-1 12:23:06"</span></span><br><span class="line">print(time.mktime(time.strptime(str_time,<span class="string">"%Y-%m-%d %H:%M:%S"</span>)))</span><br><span class="line"></span><br><span class="line">print(time.localtime()[<span class="number">0</span>])</span><br><span class="line">print(time.localtime().tm_year)</span><br><span class="line">print(time.localtime().tm_yday)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">time.struct_time(tm_year=<span class="number">2019</span>, tm_mon=<span class="number">9</span>, tm_mday=<span class="number">26</span>, tm_hour=<span class="number">19</span>, tm_min=<span class="number">19</span>, tm_sec=<span class="number">21</span>, tm_wday=<span class="number">3</span>, tm_yday=<span class="number">269</span>, tm_isdst=<span class="number">0</span>)</span><br><span class="line"><span class="number">1569496761.0</span></span><br><span class="line"><span class="number">2019</span><span class="number">-09</span><span class="number">-26</span> <span class="number">19</span>:<span class="number">19</span>:<span class="number">21</span></span><br><span class="line">time.struct_time(tm_year=<span class="number">2019</span>, tm_mon=<span class="number">9</span>, tm_mday=<span class="number">1</span>, tm_hour=<span class="number">12</span>, tm_min=<span class="number">23</span>, tm_sec=<span class="number">6</span>, tm_wday=<span class="number">6</span>, tm_yday=<span class="number">244</span>, tm_isdst=<span class="number">-1</span>)</span><br><span class="line"><span class="number">2019</span><span class="number">-09</span><span class="number">-26</span> <span class="number">19</span>:<span class="number">19</span>:<span class="number">21</span></span><br><span class="line"><span class="number">1567311786.0</span></span><br><span class="line"><span class="number">2019</span></span><br><span class="line"><span class="number">2019</span></span><br><span class="line"><span class="number">269</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="datetime-模块"><a href="#datetime-模块" class="headerlink" title="datetime 模块"></a><code>datetime</code> 模块</h3><p>datetime 模块的作用和 time 模块类似，都是用来进行时间操作的，其基本操作为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> datetime</span><br><span class="line">print(datetime.now())   <span class="comment"># 获取到当前是时间,对象</span></span><br><span class="line">print(type(datetime.now()))</span><br><span class="line">print(datetime(<span class="number">2016</span>, <span class="number">11</span>, <span class="number">13</span>, <span class="number">12</span>, <span class="number">13</span>, <span class="number">14</span>)) <span class="comment"># 将指定时间转化为 datetime 对象</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line">print(datetime.fromtimestamp(time.time()))    <span class="comment"># 时间戳转换成对象</span></span><br><span class="line">print(datetime.timestamp(datetime.now()))    <span class="comment"># 将对象转换成时间戳</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">print(datetime.strftime(datetime.now(),<span class="string">"%Y-%m-%d %H:%M:%S"</span>))    <span class="comment"># 将对象转换成字符串</span></span><br><span class="line">print(datetime.strptime(<span class="string">"2019/10/14"</span>,<span class="string">"%Y/%m/%d"</span>))    <span class="comment"># 将字符串转换成对象</span></span><br><span class="line"></span><br><span class="line">print(datetime.now() - datetime(<span class="number">9999</span>,<span class="number">11</span>,<span class="number">1</span>,<span class="number">12</span>,<span class="number">13</span>,<span class="number">14</span>))    <span class="comment"># 用来计算当前时间相对于指定时间相差多久</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> datetime,timedelta</span><br><span class="line">print(datetime.now())</span><br><span class="line">print(datetime.now() - timedelta(days=<span class="number">400</span>))    <span class="comment"># 用来计算400天前时间的 datetime 对象</span></span><br><span class="line">print(datetime.now() - timedelta(days=<span class="number">500</span>))</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2019</span><span class="number">-09</span><span class="number">-26</span> <span class="number">19</span>:<span class="number">32</span>:<span class="number">59.456316</span></span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">datetime</span>.<span class="title">datetime</span>'&gt;</span></span><br><span class="line"><span class="class">2016-11-13 12:</span><span class="number">13</span>:<span class="number">14</span></span><br><span class="line"><span class="number">2019</span><span class="number">-09</span><span class="number">-26</span> <span class="number">19</span>:<span class="number">32</span>:<span class="number">59.457314</span></span><br><span class="line"><span class="number">1569497579.457313</span></span><br><span class="line"><span class="number">2019</span><span class="number">-09</span><span class="number">-26</span> <span class="number">19</span>:<span class="number">32</span>:<span class="number">59</span></span><br><span class="line"><span class="number">2019</span><span class="number">-10</span><span class="number">-14</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span></span><br><span class="line"><span class="number">-2914671</span> days, <span class="number">7</span>:<span class="number">19</span>:<span class="number">45.490226</span></span><br><span class="line"><span class="number">2019</span><span class="number">-09</span><span class="number">-26</span> <span class="number">19</span>:<span class="number">32</span>:<span class="number">59.490226</span></span><br><span class="line"><span class="number">2018</span><span class="number">-08</span><span class="number">-22</span> <span class="number">19</span>:<span class="number">32</span>:<span class="number">59.490226</span></span><br><span class="line"><span class="number">2018</span><span class="number">-05</span><span class="number">-14</span> <span class="number">19</span>:<span class="number">32</span>:<span class="number">59.490226</span></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/int/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/python-basic/int/" class="post-title-link" itemprop="url">整型数据详述</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-15 13:44:45" itemprop="dateCreated datePublished" datetime="2020-02-15T13:44:45+08:00">2020-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="整型数据概述"><a href="#整型数据概述" class="headerlink" title="整型数据概述"></a>整型数据概述</h3><p>整型数字在 Python 中的关键字是 <code>int</code>，整形在计算机中用于计算和比较。</p>
+<p>在 32 位机器上 int 的范围是：<code>-2**31 ~ 2**31 - 1</code>，也就是<code>-2147483648 ~ 2147483647</code>；</p>
+<p>在 64 位机器上 int 的范围是：<code>-2**63 ~ 2**63 - 1</code>，也就是<code>-9223372036854775808 ~ 9223372036854775807</code>；</p>
+<p>在 Python 3 中，整型统统使用 <code>int</code>。在 Python 2 中，较小的整形函数也用 <code>int</code>，但是对于数值很大的整型，需要使用 <code>long</code>。</p>
+<p>在 Python 2 中，数值较大的整型数据结尾<em>可能</em> 会出现一个 <code>L</code> 标识，例如 <code>321312321L</code>。在 Python 3 中，无论数值有多大，都不会出现这种标识。</p>
+<h3 id="进制转换初识"><a href="#进制转换初识" class="headerlink" title="进制转换初识"></a>进制转换初识</h3><h4 id="10-进制转换为-2-进制"><a href="#10-进制转换为-2-进制" class="headerlink" title="10 进制转换为 2 进制"></a>10 进制转换为 2 进制</h4><p>整除 2，获取余数，将余数从下向上整合。例如求 11 的二进制数：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">除数	余数</span><br><span class="line"><span class="number">11</span>	<span class="number">1</span></span><br><span class="line"><span class="number">5</span>	<span class="number">1</span></span><br><span class="line"><span class="number">2</span>	<span class="number">0</span></span><br><span class="line"><span class="number">1</span>	<span class="number">1</span></span><br><span class="line"><span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<p>于是，<code>11</code> 的二进制数就是 <code>1011</code>。</p>
+<h4 id="2-进制转换为-10-进制"><a href="#2-进制转换为-10-进制" class="headerlink" title="2 进制转换为 10 进制"></a>2 进制转换为 10 进制</h4><p>从右向左，每一位的权重是 <code>2**(位数 - 1)</code>。位数是从右向左数到的次序。例如，倒数第一位的权重是 <code>2**0</code>，即 <code>1</code>，倒数第二位的权重为 <code>2**1</code>，即 <code>2</code>。将二进制转换为十进制，只需要将二进制每一位的数值乘以改为的权重然后将它们想加到一起即可。例如，我们可以这样计算二进制数 <code>1011</code> 的十进制数值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span> * <span class="number">2</span> ** <span class="number">0</span> + <span class="number">1</span> * <span class="number">2</span> ** <span class="number">1</span> + <span class="number">0</span> * <span class="number">2</span> ** <span class="number">2</span> + <span class="number">1</span> * <span class="number">2</span> ** <span class="number">3</span></span><br><span class="line">= <span class="number">1</span> + <span class="number">2</span> + <span class="number">0</span> + <span class="number">8</span></span><br><span class="line">= <span class="number">11</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="使用-Python-进行进制转换"><a href="#使用-Python-进行进制转换" class="headerlink" title="使用 Python 进行进制转换"></a>使用 Python 进行进制转换</h4><ul>
+<li><code>bin(&lt;十进制数&gt;)</code>：将十进制数转换成二进制（常用）</li>
+<li><code>int(&quot;字符串&quot;, 2)</code>：将某个进制（示例中为二进制）转换为十进制</li>
+</ul>
+<p>示例如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>bin(<span class="number">11</span>)</span><br><span class="line"><span class="string">'0b1011'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>int(<span class="string">'1011'</span>, <span class="number">2</span>)</span><br><span class="line"><span class="number">11</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="整型（数字）总结"><a href="#整型（数字）总结" class="headerlink" title="整型（数字）总结"></a>整型（数字）总结</h3><ul>
+<li><p>整型是不可变数据类型</p>
+</li>
+<li><p>可以在原地修改的叫做可变数据类型，不能在原地修改的叫做不可变数据类型</p>
+<p>我们可以用<code>id()</code>来查看数据的内存地址，例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">10</span>    <span class="comment"># 1428849040</span></span><br><span class="line"><span class="comment"># id  -- 查看空间内存地址</span></span><br><span class="line">print(id(a))</span><br><span class="line">a = a + <span class="number">1</span>  <span class="comment"># 1428849072</span></span><br><span class="line">print(id(a))</span><br></pre></td></tr></table></figure>
+
+<p>将数据修改后，内存地址发生改变。</p>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/bug-exclusion/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/python-basic/bug-exclusion/" class="post-title-link" itemprop="url">排 bug 技巧</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-15 13:44:43" itemprop="dateCreated datePublished" datetime="2020-02-15T13:44:43+08:00">2020-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>内容不多，但都是从实践中总结出来的精华，字字珠玑。</p>
+<p>排 bug 很需要经验，需要多练习才好。没有哪个技巧是万能的，脑子要灵光。而且光看光想是解决不了问题的，一定要多<strong>尝试</strong>，错的次数多了，便对了。</p>
+<p>初学遇到 bug 不要恼，反而要开心。每一个小 bug 都是一个财富，都可以让我们在未来避免进入更大的坑。把这些小问题总结起来也是好的。不一定将来会去看，但是整理的过程也是一种记忆的加强，可以保证日后不凡类似的错误。比如，我在 Python 中遇到的小 bug 都整理在了《Python bug 宝典》中，可以在 <a href="/index">博客首页</a> 找到。</p>
+<h3 id="推荐搜索引擎"><a href="#推荐搜索引擎" class="headerlink" title="推荐搜索引擎"></a>推荐搜索引擎</h3><ol>
+<li><a href="https://www.baidu.com" target="_blank" rel="noopener">百度</a>，国内能用，但很不好用，很多bug找不到恰当的解决方法</li>
+<li><a href="https://www.google.com/" target="_blank" rel="noopener">Google</a>，国内不能用，需要一定技巧</li>
+<li><a href="https://stackoverflow.com/" target="_blank" rel="noopener">StackOverflow</a>，几乎所有的bug都能在这里找到，但是全英文</li>
+</ol>
+<h3 id="排-bug-思路技巧"><a href="#排-bug-思路技巧" class="headerlink" title="排 bug 思路技巧"></a>排 bug 思路技巧</h3><ol>
+<li>遇到 bug，理清楚导致 bug 的原因</li>
+<li>可以把报错信息放到搜索引擎中搜索，找到合适的解决方案</li>
+<li>仔细分析，解决问题</li>
+<li>如果怎么试都不能解决问题，从头开始，再写一遍</li>
+</ol>
+<h3 id="学习过程中的小经验和小技巧"><a href="#学习过程中的小经验和小技巧" class="headerlink" title="学习过程中的小经验和小技巧"></a>学习过程中的小经验和小技巧</h3><ul>
+<li><a href="/bug-bible/python-bug/python-experience">Python 学习经验</a> </li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/random/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/python-basic/random/" class="post-title-link" itemprop="url">random 模块</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-15 13:44:24" itemprop="dateCreated datePublished" datetime="2020-02-15T13:44:24+08:00">2020-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>random 模块，也就是随机数模块，用来生成一定范围内的随机数。随机数模块可以这样使用：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> random</span><br><span class="line">print(random.random())    <span class="comment"># 用来生成0~1之间的小数</span></span><br><span class="line">print(random.randint(<span class="number">1</span>, <span class="number">5</span>))   <span class="comment"># 随机生成1~5之间（包括1和5）的整数</span></span><br><span class="line">print(random.randrange(<span class="number">0</span>, <span class="number">10</span>, <span class="number">2</span>))    <span class="comment"># 随机产生range切片范围内的整数，参数的使用方法与range相同</span></span><br><span class="line"></span><br><span class="line">lst = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>]</span><br><span class="line">print(random.choice(lst))    <span class="comment"># 从可迭代对象中随机选出一个元素</span></span><br><span class="line">print(random.choices(lst, k=<span class="number">5</span>))    <span class="comment"># 从可迭代对象中选择指定个数的元素，可能会重复选取</span></span><br><span class="line">print(random.sample(lst, k=<span class="number">5</span>))    <span class="comment"># 从可迭代对象中选取指定个数的元素，不会重复选取</span></span><br><span class="line">random.shuffle(lst)    <span class="comment"># 将列表顺序打乱</span></span><br><span class="line">print(lst)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0.30540264424342467</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">6</span></span><br><span class="line"><span class="number">4</span></span><br><span class="line">[<span class="number">3</span>, <span class="number">1</span>, <span class="number">9</span>, <span class="number">3</span>, <span class="number">8</span>]</span><br><span class="line">[<span class="number">8</span>, <span class="number">5</span>, <span class="number">9</span>, <span class="number">6</span>, <span class="number">3</span>]</span><br><span class="line">[<span class="number">3</span>, <span class="number">5</span>, <span class="number">1</span>, <span class="number">8</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">9</span>, <span class="number">7</span>, <span class="number">2</span>]</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/set/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/python-basic/set/" class="post-title-link" itemprop="url">集合</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-15 13:44:06" itemprop="dateCreated datePublished" datetime="2020-02-15T13:44:06+08:00">2020-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="集合概览"><a href="#集合概览" class="headerlink" title="集合概览"></a>集合概览</h3><p>集合也是 Python 中的基本数据类型之一。</p>
+<p>集合最重要的一个特点是天然去重。</p>
+<p>集合的关键字是 set。</p>
+<p>空集合的表示方法只有一种：<code>set()</code>。</p>
+<p>集合是一种无序的，可变的，可迭代的，元素唯一且不可哈希的数据类型。</p>
+<p>集合可以被看作是一种没有值的字典：</p>
+<ul>
+<li>都用 <code>{}</code> 标识</li>
+<li>集合的元素是不可变的（可哈希）</li>
+<li>具有唯一性才做到去重</li>
+<li>无序，可变，可迭代</li>
+</ul>
+<p>我们可以这样定义一个集合：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>&#125;</span><br><span class="line">print(type(s))</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">set</span>'&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>如果在定义集合时出现了重复元素，集合会自动去重复：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s = &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">12</span>,<span class="number">33</span>,<span class="number">3</span>,<span class="string">'421'</span>,<span class="number">21</span>,<span class="number">12</span>,<span class="number">3</span>&#125;</span><br><span class="line">print(s)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">33</span>, <span class="number">12</span>, <span class="string">'421'</span>, <span class="number">21</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p>如果多次打印上面的内容，会发现集合是无序的（对于纯数字集合这种效果不是很明显。如果里面又多种数据类型，无序性会很明显）。</p>
+<p>在 Python 中，能够存储数据的结构被称作为容器。我们学过的能作为容器的数据类型有：列表、元素和字典。很显然，集合也是一种容器。</p>
+<h3 id="集合的增加"><a href="#集合的增加" class="headerlink" title="集合的增加"></a>集合的增加</h3><p><code>.update()</code> 方法可以将输入的参数迭代添加到集合中，参数必须是可迭代数据类型：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">s = set()</span><br><span class="line">s.update(<span class="string">'alex'</span>)</span><br><span class="line">print(s)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="string">'e'</span>, <span class="string">'l'</span>, <span class="string">'a'</span>, <span class="string">'x'</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>.add()</code> 方法可以将单独的元素直接添加到集合中：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">s = set()</span><br><span class="line">s.add(<span class="string">'alex'</span>)</span><br><span class="line">print(s)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="string">'alex'</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="集合的删除"><a href="#集合的删除" class="headerlink" title="集合的删除"></a>集合的删除</h3><p><code>.pop()</code> 方法会随机删除集合中的元素，并将删除的元素返回：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s = &#123;<span class="string">"a"</span>,<span class="string">"b"</span>,<span class="number">3</span>,<span class="string">"c"</span>&#125;</span><br><span class="line">print(s.pop(), s)</span><br></pre></td></tr></table></figure>
+
+<p>这个式子多次运行后会发现，每次删除掉的数据都是不同的。正因为这种数据删除方法的随机性和不确定性，十分不建议在编程时使用。</p>
+<p><code>.remove()</code> 方法可以指定元素删除集合中的内容：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">s = &#123;<span class="string">"a"</span>,<span class="string">"b"</span>,<span class="number">3</span>,<span class="string">"c"</span>&#125;</span><br><span class="line">s.remove(<span class="string">'b'</span>)</span><br><span class="line">print(s)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="string">'c'</span>, <span class="number">3</span>, <span class="string">'a'</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>.clear()</code> 方法用来将集合清空：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">s = &#123;<span class="string">"a"</span>,<span class="string">"b"</span>,<span class="number">3</span>,<span class="string">"c"</span>&#125;</span><br><span class="line">s.clear()</span><br><span class="line">print(s)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set()</span><br></pre></td></tr></table></figure>
+
+<p>这里需要注意的是，为了防止和空字典的表示方法 <code>{}</code> 冲突，空集合只有 <code>set()</code> 一种表示方法。</p>
+<h3 id="集合的修改"><a href="#集合的修改" class="headerlink" title="集合的修改"></a>集合的修改</h3><p>集合没有直接进行修改的方法，不过可以通过下面两种方式间接改变集合的内容：</p>
+<ol>
+<li>先删后加（或者先加后删）</li>
+<li>转换为列表数据类型后进行修改</li>
+</ol>
+<h3 id="集合的查找"><a href="#集合的查找" class="headerlink" title="集合的查找"></a>集合的查找</h3><p>因为集合是无序的，所以不能通过索引查找。</p>
+<p>好在集合可以迭代，可以通过 for 循环进行查看：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">s = &#123;<span class="string">"a"</span>,<span class="string">"b"</span>,<span class="number">3</span>,<span class="string">"c"</span>&#125;</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> s:</span><br><span class="line">    print(i)</span><br></pre></td></tr></table></figure>
+
+<h3 id="集合关系"><a href="#集合关系" class="headerlink" title="集合关系"></a>集合关系</h3><p>同数学中集合的概念很相似，Python 中的集合也可以进行交集、并集、差集、补集、超级和子集等操作：</p>
+<h4 id="交集"><a href="#交集" class="headerlink" title="交集"></a>交集</h4><p>交集用来找出两个集合中相同的元素，用 <code>&amp;</code> 表示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">python = &#123;<span class="string">"海绵"</span>,<span class="string">"孙一帆"</span>,<span class="string">"岳新力"</span>,<span class="string">"大圣"</span>&#125;</span><br><span class="line">linux = &#123;<span class="string">"海绵"</span>,<span class="string">"大圣"</span>,<span class="string">"meet"</span>,<span class="string">"alex"</span>&#125;</span><br><span class="line">print(python &amp; linux)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="string">'海绵'</span>, <span class="string">'大圣'</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="并集"><a href="#并集" class="headerlink" title="并集"></a>并集</h4><p>并集是将两个集合合并，并将重复元素去除掉，用 <code>|</code> 表示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">python = &#123;<span class="string">"海绵"</span>,<span class="string">"孙一帆"</span>,<span class="string">"岳新力"</span>,<span class="string">"大圣"</span>&#125;</span><br><span class="line">linux = &#123;<span class="string">"海绵"</span>,<span class="string">"大圣"</span>,<span class="string">"meet"</span>,<span class="string">"alex"</span>&#125;</span><br><span class="line">print(python | linux)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="string">'岳新力'</span>, <span class="string">'meet'</span>, <span class="string">'海绵'</span>, <span class="string">'孙一帆'</span>, <span class="string">'大圣'</span>, <span class="string">'alex'</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="差集"><a href="#差集" class="headerlink" title="差集"></a>差集</h4><p>差集用来消除前面集合中与后面集合重复的元素，用 <code>-</code> 表示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">python = &#123;<span class="string">"海绵"</span>,<span class="string">"孙一帆"</span>,<span class="string">"岳新力"</span>,<span class="string">"大圣"</span>&#125;</span><br><span class="line">linux = &#123;<span class="string">"海绵"</span>,<span class="string">"大圣"</span>,<span class="string">"meet"</span>,<span class="string">"alex"</span>&#125;</span><br><span class="line">print(python - linux)</span><br><span class="line">print(linux - python)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="string">'岳新力'</span>, <span class="string">'孙一帆'</span>&#125;</span><br><span class="line">&#123;<span class="string">'alex'</span>, <span class="string">'meet'</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="补集"><a href="#补集" class="headerlink" title="补集"></a>补集</h4><p>补集也称作反差集，对称差集，是两个集合中不相同元素组成的集合，用 <code>^</code> 表示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">python = &#123;<span class="string">"海绵"</span>,<span class="string">"孙一帆"</span>,<span class="string">"岳新力"</span>,<span class="string">"大圣"</span>&#125;</span><br><span class="line">linux = &#123;<span class="string">"海绵"</span>,<span class="string">"大圣"</span>,<span class="string">"meet"</span>,<span class="string">"alex"</span>&#125;</span><br><span class="line">print(python ^ linux)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="string">'岳新力'</span>, <span class="string">'alex'</span>, <span class="string">'孙一帆'</span>, <span class="string">'meet'</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="超集"><a href="#超集" class="headerlink" title="超集"></a>超集</h4><p>超集也称作父集，用来判断后面集合中是否每一个元素都在前一个集合中且两个集合不相同，若都在且两个集合不完全一样，返回 True，若不都在或两个集合完全一样，返回 False。超集用 <code>&gt;</code> 表示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">python = &#123;<span class="string">"海绵"</span>,<span class="string">"孙一帆"</span>,<span class="string">"岳新力"</span>,<span class="string">"大圣"</span>&#125;</span><br><span class="line">linux = &#123;<span class="string">"海绵"</span>,<span class="string">"大圣"</span>,<span class="string">"meet"</span>,<span class="string">"alex"</span>&#125;</span><br><span class="line">l_son = &#123;<span class="string">'meet'</span>&#125;</span><br><span class="line">print(python &gt; linux)</span><br><span class="line">print(python &gt; python)</span><br><span class="line">print(linux &gt; l_son)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="literal">False</span></span><br><span class="line"><span class="literal">False</span></span><br><span class="line"><span class="literal">True</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="子集"><a href="#子集" class="headerlink" title="子集"></a>子集</h4><p>子集用来判断前面集合中的每一个元素是否都在后一个集合中且两个元素都不相同，若都在且两个集合不完全一样，返回 True，若不都在或两个集合完全一样，返回 False。超集用 <code>&lt;</code> 表示：</p>
+<p>在最后，补充一点感想。今天老师的一句话对我很有感触。他说，计算机不会出错，错的都是人。</p>
+<p>我觉得计算机不会出错这件事反映出来的不是人笨，而是计算机还不够智能。会随机地出错，是计算机走向智能的一大步。</p>
+<p>今天学到的集合的 .pop() 方法，可以随机地删除数据，也就是制造错误，或许在人工智能的研究中很有用。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/high-order-bif/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/python-basic/high-order-bif/" class="post-title-link" itemprop="url">高阶内置函数</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-15 13:44:04" itemprop="dateCreated datePublished" datetime="2020-02-15T13:44:04+08:00">2020-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>这一部分主要是一些 Python 中内置的高阶函数。所谓的高阶函数，就是以函数为参数的函数。</p>
+<h3 id="filter-函数"><a href="#filter-函数" class="headerlink" title="filter 函数"></a><code>filter</code> 函数</h3><p>filter 函数用来过滤掉不符合条件的元素。filter 函数有两个参数，第一个参数为规则函数，第二个参数为可迭代对象：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>]</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">foo</span><span class="params">(x)</span>:</span>            <span class="comment"># 规则函数</span></span><br><span class="line">    <span class="keyword">return</span> x &gt; <span class="number">4</span>       <span class="comment"># 规则函数的返回值需要是布尔值</span></span><br><span class="line">print(filter(foo, lst))</span><br><span class="line">print(list(filter(foo, lst)))</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;filter object at <span class="number">0x000002B53EA8AB00</span>&gt;</span><br><span class="line">[<span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>]</span><br></pre></td></tr></table></figure>
+
+<p>filter 的返回值为 filter 对象，可迭代，可以通过 list 函数转化为列表。</p>
+<p>我们可以通过 for 循环模拟内置函数 filter：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">filter</span><span class="params">(func, iter)</span>:</span></span><br><span class="line">    lst = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> iter:</span><br><span class="line">        <span class="keyword">if</span> func(i):</span><br><span class="line">            lst.append(i)</span><br><span class="line">    <span class="keyword">return</span> lst</span><br></pre></td></tr></table></figure>
+
+<p>也可以使用匿名函数作为规则函数，这样可以让代码看起来非常简洁：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 找到年纪大于16岁的人的信息</span></span><br><span class="line">lst = [&#123;<span class="string">'id'</span>: <span class="number">1</span>,<span class="string">'name'</span>: <span class="string">'alex'</span>,<span class="string">'age'</span>: <span class="number">18</span>&#125;,</span><br><span class="line">        &#123;<span class="string">'id'</span>: <span class="number">1</span>,<span class="string">'name'</span>: <span class="string">'wusir'</span>,<span class="string">'age'</span>: <span class="number">17</span>&#125;,</span><br><span class="line">        &#123;<span class="string">'id'</span>: <span class="number">1</span>,<span class="string">'name'</span>: <span class="string">'taibai'</span>,<span class="string">'age'</span>: <span class="number">16</span>&#125;,]</span><br><span class="line">print(list(filter(<span class="keyword">lambda</span> x: x[<span class="string">'age'</span>] &gt; <span class="number">16</span>, lst)))    <span class="comment"># 过滤条件</span></span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[&#123;<span class="string">'id'</span>: <span class="number">1</span>, <span class="string">'name'</span>: <span class="string">'alex'</span>, <span class="string">'age'</span>: <span class="number">18</span>&#125;, &#123;<span class="string">'id'</span>: <span class="number">1</span>, <span class="string">'name'</span>: <span class="string">'wusir'</span>, <span class="string">'age'</span>: <span class="number">17</span>&#125;]</span><br></pre></td></tr></table></figure>
+
+<h3 id="map-函数"><a href="#map-函数" class="headerlink" title="map 函数"></a><code>map</code> 函数</h3><p>map 函数也称作映射函数，用来将可迭代对象中每个元素执行函数功能：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">8</span>, <span class="number">9</span>]</span><br><span class="line">print(map(str, lst))</span><br><span class="line">print(list(map(str, lst)))</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;map object at <span class="number">0x000001ABD67EA908</span>&gt;</span><br><span class="line">[<span class="string">'1'</span>, <span class="string">'2'</span>, <span class="string">'3'</span>, <span class="string">'4'</span>, <span class="string">'5'</span>, <span class="string">'6'</span>, <span class="string">'8'</span>, <span class="string">'9'</span>]</span><br></pre></td></tr></table></figure>
+
+<p>map 函数返回的是 map 对象，也可以使用 list 函数转换为列表。</p>
+<p>map 函数可以使用更多参数的规则函数来整合多个可迭代对象：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">lst1 = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br><span class="line">lst2 = [<span class="number">3</span>,<span class="number">2</span>,<span class="number">1</span>]</span><br><span class="line">lst3 = [<span class="number">3</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">5</span>]</span><br><span class="line">print(list(map(<span class="keyword">lambda</span> x, y, z: x + y + z, lst1, lst2, lst3)))</span><br><span class="line"></span><br><span class="line">输出的结果为：</span><br><span class="line">[<span class="number">7</span>, <span class="number">6</span>, <span class="number">5</span>]</span><br></pre></td></tr></table></figure>
+
+<p>如果可迭代对象长度不同，map 函数的迭代次数以最短的可迭代对象为准。</p>
+<h3 id="sorted-函数"><a href="#sorted-函数" class="headerlink" title="sorted 函数"></a><code>sorted</code> 函数</h3><p>sorted 函数用来将可迭代对象排序：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">print(sorted(<span class="string">"alex,mdsb"</span>))  <span class="comment"># 升序</span></span><br><span class="line">print(sorted((<span class="string">'alex'</span>,<span class="string">'mdsb'</span>),reverse=<span class="literal">True</span>)) <span class="comment"># 降序</span></span><br><span class="line"></span><br><span class="line">dic = &#123;<span class="number">1</span>:<span class="string">'a'</span>,<span class="number">3</span>:<span class="string">'c'</span>,<span class="number">2</span>:<span class="string">'b'</span>&#125;</span><br><span class="line">print(sorted(dic))</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">','</span>, <span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'d'</span>, <span class="string">'e'</span>, <span class="string">'l'</span>, <span class="string">'m'</span>, <span class="string">'s'</span>, <span class="string">'x'</span>]</span><br><span class="line">[<span class="string">'mdsb'</span>, <span class="string">'alex'</span>]</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br></pre></td></tr></table></figure>
+
+<p>不管输入的可迭代对象是什么样的数据类型，sorted 函数的返回值都是一个列表。</p>
+<p>sorted 函数也可以使用规则函数，只是这次规则函数要通过使用关键字参数的方式引入：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="string">'天龙八部'</span>, <span class="string">'西游记'</span>, <span class="string">'红楼梦'</span>, <span class="string">'三国演义'</span>]</span><br><span class="line">print(sorted(lst,key=len))  <span class="comment"># key= 排序规则(函数名)</span></span><br><span class="line">print(sorted(lst,key=<span class="keyword">lambda</span> x: len(x)))</span><br><span class="line"></span><br><span class="line">lst = [&#123;<span class="string">'id'</span>: <span class="number">1</span>,<span class="string">'name'</span>: <span class="string">'alex'</span>,<span class="string">'age'</span>: <span class="number">18</span>&#125;,</span><br><span class="line">    &#123;<span class="string">'id'</span>: <span class="number">2</span>,<span class="string">'name'</span>: <span class="string">'wusir'</span>,<span class="string">'age'</span>: <span class="number">17</span>&#125;,</span><br><span class="line">    &#123;<span class="string">'id'</span>: <span class="number">3</span>,<span class="string">'name'</span>: <span class="string">'taibai'</span>,<span class="string">'age'</span>: <span class="number">16</span>&#125;,]</span><br><span class="line">print(sorted(lst,key=<span class="keyword">lambda</span> x: x[<span class="string">'age'</span>],reverse=<span class="literal">True</span>))</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'西游记'</span>, <span class="string">'红楼梦'</span>, <span class="string">'天龙八部'</span>, <span class="string">'三国演义'</span>]</span><br><span class="line">[<span class="string">'西游记'</span>, <span class="string">'红楼梦'</span>, <span class="string">'天龙八部'</span>, <span class="string">'三国演义'</span>]</span><br><span class="line">[&#123;<span class="string">'id'</span>: <span class="number">1</span>, <span class="string">'name'</span>: <span class="string">'alex'</span>, <span class="string">'age'</span>: <span class="number">18</span>&#125;, &#123;<span class="string">'id'</span>: <span class="number">2</span>, <span class="string">'name'</span>: <span class="string">'wusir'</span>, <span class="string">'age'</span>: <span class="number">17</span>&#125;, &#123;<span class="string">'id'</span>: <span class="number">3</span>, <span class="string">'name'</span>: <span class="string">'taibai'</span>, <span class="string">'age'</span>: <span class="number">16</span>&#125;]</span><br></pre></td></tr></table></figure>
+
+<p>列表的 <code>.sort()</code> 方法是在列表所在的原地进行修改，而 sorted 函数则是新建一个列表：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">65</span>, <span class="number">-7</span>]</span><br><span class="line">print(sorted(lst))  <span class="comment"># 新建列表</span></span><br><span class="line">print(lst)</span><br><span class="line"></span><br><span class="line">lst1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">65</span>, <span class="number">-7</span>]</span><br><span class="line">print(lst1.sort())  <span class="comment"># 新建列表</span></span><br><span class="line">print(lst1)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">-7</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">65</span>]</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">65</span>, <span class="number">-7</span>]</span><br><span class="line"><span class="literal">None</span></span><br><span class="line">[<span class="number">-7</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">65</span>]</span><br></pre></td></tr></table></figure>
+
+<h3 id="max-和-min-函数"><a href="#max-和-min-函数" class="headerlink" title="max 和 min 函数"></a><code>max</code> 和 <code>min</code> 函数</h3><p>max 和 min 函数用来选取可迭代对象中的最大值或最小值，可以指定规则函数进行更复杂的选择：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">-9</span>, <span class="number">10</span>, <span class="number">-22</span>]</span><br><span class="line">print(max(lst))</span><br><span class="line">print(min(lst, key=abs))</span><br><span class="line">print(max(lst, key=<span class="keyword">lambda</span> x: pow(x, <span class="number">4</span>) - pow(x, <span class="number">2</span>) + x))</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">10</span></span><br><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">-22</span></span><br></pre></td></tr></table></figure>
+
+<p>也可以通过这两个函数找到最大的值或者最小的值对应的键：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">'a'</span>: <span class="number">3</span>, <span class="string">'b'</span>: <span class="number">2</span>, <span class="string">'c'</span>: <span class="number">1</span>&#125;</span><br><span class="line">print(max(dic.values()))</span><br><span class="line">print(min(dic, key=<span class="keyword">lambda</span> x: dic[x]))</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">3</span></span><br><span class="line">c</span><br></pre></td></tr></table></figure>
+
+<h3 id="reduce-函数"><a href="#reduce-函数" class="headerlink" title="reduce 函数"></a><code>reduce</code> 函数</h3><p>reduce 函数用来进行累运算。规则函数中会有两个参数，第一个参数用来存储上一次运算的结果，第二个参数传入下一个值，返回值为运算操作。</p>
+<p>需要注意的是，在 Python 2 中，reduce 可以直接使用，而在 Python 3 中，需要在 functools 里面导入 reduce 函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> reduce</span><br></pre></td></tr></table></figure>
+
+<p>我们可以通过 reduce 函数实现累乘运算：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> reduce</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(x, y)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> x * y</span><br><span class="line">print(reduce(func, range(<span class="number">1</span>, <span class="number">6</span>)))</span><br><span class="line"></span><br><span class="line">输出的结果为： <span class="number">120</span></span><br></pre></td></tr></table></figure>
+
+<p>将函数用匿名函数整合会让代码更加简洁：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> reduce</span><br><span class="line">print(reduce(<span class="keyword">lambda</span> x, y: x * y, range(<span class="number">1</span>, <span class="number">6</span>)))</span><br></pre></td></tr></table></figure>
+
+<h3 id="zip-函数"><a href="#zip-函数" class="headerlink" title="zip 函数"></a><code>zip</code> 函数</h3><p>zip 是拉链的意思，用来将两个可迭代对象以关联起来，以返回值为 zip 对象，可以转换为列表，列表中的每个元素为原来的可迭代对象中的元素组成的元组：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">lst1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]</span><br><span class="line">lst2 = [<span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>]</span><br><span class="line">print(zip(lst1, lst2))</span><br><span class="line">print(list(zip(lst1, lst2)))</span><br></pre></td></tr></table></figure>
+
+<p>返回的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;zip object at <span class="number">0x0000021A6A792B48</span>&gt;</span><br><span class="line">[(<span class="number">1</span>, <span class="number">5</span>), (<span class="number">2</span>, <span class="number">4</span>), (<span class="number">3</span>, <span class="number">3</span>), (<span class="number">4</span>, <span class="number">2</span>), (<span class="number">5</span>, <span class="number">1</span>)]</span><br></pre></td></tr></table></figure>
+
+<p>使用 map 函数也可以实现类似的功能：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lst1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]</span><br><span class="line">lst2 = [<span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>]</span><br><span class="line">print(list(map(<span class="keyword">lambda</span> x, y: (x, y), lst1, lst2)))</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[(<span class="number">1</span>, <span class="number">5</span>), (<span class="number">2</span>, <span class="number">4</span>), (<span class="number">3</span>, <span class="number">3</span>), (<span class="number">4</span>, <span class="number">2</span>), (<span class="number">5</span>, <span class="number">1</span>)]</span><br></pre></td></tr></table></figure>
+
+<p>这种数据类型可以直接使用 dict 函数转换为字典：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lst1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]</span><br><span class="line">lst2 = [<span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>]</span><br><span class="line">print(dict(zip(lst1, lst2)))</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="number">1</span>: <span class="number">5</span>, <span class="number">2</span>: <span class="number">4</span>, <span class="number">3</span>: <span class="number">3</span>, <span class="number">4</span>: <span class="number">2</span>, <span class="number">5</span>: <span class="number">1</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="高阶内置函数比较"><a href="#高阶内置函数比较" class="headerlink" title="高阶内置函数比较"></a>高阶内置函数比较</h3><table>
+<thead>
+<tr>
+<th align="center">函数名</th>
+<th align="center">规则函数位置</th>
+<th align="center">规则函数形参数目</th>
+<th align="center">返回值数据类型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><a href="#filter函数">filter</a></td>
+<td align="center">首位</td>
+<td align="center">1个</td>
+<td align="center">filter对象，可转换为列表</td>
+</tr>
+<tr>
+<td align="center"><a href="#map函数">map</a></td>
+<td align="center">首位</td>
+<td align="center">1个或多个</td>
+<td align="center">map对象，可转换为列表</td>
+</tr>
+<tr>
+<td align="center"><a href="#reduce函数">reduce</a></td>
+<td align="center">首位</td>
+<td align="center">2个</td>
+<td align="center">可迭代对象中的元素</td>
+</tr>
+<tr>
+<td align="center"><a href="#max和min函数">max和min</a></td>
+<td align="center">末尾，用key指明</td>
+<td align="center">1个</td>
+<td align="center">可迭代对象中的元素</td>
+</tr>
+<tr>
+<td align="center"><a href="#sorted函数">sorted</a></td>
+<td align="center">末尾，用key指明</td>
+<td align="center">1个</td>
+<td align="center">列表</td>
+</tr>
+<tr>
+<td align="center"><a href="#zip函数">zip</a></td>
+<td align="center">无</td>
+<td align="center">无</td>
+<td align="center">zip对象，可转换为列表或字典</td>
+</tr>
+</tbody></table>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+  </div>
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/19/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/19/">19</a><span class="page-number current">20</span><a class="page-number" href="/page/21/">21</a><span class="space">&hellip;</span><a class="page-number" href="/page/23/">23</a><a class="extend next" rel="next" href="/page/21/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+  </nav>
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="刘硕"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">刘硕</p>
+  <div class="site-description" itemprop="description">不成为自己讨厌的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">221</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:liushuo432@outlook.com" title="E-Mail → mailto:liushuo432@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/2436055290" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;2436055290" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://wpa.qq.com/msgrd?v=3&uin=1696146913&site=qq&menu=yes" title="QQ → http:&#x2F;&#x2F;wpa.qq.com&#x2F;msgrd?v&#x3D;3&amp;uin&#x3D;1696146913&amp;site&#x3D;qq&amp;menu&#x3D;yes" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备20001451号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘硕</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.2" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="/js/love.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/Epsilon2.1.model.json"},"display":{"superSample":2,"width":200,"height":400,"position":"left","hOffset":-30,"vOffset":-40},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>
