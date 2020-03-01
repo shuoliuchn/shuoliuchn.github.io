@@ -230,6 +230,551 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/code/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/python-basic/code/" class="post-title-link" itemprop="url">编码初识</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-15 13:50:21" itemprop="dateCreated datePublished" datetime="2020-02-15T13:50:21+08:00">2020-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>常见编码集：</p>
+<ol>
+<li>ascii：<ul>
+<li>不支持中文</li>
+<li>一个字符占用 8 位</li>
+</ul>
+</li>
+<li>gbk（包含 ascii）国标码：<ul>
+<li>一个英文字符占用 8 位（1 字节）</li>
+<li>一个中文字符占用 16 位（2 字节）</li>
+</ul>
+</li>
+<li>Unicode：<ul>
+<li>英文：4 个字节，32 位</li>
+<li>中文：4 个字节，32 位</li>
+</ul>
+</li>
+<li>utf-8（最流行的编码集）：<ul>
+<li>英文：1 个字节，8 位</li>
+<li>欧洲：2 个字节，16 位</li>
+<li>亚洲：3 个字节，24 位</li>
+</ul>
+</li>
+</ol>
+<p>单位转换：</p>
+<ul>
+<li>1 字节 = 8 位</li>
+<li>1 Byte = 8 bits</li>
+<li>1024 bytes = 1 KB</li>
+<li>1024 KB = 1 MB</li>
+<li>1024 MB = 1 GB</li>
+<li>1024 GB = 1 TB    # 够用了</li>
+<li>1024 TB = 1 PB</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/copy-deep-copy/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/python-basic/copy-deep-copy/" class="post-title-link" itemprop="url">深浅拷贝</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-15 13:50:19" itemprop="dateCreated datePublished" datetime="2020-02-15T13:50:19+08:00">2020-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>同驻留机制一样，深浅拷贝在编程中的应用其实也不是很多。但是我们依然需要了解。一方面是为了避免后期开发代码时出现问题却不知道原因，另一方面也是因为面试时几乎都会问到有关深浅拷贝的问题。</p>
+<p>深浅拷贝主要分为三个方面：</p>
+<ol>
+<li>什么是赋值</li>
+<li>什么是浅拷贝</li>
+<li>什么是深拷贝</li>
+</ol>
+<h3 id="赋值"><a href="#赋值" class="headerlink" title="赋值"></a>赋值</h3><p>变量间赋值操作就是将多个变量的内存地址指向同一个数据的内存地址。例如，对于下面的代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">10</span></span><br><span class="line">b = a</span><br><span class="line">print(id(a), id(b))</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1947042192</span> <span class="number">1947042192</span></span><br></pre></td></tr></table></figure>
+
+<p>a 和 b 的内存地址相同。这段赋值操作在内存中的程序是：首先，在内存中开辟一块内存空间储存整数 10，它的内存地址为 1947042192；然后，变量名 a 指向这个内存空间的内存地址；最后，变量名 b 同样指向这个内存地址。</p>
+<img src="/python-basic/copy-deep-copy/1568472157765.png" class="" width="1568472157765">
+
+<p>对于整型数据这样的不可变数据类型来说，此时，如果重新给 a 进行赋值，比如赋值为 11。将会新开辟一块内存空间来存储整型数据 11，然后 a 将指向 11 的内存地址（比如：1947042224），原来的指向将不再存在。而 b 仍然指向 10 的内存地址 1947042192：</p>
+<img src="/python-basic/copy-deep-copy/1568472544520.png" class="" width="1568472544520">
+
+<p>用代码来验证就是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">10</span></span><br><span class="line">b = a</span><br><span class="line">a = <span class="number">11</span></span><br><span class="line">print(id(a), id(b))</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1947042224</span> <span class="number">1947042192</span></span><br></pre></td></tr></table></figure>
+
+<p>对于可变数据类型的赋值操作则会有些例外。赋值操作的原则都是相同的，新变量名会指向已经存在的数据，而不是新开辟一块内存空间：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">lst1 = lst</span><br><span class="line">print(id(lst), id(lst1))</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> lst:</span><br><span class="line">    print(id(i))</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1334279969672</span> <span class="number">1334279969672</span></span><br><span class="line"><span class="number">1947041904</span></span><br><span class="line"><span class="number">1947041936</span></span><br><span class="line"><span class="number">1947041968</span></span><br></pre></td></tr></table></figure>
+
+<p>首先整型数字 1、2 和 3 分别开辟各自的内存空间。需要注意的是，列表中存储的是每个元素的内存地址，而不是元素本身。当整型数据内存空间开辟好了之后，又开辟了一块列表空间，其中存储的数据是三个整型数字的内存地址。然后，变量lst指向列表的内存地址 1334279969672。最后，赋值操作令变量 lst1 也指向该列表的内存地址 1334279969672。</p>
+<img src="/python-basic/copy-deep-copy/1568474596593.png" class="" width="1568474596593">
+
+<p>这些操作看起来繁琐许多，但实际上的原理还是赋值操作只是将不同的变量指向同一个数据的内存地址。</p>
+<p>但是现在，如果我们对 lst1 进行修改，比如增加一个新的元素 4，会发生什么呢？</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line">print(id(lst))</span><br><span class="line">lst1 = lst</span><br><span class="line">lst1.append(<span class="number">4</span>)</span><br><span class="line">print(lst, lst1)</span><br><span class="line">print(id(lst), id(lst1))</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> lst:</span><br><span class="line">    print(id(i))</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">3009179196296</span></span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>] [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]</span><br><span class="line"><span class="number">3009179196296</span> <span class="number">3009179196296</span></span><br><span class="line"><span class="number">1947041904</span></span><br><span class="line"><span class="number">1947041936</span></span><br><span class="line"><span class="number">1947041968</span></span><br><span class="line"><span class="number">1947042000</span></span><br></pre></td></tr></table></figure>
+
+<p>我们发现发生了一件奇怪的事情：虽然我们只对 lst1 进行了修改，但是 lst 也同样发生了改变。</p>
+<p>这是因为列表是可变数据类型，当我们对列表进行操作时，不会改变列表的内存地址<a href="虽然再次运行内存地址较上次发生了变化，但那是因为每次运行都会重新开辟内存空间。上面的代码在赋值前打印了内存地址，与所有赋值操作后比较，仍然相同，可证明列表的内存地址没有改变。">^1</a>。使用 append 方法会在列表存储的内容中添加一个整型数据 4 的内存空间，但并不会改变变量 lst 和 lst1 指向列表内存的状态。故而，虽然只对 lst1 进行了修改，但是查看 lst 时，变化是相同的。</p>
+<img src="/python-basic/copy-deep-copy/1568475345252.png" class="" width="1568475345252">
+
+<p>举一个形象一点的例子就是，列表就好比是一个书包。最开始，这个书包归小明所有。后来，小明跟好朋友小芳共用了这个书包。小芳有一天在书包里装了一本书，虽然小明没有对这个书包做任何的操作，他依然能够看到自己的书包里多出了一本书来。</p>
+<p>对于字典等其他可变数据类型，道理都是相同的。对于可变数据类型的嵌套，也是一样：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key1'</span>: <span class="number">2</span>, <span class="string">'key2'</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]&#125;</span><br><span class="line">dic1 = dic</span><br><span class="line">dic1[<span class="string">'key2'</span>].append(<span class="number">4</span>)</span><br><span class="line">print(dic, dic1)</span><br></pre></td></tr></table></figure>
+
+<p>输出的内容为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="string">'key1'</span>: <span class="number">2</span>, <span class="string">'key2'</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]&#125; &#123;<span class="string">'key1'</span>: <span class="number">2</span>, <span class="string">'key2'</span>: [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]&#125;</span><br></pre></td></tr></table></figure>
+
+<p>总结起来就是：赋值就是让多个变量指向同一个内存地址，如果这个内存地址的数据是不可变数据类型，修改时会开辟新的内存空间（字符串，数字，布尔值，元组）；如果时可变的数据类型，会在原地址进行修改（列表，字典）。</p>
+<h3 id="浅拷贝"><a href="#浅拷贝" class="headerlink" title="浅拷贝"></a>浅拷贝</h3><p>与赋值略有差异的是，浅拷贝会将数据的外壳新开辟一块内存空间，在新的内存空间中存储的是最外层元素的内存地址。</p>
+<p>列表有一个 <code>.copy()</code> 方法，用来进行浅拷贝操作：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="number">1</span>, <span class="number">2</span>, [<span class="number">3</span>, <span class="number">4</span>]]</span><br><span class="line">lst1 = lst.copy()    <span class="comment">#拷贝 or 复制</span></span><br><span class="line">print(lst, lst1)</span><br><span class="line">print(id(lst), id(lst1))</span><br><span class="line">print(id(lst[<span class="number">0</span>]), id(lst1[<span class="number">0</span>]))</span><br><span class="line">print(id(lst[<span class="number">1</span>]), id(lst1[<span class="number">1</span>]))</span><br><span class="line">print(id(lst[<span class="number">2</span>]), id(lst1[<span class="number">2</span>]))</span><br><span class="line">print(id(lst[<span class="number">2</span>][<span class="number">0</span>]), id(lst1[<span class="number">2</span>][<span class="number">0</span>]))</span><br><span class="line">print(id(lst[<span class="number">2</span>][<span class="number">1</span>]), id(lst1[<span class="number">2</span>][<span class="number">1</span>]))</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">1</span>, <span class="number">2</span>, [<span class="number">3</span>, <span class="number">4</span>]] [<span class="number">1</span>, <span class="number">2</span>, [<span class="number">3</span>, <span class="number">4</span>]]</span><br><span class="line"><span class="number">2718491515720</span> <span class="number">2718491515912</span></span><br><span class="line"><span class="number">1945534576</span> <span class="number">1945534576</span></span><br><span class="line"><span class="number">1945534608</span> <span class="number">1945534608</span></span><br><span class="line"><span class="number">2718491515784</span> <span class="number">2718491515784</span></span><br><span class="line"><span class="number">1945534640</span> <span class="number">1945534640</span></span><br><span class="line"><span class="number">1945534672</span> <span class="number">1945534672</span></span><br></pre></td></tr></table></figure>
+
+<p>我们看到，除了最外层的壳子，也就是列表本身被新开辟了一块内存空间之外，无论列表中的元素是否可变，都只是复制了原来列表中元素的内存地址。</p>
+<p>最开始，列表 lst 开辟了一块地址为 2718491515720 的内存空间，其中，数字 1 被存储在地址 1945534576，数字 2 被存储在地址 1945534608，列表被存储在地址 2718491515784。列表中的数字 3 被存储在地址 1945534640，列表中的数字4被存储在地址 1945534672。当进行浅拷贝之后，为 lst1 新开辟一块内存地址为 2718491515912 的内存空间，其中存储的元素的内存地址跟 lst 中的元素相同。</p>
+<img src="/python-basic/copy-deep-copy/1568622652370.png" class="" width="1568622652370">
+
+<p>此时，如果我们对 lst1 进行增加操作，比如增加一个元素 5：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">lst1.append(<span class="number">5</span>)</span><br><span class="line">print(lst, lst1)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">1</span>, <span class="number">2</span>, [<span class="number">3</span>, <span class="number">4</span>]] [<span class="number">1</span>, <span class="number">2</span>, [<span class="number">3</span>, <span class="number">4</span>], <span class="number">5</span>]</span><br></pre></td></tr></table></figure>
+
+<p>只有 lst1 中增加了元素，lst 并没有发生变化。这是因为 lst 和 lst1 的内存地址不同，对 lst1 进行操作并不会影响到 lst。</p>
+<img src="/python-basic/copy-deep-copy/1568623172107.png" class="" width="1568623172107">
+
+<p>不过如果我们对列表中嵌套的列表进行增加操作，比如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="number">1</span>, <span class="number">2</span>, [<span class="number">3</span>, <span class="number">4</span>]]</span><br><span class="line">lst1 = lst.copy() </span><br><span class="line">lst1[<span class="number">-1</span>].append(<span class="number">5</span>)</span><br><span class="line">print(lst, lst1)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">1</span>, <span class="number">2</span>, [<span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]] [<span class="number">1</span>, <span class="number">2</span>, [<span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]]</span><br></pre></td></tr></table></figure>
+
+<p>不管是 lst 还是 lst1，它们的最后一个元素都是指向的列表 [3, 4] 的内存地址 2718491515784。当对这个列表进行修改时，尽管是使用 lst 进行的操作，lst1 调用列表时，仍然能发现列表的变化。</p>
+<img src="/python-basic/copy-deep-copy/1568623732201.png" class="" width="1568623732201">
+
+<p>除了使用 <code>.copy()</code> 方法，我们还可以通过切片来实现浅拷贝：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="number">2</span>, <span class="number">3</span>, [<span class="number">4</span>, <span class="number">5</span>], <span class="number">6</span>]</span><br><span class="line">lst1 = lst</span><br><span class="line">lst2 = lst[:]</span><br><span class="line">lst1[<span class="number">2</span>].append(<span class="number">6</span>)</span><br><span class="line">print(lst, lst1, lst2)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">2</span>, <span class="number">3</span>, [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>], <span class="number">6</span>] [<span class="number">2</span>, <span class="number">3</span>, [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>], <span class="number">6</span>] [<span class="number">2</span>, <span class="number">3</span>, [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>], <span class="number">6</span>]</span><br></pre></td></tr></table></figure>
+
+<h3 id="深拷贝"><a href="#深拷贝" class="headerlink" title="深拷贝"></a>深拷贝</h3><p>深拷贝之后的数据使用同我们主观认为的基本一致：对一个变量的修改不会影响到另一个变量的值。经过深拷贝后的两个变量虽然值相同，但是不受彼此影响。</p>
+<p>当然，这也不意味着深拷贝后的两个变量中的每个元素都是不同的。为了节省内存，经过深拷贝后的不可变元素仍然被两个变量共用。因为对不可变元素的改变一定会造成内存地址的变化，所以不需要单独开辟内存空间。但是对于可变元素，不管嵌套多少层，都会开辟新的内存空间。</p>
+<p>调用深拷贝方法需要导入一个 <code>copy</code> 模块：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> copy</span><br><span class="line">lst = [<span class="number">1000</span>, <span class="number">2</span>, [<span class="number">3</span>, <span class="number">4</span>]]</span><br><span class="line">lst1 = copy.deepcopy(lst)</span><br><span class="line">print(id(lst), id(lst1))</span><br><span class="line">print(id(lst[<span class="number">0</span>]), id(lst1[<span class="number">0</span>]))</span><br><span class="line">print(id(lst[<span class="number">1</span>]), id(lst1[<span class="number">1</span>]))</span><br><span class="line">print(id(lst[<span class="number">2</span>]), id(lst1[<span class="number">2</span>]))</span><br><span class="line">print(id(lst[<span class="number">2</span>][<span class="number">0</span>]), id(lst1[<span class="number">2</span>][<span class="number">0</span>]))</span><br><span class="line">print(id(lst[<span class="number">2</span>][<span class="number">1</span>]), id(lst1[<span class="number">2</span>][<span class="number">1</span>]))</span><br></pre></td></tr></table></figure>
+
+<p>返回的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2277137687880</span> <span class="number">2277137689160</span></span><br><span class="line"><span class="number">2277135326064</span> <span class="number">2277135326064</span></span><br><span class="line"><span class="number">1945534608</span> <span class="number">1945534608</span></span><br><span class="line"><span class="number">2277137687688</span> <span class="number">2277137689096</span></span><br><span class="line"><span class="number">1945534640</span> <span class="number">1945534640</span></span><br><span class="line"><span class="number">1945534672</span> <span class="number">1945534672</span></span><br></pre></td></tr></table></figure>
+
+<p>与我们前面谈到的一样，深拷贝后，两个变量会共用不可变数据，而可变数据类型则会开辟新空间。</p>
+<img src="/python-basic/copy-deep-copy/1568726333889.png" class="" width="1568726333889">
+
+<h3 id="深浅拷贝总结"><a href="#深浅拷贝总结" class="headerlink" title="深浅拷贝总结"></a>深浅拷贝总结</h3><p>赋值：多个变量名指向同一个内存地址</p>
+<p>浅拷贝：只对最外层的壳子开辟内存空间，拷贝第一层元素的内存地址。（列表中存储的是数据的内存地址，我们能看到数据是因为程序通过内存地址找到值，然后显示了出来）</p>
+<p>深拷贝：不可变数据共用，可变数据类型不管嵌套多少层都会开辟新空间</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/operator/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/python-basic/operator/" class="post-title-link" itemprop="url">运算符</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-15 13:50:15" itemprop="dateCreated datePublished" datetime="2020-02-15T13:50:15+08:00">2020-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="比较运算符"><a href="#比较运算符" class="headerlink" title="比较运算符"></a>比较运算符</h3><p>比较运算符主要有六个：</p>
+<ol>
+<li><code>&gt;</code>：大于</li>
+<li><code>&lt;</code>：小于</li>
+<li><code>&gt;=</code>：大于等于</li>
+<li><code>&lt;=</code>：小于等于</li>
+<li><code>==</code>：等于</li>
+<li><code>!=</code>：不等于</li>
+</ol>
+<p>比较运算返回的值为 <code>True</code> 或 <code>False</code>。</p>
+<h3 id="算术运算符"><a href="#算术运算符" class="headerlink" title="算术运算符"></a>算术运算符</h3><p>Python中的算术运算符有七个：</p>
+<ol>
+<li><code>+</code>：加和</li>
+<li><code>-</code>：相减</li>
+<li><code>*</code>：相乘</li>
+<li><code>/</code>：相除</li>
+<li><code>//</code>：整除 | 地板除（向下取整）</li>
+<li><code>**</code>：幂运算</li>
+<li><code>%</code>：取余（模）</li>
+</ol>
+<p>算术运算主要用于数字的计算。字符串也可以用 <code>+</code> 和 <code>*</code> 进行拼接。</p>
+<h3 id="赋值运算符"><a href="#赋值运算符" class="headerlink" title="赋值运算符"></a>赋值运算符</h3><p>赋值运算符为 <code>=</code>。在 Python 中，为了输入简便，还从其中算术运算符中衍生出了七种赋值运算符：<code>+=</code>，<code>-=</code>， <code>*=</code>， <code>/=</code>， <code>//=</code>， <code>**=</code>， <code>%=</code>。它们的用法和含义如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">10</span></span><br><span class="line">b = <span class="number">2</span></span><br><span class="line">b += <span class="number">1</span>	<span class="comment"># b = b + 1</span></span><br><span class="line">a -= <span class="number">1</span>  <span class="comment"># a = a - 1</span></span><br><span class="line">a *= <span class="number">2</span>  <span class="comment"># a = a * 2</span></span><br><span class="line">a /= <span class="number">2</span>  <span class="comment"># a = a / 2</span></span><br><span class="line">a //= <span class="number">2</span> <span class="comment"># a = a // 2</span></span><br><span class="line">a **= <span class="number">2</span> <span class="comment"># a = a ** 2</span></span><br><span class="line">a %= <span class="number">2</span>  <span class="comment"># a = a % 2</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="逻辑运算符"><a href="#逻辑运算符" class="headerlink" title="逻辑运算符"></a>逻辑运算符</h3><p>逻辑运算符有三个：与（<code>and</code>，并且）、或（<code>or</code>）、非（<code>not</code>，不是）。</p>
+<p>逻辑运算的优先级是 <code>() &gt; not &gt; and &gt; or</code>，查找顺序为从左向右。例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">3</span>&gt;<span class="number">2</span> <span class="keyword">and</span> <span class="number">4</span>&gt;<span class="number">2</span> <span class="keyword">or</span> <span class="literal">True</span> <span class="keyword">and</span> <span class="keyword">not</span> <span class="literal">False</span> <span class="keyword">and</span> <span class="literal">True</span></span><br><span class="line"><span class="comment"># 先运算比较</span></span><br><span class="line"><span class="literal">True</span> <span class="keyword">and</span> <span class="literal">True</span> <span class="keyword">or</span> <span class="literal">True</span> <span class="keyword">and</span> <span class="keyword">not</span> <span class="literal">False</span> <span class="keyword">and</span> <span class="literal">True</span></span><br><span class="line"><span class="comment"># 再运算not</span></span><br><span class="line"><span class="literal">True</span> <span class="keyword">and</span> <span class="literal">True</span> <span class="keyword">or</span> <span class="literal">True</span> <span class="keyword">and</span> <span class="literal">True</span> <span class="keyword">and</span> <span class="literal">True</span></span><br><span class="line"><span class="comment"># 运算and</span></span><br><span class="line"><span class="literal">True</span> <span class="keyword">or</span> <span class="literal">True</span></span><br><span class="line"><span class="comment"># 最后运算or</span></span><br><span class="line"><span class="literal">True</span></span><br></pre></td></tr></table></figure>
+
+<p>当数字之间进行逻辑运算时，有这样一套规则：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">and</span> 数字进行逻辑运算时：</span><br><span class="line">    两边都不为 <span class="number">0</span> 和 <span class="literal">False</span> 时，选择 <span class="keyword">and</span> 后边的内容</span><br><span class="line">    两边都为假时，选择 <span class="keyword">and</span> 前的内容</span><br><span class="line">    一真一假选择假</span><br><span class="line"></span><br><span class="line"><span class="keyword">or</span> 数字进行逻辑运算时：</span><br><span class="line">    两边都不为 <span class="number">0</span> 和 <span class="literal">False</span> 时，选择 <span class="keyword">or</span> 前边的内容</span><br><span class="line">    两边都为假时，选择 <span class="keyword">or</span> 后边的内容</span><br><span class="line">    一真一假选择真</span><br></pre></td></tr></table></figure>
+
+<p>官方给出的运算规则是这个样子的：</p>
+<table>
+<thead>
+<tr>
+<th align="right">操作</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="right">x or y</td>
+<td>如果 x 为假，选择 y，否则选择 x</td>
+</tr>
+<tr>
+<td align="right">x and y</td>
+<td>如果 x 为假，选择 x，否则选择 y</td>
+</tr>
+<tr>
+<td align="right">not x</td>
+<td>如果 x 为假，返回 True，否则返回 False</td>
+</tr>
+</tbody></table>
+<p>可以通过下面的示例来找到这些规律：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="number">1</span> <span class="keyword">and</span> <span class="number">3</span>)</span><br><span class="line">print(<span class="number">0</span> <span class="keyword">and</span> <span class="number">8</span>)</span><br><span class="line">print(<span class="number">9</span> <span class="keyword">and</span> <span class="number">4</span>)</span><br><span class="line">print(<span class="literal">False</span> <span class="keyword">and</span> <span class="number">5</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="成员运算符"><a href="#成员运算符" class="headerlink" title="成员运算符"></a>成员运算符</h3><p>在 Python 中，成员运算符有两个：</p>
+<ul>
+<li>a in b：用于判断 a 是否在 b 中</li>
+<li>a not in b：用于判断 a 是否不在 b 中</li>
+</ul>
+<p>具体使用示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">name = <span class="string">"alex"</span></span><br><span class="line">msg = input(<span class="string">"&gt;&gt;&gt;"</span>)</span><br><span class="line"><span class="keyword">if</span> name <span class="keyword">in</span> msg:</span><br><span class="line">    print(<span class="number">111</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    print(<span class="number">222</span>)</span><br></pre></td></tr></table></figure>
+
+<p>输出结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;alexad</span><br><span class="line"><span class="number">111</span></span><br><span class="line">&gt;&gt;&gt;alecxaa</span><br><span class="line"><span class="number">222</span></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-advanced/class-relationship/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/python-advanced/class-relationship/" class="post-title-link" itemprop="url">类之间的依赖关系和组合关系</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-15 13:50:12" itemprop="dateCreated datePublished" datetime="2020-02-15T13:50:12+08:00">2020-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python-%E8%BF%9B%E9%98%B6/" itemprop="url" rel="index"><span itemprop="name">Python 进阶</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="依赖（关联）关系"><a href="#依赖（关联）关系" class="headerlink" title="依赖（关联）关系"></a>依赖（关联）关系</h3><p>类之间可以有三种关系：</p>
+<ol>
+<li>依赖（关联）关系</li>
+<li>组合（聚合）关系</li>
+<li>继承（实现）关系</li>
+</ol>
+<p>依赖（关联）关系指的是类对象执行某个动作的时候，需要其他类的对象来帮助完成这个操作的情况，其特点为：</p>
+<ul>
+<li>将一个类的对象或者类名传到另一个类的方法中使用</li>
+<li>此时的关系是最轻的，随时可以更换其他对象</li>
+</ul>
+<p>关联关系的示例如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">play</span><span class="params">(self, tools)</span>:</span></span><br><span class="line">        tools.run()</span><br><span class="line">        print(<span class="string">'我要打游戏了'</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Computer</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'电脑已经打开，DNF已经登陆'</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Phone</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'王者荣耀已经登陆'</span>)</span><br><span class="line">xiaoming = Person()</span><br><span class="line">xmPhone = Phone()</span><br><span class="line">hwComp = Computer()</span><br><span class="line">xiaoming.play(xmPhone)</span><br><span class="line">xiaoming.play(hwComp)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">王者荣耀已经登陆</span><br><span class="line">我要打游戏了</span><br><span class="line">电脑已经打开，DNF已经登陆</span><br><span class="line">我要打游戏了</span><br></pre></td></tr></table></figure>
+
+<p>在这里补充两个删除对象的方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">delattr(对象名, <span class="string">'属性名'</span>)    <span class="comment"># 动态删除时比较常用</span></span><br><span class="line"><span class="keyword">del</span> 对象名.属性名</span><br></pre></td></tr></table></figure>
+
+<p><code>del</code> 和 <code>delattr</code> 功能有限，只能删除实例属性，不能删除类属性：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GirlFriend</span>:</span></span><br><span class="line">    name = <span class="string">'小丽丽'</span></span><br><span class="line">    eye_num = <span class="number">2</span></span><br><span class="line">    sex = <span class="string">'女'</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, age)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">chui_tui</span><span class="params">(self, num)</span>:</span></span><br><span class="line">        print(<span class="string">f'<span class="subst">&#123;self.name&#125;</span>给大哥捶<span class="subst">&#123;num&#125;</span>次腿'</span>)</span><br><span class="line">        self.love = <span class="literal">True</span></span><br><span class="line">    </span><br><span class="line">xiaoli = GirlFriend(<span class="string">'小丽'</span>, <span class="number">16</span>)</span><br><span class="line">xiaohong = GirlFriend(<span class="string">'小红'</span>, <span class="number">17</span>)</span><br><span class="line"><span class="keyword">del</span> xiaoli.age</span><br><span class="line">delattr(xiaohong, <span class="string">'age'</span>)</span><br><span class="line">print(xiaoli.__dict__)</span><br><span class="line">print(xiaohong.__dict__)</span><br></pre></td></tr></table></figure>
+
+<h3 id="组合（聚合）关系"><a href="#组合（聚合）关系" class="headerlink" title="组合（聚合）关系"></a>组合（聚合）关系</h3><p>组合（聚合）关系是对象里包含对象的关系：</p>
+<ul>
+<li>将一个类的对象封装到另一个类的对象的属性中，就叫组合<ul>
+<li>一对一关系</li>
+<li>一对多关系</li>
+</ul>
+</li>
+</ul>
+<p>一对一关系示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BigB</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, girl_friend=None)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.girl_friend = girl_friend</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">eat</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> self.girl_friend:</span><br><span class="line">            print(<span class="string">f'<span class="subst">&#123;self.name&#125;</span>带着他的女朋友<span class="subst">&#123;self.girl_friend.name&#125;</span>去吃饭'</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            print(<span class="string">'单身狗，吃狗粮！'</span>)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">movie</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> self.girl_friend:</span><br><span class="line">            print(<span class="string">f'<span class="subst">&#123;self.name&#125;</span>带着他的女朋友<span class="subst">&#123;self.girl_friend.name&#125;</span>去看电影'</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            print(<span class="string">'单身狗不陪看电影！'</span>)</span><br><span class="line">            </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Girl</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">    </span><br><span class="line">bao = BigB(<span class="string">'宝元'</span>)</span><br><span class="line">friend = Girl(<span class="string">'唐艺昕'</span>)</span><br><span class="line">bao.eat()</span><br><span class="line">bao.movie()</span><br><span class="line">bao.girl_friend = friend</span><br><span class="line">bao.eat()</span><br><span class="line">bao.movie()</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">单身狗，吃狗粮！</span><br><span class="line">单身狗不陪看电影！</span><br><span class="line">宝元带着他的女朋友唐艺昕去吃饭</span><br><span class="line">宝元带着他的女朋友唐艺昕去看电影</span><br></pre></td></tr></table></figure>
+
+<h3 id="一对多的组合关系"><a href="#一对多的组合关系" class="headerlink" title="一对多的组合关系"></a>一对多的组合关系</h3><p>同一对一的组合关系类似，我们可以将多个类的对象封装为另一个类的属性，具体示例为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 有一个男孩类和一个女孩类，男孩类中包含多个女孩类的对象</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Boy</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.girl_f = []</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">ba_mei</span><span class="params">(self, girl)</span>:</span></span><br><span class="line">        self.girl_f.append(girl)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">happy</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> self.girl_f:</span><br><span class="line">            i.play()</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Girl</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">play</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">f'<span class="subst">&#123;self.name&#125;</span>陪你一起玩~o(=•ェ•=)m'</span>)</span><br><span class="line">        </span><br><span class="line">xiaoqiang = Boy(<span class="string">'小强'</span>)</span><br><span class="line"></span><br><span class="line">xiaohong = Girl(<span class="string">'小红'</span>)</span><br><span class="line">xiaoli = Girl(<span class="string">'小丽'</span>)</span><br><span class="line">xiaofei = Girl(<span class="string">'小菲'</span>)</span><br><span class="line"></span><br><span class="line">xiaoqiang.ba_mei(xiaohong)</span><br><span class="line">xiaoqiang.ba_mei(xiaoli)</span><br><span class="line">xiaoqiang.ba_mei(xiaofei)</span><br><span class="line"></span><br><span class="line">xiaoqiang.happy()</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">小红陪你一起玩~o(=•ェ•=)m</span><br><span class="line">小丽陪你一起玩~o(=•ェ•=)m</span><br><span class="line">小菲陪你一起玩~o(=•ェ•=)m</span><br></pre></td></tr></table></figure>
+
+<p>组合关系与依赖关系的区别在于，组合关系是将类对象封装为新类的属性来使用，而依赖关系则是将类对象作为参数传给新类的方法使用。</p>
+<p>一对多练习：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">创建教师类和学生类</span><br><span class="line">• 教师类有姓名和学生列表两个属性</span><br><span class="line">• 教师类有添加学生的方法（添加的学生是具体对象）</span><br><span class="line">• 教师类有显示对应学生姓名和学号的方法</span><br><span class="line">• 学生类有学号/姓名/教师姓名三个属性</span><br><span class="line">• 创建多个学生，并添加到某位教师的学生列表中</span><br><span class="line">• 打印该教师的学生</span><br></pre></td></tr></table></figure>
+
+<p>参考代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Teacher</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.student_list = []</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add_student</span><span class="params">(self, *student)</span>:</span>    <span class="comment"># student前加了*，为了能一次性接收多个实例对象，方便后续使用</span></span><br><span class="line">        self.student_list.extend(student)</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> student:</span><br><span class="line">            j.teacher = self.name</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">show_student</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> self.student_list:</span><br><span class="line">            print(<span class="string">f'姓名：<span class="subst">&#123;i.name&#125;</span>，学号：<span class="subst">&#123;i.student_id&#125;</span>'</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, student_id)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.student_id = student_id</span><br><span class="line">        self.teacher = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">alex = Teacher(<span class="string">'Alex'</span>)</span><br><span class="line">bigB = Teacher(<span class="string">'宝元'</span>)</span><br><span class="line"></span><br><span class="line">xiaoming = Student(<span class="string">'小明'</span>, <span class="number">123</span>)</span><br><span class="line">xiaoqiang = Student(<span class="string">'小强'</span>, <span class="number">234</span>)</span><br><span class="line">xiaohong = Student(<span class="string">'小红'</span>, <span class="number">345</span>)</span><br><span class="line">xiaoli = Student(<span class="string">'小丽'</span>, <span class="number">456</span>)</span><br><span class="line">xiaohu = Student(<span class="string">'小虎'</span>, <span class="number">135</span>)</span><br><span class="line"></span><br><span class="line">alex.add_student(xiaoming ,xiaoli)</span><br><span class="line">bigB.add_student(xiaoqiang, xiaohong, xiaohu)</span><br><span class="line"></span><br><span class="line">alex.show_student()</span><br><span class="line">bigB.show_student()</span><br><span class="line"></span><br><span class="line">print(xiaoming.teacher)</span><br><span class="line">print(xiaoqiang.teacher)</span><br></pre></td></tr></table></figure>
+
+<p>需要注意，使用组合关系时，要尽量避免两个或多个类之间混合使用彼此的类对象作为自己的类属性，这样会陷入循环调用的麻烦中，容易引发混乱。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://sliu.vip/translation/python-MRO/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1084,535 +1629,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/basic-data-type/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="刘硕">
-      <meta itemprop="description" content="不成为自己讨厌的人">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="刘硕的技术查阅手册">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/python-basic/basic-data-type/" class="post-title-link" itemprop="url">基础数据类型补充与总结</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-02-15 13:47:46" itemprop="dateCreated datePublished" datetime="2020-02-15T13:47:46+08:00">2020-02-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="整型"><a href="#整型" class="headerlink" title="整型"></a>整型</h3><p><code>.bit_length</code> 方法用来计算整型数字转换为二进制所占的位数：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">10</span></span><br><span class="line">print(a.bit_length())</span><br><span class="line"></span><br><span class="line">输出的结果为： <span class="number">4</span></span><br></pre></td></tr></table></figure>
-
-<p>这个方法的意思是，10 转换为二进制数是 1010，一共会占 4 位。</p>
-<h3 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h3><h4 id="capitalize-方法"><a href="#capitalize-方法" class="headerlink" title=".capitalize() 方法"></a><code>.capitalize()</code> 方法</h4><p><code>.capitalize()</code> 方法用来将字符串的首字母大写：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">'alEX wusir'</span></span><br><span class="line">s1 = s.capitalize()</span><br><span class="line">print(s1)</span><br><span class="line"></span><br><span class="line">输出的结果为：Alex wusir</span><br></pre></td></tr></table></figure>
-
-<h4 id="title-方法"><a href="#title-方法" class="headerlink" title=".title() 方法"></a><code>.title()</code> 方法</h4><p><code>.title()</code> 方法能将字符串每个单词的首字母大写，区分首字母的方式有空格、符号和数字等：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">'alEX wUsir-meET3san'</span></span><br><span class="line">s1 = s.title()</span><br><span class="line">print(s1)</span><br><span class="line"></span><br><span class="line">输出的结果为：Alex Wusir-Meet3San</span><br></pre></td></tr></table></figure>
-
-<h4 id="index-和-find-方法"><a href="#index-和-find-方法" class="headerlink" title=".index() 和 .find() 方法"></a><code>.index()</code> 和 <code>.find()</code> 方法</h4><p><code>.index()</code> 方法用来通过元素查找索引，查找不到时会报错：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">'alex wusir'</span></span><br><span class="line">print(s.index(<span class="string">'e'</span>))</span><br><span class="line">print(s.index(<span class="string">'wu'</span>))</span><br></pre></td></tr></table></figure>
-
-<p><code>.find()</code> 方法同样用来通过元素查找索引，与 <code>.index()</code> 方法不同的是，<code>.find()</code> 方法查找不到时会返回 -1，而不会报错：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">'alex wusir'</span></span><br><span class="line">print(s.find(<span class="string">'b'</span>))</span><br><span class="line">print(s.find(<span class="string">'le'</span>))</span><br></pre></td></tr></table></figure>
-
-<p>如果字符串中有多个要查找的元素片段，<code>.index()</code> 和 <code>.find()</code> 方法都只会找第一个元素的索引：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="string">'abcabc'</span></span><br><span class="line">print(a.index(<span class="string">'a'</span>))</span><br><span class="line">print(a.find(<span class="string">'a'</span>))</span><br></pre></td></tr></table></figure>
-
-<h4 id="center-方法"><a href="#center-方法" class="headerlink" title=".center() 方法"></a><code>.center()</code> 方法</h4><p><code>.center()</code> 方法用来进行居中操作，会在字符串两端插入等量的空格，使得字符串总长度等于输入的参数：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">'alex wusir'</span></span><br><span class="line">print(s.center(<span class="number">20</span>))</span><br></pre></td></tr></table></figure>
-
-<p>也可以指定两端填充的内容：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">print(s.center(<span class="number">20</span>, <span class="string">'-'</span>))</span><br><span class="line"></span><br><span class="line">输出的结果为：-----alex wusir-----</span><br></pre></td></tr></table></figure>
-
-<h4 id="format-方法"><a href="#format-方法" class="headerlink" title=".format() 方法"></a><code>.format()</code> 方法</h4><p><code>.format()</code> 方法是另外一种字符串格式化的方法：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">'alex&#123;&#125;wu&#123;&#125;si&#123;&#125;r'</span></span><br><span class="line">s1 = s.format(<span class="string">'你好'</span>, <span class="string">'我好'</span>, <span class="string">'大家好'</span>)</span><br><span class="line">print(s1)</span><br><span class="line"></span><br><span class="line">输出的结果为：alex你好wu我好si大家好r</span><br></pre></td></tr></table></figure>
-
-<p><code>.format()</code> 方法除了向上面这种按照位置格式化之外，还可以按照索引格式化：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">'alex&#123;0&#125;wu&#123;2&#125;si&#123;1&#125;r'</span></span><br><span class="line">s1 = s.format(<span class="string">'你好'</span>, <span class="string">'我好'</span>, <span class="string">'大家好'</span>)</span><br><span class="line">print(s1)</span><br><span class="line"></span><br><span class="line">输出的结果为：alex你好wu大家好si我好r</span><br></pre></td></tr></table></figure>
-
-<p><code>.format()</code> 方法还可以按照关键字进行格式化：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">'alex&#123;a&#125;wu&#123;c&#125;si&#123;b&#125;r'</span></span><br><span class="line">s1 = s.format(b = <span class="string">'你好'</span>, a = <span class="string">'我好'</span>, c = <span class="string">'大家好'</span>)</span><br><span class="line">print(s1)</span><br><span class="line"></span><br><span class="line">输出的结果为：alex我好wu大家好si你好r</span><br></pre></td></tr></table></figure>
-
-<h4 id="swapcase-方法"><a href="#swapcase-方法" class="headerlink" title=".swapcase() 方法"></a><code>.swapcase()</code> 方法</h4><p><code>.swapcase()</code> 方法可以反转字符串中字母的大小写：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">'alEx'</span></span><br><span class="line">s1 = s.swapcase()</span><br><span class="line">print(s1)</span><br><span class="line"></span><br><span class="line">输出的结果为：ALeX</span><br></pre></td></tr></table></figure>
-
-<p>这里插入一个 PyCharm 的使用技巧：<code>ctrl + shift + r</code> 打开替换窗口。</p>
-<h3 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h3><h4 id="reverse-方法"><a href="#reverse-方法" class="headerlink" title=".reverse() 方法"></a><code>.reverse()</code> 方法</h4><p>对列表进行反转操作，我们可以通过切片的方式进行：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]</span><br><span class="line">print(lst[::<span class="number">-1</span>])</span><br></pre></td></tr></table></figure>
-
-<p>这种方法并没有对原来的列表进行修改，而是创建了一个新列表。如果我们想对原来的列表进行改动，可以将切片后的结果赋值给 lst。也可以使用 <code>.reverse()</code> 的方法，对列表本身进行原地的反转操作：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]</span><br><span class="line">lst.reverse()</span><br><span class="line">print(lst)</span><br><span class="line"></span><br><span class="line">输出的内容为：[<span class="number">6</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>]</span><br></pre></td></tr></table></figure>
-
-<h4 id="sort-方法"><a href="#sort-方法" class="headerlink" title=".sort() 方法"></a><code>.sort()</code> 方法</h4><p>列表的 <code>.sort()</code> 方法可以将混乱的列表排序，默认是按照升序排序：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="number">2</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">5</span>]</span><br><span class="line">lst.sort()</span><br><span class="line">print(lst)</span><br><span class="line"></span><br><span class="line">输出的结果为：[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]</span><br></pre></td></tr></table></figure>
-
-<p>我们可以混合使用 reverse 方法将升序的列表反转，达到降序的目的。也可以通过将 <code>.sort()</code> 方法中的参数 reverse 设置为 True，来让列表进行降序排序：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="number">2</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">5</span>]</span><br><span class="line">lst.sort(reverse=<span class="literal">True</span>)</span><br><span class="line">print(lst)</span><br><span class="line"></span><br><span class="line">输出的结果为：[<span class="number">6</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>]</span><br></pre></td></tr></table></figure>
-
-<h4 id="index-方法"><a href="#index-方法" class="headerlink" title=".index() 方法"></a><code>.index()</code> 方法</h4><p><code>.index()</code> 方法通过元素名来查找该元素在列表中的索引：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">6</span>,<span class="number">5</span>]</span><br><span class="line">print(lst.index(<span class="number">4</span>))</span><br><span class="line"></span><br><span class="line">输出的结果为： <span class="number">3</span></span><br></pre></td></tr></table></figure>
-
-<p>需要注意的是，如果需要查询的元素在列表中不止一个，<code>.index()</code> 方法只会返回从左面数第一个元素的索引值：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">4</span>,<span class="number">6</span>,<span class="number">5</span>]</span><br><span class="line">print(lst.index(<span class="number">4</span>))</span><br><span class="line"></span><br><span class="line">输出的结果仍然是： <span class="number">3</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="列表的加法和乘法"><a href="#列表的加法和乘法" class="headerlink" title="列表的加法和乘法"></a>列表的加法和乘法</h4><p>跟字符串类似，列表也可以进行加法和乘法的操作：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">lst1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, [<span class="number">4</span>]]</span><br><span class="line">lst2 = [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]</span><br><span class="line">print(lst1 + lst2)</span><br><span class="line">print(lst2 * <span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">输出的结果为：</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, [<span class="number">4</span>], <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]</span><br><span class="line">[<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]</span><br></pre></td></tr></table></figure>
-
-<p>需要注意的是，列表的加法和乘法都是新开一个空间存储结果，而不是对原列表进行操作。但是加法和乘法的结果所使用的元素仍然是原列表中的。相应的操作与浅拷贝就很类似了：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">lst1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, [<span class="number">4</span>]]</span><br><span class="line">lst2 = [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]</span><br><span class="line">l_sum = lst1 + lst2</span><br><span class="line">l_sum[<span class="number">3</span>].append(<span class="number">9</span>)</span><br><span class="line">print(lst1, lst2, l_sum)</span><br><span class="line">l_multi = lst1 * <span class="number">2</span></span><br><span class="line">l_multi[<span class="number">3</span>].append(<span class="number">8</span>)</span><br><span class="line">print(lst1, lst2, l_multi)</span><br></pre></td></tr></table></figure>
-
-<p>输出的结果为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, [<span class="number">4</span>, <span class="number">9</span>]] [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>] [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, [<span class="number">4</span>, <span class="number">9</span>], <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, [<span class="number">4</span>, <span class="number">9</span>, <span class="number">8</span>]] [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>] [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, [<span class="number">4</span>, <span class="number">9</span>, <span class="number">8</span>], <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, [<span class="number">4</span>, <span class="number">9</span>, <span class="number">8</span>]]</span><br></pre></td></tr></table></figure>
-
-<h3 id="元组"><a href="#元组" class="headerlink" title="元组"></a>元组</h3><p>元组需要补充的内容不是很多，只是需要掌握下面这三种小括号的含义即可：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tu = (<span class="number">10</span>)    <span class="comment"># int，括号中只有一个元素且没有任何逗号，那就表示该元素本身。此时，括号可以看成一个运算符。</span></span><br><span class="line">tu = (<span class="number">10</span>,)    <span class="comment"># tuple，括号中虽然只有一个元素，但是元素后面有一个逗号，表示这是一个元组。</span></span><br><span class="line">tu = ()    <span class="comment"># tuple，这时空元组的表示方法，括号中什么都没有。</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="字典"><a href="#字典" class="headerlink" title="字典"></a>字典</h3><h4 id="fromkeys-方法"><a href="#fromkeys-方法" class="headerlink" title=".fromkeys() 方法"></a><code>.fromkeys()</code> 方法</h4><p><code>.fromkeys()</code> 方法用来批量创建键值对，此方法需要两个参数，参数 1 是一个可迭代对象，将会迭代添加到字典中成为键，参数 2 是这些键共用的值：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key'</span>: <span class="number">1</span>, <span class="string">'key1'</span>: <span class="number">2</span>&#125;</span><br><span class="line">dic1 = dic.fromkeys(<span class="string">'abc'</span>, <span class="number">12</span>)</span><br><span class="line">print(dic,dic1)</span><br></pre></td></tr></table></figure>
-
-<p>输出的结果为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="string">'key'</span>: <span class="number">1</span>, <span class="string">'key1'</span>: <span class="number">2</span>&#125; &#123;<span class="string">'a'</span>: <span class="number">12</span>, <span class="string">'b'</span>: <span class="number">12</span>, <span class="string">'c'</span>: <span class="number">12</span>&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这里需要注意的是，<code>.fromkeys()</code> 方法并不是修改字典的方法，而是会创建一个新字典并返回。</p>
-<p>另外一个需要注意的是，如果参数 2 是可变数据，所有的值会共用这个数据：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">l = []</span><br><span class="line">dic = dict().fromkeys(<span class="string">'abc'</span>, l)</span><br><span class="line">l.append(<span class="number">2</span>)</span><br><span class="line">print(l, dic)</span><br></pre></td></tr></table></figure>
-
-<p>输出的结果为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">2</span>] &#123;<span class="string">'a'</span>: [<span class="number">2</span>], <span class="string">'b'</span>: [<span class="number">2</span>], <span class="string">'c'</span>: [<span class="number">2</span>]&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="类型转换"><a href="#类型转换" class="headerlink" title="类型转换"></a>类型转换</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">tuple(list)</span><br><span class="line">list(tuple)</span><br><span class="line"></span><br><span class="line">set(list)</span><br><span class="line">list(set)</span><br><span class="line"></span><br><span class="line">set(tuple)</span><br><span class="line">tuple(set)</span><br><span class="line"></span><br><span class="line">int(str)  <span class="comment"># 字符串中必须全部都是阿拉伯数字</span></span><br><span class="line">str(int)</span><br><span class="line"></span><br><span class="line">s1 = <span class="string">""</span>.join(<span class="string">'列表'</span>,<span class="string">'元组'</span>)    <span class="comment"># 将列表转换成字符串   ****</span></span><br><span class="line">s.split(<span class="string">":"</span>)              <span class="comment"># 将字符串转化成列表   ****</span></span><br><span class="line"></span><br><span class="line">str(dict)</span><br><span class="line">str(list)</span><br><span class="line">str(tuple)</span><br><span class="line">str(int)</span><br><span class="line">str(set)</span><br><span class="line">str(bool)</span><br></pre></td></tr></table></figure>
-
-<h3 id="基础数据类型总结"><a href="#基础数据类型总结" class="headerlink" title="基础数据类型总结"></a>基础数据类型总结</h3><table>
-<thead>
-<tr>
-<th align="center">数据类型</th>
-<th align="center">有序无序</th>
-<th align="center">是否可变</th>
-<th align="center">可否迭代</th>
-<th align="center">查看方式</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">int</td>
-<td align="center">有序</td>
-<td align="center">不可变</td>
-<td align="center">不可迭代</td>
-<td align="center">直接查看</td>
-</tr>
-<tr>
-<td align="center">bool</td>
-<td align="center">-</td>
-<td align="center">不可变</td>
-<td align="center">不可迭代</td>
-<td align="center">直接查看</td>
-</tr>
-<tr>
-<td align="center">str</td>
-<td align="center">有序</td>
-<td align="center">不可变</td>
-<td align="center">可迭代</td>
-<td align="center">通过索引查看</td>
-</tr>
-<tr>
-<td align="center">tuple</td>
-<td align="center">有序</td>
-<td align="center">不可变</td>
-<td align="center">可迭代</td>
-<td align="center">通过索引查看</td>
-</tr>
-<tr>
-<td align="center">list</td>
-<td align="center">有序</td>
-<td align="center">可变</td>
-<td align="center">可迭代</td>
-<td align="center">通过索引查看</td>
-</tr>
-<tr>
-<td align="center">dict</td>
-<td align="center">无序</td>
-<td align="center">可变</td>
-<td align="center">可迭代</td>
-<td align="center">通过键查看</td>
-</tr>
-<tr>
-<td align="center">set</td>
-<td align="center">无序</td>
-<td align="center">可变</td>
-<td align="center">可迭代</td>
-<td align="center">for循环查看</td>
-</tr>
-</tbody></table>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/os-sys/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="刘硕">
-      <meta itemprop="description" content="不成为自己讨厌的人">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="刘硕的技术查阅手册">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/python-basic/os-sys/" class="post-title-link" itemprop="url">os 和 sys 模块</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-02-15 13:47:44" itemprop="dateCreated datePublished" datetime="2020-02-15T13:47:44+08:00">2020-02-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="os-模块"><a href="#os-模块" class="headerlink" title="os 模块"></a><code>os</code> 模块</h3><p>os 模块主要用来进行与操作系统进行交互，它的导入方式为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br></pre></td></tr></table></figure>
-
-<p>os 模块主要涉及文件操作、文件夹操作、路径操作和其他操作四个方面。</p>
-<h4 id="文件操作"><a href="#文件操作" class="headerlink" title="文件操作"></a>文件操作</h4><p>通过 os 模块对文件直接进行的操作：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">os.rename(<span class="string">'旧名字'</span>, <span class="string">'新名字'</span>)    <span class="comment"># 重命名    非常重要</span></span><br><span class="line">os.remove(<span class="string">'要删除的文件名'</span>)    <span class="comment"># 删除文件    非常重要</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="文件夹操作"><a href="#文件夹操作" class="headerlink" title="文件夹操作"></a>文件夹操作</h4><p>对文件夹进行操作：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">os.makedirs(<span class="string">'a/b/c/d/e/f'</span>)    <span class="comment"># 递归创建文件夹    非常重要</span></span><br><span class="line">os.removedirs(<span class="string">'a/b/c/d/e/f'</span>)    <span class="comment"># 递归删除文件夹，若文件夹非空，会报错    非常重要</span></span><br><span class="line">os.mkdir(<span class="string">'a'</span>)    <span class="comment"># 创建文件夹    非常重要</span></span><br><span class="line">os.rmdir(<span class="string">'a'</span>)    <span class="comment"># 删除文件夹    非常重要</span></span><br><span class="line">print(os.listdir(<span class="string">'.'</span>))    <span class="comment"># 查看指定路径下的所有文件    非常重要</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="路径操作"><a href="#路径操作" class="headerlink" title="路径操作"></a>路径操作</h4><p>对路径的操作主要使用 <code>os.path</code> 下的各种方法：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">print(os.getcwd())    <span class="comment"># 获取当前工作路径    非常重要</span></span><br><span class="line">os.chdir(<span class="string">'..\day14'</span>)    <span class="comment"># 改变当前脚本工作目录，相当于终端下的cd</span></span><br><span class="line">print(os.path.abspath(<span class="string">'lib.py'</span>))    <span class="comment"># 获取文件的绝对路径</span></span><br><span class="line">print(os.path.split(<span class="string">'C:\Python_26\day14'</span>))    <span class="comment"># 对路径进行分割位目录和文件名，返回值为元组</span></span><br><span class="line">print(os.path.dirname(<span class="string">'C:\Python_26\day14'</span>))    <span class="comment"># 获取父级目录    非常重要</span></span><br><span class="line">print(os.path.basename(<span class="string">'C:\Python_26\day14'</span>))    <span class="comment"># 返回path最后的文件名</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># is系列</span></span><br><span class="line">print(os.path.exists(<span class="string">'C:\Python_26\day14'</span>))    <span class="comment"># 判断路径是否存在</span></span><br><span class="line">print(os.path.isabs(<span class="string">'day07'</span>))    <span class="comment"># 判断是否是绝对路径，如果是则返回True</span></span><br><span class="line">print(os.path.isfile(<span class="string">'C:\Python_26\day15\lib.py'</span>))    <span class="comment"># 判断是否是一个存在的文件，如果是则返回True    非常重要</span></span><br><span class="line">print(os.path.isdir(<span class="string">'C:\Python_26\day15'</span>)    <span class="comment"># 判断是否是一个存在的目录，如果是则返回True    非常重要</span></span><br><span class="line">print(os.path.join(<span class="string">"C:\\User"</span>,<span class="string">'Python_26'</span>,<span class="string">"day15"</span>,<span class="string">"lib.py"</span>))    <span class="comment"># 将多个路径组合后返回    非常重要</span></span><br><span class="line">print(os.path.getsize(<span class="string">'C:\Python_26\day15\lib.py'</span>))    <span class="comment"># 获取文件大小</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="其他操作"><a href="#其他操作" class="headerlink" title="其他操作"></a>其他操作</h4><p>os 方法的其他操作：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">print(os.open(<span class="string">'dir'</span>).read())    <span class="comment"># 给终端发送指令</span></span><br><span class="line">print(os.environ)    <span class="comment"># 获取环境变量</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>os模块功能很多很杂，不可能全都记住，但是下面的这些功能我们日后会经常用到，一定要尽量学会使用：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">os.getcwd()</span><br><span class="line">os.mkdir()</span><br><span class="line">os.rmdir()</span><br><span class="line">os.makedirs()</span><br><span class="line">os.removedirs()</span><br><span class="line">os.rename()</span><br><span class="line">os.remove()</span><br><span class="line">os.path.abspath()</span><br><span class="line">os.path.dirname()</span><br><span class="line">os.path.basename()</span><br><span class="line">os.path.join()</span><br><span class="line">os.path.isfile()</span><br><span class="line">os.path.isdir()</span><br><span class="line">os.path.getsize()</span><br></pre></td></tr></table></figure>
-
-<h3 id="sys-模块"><a href="#sys-模块" class="headerlink" title="sys 模块"></a><code>sys</code> 模块</h3><p>sys 模块用来和 Python 解释器进行交互，我们只需要记住 <code>sys.path</code> 功能即可：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line">print(sys.path)</span><br></pre></td></tr></table></figure>
-
-<p>除此之外，sys 模块还有几个有意思的功能可以稍作了解：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">if</span> sys.platform == <span class="string">'win32'</span>:    <span class="comment"># sys.platform方法用来查看操作系统平台</span></span><br><span class="line">    print(<span class="string">'Windows'</span>)</span><br><span class="line"><span class="keyword">elif</span> sys.platform == <span class="string">'darwin'</span>:</span><br><span class="line">    print(<span class="string">'Mac'</span>)</span><br><span class="line">    </span><br><span class="line">lst = sys.argv    <span class="comment"># 在终端中模拟input输入，避免input函数阻塞</span></span><br><span class="line">print(lst[<span class="number">-1</span>])</span><br><span class="line"></span><br><span class="line">print(sys.version)    <span class="comment"># 用来查看Python的版本</span></span><br><span class="line">sys.exit(<span class="number">1</span>)    <span class="comment"># 修改Python结束后的报告代码</span></span><br><span class="line"></span><br><span class="line">print(sys.modules)   <span class="comment"># 获取所有的模块</span></span><br><span class="line"></span><br><span class="line">sys.setrecuisionlimit()    <span class="comment"># 设置递归深度</span></span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/gitee-daily/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="刘硕">
-      <meta itemprop="description" content="不成为自己讨厌的人">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="刘硕的技术查阅手册">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/python-basic/gitee-daily/" class="post-title-link" itemprop="url">码云初识</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-02-15 13:47:42" itemprop="dateCreated datePublished" datetime="2020-02-15T13:47:42+08:00">2020-02-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>本文仅讨论一些码云和 git 的初级用法，仅供初学者参考。</p>
-<p>码云官网：<a href="https://gitee.com/" target="_blank" rel="noopener">https://gitee.com/</a></p>
-<img src="/python-basic/gitee-daily/gitee_01.png" class="" title="gitee_01">
-
-<h3 id="码云注册"><a href="#码云注册" class="headerlink" title="码云注册"></a>码云注册</h3><p>点击右上角“注册”按钮，开始注册一个码云账号，建议使用邮箱注册账号。</p>
-<img src="/python-basic/gitee-daily/gitee_02.png" class="" title="gitee_02">
-
-<p>新建一个库，“是否开源”处选择“公开”</p>
-<img src="/python-basic/gitee-daily/gitee_03.png" class="" title="gitee_03">
-
-<p>将默认勾选的“使用 Readme 文件初始化这个仓库”前面的复选框取消勾选</p>
-<img src="/python-basic/gitee-daily/gitee_04.png" class="" title="gitee_04">
-
-<p>在 git 官网 <a href="https://git-scm.com/" target="_blank" rel="noopener">https://git-scm.com/</a> 下载 git，安装到电脑上。</p>
-<h3 id="码云的日常使用"><a href="#码云的日常使用" class="headerlink" title="码云的日常使用"></a>码云的日常使用</h3><p>第一步，在想要进行版本控制的文件夹中点击右键，点击“Git Bash Here”，在 git 窗口中输入 <code>git init</code>，然后按下 <code>回车</code> 键。git 初始化将自动运行。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Sure@LAPTOP-ISFBFO7G MINGW64 ~/Desktop/try</span><br><span class="line">$ git init</span><br><span class="line">Initialized empty Git repository <span class="keyword">in</span> C:/Users/Sure/Desktop/try/.git/</span><br></pre></td></tr></table></figure>
-
-<p>初始化操作会在当前文件夹中新建一个 <code>.git</code> 文件夹，里面装的是 git 的配置文件。</p>
-<img src="/python-basic/gitee-daily/gitee_05.png" class="" title="gitee_05">
-
-<p>第二步，输入 <code>git add .</code>，按下 <code>回车</code> 键，匹配此文件夹下的所有增删改信息。其中，可以把 <code>.</code> 替换为特定的文件，对指定文件的更改信息进行更新。</p>
-<p>第三步，输入 <code>git commit -m &quot;first attempt&quot;</code>，提交本次增删改，并在 -m 后给提交以备注信息。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">Sure@LAPTOP-ISFBFO7G MINGW64 ~/Desktop/try (master)</span><br><span class="line">$ git commit -m <span class="string">"first attempt"</span></span><br><span class="line">[master (root-commit) 3e41efc] first attempt</span><br><span class="line"> 45 files changed, 609 insertions(+)</span><br><span class="line"> create mode 100644 d2/media/Git_01.png</span><br><span class="line"> create mode 100644 d2/media/Git_02.png</span><br><span class="line"> create mode 100644 da/Markdown Reference.md</span><br><span class="line"> create mode 100644 da/media/pc_setup_01.png</span><br><span class="line"> create mode 100644 da/media/pc_setup_02.png</span><br><span class="line"> create mode 100644 da/media/pc_setup_03.png</span><br><span class="line"> create mode 100644 da/media/pc_setup_04.png</span><br><span class="line"> create mode 100644 da/media/pc_setup_05.png</span><br><span class="line"> create mode 100644 da/media/pc_setup_06.png</span><br><span class="line"> create mode 100644 da/media/pc_setup_07.png</span><br><span class="line"> create mode 100644 da/media/pc_setup_08.png</span><br><span class="line"> create mode 100644 da/media/pc_setup_09.png</span><br><span class="line"> create mode 100644 da/media/pc_setup_10.png</span><br><span class="line"> create mode 100644 da/media/pc_setup_11.png</span><br><span class="line"> create mode 100644 da/media/pc_setup_12.png</span><br><span class="line"> create mode 100644 da/media/pc_setup_13.png</span><br><span class="line"> create mode 100644 da/media/pc_setup_14.png</span><br><span class="line"> create mode 100644 da/media/pc_setup_15.png</span><br><span class="line"> create mode 100644 da/media/pc_setup_16.png</span><br><span class="line"> create mode 100644 da/media/pc_setup_17.png</span><br><span class="line"> create mode 100644 da/media/pc_setup_18.png</span><br><span class="line"> create mode 100644 da/media/py_setup_01.png</span><br><span class="line"> create mode 100644 da/media/py_setup_02.png</span><br><span class="line"> create mode 100644 da/media/py_setup_03.png</span><br><span class="line"> create mode 100644 da/media/py_setup_04.png</span><br><span class="line"> create mode 100644 da/media/py_setup_05.png</span><br><span class="line"> create mode 100644 da/media/py_setup_06.png</span><br><span class="line"> create mode 100644 da/media/py_setup_07.png</span><br><span class="line"> create mode 100644 da/media/py_setup_08.png</span><br><span class="line"> create mode 100644 da/media/py_setup_09.png</span><br><span class="line"> create mode 100644 da/media/py_setup_10.png</span><br><span class="line"> create mode 100644 da/media/py_setup_11.png</span><br><span class="line"> create mode 100644 da/media/py_setup_12.png</span><br><span class="line"> create mode 100644 da/media/py_setup_13.png</span><br><span class="line"> create mode 100644 da/media/py_setup_14.png</span><br><span class="line"> create mode 100644 da/media/py_setup_15.png</span><br><span class="line"> create mode 100644 da/media/py_setup_16.png</span><br><span class="line"> create mode 100644 da/media/py_setup_17.png</span><br><span class="line"> create mode 100644 da/media/py_setup_18.png</span><br><span class="line"> create mode 100644 da/media/py_setup_19.png</span><br><span class="line"> create mode 100644 da/media/py_setup_20.png</span><br><span class="line"> create mode 100644 da/media/py_setup_21.png</span><br><span class="line"> create mode 100644 da/media/py_setup_22.png</span><br><span class="line"> create mode 100644 da/test.py</span><br><span class="line"> create mode 100644 <span class="string">"da/\351\242\204\347\247\221day01_\347\254\224\350\256\260.md"</span></span><br></pre></td></tr></table></figure>
-
-<p>第四步，输入 <code>git remote add origin https://gitee.com/oldboy-python-full-stack-26/19083026021.git</code>，将本地文件夹和码云的仓库建立连接，绑定新的本地仓库至远程仓库。其中，<code>https://gitee.com/oldboy-python-full-stack-26/19083026021.git</code> 是码云仓库的地址。</p>
-<p>第五步，输入 <code>git push origin master</code>，把修改推送至云端仓库。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Sure@LAPTOP-ISFBFO7G MINGW64 ~/Desktop/try (master)</span><br><span class="line">$ git push origin master</span><br><span class="line">To https://gitee.com/oldboy-python-full-stack-26/19083026021.git</span><br><span class="line">! [rejected]        master -&gt; master (fetch first)</span><br><span class="line">error: failed to push some refs to <span class="string">'https://gitee.com/oldboy-python-full-stack-26/19083026021.git'</span></span><br><span class="line">hint: Updates were rejected because the remote contains work that you <span class="keyword">do</span></span><br><span class="line">hint: not have locally. This is usually caused by another repository pushing</span><br><span class="line">hint: to the same ref. You may want to first integrate the remote changes</span><br><span class="line">hint: (e.g., <span class="string">'git pull ...'</span>) before pushing again.</span><br><span class="line">hint: See the <span class="string">'Note about fast-forwards'</span> <span class="keyword">in</span> <span class="string">'git push --help'</span> <span class="keyword">for</span> details.</span><br></pre></td></tr></table></figure>
-
-<p>因为云端仓库有内容，需要先把云端的内容拉到本地，才能把本地的修改推至云端。</p>
-<p>第六步，输入 <code>git pull origin master</code>，因为发现推送失败，需要解决冲突，先把代码拉下来 。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Sure@LAPTOP-ISFBFO7G MINGW64 ~/Desktop/try (master)</span><br><span class="line">$ git pull origin master</span><br><span class="line">warning: no common commits</span><br><span class="line">remote: Enumerating objects: 113, <span class="keyword">done</span>.</span><br><span class="line">remote: Counting objects: 100% (113/113), <span class="keyword">done</span>.</span><br><span class="line">remote: Compressing objects: 100% (107/107), <span class="keyword">done</span>.</span><br><span class="line">remote: Total 113 (delta 23), reused 0 (delta 0)</span><br><span class="line">Receiving objects: 100% (113/113), 5.64 MiB | 1.83 MiB/s, <span class="keyword">done</span>.</span><br><span class="line">Resolving deltas: 100% (23/23), <span class="keyword">done</span>.</span><br><span class="line">From https://gitee.com/oldboy-python-full-stack-26/19083026021</span><br><span class="line">    * branch            master     -&gt; FETCH_HEAD</span><br><span class="line">    * [new branch]      master     -&gt; origin/master</span><br><span class="line">fatal: refusing to merge unrelated histories</span><br></pre></td></tr></table></figure>
-
-<p>还是没有成功。失败的原因是不能融合没有关联的历史修改。</p>
-<p>第七步，输入 <code>git pull origin master --allow-unrelated-histories</code>，用更高级的代码，允许无关联的历史修改进行融合，把代码拉下来。</p>
-<p>弹出的是 Vim 打开的空白文件，输入 <code>:</code>，然后输入 <code>wq</code>，按下 <code>回车</code> 键退出编辑即可。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br></pre></td><td class="code"><pre><span class="line">Sure@LAPTOP-ISFBFO7G MINGW64 ~/Desktop/try (master)</span><br><span class="line">$ git pull origin master --allow-unrelated-histories</span><br><span class="line">From https://gitee.com/oldboy-python-full-stack-26/19083026021</span><br><span class="line"> * branch            master     -&gt; FETCH_HEAD</span><br><span class="line">Merge made by the <span class="string">'recursive'</span> strategy.</span><br><span class="line"> .idea/PyProject.iml                                |  11 +</span><br><span class="line"> .idea/inspectionProfiles/profiles_settings.xml     |   6 +</span><br><span class="line"> .idea/misc.xml                                     |   7 +</span><br><span class="line"> .idea/modules.xml                                  |   8 +</span><br><span class="line"> .idea/vcs.xml                                      |   6 +</span><br><span class="line"> .idea/workspace.xml                                |  98 +++++</span><br><span class="line"> day01/Markdown Reference.md                        | 406 +++++++++++++++++++++</span><br><span class="line"> day01/gh-md-toc.exe                                | Bin 0 -&gt; 6391808 bytes</span><br><span class="line"> day01/gh.exe                                       | Bin 0 -&gt; 6400000 bytes</span><br><span class="line"> day01/media/pc_setup_01.png                        | Bin 0 -&gt; 69626 bytes</span><br><span class="line"> day01/media/pc_setup_02.png                        | Bin 0 -&gt; 67690 bytes</span><br><span class="line"> day01/media/pc_setup_03.png                        | Bin 0 -&gt; 46178 bytes</span><br><span class="line"> day01/media/pc_setup_04.png                        | Bin 0 -&gt; 34293 bytes</span><br><span class="line"> day01/media/pc_setup_05.png                        | Bin 0 -&gt; 33099 bytes</span><br><span class="line"> day01/media/pc_setup_06.png                        | Bin 0 -&gt; 33854 bytes</span><br><span class="line"> day01/media/pc_setup_07.png                        | Bin 0 -&gt; 38762 bytes</span><br><span class="line"> day01/media/pc_setup_08.png                        | Bin 0 -&gt; 14240 bytes</span><br><span class="line"> day01/media/pc_setup_09.png                        | Bin 0 -&gt; 216577 bytes</span><br><span class="line"> day01/media/pc_setup_10.png                        | Bin 0 -&gt; 43529 bytes</span><br><span class="line"> day01/media/pc_setup_11.png                        | Bin 0 -&gt; 51163 bytes</span><br><span class="line"> day01/media/pc_setup_12.png                        | Bin 0 -&gt; 75482 bytes</span><br><span class="line"> day01/media/pc_setup_13.png                        | Bin 0 -&gt; 38615 bytes</span><br><span class="line"> day01/media/pc_setup_14.png                        | Bin 0 -&gt; 76688 bytes</span><br><span class="line"> day01/media/pc_setup_15.png                        | Bin 0 -&gt; 139743 bytes</span><br><span class="line"> day01/media/pc_setup_16.png                        | Bin 0 -&gt; 9092 bytes</span><br><span class="line"> day01/media/pc_setup_17.png                        | Bin 0 -&gt; 120995 bytes</span><br><span class="line"> day01/media/pc_setup_18.png                        | Bin 0 -&gt; 86085 bytes</span><br><span class="line"> day01/media/py_setup_01.png                        | Bin 0 -&gt; 209410 bytes</span><br><span class="line"> day01/media/py_setup_02.png                        | Bin 0 -&gt; 199153 bytes</span><br><span class="line"> day01/media/py_setup_03.png                        | Bin 0 -&gt; 212513 bytes</span><br><span class="line"> day01/media/py_setup_04.png                        | Bin 0 -&gt; 178987 bytes</span><br><span class="line"> day01/media/py_setup_05.png                        | Bin 0 -&gt; 19117 bytes</span><br><span class="line"> day01/media/py_setup_06.png                        | Bin 0 -&gt; 35736 bytes</span><br><span class="line"> day01/media/py_setup_07.png                        | Bin 0 -&gt; 38355 bytes</span><br><span class="line"> day01/media/py_setup_08.png                        | Bin 0 -&gt; 4303 bytes</span><br><span class="line"> day01/media/py_setup_09.png                        | Bin 0 -&gt; 18328 bytes</span><br><span class="line"> day01/media/py_setup_10.png                        | Bin 0 -&gt; 6736 bytes</span><br><span class="line"> day01/media/py_setup_11.png                        | Bin 0 -&gt; 54323 bytes</span><br><span class="line"> day01/media/py_setup_12.png                        | Bin 0 -&gt; 44906 bytes</span><br><span class="line"> day01/media/py_setup_13.png                        | Bin 0 -&gt; 58768 bytes</span><br><span class="line"> day01/media/py_setup_14.png                        | Bin 0 -&gt; 100797 bytes</span><br><span class="line"> day01/media/py_setup_15.png                        | Bin 0 -&gt; 38831 bytes</span><br><span class="line"> day01/media/py_setup_16.png                        | Bin 0 -&gt; 56690 bytes</span><br><span class="line"> day01/media/py_setup_17.png                        | Bin 0 -&gt; 58158 bytes</span><br><span class="line"> day01/media/py_setup_18.png                        | Bin 0 -&gt; 59996 bytes</span><br><span class="line"> day01/media/py_setup_19.png                        | Bin 0 -&gt; 36564 bytes</span><br><span class="line"> day01/media/py_setup_20.png                        | Bin 0 -&gt; 194578 bytes</span><br><span class="line"> day01/media/py_setup_21.png                        | Bin 0 -&gt; 183047 bytes</span><br><span class="line"> day01/media/py_setup_22.png                        | Bin 0 -&gt; 67268 bytes</span><br><span class="line"> day01/test.py                                      |   1 +</span><br><span class="line"> ...4\347\247\221day01_\347\254\224\350\256\260.md<span class="string">" | 204 +++++++++++</span></span><br><span class="line"><span class="string"> day02/media/Git_01.png                             | Bin 0 -&gt; 94007 bytes</span></span><br><span class="line"><span class="string"> day02/media/Git_02.png                             | Bin 0 -&gt; 407678 bytes</span></span><br><span class="line"><span class="string"> 53 files changed, 747 insertions(+)</span></span><br><span class="line"><span class="string"> create mode 100644 .idea/PyProject.iml</span></span><br><span class="line"><span class="string"> create mode 100644 .idea/inspectionProfiles/profiles_settings.xml</span></span><br><span class="line"><span class="string"> create mode 100644 .idea/misc.xml</span></span><br><span class="line"><span class="string"> create mode 100644 .idea/modules.xml</span></span><br><span class="line"><span class="string"> create mode 100644 .idea/vcs.xml</span></span><br><span class="line"><span class="string"> create mode 100644 .idea/workspace.xml</span></span><br><span class="line"><span class="string"> create mode 100644 day01/Markdown Reference.md</span></span><br><span class="line"><span class="string"> create mode 100644 day01/gh-md-toc.exe</span></span><br><span class="line"><span class="string"> create mode 100644 day01/gh.exe</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/pc_setup_01.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/pc_setup_02.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/pc_setup_03.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/pc_setup_04.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/pc_setup_05.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/pc_setup_06.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/pc_setup_07.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/pc_setup_08.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/pc_setup_09.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/pc_setup_10.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/pc_setup_11.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/pc_setup_12.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/pc_setup_13.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/pc_setup_14.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/pc_setup_15.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/pc_setup_16.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/pc_setup_17.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/pc_setup_18.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/py_setup_01.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/py_setup_02.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/py_setup_03.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/py_setup_04.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/py_setup_05.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/py_setup_06.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/py_setup_07.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/py_setup_08.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/py_setup_09.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/py_setup_10.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/py_setup_11.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/py_setup_12.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/py_setup_13.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/py_setup_14.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/py_setup_15.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/py_setup_16.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/py_setup_17.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/py_setup_18.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/py_setup_19.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/py_setup_20.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/py_setup_21.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/py_setup_22.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/test.py</span></span><br><span class="line"><span class="string"> create mode 100644 "</span>day01/\351\242\204\347\247\221day01_\347\254\224\350\256\260.md<span class="string">"</span></span><br><span class="line"><span class="string"> create mode 100644 day02/media/Git_01.png</span></span><br><span class="line"><span class="string"> create mode 100644 day02/media/Git_02.png</span></span><br></pre></td></tr></table></figure>
-
-<p>第八步，重复第五步，输入 <code>git push origin master</code>，代码成功上传至云端。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Sure@LAPTOP-ISFBFO7G MINGW64 ~/Desktop/try (master)</span><br><span class="line">$ git push origin master</span><br><span class="line">Enumerating objects: 8, <span class="keyword">done</span>.</span><br><span class="line">Counting objects: 100% (8/8), <span class="keyword">done</span>.</span><br><span class="line">Delta compression using up to 4 threads</span><br><span class="line">Compressing objects: 100% (7/7), <span class="keyword">done</span>.</span><br><span class="line">Writing objects: 100% (7/7), 10.03 KiB | 3.34 MiB/s, <span class="keyword">done</span>.</span><br><span class="line">Total 7 (delta 1), reused 0 (delta 0)</span><br><span class="line">remote: Powered By Gitee.com</span><br><span class="line">To https://gitee.com/oldboy-python-full-stack-26/19083026021.git</span><br><span class="line">91e455d..24b44b2  master -&gt; master</span><br></pre></td></tr></table></figure>
-
-<p>其中，第一部和第四步仅在第一次配置的时候需要用到，第六步和第七步是因为第五步出错才采取的应对步骤，第八步与第五步是完全相同的操作。在平时日常使用中，主要使用<strong>第二步、第三步和第五步</strong>这三个步骤。</p>
-<h3 id="git-基本操作总结"><a href="#git-基本操作总结" class="headerlink" title="git 基本操作总结"></a>git 基本操作总结</h3><ol>
-<li><code>git init</code>，初始化</li>
-<li><code>git add .</code>，将代码的增删改拍快照</li>
-<li><code>git commit -m &#39;note&#39;</code>，将代码变更提交</li>
-<li><code>git remote add origin https://gitee.com/oldboy-python-full-stack-26/19083026021.git</code>，将本地仓库与码云仓库建立连接。其中，<code>https://gitee.com/oldboy-python-full-stack-26/19083026021.git</code> 是码云仓库的地址</li>
-<li><code>git pull origin master</code>，将码云的更改内容应用到本地仓库</li>
-<li><code>git pull origin master --allow-unrelated-histories</code>，允许合并无关联的历史变更</li>
-<li><code>git push origin master</code>，将本地的代码变更应用到码云仓库</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/blog-writing/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="刘硕">
-      <meta itemprop="description" content="不成为自己讨厌的人">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="刘硕的技术查阅手册">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/python-basic/blog-writing/" class="post-title-link" itemprop="url">技术博客制作</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-02-15 13:47:41" itemprop="dateCreated datePublished" datetime="2020-02-15T13:47:41+08:00">2020-02-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="制作步骤"><a href="#制作步骤" class="headerlink" title="制作步骤"></a>制作步骤</h3><ol>
-<li>使用 Typora 等 markdown 文本编译工具整理好博客内容</li>
-<li>全选 -&gt; 复制 -&gt; 粘贴到 CSDN 或博客园等博客网站发布</li>
-</ol>
-<h3 id="制作技巧"><a href="#制作技巧" class="headerlink" title="制作技巧"></a>制作技巧</h3><ol>
-<li>能用图片少用文字</li>
-<li>能用代码也少用文字</li>
-<li>能用 gif 的尽量花时间做一个 gif（进阶）</li>
-</ol>
-<h3 id="推荐平台"><a href="#推荐平台" class="headerlink" title="推荐平台"></a>推荐平台</h3><ol>
-<li><a href="https://www.cnblogs.com" target="_blank" rel="noopener">博客园</a></li>
-<li><a href="https://www.csdn.net/" target="_blank" rel="noopener">CSDN</a></li>
-<li><a href="https://www.v2ex.com/" target="_blank" rel="noopener">V2EX</a>（比较古老的博客网站，很多年纪比较大的程序员活跃于此）</li>
-</ol>
-<h3 id="博客园使用技巧"><a href="#博客园使用技巧" class="headerlink" title="博客园使用技巧"></a>博客园使用技巧</h3><ol>
-<li><p>在博客园个人主页点击 <code>管理</code> -&gt; <code>选项</code>，把 <code>默认编辑器</code> 改成 <code>Markdown</code>。这样，以后我们的博客用 Typora 写好以后就可以直接复制粘贴到博客园中发布啦。</p>
-<img src="/python-basic/blog-writing/1567590903645.png" class="" width="1567590903645">
-</li>
-<li><p>在 <code>设置</code> 选项卡中，可以通过自定义样式，让博客园首页更加美观。</p>
-<img src="/python-basic/blog-writing/1567591009996.png" class="" width="1567591009996"></li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1685,7 +1701,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">221</span>
+          <span class="site-state-item-count">225</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
