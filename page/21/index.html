@@ -230,6 +230,418 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-advanced/encapsulation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/python-advanced/encapsulation/" class="post-title-link" itemprop="url">封装</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-15 13:45:39" itemprop="dateCreated datePublished" datetime="2020-02-15T13:45:39+08:00">2020-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python-%E8%BF%9B%E9%98%B6/" itemprop="url" rel="index"><span itemprop="name">Python 进阶</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>“封装”就是将抽象得到的数据和行为相结合，形成一个有机整体</p>
+<ul>
+<li>元组，列表，字典等等：数据的封装，通过引用去使用数据</li>
+<li>函数：算法的封装<ul>
+<li>如果没有函数，功能要靠每一行代码去直接执行</li>
+<li>没有函数的话，耦合度会很高，复用性很差，开发效率也非常低</li>
+</ul>
+</li>
+</ul>
+<p>封装的目的是简化编程和增加安全性</p>
+<ul>
+<li>使用者不必关系具体的实现细节</li>
+<li>通过接口（万能的点 <code>.</code>）</li>
+<li>还可以给予特定的访问权限来使用类的成员</li>
+<li>明确区分内外<ul>
+<li><code>类的实现者</code> 可以修改内部封装的东西而不影响外部调用者</li>
+<li><code>外部调用者</code> 只需要直到自己可以使用该类对象的哪些功能</li>
+</ul>
+</li>
+</ul>
+<p>私有属性和私有方法</p>
+<ul>
+<li>标识符以双下划线 <code>__</code> 开头的是私有成员，在外部不可以直接用这种属性或方法名调用，子类中也不能访问到这个数据</li>
+<li>可以提供外界访问的接口<ul>
+<li>将不需要对外提供的内容都隐藏起来</li>
+<li>把属性都隐藏，提供公共方法对其访问</li>
+</ul>
+</li>
+<li>双下划线开头的属性在继承给子类时，子类是无法覆盖的</li>
+</ul>
+<p>私有方法示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, age)</span>:</span></span><br><span class="line">        self.__name = name</span><br><span class="line">        self.__age = age</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_age</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.__age</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">set_age</span><span class="params">(self, age)</span>:</span></span><br><span class="line">        self.__age = age</span><br><span class="line">xiaoming = Person(<span class="string">'小明'</span>, <span class="number">17</span>)</span><br><span class="line"><span class="comment"># print(xiaoming.__age)    # 程序会报错，找不到__age属性</span></span><br><span class="line">print(xiaoming.get_age())</span><br><span class="line">xiaoming.set_age(<span class="number">20</span>)</span><br><span class="line">print(xiaoming.get_age())</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">17</span></span><br><span class="line"><span class="number">20</span></span><br></pre></td></tr></table></figure>
+
+<p>私有属性和私有方法并不是绝对不可以在外部访问和修改。我们可以通过在私有属性或方法名前加上 <code>_类名</code>，就可以调用私有属性和方法了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, age)</span>:</span></span><br><span class="line">        self.__name = name</span><br><span class="line">        self.__age = age</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_age</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.__age</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">set_age</span><span class="params">(self, age)</span>:</span></span><br><span class="line">        self.__age = age</span><br><span class="line">xiaoming = Person(<span class="string">'小明'</span>, <span class="number">17</span>)</span><br><span class="line">print(xiaoming._Person__age)</span><br><span class="line">xiaoming._Person__age = <span class="number">20</span></span><br><span class="line">print(xiaoming._Person__age)</span><br></pre></td></tr></table></figure>
+
+<p>破解私有属性和私有方法：</p>
+<ul>
+<li>在名称前加上 <code>_类名</code></li>
+<li>其实双下划线仅仅是一种变形操作：<ul>
+<li>类中所有双下划线开头的名称如 <code>__x</code> 都会自动变形成：<code>_类名__x</code> 的形式</li>
+</ul>
+</li>
+</ul>
+<p>封装总结</p>
+<ul>
+<li>对外隐藏类内的具体实现，只提供接口，供外界使用</li>
+<li>可以将属性和方法设置成私有的，<code>__</code>，设置成私有后，类内部可以访问，类外部无法访问</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/linux/vmware-net-type/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/linux/vmware-net-type/" class="post-title-link" itemprop="url">VMware 的网络连接类型</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-15 13:45:04" itemprop="dateCreated datePublished" datetime="2020-02-15T13:45:04+08:00">2020-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-29 10:34:02" itemprop="dateModified" datetime="2020-02-29T10:34:02+08:00">2020-02-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <img src="/linux/vmware-net-type/1580797811596.png" class="" width="1580797811596">
+
+<h3 id="桥接"><a href="#桥接" class="headerlink" title="桥接"></a>桥接</h3><p>桥接方式就是，虚拟机安装好之后，和宿主机公用一个局域网段</p>
+<ul>
+<li>宿主机：<code>192.168.178.142</code></li>
+<li>虚拟机也是这个网段，可能会自动分配一个 <code>192.168.178.150</code> 地址</li>
+<li>虚拟机和宿主机在网络层面是平级的</li>
+<li>桥接相当于，教室内，又多了一个同学，占用一个 IP 地址</li>
+<li>同一局域网内的 IP 地址的范围是有限的，比如 0~255</li>
+<li>都用桥接，可能会发生 IP 抢夺，以及 IP 不够用的问题</li>
+</ul>
+<h3 id="NAT"><a href="#NAT" class="headerlink" title="NAT"></a>NAT</h3><p>NAT 上网方式是，基于宿主机的网卡，再生成一个局域网段，外网就无法和虚拟机之间通信了</p>
+<ul>
+<li>宿主机是 <code>192.168.178.142</code> 地址</li>
+<li>NAT 生成一个新的局域网。假设是 <code>192.168.11.10</code></li>
+<li>不会发生 IP 抢夺事件了</li>
+</ul>
+<h3 id="仅主机模式"><a href="#仅主机模式" class="headerlink" title="仅主机模式"></a>仅主机模式</h3><p>相当于单机模式</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/time-datetime/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/python-basic/time-datetime/" class="post-title-link" itemprop="url">time 和 datetime 模块</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-15 13:44:55" itemprop="dateCreated datePublished" datetime="2020-02-15T13:44:55+08:00">2020-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="time-模块"><a href="#time-模块" class="headerlink" title="time 模块"></a><code>time</code> 模块</h3><p>time 模块，也就是时间模块，用来进行一些与时间有关的操作。其使用方法为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line">print(time.time())   <span class="comment"># 时间戳 浮点数</span></span><br><span class="line">print(time.sleep(<span class="number">2</span>)) <span class="comment"># 秒 进行睡眠</span></span><br></pre></td></tr></table></figure>
+
+<p>时间分类:</p>
+<ol>
+<li>时间戳     — 用于进行计算</li>
+<li>结构化时间 — 给程序员查看使用（命名元组）</li>
+<li>字符串时间 — 给用户查看的</li>
+</ol>
+<p>时间模块的基本方法有：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">t = time.time()         <span class="comment"># 用于获取当前时间戳</span></span><br><span class="line">print(time.localtime(t))   <span class="comment"># 将时间戳转成结构化时间</span></span><br><span class="line">t = time.localtime()     <span class="comment"># 将时间戳转成结构化时间,不写默认是当前时间戳</span></span><br><span class="line">print(time.mktime(t))    <span class="comment"># 将结构化时间转成时间戳</span></span><br><span class="line">t = time.localtime()</span><br><span class="line">print(time.strftime(<span class="string">"%Y-%m-%d %H:%M:%S"</span>,t))  <span class="comment"># 将结构化时间转换成字符串时间</span></span><br><span class="line">str_time = <span class="string">"2019-9-1 12:23:06"</span></span><br><span class="line">print(time.strptime(str_time,<span class="string">"%Y-%m-%d %H:%M:%S"</span>)) <span class="comment"># 将字符串时间转换成结构化时间</span></span><br><span class="line">print(time.strftime(<span class="string">"%Y-%m-%d %H:%M:%S"</span>,time.localtime()))    <span class="comment"># 将结构化时间转化为字符串时间</span></span><br><span class="line">str_time = <span class="string">"2019-9-1 12:23:06"</span></span><br><span class="line">print(time.mktime(time.strptime(str_time,<span class="string">"%Y-%m-%d %H:%M:%S"</span>)))</span><br><span class="line"></span><br><span class="line">print(time.localtime()[<span class="number">0</span>])</span><br><span class="line">print(time.localtime().tm_year)</span><br><span class="line">print(time.localtime().tm_yday)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">time.struct_time(tm_year=<span class="number">2019</span>, tm_mon=<span class="number">9</span>, tm_mday=<span class="number">26</span>, tm_hour=<span class="number">19</span>, tm_min=<span class="number">19</span>, tm_sec=<span class="number">21</span>, tm_wday=<span class="number">3</span>, tm_yday=<span class="number">269</span>, tm_isdst=<span class="number">0</span>)</span><br><span class="line"><span class="number">1569496761.0</span></span><br><span class="line"><span class="number">2019</span><span class="number">-09</span><span class="number">-26</span> <span class="number">19</span>:<span class="number">19</span>:<span class="number">21</span></span><br><span class="line">time.struct_time(tm_year=<span class="number">2019</span>, tm_mon=<span class="number">9</span>, tm_mday=<span class="number">1</span>, tm_hour=<span class="number">12</span>, tm_min=<span class="number">23</span>, tm_sec=<span class="number">6</span>, tm_wday=<span class="number">6</span>, tm_yday=<span class="number">244</span>, tm_isdst=<span class="number">-1</span>)</span><br><span class="line"><span class="number">2019</span><span class="number">-09</span><span class="number">-26</span> <span class="number">19</span>:<span class="number">19</span>:<span class="number">21</span></span><br><span class="line"><span class="number">1567311786.0</span></span><br><span class="line"><span class="number">2019</span></span><br><span class="line"><span class="number">2019</span></span><br><span class="line"><span class="number">269</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="datetime-模块"><a href="#datetime-模块" class="headerlink" title="datetime 模块"></a><code>datetime</code> 模块</h3><p>datetime 模块的作用和 time 模块类似，都是用来进行时间操作的，其基本操作为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> datetime</span><br><span class="line">print(datetime.now())   <span class="comment"># 获取到当前是时间,对象</span></span><br><span class="line">print(type(datetime.now()))</span><br><span class="line">print(datetime(<span class="number">2016</span>, <span class="number">11</span>, <span class="number">13</span>, <span class="number">12</span>, <span class="number">13</span>, <span class="number">14</span>)) <span class="comment"># 将指定时间转化为 datetime 对象</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line">print(datetime.fromtimestamp(time.time()))    <span class="comment"># 时间戳转换成对象</span></span><br><span class="line">print(datetime.timestamp(datetime.now()))    <span class="comment"># 将对象转换成时间戳</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">print(datetime.strftime(datetime.now(),<span class="string">"%Y-%m-%d %H:%M:%S"</span>))    <span class="comment"># 将对象转换成字符串</span></span><br><span class="line">print(datetime.strptime(<span class="string">"2019/10/14"</span>,<span class="string">"%Y/%m/%d"</span>))    <span class="comment"># 将字符串转换成对象</span></span><br><span class="line"></span><br><span class="line">print(datetime.now() - datetime(<span class="number">9999</span>,<span class="number">11</span>,<span class="number">1</span>,<span class="number">12</span>,<span class="number">13</span>,<span class="number">14</span>))    <span class="comment"># 用来计算当前时间相对于指定时间相差多久</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> datetime,timedelta</span><br><span class="line">print(datetime.now())</span><br><span class="line">print(datetime.now() - timedelta(days=<span class="number">400</span>))    <span class="comment"># 用来计算400天前时间的 datetime 对象</span></span><br><span class="line">print(datetime.now() - timedelta(days=<span class="number">500</span>))</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2019</span><span class="number">-09</span><span class="number">-26</span> <span class="number">19</span>:<span class="number">32</span>:<span class="number">59.456316</span></span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">datetime</span>.<span class="title">datetime</span>'&gt;</span></span><br><span class="line"><span class="class">2016-11-13 12:</span><span class="number">13</span>:<span class="number">14</span></span><br><span class="line"><span class="number">2019</span><span class="number">-09</span><span class="number">-26</span> <span class="number">19</span>:<span class="number">32</span>:<span class="number">59.457314</span></span><br><span class="line"><span class="number">1569497579.457313</span></span><br><span class="line"><span class="number">2019</span><span class="number">-09</span><span class="number">-26</span> <span class="number">19</span>:<span class="number">32</span>:<span class="number">59</span></span><br><span class="line"><span class="number">2019</span><span class="number">-10</span><span class="number">-14</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span></span><br><span class="line"><span class="number">-2914671</span> days, <span class="number">7</span>:<span class="number">19</span>:<span class="number">45.490226</span></span><br><span class="line"><span class="number">2019</span><span class="number">-09</span><span class="number">-26</span> <span class="number">19</span>:<span class="number">32</span>:<span class="number">59.490226</span></span><br><span class="line"><span class="number">2018</span><span class="number">-08</span><span class="number">-22</span> <span class="number">19</span>:<span class="number">32</span>:<span class="number">59.490226</span></span><br><span class="line"><span class="number">2018</span><span class="number">-05</span><span class="number">-14</span> <span class="number">19</span>:<span class="number">32</span>:<span class="number">59.490226</span></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/int/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/python-basic/int/" class="post-title-link" itemprop="url">整型数据详述</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-15 13:44:45" itemprop="dateCreated datePublished" datetime="2020-02-15T13:44:45+08:00">2020-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="整型数据概述"><a href="#整型数据概述" class="headerlink" title="整型数据概述"></a>整型数据概述</h3><p>整型数字在 Python 中的关键字是 <code>int</code>，整形在计算机中用于计算和比较。</p>
+<p>在 32 位机器上 int 的范围是：<code>-2**31 ~ 2**31 - 1</code>，也就是<code>-2147483648 ~ 2147483647</code>；</p>
+<p>在 64 位机器上 int 的范围是：<code>-2**63 ~ 2**63 - 1</code>，也就是<code>-9223372036854775808 ~ 9223372036854775807</code>；</p>
+<p>在 Python 3 中，整型统统使用 <code>int</code>。在 Python 2 中，较小的整形函数也用 <code>int</code>，但是对于数值很大的整型，需要使用 <code>long</code>。</p>
+<p>在 Python 2 中，数值较大的整型数据结尾<em>可能</em> 会出现一个 <code>L</code> 标识，例如 <code>321312321L</code>。在 Python 3 中，无论数值有多大，都不会出现这种标识。</p>
+<h3 id="进制转换初识"><a href="#进制转换初识" class="headerlink" title="进制转换初识"></a>进制转换初识</h3><h4 id="10-进制转换为-2-进制"><a href="#10-进制转换为-2-进制" class="headerlink" title="10 进制转换为 2 进制"></a>10 进制转换为 2 进制</h4><p>整除 2，获取余数，将余数从下向上整合。例如求 11 的二进制数：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">除数	余数</span><br><span class="line"><span class="number">11</span>	<span class="number">1</span></span><br><span class="line"><span class="number">5</span>	<span class="number">1</span></span><br><span class="line"><span class="number">2</span>	<span class="number">0</span></span><br><span class="line"><span class="number">1</span>	<span class="number">1</span></span><br><span class="line"><span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<p>于是，<code>11</code> 的二进制数就是 <code>1011</code>。</p>
+<h4 id="2-进制转换为-10-进制"><a href="#2-进制转换为-10-进制" class="headerlink" title="2 进制转换为 10 进制"></a>2 进制转换为 10 进制</h4><p>从右向左，每一位的权重是 <code>2**(位数 - 1)</code>。位数是从右向左数到的次序。例如，倒数第一位的权重是 <code>2**0</code>，即 <code>1</code>，倒数第二位的权重为 <code>2**1</code>，即 <code>2</code>。将二进制转换为十进制，只需要将二进制每一位的数值乘以改为的权重然后将它们想加到一起即可。例如，我们可以这样计算二进制数 <code>1011</code> 的十进制数值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span> * <span class="number">2</span> ** <span class="number">0</span> + <span class="number">1</span> * <span class="number">2</span> ** <span class="number">1</span> + <span class="number">0</span> * <span class="number">2</span> ** <span class="number">2</span> + <span class="number">1</span> * <span class="number">2</span> ** <span class="number">3</span></span><br><span class="line">= <span class="number">1</span> + <span class="number">2</span> + <span class="number">0</span> + <span class="number">8</span></span><br><span class="line">= <span class="number">11</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="使用-Python-进行进制转换"><a href="#使用-Python-进行进制转换" class="headerlink" title="使用 Python 进行进制转换"></a>使用 Python 进行进制转换</h4><ul>
+<li><code>bin(&lt;十进制数&gt;)</code>：将十进制数转换成二进制（常用）</li>
+<li><code>int(&quot;字符串&quot;, 2)</code>：将某个进制（示例中为二进制）转换为十进制</li>
+</ul>
+<p>示例如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>bin(<span class="number">11</span>)</span><br><span class="line"><span class="string">'0b1011'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>int(<span class="string">'1011'</span>, <span class="number">2</span>)</span><br><span class="line"><span class="number">11</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="整型（数字）总结"><a href="#整型（数字）总结" class="headerlink" title="整型（数字）总结"></a>整型（数字）总结</h3><ul>
+<li><p>整型是不可变数据类型</p>
+</li>
+<li><p>可以在原地修改的叫做可变数据类型，不能在原地修改的叫做不可变数据类型</p>
+<p>我们可以用<code>id()</code>来查看数据的内存地址，例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">10</span>    <span class="comment"># 1428849040</span></span><br><span class="line"><span class="comment"># id  -- 查看空间内存地址</span></span><br><span class="line">print(id(a))</span><br><span class="line">a = a + <span class="number">1</span>  <span class="comment"># 1428849072</span></span><br><span class="line">print(id(a))</span><br></pre></td></tr></table></figure>
+
+<p>将数据修改后，内存地址发生改变。</p>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/bug-exclusion/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1178,720 +1590,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/file/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="刘硕">
-      <meta itemprop="description" content="不成为自己讨厌的人">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="刘硕的技术查阅手册">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/python-basic/file/" class="post-title-link" itemprop="url">文件操作</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-02-15 13:43:36" itemprop="dateCreated datePublished" datetime="2020-02-15T13:43:36+08:00">2020-02-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="文件操作初识"><a href="#文件操作初识" class="headerlink" title="文件操作初识"></a>文件操作初识</h3><p>我们写的程序代码运行过程中的中间数据和最后的结果，都是存储在内存中。当我们终止程序之后，这些数据也都随之消失。</p>
-<p>但是很多时候，我们需要将获得的数据存储起来，供以后使用。如果能把内存中的中间数据转移到硬盘中存储，当程序再次运行时就可以调用上次运行的结果。这就涉及到了 Python 中的文件操作。</p>
-<h3 id="文件操作模式"><a href="#文件操作模式" class="headerlink" title="文件操作模式"></a>文件操作模式</h3><p>我们常用的文件操作模式总共有九种：</p>
-<ul>
-<li>r 只读文本</li>
-<li>w 清空写文本</li>
-<li>a 追加写文本    非常重要</li>
-<li>rb 只读字节    主要应用在爬虫中</li>
-<li>wb 清空写字节</li>
-<li>ab 追加写字节   非常重要</li>
-<li>r+ 读写    重要</li>
-<li>w+ 清空写读</li>
-<li>a+ 追加写读</li>
-</ul>
-<h3 id="文件操作步骤"><a href="#文件操作步骤" class="headerlink" title="文件操作步骤"></a>文件操作步骤</h3><p>文件操作一般都要先进行四步的准备工作：</p>
-<ol>
-<li>找到文件的路径</li>
-<li>确定操作文件的模式</li>
-<li>文件的编码方式</li>
-<li>建立文件句柄</li>
-</ol>
-<h4 id="文件路径"><a href="#文件路径" class="headerlink" title="文件路径"></a>文件路径</h4><p>文件路径有两种表示方法：绝对路径和相对路径。</p>
-<p>绝对路径是相对于当前运行文件所在的目录，目标文件所在的位置。在相对目录中，使用 <code>.</code> 表示当前路径；使用 <code>..</code> 表示上一级路径。</p>
-<p>例如：在 <code>Python_26</code> 文件夹中，有 <code>day07</code> 和 <code>day08</code> 两个文件夹。运行的 <code>py</code> 文件 <code>day08.py</code> 在 <code>day08</code> 中，而想要调用的文件 <code>萝莉小护士联系电话.txt</code> 在 <code>day07</code> 中，就需要这样表示目标文件的相对路径：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'..\day07\萝莉小护士联系电话.txt'</span></span><br></pre></td></tr></table></figure>
-
-<p>因为当前的工作目录是 <code>Python_26\day08</code>，而目标文件在 <code>Python_26\day07</code> 中，我们就需要使用 <code>..</code> 返回到 <code>day08</code> 的父目录 <code>Python_26</code> 中，然后进入 <code>day07</code> 中找到目标文件。</p>
-<img src="/python-basic/file/1568711064745.png" class="" width="1568711064745">
-
-<p>除了相对路径之外，我们还可以通过绝对路径找到文件。绝对路径是从磁盘根目录开始查找文件，例如： <code>C:\Python_26\day07\萝莉小护士的联系方式.txt</code>。</p>
-<p>如果涉及程序的协同操作，最好使用相对路径。这样当我们把文件转移到别的电脑上时，就不会担心路径会发生变化的问题。</p>
-<p>我们可以使用 os 模块找到当前的工作路径：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line">print(os.getcwd())</span><br></pre></td></tr></table></figure>
-
-<p>在路径中会使用 <code>\</code> 来分隔两层目录。但是 <code>\</code> 直接连接某些字母可能会有特殊含义，比如 <code>\n</code> 表示换行，<code>\t</code> 表示制表符等。</p>
-<p>为了避免歧义，我们就需要通过转义来消除这些特殊含义。有两种方法可以进行转义。第一种是使用 <code>\\</code> 来指代一个可以显示的 <code>\</code>，例如：<code>&#39;C:\\Python_26\\day07\\萝莉小护士的联系方式.txt&#39;</code>。</p>
-<p>但是如果路径比较深的话，就需要替换很多的 <code>\</code>，费时费力。这时，我们可以通过在字符串前加一个 <code>r</code> 来转义，例如：<code>r&#39;C:\Python_26\day07\萝莉小护士的联系方式.txt&#39;</code>。</p>
-<h3 id="编码方式"><a href="#编码方式" class="headerlink" title="编码方式"></a>编码方式</h3><p>文件的存储格式一般都是 utf-8。</p>
-<p>Windows 操作系统使用的是 gbk 编码；Linux 和 macOS 使用的是 utf-8 编码。</p>
-<h3 id="创建文件句柄"><a href="#创建文件句柄" class="headerlink" title="创建文件句柄"></a>创建文件句柄</h3><p>当我们确定好了文件的路径、操作模式和编码方式之后，就可以建立一个文件句柄了：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">f = open(<span class="string">'萝莉小护士的联系方式.txt'</span>, mode=<span class="string">'r'</span>, encoding=<span class="string">'utf-8'</span>)</span><br></pre></td></tr></table></figure>
-
-<p>上面这行代码的意思是：创建一个文件句柄 <code>f</code>，文件的位置与工作路径相同，文件名为 <code>萝莉小护士的联系方式.txt</code>，以 <code>只读</code> 方式打开，文件的编码模式为 <code>utf-8</code>。</p>
-<p>文件的打开操作是通过 Python 向操作系统发送指令。</p>
-<h3 id="文件的读取"><a href="#文件的读取" class="headerlink" title="文件的读取"></a>文件的读取</h3><p>有了文件句柄，我们就可以对文件进行操作。直接打印文件句柄并不能显示出文件的内容：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">print(f)</span><br><span class="line"></span><br><span class="line">输出的结果为：&lt;_io.TextIOWrapper name=<span class="string">'萝莉小护士的联系方式.txt'</span> mode=<span class="string">'r'</span> encoding=<span class="string">'utf-8'</span>&gt;</span><br></pre></td></tr></table></figure>
-
-<p>我们需要一个 <code>.read()</code> 方法来讲文件读取出来：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(f.read())</span><br></pre></td></tr></table></figure>
-
-<p><code>.read()</code> 方法会将文件中光标所在的位置开始到文件末尾的内容全部读取出来，读取完毕后，光标会位于最后的位置。如果此时不进行任何其他转移光标的操作，再次调用 <code>.read()</code> 方法将不能获得任何内容。</p>
-<p><code>.read()</code> 方法中可以输入参数来控制需要获取到的字符数目：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(f.read(<span class="number">3</span>))</span><br></pre></td></tr></table></figure>
-
-<p>需要注意的是，每一行文字末尾的换行符 <code>\n</code> 也会被算作是一个字符。</p>
-<p><code>.read()</code> 方法会一次性读取文件中所有内容。除此之外，我们也可以使用 <code>.readline()</code> 方法，一次只读取一行内容，这个方法也是从光标位置开始读取文件内容：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(f.readline())</span><br></pre></td></tr></table></figure>
-
-<p><code>.readlines()</code> 方法可以将文件中的每一行都读取出来，以字符串的形式存储到要给列表当中：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(f.readlines())</span><br></pre></td></tr></table></figure>
-
-<p>此外，文件句柄本身也是一个可迭代对象，每次迭代返回的内容为文件中每一行的内容：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> line <span class="keyword">in</span> f:</span><br><span class="line">    print(line)</span><br></pre></td></tr></table></figure>
-
-<h3 id="文件的写入"><a href="#文件的写入" class="headerlink" title="文件的写入"></a>文件的写入</h3><p>文件的写入只有一个方法 <code>.write()</code>，写入的内容只能为字符串。文件的写入需要文件以可写入的方式（w 和 a）打开：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">f = open(<span class="string">"test"</span>,<span class="string">"w"</span>,encoding=<span class="string">"utf-8"</span>)</span><br><span class="line">f.write(<span class="string">"\n今天"</span>)</span><br><span class="line">f.write(<span class="string">"\n明天"</span>)</span><br><span class="line">f.write(<span class="string">"\n后天"</span>)</span><br></pre></td></tr></table></figure>
-
-<h3 id="光标操作"><a href="#光标操作" class="headerlink" title="光标操作"></a>光标操作</h3><p>光标用来标识文件操作的起始位置。一般来说，光标起始位置为文件的头部，当进行读写操作时，光标位置会随之转移。如果我们接下来还有读写操作，将会从上次结束的位置开始进行。</p>
-<p>如果我们想要将光标移动到一个新的位置，就需要使用到 <code>.seek()</code> 方法：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">f.seek(<span class="number">0</span>, <span class="number">0</span>)    <span class="comment"># 将光标移动到文件头部</span></span><br><span class="line">f.seek(<span class="number">0</span>, <span class="number">1</span>)    <span class="comment"># 将光标移动到当前位置</span></span><br><span class="line">f.seek(<span class="number">0</span>, <span class="number">2</span>)    <span class="comment"># 将光标移动到文件末尾</span></span><br></pre></td></tr></table></figure>
-
-<p>除了上述三种比较极端的移动方法，我们还可以自定义光标移动到的位置：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">f.seek(<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
-
-<p>需要注意的是，这里的 3 指的是从开头数的第 3 个字节，而不是第 3 个字符。既然是字节，就需要考虑编码的问题。例如，gbk 编码的中文字符要移动 2 个字节，而 utf-8 编码的中文字符要移动 3 个字节。</p>
-<p>通过使用 <code>.tell()</code> 方法，可以查看光标位置。返回的值是从文件头开始到当前位置的字节数目：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">f.tell()</span><br></pre></td></tr></table></figure>
-
-<h3 id="文件的保存和关闭"><a href="#文件的保存和关闭" class="headerlink" title="文件的保存和关闭"></a>文件的保存和关闭</h3><p>Windows 系统中，文件会自动保存。但是对于 Linux 系统，只有当内存中的内容达到阈值时，才会进行保存。为了保证我们的文件安全，就需要及时对文件进行存储。</p>
-<p><code>.flush()</code> 方法也叫刷新。每使用一次刷新方法，就会将改变的数据存储到硬盘中。在每一次比较关键的文件读取操作前后，都可以使用 <code>.flush()</code> 操作确保数据安全：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">f.flush()</span><br></pre></td></tr></table></figure>
-
-<p>在文件的最后，一般都要使用 <code>.close()</code> 方法把文件关闭，将数据存储到硬盘中，并释放内存空间：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">f.close()</span><br></pre></td></tr></table></figure>
-
-<h3 id="with-方法创建文件句柄"><a href="#with-方法创建文件句柄" class="headerlink" title="with 方法创建文件句柄"></a><code>with</code> 方法创建文件句柄</h3><p>使用赋值方式创建文件句柄，在文件操作结束后，需要使用 <code>.close()</code> 方法来关闭文件。这就平白增添了一个步骤。</p>
-<p>如果使用 with 方法，则不需要关闭文件，with 子句结束后，文件会自动关闭：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> open(<span class="string">'test'</span>, <span class="string">'w'</span>, encoding=<span class="string">'utf-8'</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f.write(<span class="string">'123'</span>)</span><br></pre></td></tr></table></figure>
-
-<p>with 方法还有一个好处是，可以同时创建多个文件句柄：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">f = open(<span class="string">"test1"</span>,<span class="string">"a"</span>,encoding=<span class="string">"gbk"</span>)</span><br><span class="line">f.write(<span class="string">"嘿嘿"</span>)</span><br><span class="line">f.close()</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">"test1"</span>,<span class="string">"r"</span>,encoding=<span class="string">"gbk"</span>) <span class="keyword">as</span> f,\</span><br><span class="line">        open(<span class="string">"test"</span>,<span class="string">"r"</span>,encoding=<span class="string">"utf-8"</span>)<span class="keyword">as</span> f1:</span><br><span class="line">    print(f.read())</span><br><span class="line">    print(f1.read())</span><br></pre></td></tr></table></figure>
-
-<h3 id="文件操作模式细节"><a href="#文件操作模式细节" class="headerlink" title="文件操作模式细节"></a>文件操作模式细节</h3><p>r 是只读模式，用来读取文件内容，不会对原文件进行任何修改。</p>
-<p>rb 模式用来只读字节文件，在爬虫中会有应用。</p>
-<p>w模式是清空写，当文件存在时会清空文件，文件不存在时创建文件：</p>
-<ol>
-<li>打开文件时自动清空文件内容</li>
-<li>写入内容，可以多次写入，每次写入都是在末尾追加</li>
-<li>只有打开文件时会清空文件内容</li>
-<li>通过移动光标，可以修改写入位置，如果该位置有内容，会造成覆盖</li>
-</ol>
-<p>wb 模式是清空写字节，也是在爬虫中有所应用。</p>
-<p>a 模式是追加写，当文件存在时会清空文件，文件不存在时创建文件。不管光标在哪里，都只会在最后追加内容：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">f = open(<span class="string">"test"</span>,<span class="string">"a"</span>,encoding=<span class="string">"utf-8"</span>)</span><br><span class="line">f.write(<span class="string">"啦啦啦"</span>)</span><br></pre></td></tr></table></figure>
-
-<p>r+ 是读写模式，可读可写，原文件不会被清空，但是光标的初始位置会在文件的头部，如果不移动光标的话，新加入的内容会覆盖掉原来的文件内容：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">f = open(<span class="string">"test"</span>,<span class="string">"r+"</span>,encoding=<span class="string">"utf-8"</span>)</span><br><span class="line">a = f.read()</span><br><span class="line">print(a)</span><br><span class="line">f.write(<span class="string">"这是读写"</span>)</span><br></pre></td></tr></table></figure>
-
-<p>w+ 是清空写读模式，打开文件时还是会将文件清空。后续的操作不会重新清空文件：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">f = open(<span class="string">"test"</span>,<span class="string">"w+"</span>,encoding=<span class="string">"utf-8"</span>)</span><br><span class="line">f.write(<span class="string">"哈哈哈"</span>)</span><br><span class="line">f.seek(<span class="number">0</span>,<span class="number">0</span>)   <span class="comment"># 移动光标   移动到文件的头部</span></span><br><span class="line">print(f.read())</span><br></pre></td></tr></table></figure>
-
-<p>这里有个细节，因为写入完成后，光标的位置在文件的最后，需要将光标移动到文件头，再使用 <code>.read()</code> 方法才能读取到写入的文件内容。</p>
-<p>a+ 是追加写读模式，所有内容无论光标在哪里，都只会添加到文件的末尾：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">f = open(<span class="string">"test"</span>,<span class="string">"a+"</span>,encoding=<span class="string">"utf-8"</span>)</span><br><span class="line">f.write(<span class="string">"嘿嘿"</span>)</span><br><span class="line">f.seek(<span class="number">0</span>,<span class="number">0</span>)   <span class="comment"># 移动光标   移动到文件的头部</span></span><br><span class="line">print(f.read())</span><br></pre></td></tr></table></figure>
-
-<p>最常使用的文件操作模式有：r、w、a、a+（没文件时）和 r+（覆盖一些内容）。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/re/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="刘硕">
-      <meta itemprop="description" content="不成为自己讨厌的人">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="刘硕的技术查阅手册">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/python-basic/re/" class="post-title-link" itemprop="url">re 模块和正则表达式</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-02-15 13:43:16" itemprop="dateCreated datePublished" datetime="2020-02-15T13:43:16+08:00">2020-02-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="re-模块概述"><a href="#re-模块概述" class="headerlink" title="re 模块概述"></a>re 模块概述</h3><p>re，也就是正则表达式，用来从字符串中获取我们想要的内容：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line">a = <span class="string">'alex,meet,eva_j'</span></span><br><span class="line">print(re.findall(<span class="string">'e'</span>, a))    <span class="comment"># findall放来的两个参数为：参数1用来传入要查找的内容，参数2用来传入原来的字符串</span></span><br></pre></td></tr></table></figure>
-
-<p>输出的结果为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'e'</span>, <span class="string">'e'</span>, <span class="string">'e'</span>, <span class="string">'e'</span>]</span><br></pre></td></tr></table></figure>
-
-<h3 id="元字符"><a href="#元字符" class="headerlink" title="元字符"></a>元字符</h3><p>正则表达式的当然不仅仅能查找这种简单地字符。正则表达式真正的强大之处在于它无所不包的匹配规则。这一套匹配规则对于所有语言来说都是通用的，通过一个个元字符组合而成：</p>
-<table>
-<thead>
-<tr>
-<th align="center">元字符</th>
-<th align="center">匹配内容</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">\w</td>
-<td align="center">匹配字母（包括中文）、数字或下划线</td>
-</tr>
-<tr>
-<td align="center">\W</td>
-<td align="center">匹配除字母（包括中文）、数字或下划线以外的字符</td>
-</tr>
-<tr>
-<td align="center">\s</td>
-<td align="center">匹配任意空白字符</td>
-</tr>
-<tr>
-<td align="center">\S</td>
-<td align="center">匹配任意非空白字符</td>
-</tr>
-<tr>
-<td align="center">\d</td>
-<td align="center">匹配任意数字</td>
-</tr>
-<tr>
-<td align="center">\D</td>
-<td align="center">匹配任意非数字字符</td>
-</tr>
-<tr>
-<td align="center">\A或^</td>
-<td align="center">从字符串的开头匹配</td>
-</tr>
-<tr>
-<td align="center">\Z或&amp;</td>
-<td align="center">从字符串的结尾匹配</td>
-</tr>
-<tr>
-<td align="center">.</td>
-<td align="center">匹配任意字符，除了换行符。当 re.DOTALL 标记被指定时，则可以匹配包括换行符的任意字符</td>
-</tr>
-<tr>
-<td align="center">[0-9a-zA-Z]</td>
-<td align="center">用于匹配特定范围的数字和字母，中间不能有空格和逗号</td>
-</tr>
-<tr>
-<td align="center">*</td>
-<td align="center">匹配 0 个或多个左边的字符，贪婪匹配（匹配尽可能长的内容）</td>
-</tr>
-<tr>
-<td align="center">+</td>
-<td align="center">匹配 1 个或多个左边的字符，贪婪匹配</td>
-</tr>
-<tr>
-<td align="center">?</td>
-<td align="center">匹配 0 个或 1 个左边的字符，非贪婪匹配。也可以用来将 * 和 + 转换为非贪婪匹配模式</td>
-</tr>
-<tr>
-<td align="center">{n}</td>
-<td align="center">精准匹配 n 个前面的字符</td>
-</tr>
-<tr>
-<td align="center">{n, m}</td>
-<td align="center">匹配 n 到 m 个前面的字符片段，贪婪匹配</td>
-</tr>
-<tr>
-<td align="center">a|b</td>
-<td align="center">a 或者 b，优先匹配 a</td>
-</tr>
-<tr>
-<td align="center">()</td>
-<td align="center">匹配括号内的表达式，也表示一个组</td>
-</tr>
-</tbody></table>
-<p>正则表达式的使用方法为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">'alex1, 哈啰，123,meet!@'</span></span><br><span class="line">print(re.findall(<span class="string">'\w'</span>, s))    <span class="comment"># 匹配数字字母（包括中文）字符串</span></span><br><span class="line">print(re.findall(<span class="string">'\W'</span>, s))</span><br><span class="line">输出的结果为：</span><br><span class="line">[<span class="string">'a'</span>, <span class="string">'l'</span>, <span class="string">'e'</span>, <span class="string">'x'</span>, <span class="string">'1'</span>, <span class="string">'哈'</span>, <span class="string">'啰'</span>, <span class="string">'1'</span>, <span class="string">'2'</span>, <span class="string">'3'</span>, <span class="string">'m'</span>, <span class="string">'e'</span>, <span class="string">'e'</span>, <span class="string">'t'</span>]</span><br><span class="line">[<span class="string">','</span>, <span class="string">' '</span>, <span class="string">'，'</span>, <span class="string">','</span>, <span class="string">'!'</span>, <span class="string">'@'</span>]</span><br><span class="line"></span><br><span class="line">s1 = <span class="string">'alex w \n, dal\t,sdjfl'</span></span><br><span class="line">print(re.findall(<span class="string">'\s'</span>, s1))    <span class="comment"># 匹配空白字符</span></span><br><span class="line">print(re.findall(<span class="string">'\S'</span>, s1))    <span class="comment"># 匹配非空白字符</span></span><br><span class="line">输出的结果为：</span><br><span class="line">[<span class="string">' '</span>, <span class="string">' '</span>, <span class="string">'\n'</span>, <span class="string">' '</span>, <span class="string">'\t'</span>]</span><br><span class="line">[<span class="string">'a'</span>, <span class="string">'l'</span>, <span class="string">'e'</span>, <span class="string">'x'</span>, <span class="string">'w'</span>, <span class="string">','</span>, <span class="string">'d'</span>, <span class="string">'a'</span>, <span class="string">'l'</span>, <span class="string">','</span>, <span class="string">'s'</span>, <span class="string">'d'</span>, <span class="string">'j'</span>, <span class="string">'f'</span>, <span class="string">'l'</span>]</span><br><span class="line"></span><br><span class="line">s2 = <span class="string">'a1b2c3'</span></span><br><span class="line">print(re.findall(<span class="string">'\d'</span>, s2))    <span class="comment"># 匹配所有数字</span></span><br><span class="line">print(re.findall(<span class="string">'\D'</span>, s2))    <span class="comment"># 匹配所有非数字</span></span><br><span class="line">输出的结果为：</span><br><span class="line">[<span class="string">'1'</span>, <span class="string">'2'</span>, <span class="string">'3'</span>]</span><br><span class="line">[<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>]</span><br><span class="line"></span><br><span class="line">s3 = <span class="string">'alex'</span></span><br><span class="line">print(re.findall(<span class="string">'\Aa'</span>, s3))    <span class="comment"># 从开头匹配</span></span><br><span class="line">print(re.findall(<span class="string">'^a'</span>, s3))</span><br><span class="line">print(re.findall(<span class="string">'x\Z'</span>, s3))    <span class="comment"># 从结尾匹配</span></span><br><span class="line">print(re.findall(<span class="string">'x$'</span>, s3))</span><br><span class="line">输出的结果为：</span><br><span class="line">[<span class="string">'a'</span>]</span><br><span class="line">[<span class="string">'a'</span>]</span><br><span class="line">[<span class="string">'x'</span>]</span><br><span class="line">[<span class="string">'x'</span>]</span><br><span class="line"></span><br><span class="line">s4 = <span class="string">'abc a12\n3!@\t#中文_'</span></span><br><span class="line">print(re.findall(<span class="string">'.'</span>, s4))    <span class="comment"># 匹配任意字符（换行符除外）</span></span><br><span class="line">print(re.findall(<span class="string">'\n'</span>, s4))</span><br><span class="line">print(re.findall(<span class="string">'.'</span>, s4, re.DOTALL))    <span class="comment"># 匹配包括换行符之内的任意字符</span></span><br><span class="line">输出的结果为：</span><br><span class="line">[<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>, <span class="string">' '</span>, <span class="string">'a'</span>, <span class="string">'1'</span>, <span class="string">'2'</span>, <span class="string">'3'</span>, <span class="string">'!'</span>, <span class="string">'@'</span>, <span class="string">'\t'</span>, <span class="string">'#'</span>, <span class="string">'中'</span>, <span class="string">'文'</span>, <span class="string">'_'</span>]</span><br><span class="line">[<span class="string">'\n'</span>]</span><br><span class="line">[<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>, <span class="string">' '</span>, <span class="string">'a'</span>, <span class="string">'1'</span>, <span class="string">'2'</span>, <span class="string">'\n'</span>, <span class="string">'3'</span>, <span class="string">'!'</span>, <span class="string">'@'</span>, <span class="string">'\t'</span>, <span class="string">'#'</span>, <span class="string">'中'</span>, <span class="string">'文'</span>, <span class="string">'_'</span>]</span><br><span class="line"></span><br><span class="line">s5 = <span class="string">'al ex()123!@'</span></span><br><span class="line">print(re.findall(<span class="string">'[0-9]'</span>, s5))    <span class="comment"># 匹配范围内的数字</span></span><br><span class="line">print(re.findall(<span class="string">'[0-9a-zA-Z]'</span>, s5))    <span class="comment"># 匹配范围内的数字和字母</span></span><br><span class="line">输出的结果为：</span><br><span class="line">[<span class="string">'1'</span>, <span class="string">'2'</span>, <span class="string">'3'</span>]</span><br><span class="line">[<span class="string">'a'</span>, <span class="string">'l'</span>, <span class="string">'e'</span>, <span class="string">'x'</span>, <span class="string">'1'</span>, <span class="string">'2'</span>, <span class="string">'3'</span>]</span><br><span class="line"></span><br><span class="line">s6 = <span class="string">'a.l e!x123'</span></span><br><span class="line">print(re.findall(<span class="string">'[.]'</span>, s6))    <span class="comment"># 查找特定的字符“.”</span></span><br><span class="line">print(re.findall(<span class="string">'.'</span>, s6))    <span class="comment"># 查找任意字符</span></span><br><span class="line">print(re.findall(<span class="string">'[^.]'</span>, s6))    <span class="comment"># 查找除了“.”之外的所有字符</span></span><br><span class="line">输出的结果为：</span><br><span class="line">[<span class="string">'.'</span>]</span><br><span class="line">[<span class="string">'a'</span>, <span class="string">'.'</span>, <span class="string">'l'</span>, <span class="string">' '</span>, <span class="string">'e'</span>, <span class="string">'!'</span>, <span class="string">'x'</span>, <span class="string">'1'</span>, <span class="string">'2'</span>, <span class="string">'3'</span>]</span><br><span class="line">[<span class="string">'a'</span>, <span class="string">'l'</span>, <span class="string">' '</span>, <span class="string">'e'</span>, <span class="string">'!'</span>, <span class="string">'x'</span>, <span class="string">'1'</span>, <span class="string">'2'</span>, <span class="string">'3'</span>]</span><br><span class="line"></span><br><span class="line">s7 = <span class="string">'alex-meet-leeek'</span></span><br><span class="line">print(re.findall(<span class="string">'e*'</span>, s7))    <span class="comment"># 查找0个或多个字符e，贪婪匹配</span></span><br><span class="line">print(re.findall(<span class="string">'e+'</span>, s7))    <span class="comment"># 匹配1个或多个字符e，贪婪匹配</span></span><br><span class="line">print(re.findall(<span class="string">'e?'</span>, s7))    <span class="comment"># 匹配0个或1个字符e，非贪婪匹配</span></span><br><span class="line">print(re.findall(<span class="string">'e&#123;2&#125;'</span>, s7))   <span class="comment"># 匹配刚好2个字符e</span></span><br><span class="line">print(re.findall(<span class="string">'e&#123;1,2&#125;'</span>, s7))    <span class="comment"># 匹配1到2个字符2，贪婪匹配，打括号里面不能有空格</span></span><br><span class="line">输出的结果为：</span><br><span class="line">[<span class="string">''</span>, <span class="string">''</span>, <span class="string">'e'</span>, <span class="string">''</span>, <span class="string">''</span>, <span class="string">''</span>, <span class="string">'ee'</span>, <span class="string">''</span>, <span class="string">''</span>, <span class="string">''</span>, <span class="string">'eee'</span>, <span class="string">''</span>, <span class="string">''</span>]</span><br><span class="line">[<span class="string">'e'</span>, <span class="string">'ee'</span>, <span class="string">'eee'</span>]</span><br><span class="line">[<span class="string">''</span>, <span class="string">''</span>, <span class="string">'e'</span>, <span class="string">''</span>, <span class="string">''</span>, <span class="string">''</span>, <span class="string">'e'</span>, <span class="string">'e'</span>, <span class="string">''</span>, <span class="string">''</span>, <span class="string">''</span>, <span class="string">'e'</span>, <span class="string">'e'</span>, <span class="string">'e'</span>, <span class="string">''</span>, <span class="string">''</span>]</span><br><span class="line">[<span class="string">'ee'</span>, <span class="string">'ee'</span>]</span><br><span class="line">[<span class="string">'e'</span>, <span class="string">'ee'</span>, <span class="string">'ee'</span>, <span class="string">'e'</span>]</span><br><span class="line"></span><br><span class="line">s8 = <span class="string">'alex-meet-leeek'</span></span><br><span class="line">print(re.findall(<span class="string">'a|e'</span>, s8))   <span class="comment"># 查找a或e，优先查找a</span></span><br><span class="line">输出的结果为：[<span class="string">'a'</span>, <span class="string">'e'</span>, <span class="string">'e'</span>, <span class="string">'e'</span>, <span class="string">'e'</span>, <span class="string">'e'</span>, <span class="string">'e'</span>]</span><br><span class="line"></span><br><span class="line">s9 = <span class="string">'alex-meeet-leeek'</span></span><br><span class="line">print(re.findall(<span class="string">'e(e)e'</span>, s9))    <span class="comment"># 分组，对于findall方法只返回括号内的字符，对于search方法则返回整个表达式结构</span></span><br><span class="line">print(re.search(<span class="string">'e(e)e'</span>, s9).group())</span><br><span class="line">print(re.findall(<span class="string">'m(ee)e'</span>, s9))</span><br><span class="line">print(re.findall(<span class="string">'m(?:ee)e'</span>, s9))    <span class="comment"># 分组，返回整个正则表达式结构</span></span><br><span class="line">输出的结果为：</span><br><span class="line">[<span class="string">'e'</span>, <span class="string">'e'</span>]</span><br><span class="line">eee</span><br><span class="line">[<span class="string">'ee'</span>]</span><br><span class="line">[<span class="string">'meee'</span>]</span><br></pre></td></tr></table></figure>
-
-<h3 id="正则匹配练习"><a href="#正则匹配练习" class="headerlink" title="正则匹配练习"></a>正则匹配练习</h3><p>接下来，我们就通过一些练习题，更加深入理解正则表达式的用法。</p>
-<ol>
-<li><p>有如下字符串：<code>&#39;alex_sb ale123_sb wu12sir_sb wusir_sb ritian_sb 的 alex wusir &#39;</code>，找到其中所有带 <code>_sb</code> 的内容。要求，输出结果中也要包含 <code>_sb</code>。</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line">s = <span class="string">'alex_sb ale123_sb wu12sir_sb wusir_sb ritian_sb 的 alex wusir '</span></span><br><span class="line">print(re.findall(<span class="string">'\w[(?:.+?)]_sb'</span>, s))    <span class="comment"># 第二个?用来让+变成非贪婪匹配</span></span><br><span class="line">print(re.findall(<span class="string">'\w[a-z0-9]+_sb'</span>, s))</span><br><span class="line">print(re.findall(<span class="string">'(\w.+?_sb) '</span>, s))</span><br></pre></td></tr></table></figure>
-
-<p> 输出结果全都为：</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'alex_sb'</span>, <span class="string">'ale123_sb'</span>, <span class="string">'wu12sir_sb'</span>, <span class="string">'wusir_sb'</span>, <span class="string">'ritian_sb'</span>]</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>有字符串 <code>&quot;1-2*(60+(-40.35/5)-(-4*3))&quot;</code>，</p>
-<ol>
-<li><p>请找出字符串中的所有整数</p>
-</li>
-<li><p>请找出字符串中的所有数字（包含小数）</p>
-</li>
-<li><p>请找出所有的数字（正数、负数和小数）</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line">s = <span class="string">"1-2*(60+(-40.35/5)-(-4*3))"</span></span><br><span class="line">print(re.findall(<span class="string">'\d+'</span>, s))</span><br><span class="line">print(re.findall(<span class="string">'\d+\.?\d*'</span>, s))</span><br><span class="line">print(re.findall(<span class="string">'-?\d+\.?\d*'</span>, s))</span><br></pre></td></tr></table></figure>
-
-<p>输出的结果为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'1'</span>, <span class="string">'2'</span>, <span class="string">'60'</span>, <span class="string">'40'</span>, <span class="string">'35'</span>, <span class="string">'5'</span>, <span class="string">'4'</span>, <span class="string">'3'</span>]</span><br><span class="line">[<span class="string">'1'</span>, <span class="string">'2'</span>, <span class="string">'60'</span>, <span class="string">'40.35'</span>, <span class="string">'5'</span>, <span class="string">'4'</span>, <span class="string">'3'</span>]</span><br><span class="line">[<span class="string">'1'</span>, <span class="string">'-2'</span>, <span class="string">'60'</span>, <span class="string">'-40.35'</span>, <span class="string">'5'</span>, <span class="string">'-4'</span>, <span class="string">'3'</span>]</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-</li>
-<li><p>请找出字符串 <code>&quot;http://blog.csdn.net/make164492212@163.com/article/details/51656638&quot;</code> 中的邮箱。</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line">s = <span class="string">"http://blog.csdn.net/make164492212@163.com/article/details/51656638"</span></span><br><span class="line">print(re.findall(<span class="string">'\w+@\w+\.\w+'</span>, s))</span><br></pre></td></tr></table></figure>
-<p> 输出的结果为：</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'make164492212@163.com'</span>]</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>请找出下列字符串中的</p>
-<ol>
-<li><p>所有形如 <code>1995-04-27</code> 的时间</p>
-</li>
-<li><p>形如 <code>1980-04-27:1980-04-27</code> 的时间</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line">s = <span class="string">'''</span></span><br><span class="line"><span class="string">时间就是1995-04-27,2005-04-27</span></span><br><span class="line"><span class="string">1999-04-27 老男孩教育创始人</span></span><br><span class="line"><span class="string">老男孩老师 alex 1980-04-27:1980-04-27</span></span><br><span class="line"><span class="string">2018-12-08</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line">print(re.findall(<span class="string">'\d&#123;4&#125;-\d&#123;2&#125;-\d&#123;2&#125;'</span>, s))</span><br><span class="line">print(re.findall(<span class="string">'(\S+:\S+)'</span>))</span><br></pre></td></tr></table></figure>
-
-<p>输出的结果为：</p>
-</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'1995-04-27'</span>, <span class="string">'2005-04-27'</span>, <span class="string">'1999-04-27'</span>, <span class="string">'1980-04-27'</span>, <span class="string">'1980-04-27'</span>, <span class="string">'2018-12-08'</span>]</span><br><span class="line">[<span class="string">'1980-04-27:1980-04-27'</span>]</span><br></pre></td></tr></table></figure>
-
-
-
-</li>
-</ol>
-<ol start="5">
-<li><p>匹配字符串 <code>&quot;1231,11,2,1,-1,12.34545,abc,ssed&quot;</code> 中的浮点数</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line">s = <span class="string">"1231,11,2,1,-1,12.34545,abc,ssed"</span></span><br><span class="line">print(re.findall(<span class="string">'\d+\.\d+'</span>, s))</span><br></pre></td></tr></table></figure>
-
-<p> 输出的结果为：</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'12.34545'</span>]</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>匹配字符串 <code>&quot;1231231,324233,123,1123,2435,1234,2546,23451324,3546354,13241234&quot;</code> 中可能的 QQ 号（5 - 11 位）。</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line">s = <span class="string">"1231231,324233,123,1123,2435,1234,2546,23451324,3546354,13241234"</span></span><br><span class="line">print(re.findall(<span class="string">'\d&#123;5,11&#125;'</span>, s))</span><br></pre></td></tr></table></figure>
-
-<p> 输出的结果为：</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'1231231'</span>, <span class="string">'324233'</span>, <span class="string">'23451324'</span>, <span class="string">'3546354'</span>, <span class="string">'13241234'</span>]</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>有下面一个长数据，请找出其中a标签中href后的网址（如 <code>http://www.cnblogs.com/guobaoyuan/articles/7087629.html</code>）。</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line">msg = <span class="string">'''</span></span><br><span class="line"><span class="string">&lt;div id="cnblogs_post_body" class="blogpost-body"&gt;&lt;h3&gt;&lt;span style="font-family: 楷体;"&gt;python基础篇&lt;/span&gt;&lt;/h3&gt;</span></span><br><span class="line"><span class="string">&lt;p&gt;&lt;span style="font-family: 楷体;"&gt;&amp;nbsp; &amp;nbsp;&lt;strong&gt;&lt;a href="http://www.cnblogs.com/guobaoyuan/p/6847032.html" target="_blank"&gt;python 基础知识&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;</span></span><br><span class="line"><span class="string">&lt;p&gt;&lt;span style="font-family: 楷体;"&gt;&lt;strong&gt;&amp;nbsp; &amp;nbsp;&lt;a href="http://www.cnblogs.com/guobaoyuan/p/6627631.html" target="_blank"&gt;python 初始python&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;</span></span><br><span class="line"><span class="string">&lt;p&gt;&lt;span style="font-family: 楷体;"&gt;&lt;strong&gt;&amp;nbsp; &amp;nbsp;&lt;strong&gt;&lt;a href="http://www.cnblogs.com/guobaoyuan/articles/7087609.html" target="_blank"&gt;python 字符编码&lt;/a&gt;&lt;/strong&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;</span></span><br><span class="line"><span class="string">&lt;p&gt;&lt;span style="font-family: 楷体;"&gt;&lt;strong&gt;&lt;strong&gt;&amp;nbsp; &amp;nbsp;&lt;a href="http://www.cnblogs.com/guobaoyuan/articles/6752157.html" target="_blank"&gt;python 类型及变量&lt;/a&gt;&lt;/strong&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;</span></span><br><span class="line"><span class="string">&lt;p&gt;&lt;span style="font-family: 楷体;"&gt;&lt;strong&gt;&amp;nbsp; &amp;nbsp;&lt;a href="http://www.cnblogs.com/guobaoyuan/p/6847663.html" target="_blank"&gt;python 字符串详解&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;</span></span><br><span class="line"><span class="string">&lt;p&gt;&lt;span style="font-family: 楷体;"&gt;&amp;nbsp; &amp;nbsp;&lt;strong&gt;&lt;a href="http://www.cnblogs.com/guobaoyuan/p/6850347.html" target="_blank"&gt;python 列表详解&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;</span></span><br><span class="line"><span class="string">&lt;p&gt;&lt;span style="font-family: 楷体;"&gt;&lt;strong&gt;&amp;nbsp; &amp;nbsp;&lt;a href="http://www.cnblogs.com/guobaoyuan/p/6850496.html" target="_blank"&gt;python 数字元祖&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;</span></span><br><span class="line"><span class="string">&lt;p&gt;&lt;span style="font-family: 楷体;"&gt;&amp;nbsp; &amp;nbsp;&lt;strong&gt;&lt;a href="http://www.cnblogs.com/guobaoyuan/p/6851820.html" target="_blank"&gt;python 字典详解&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;</span></span><br><span class="line"><span class="string">&lt;p&gt;&lt;span style="font-family: 楷体;"&gt;&lt;strong&gt;&amp;nbsp; &amp;nbsp;&lt;strong&gt; &lt;a href="http://www.cnblogs.com/guobaoyuan/p/6852131.html" target="_blank"&gt;python 集合详解&lt;/a&gt;&lt;/strong&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;</span></span><br><span class="line"><span class="string">&lt;p&gt;&lt;span style="font-family: 楷体;"&gt;&lt;strong&gt;&amp;nbsp; &amp;nbsp;&lt;a href="http://www.cnblogs.com/guobaoyuan/articles/7087614.html" target="_blank"&gt;python 数据类型&lt;/a&gt;&amp;nbsp;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;</span></span><br><span class="line"><span class="string">&lt;p&gt;&lt;span style="font-family: 楷体;"&gt;&lt;strong&gt;&amp;nbsp; &amp;nbsp;&lt;a href="http://www.cnblogs.com/guobaoyuan/p/6752169.html" target="_blank"&gt;python文件操作&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;</span></span><br><span class="line"><span class="string">&lt;p&gt;&lt;span style="font-family: 楷体;"&gt;&lt;strong&gt;&amp;nbsp; &amp;nbsp;&lt;a href="http://www.cnblogs.com/guobaoyuan/p/8149209.html" target="_blank"&gt;python 闭包&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;</span></span><br><span class="line"><span class="string">&lt;p&gt;&lt;span style="font-family: 楷体;"&gt;&lt;strong&gt;&amp;nbsp; &amp;nbsp;&lt;a href="http://www.cnblogs.com/guobaoyuan/articles/6705714.html" target="_blank"&gt;python 函数详解&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;</span></span><br><span class="line"><span class="string">&lt;p&gt;&lt;span style="font-family: 楷体;"&gt;&lt;strong&gt;&amp;nbsp; &amp;nbsp;&lt;a href="http://www.cnblogs.com/guobaoyuan/articles/7087616.html" target="_blank"&gt;python 函数、装饰器、内置函数&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;</span></span><br><span class="line"><span class="string">&lt;p&gt;&lt;span style="font-family: 楷体;"&gt;&lt;strong&gt;&amp;nbsp; &amp;nbsp;&lt;a href="http://www.cnblogs.com/guobaoyuan/articles/7087629.html" target="_blank"&gt;python 迭代器 生成器&lt;/a&gt;&amp;nbsp;&amp;nbsp;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;</span></span><br><span class="line"><span class="string">&lt;p&gt;&lt;span style="font-family: 楷体;"&gt;&lt;strong&gt;&amp;nbsp; &amp;nbsp;&lt;a href="http://www.cnblogs.com/guobaoyuan/articles/6757215.html" target="_blank"&gt;python匿名函数、内置函数&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;</span></span><br><span class="line"><span class="string">&lt;/div&gt;</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line">print(re.findall(<span class="string">'href="(.+?)"'</span>))</span><br></pre></td></tr></table></figure>
-
-<p> 输出的结果为：</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'http://www.cnblogs.com/guobaoyuan/p/6847032.html'</span>, <span class="string">'http://www.cnblogs.com/guobaoyuan/p/6627631.html'</span>, <span class="string">'http://www.cnblogs.com/guobaoyuan/articles/7087609.html'</span>, <span class="string">'http://www.cnblogs.com/guobaoyuan/articles/6752157.html'</span>, <span class="string">'http://www.cnblogs.com/guobaoyuan/p/6847663.html'</span>, <span class="string">'http://www.cnblogs.com/guobaoyuan/p/6850347.html'</span>, <span class="string">'http://www.cnblogs.com/guobaoyuan/p/6850496.html'</span>, <span class="string">'http://www.cnblogs.com/guobaoyuan/p/6851820.html'</span>, <span class="string">'http://www.cnblogs.com/guobaoyuan/p/6852131.html'</span>, <span class="string">'http://www.cnblogs.com/guobaoyuan/articles/7087614.html'</span>, <span class="string">'http://www.cnblogs.com/guobaoyuan/p/6752169.html'</span>, <span class="string">'http://www.cnblogs.com/guobaoyuan/p/8149209.html'</span>, <span class="string">'http://www.cnblogs.com/guobaoyuan/articles/6705714.html'</span>, <span class="string">'http://www.cnblogs.com/guobaoyuan/articles/7087616.html'</span>, <span class="string">'http://www.cnblogs.com/guobaoyuan/articles/7087629.html'</span>, <span class="string">'http://www.cnblogs.com/guobaoyuan/articles/6757215.html'</span>]</span><br></pre></td></tr></table></figure>
-
-</li>
-</ol>
-<h3 id="正则表达式常用方法"><a href="#正则表达式常用方法" class="headerlink" title="正则表达式常用方法"></a>正则表达式常用方法</h3><p>除了 findall 外，正则表达式的常用方法还有 search，match 等：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line">s = <span class="string">'alexmeet'</span></span><br><span class="line">print(re.findall(<span class="string">'e'</span>, s))</span><br><span class="line">print(re.search(<span class="string">'e'</span>, s))    <span class="comment"># 从字符串任意位置进行匹配，查找到一个就停止，返回的是match对象，如果找不到则返回None</span></span><br><span class="line">print(re.search(<span class="string">'e'</span>, s).group())    <span class="comment"># 将match对象转换为字符串</span></span><br><span class="line">print(re.match(<span class="string">'e'</span>, s))    <span class="comment"># 从字符串的开头位置进行匹配，查找到返回match对象，查找不到返回None</span></span><br><span class="line">print(re.match(<span class="string">'a'</span>, s).group())</span><br></pre></td></tr></table></figure>
-
-<p>输出的结果为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'e'</span>, <span class="string">'e'</span>, <span class="string">'e'</span>]</span><br><span class="line">&lt;_sre.SRE_Match object; span=(<span class="number">2</span>, <span class="number">3</span>), match=<span class="string">'e'</span>&gt;</span><br><span class="line">e</span><br><span class="line"><span class="literal">None</span></span><br><span class="line">a</span><br></pre></td></tr></table></figure>
-
-<p>search 方法和 match 方法的比较：</p>
-<ul>
-<li>search 方法从字符串任意位置进行匹配，查找到一个就停止</li>
-<li>match 方法从字符串开始位置进行匹配，找不到返回 None</li>
-</ul>
-<p>除了上面的几个方法，re 中还有一些不常用但也很有用的方法：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line">s1 = <span class="string">'alex wusir,日天，太白;女神;肖锋：吴超'</span></span><br><span class="line">print(re.split(<span class="string">'[ :;,：；，]'</span>, s1))    <span class="comment"># split分割</span></span><br><span class="line">输出的结果为：</span><br><span class="line">[<span class="string">'alex'</span>, <span class="string">'wusir'</span>, <span class="string">'日天'</span>, <span class="string">'太白'</span>, <span class="string">'女神'</span>, <span class="string">'肖锋'</span>, <span class="string">'吴超'</span>]</span><br><span class="line"></span><br><span class="line">s2 = <span class="string">'barry是最好的讲师，barry就是一个普通老师，请不要将barry当男神对待。'</span></span><br><span class="line">print(re.sub(<span class="string">'barry'</span>, <span class="string">'meet'</span>, s2))    <span class="comment"># sub替换</span></span><br><span class="line">输出的结果为：</span><br><span class="line">meet是最好的讲师，meet就是一个普通老师，请不要将meet当男神对待。</span><br><span class="line"></span><br><span class="line">obj = re.compile(<span class="string">'\d&#123;2&#125;'</span>)    <span class="comment"># compile 定义匹配规则</span></span><br><span class="line">print(obj.findall(<span class="string">'alex12345'</span>))</span><br><span class="line">输出的结果为：</span><br><span class="line">[<span class="string">'12'</span>, <span class="string">'34'</span>]</span><br><span class="line"></span><br><span class="line">it = re.finditer(<span class="string">'e'</span>, <span class="string">'meet,alex'</span>)    <span class="comment"># 返回一个迭代器</span></span><br><span class="line">print(it)</span><br><span class="line">print(next(it))</span><br><span class="line">print(next(it).group())</span><br><span class="line">输出的结果为：</span><br><span class="line">&lt;callable_iterator object at <span class="number">0x0000021E54F2AC50</span>&gt;</span><br><span class="line">&lt;_sre.SRE_Match object; span=(<span class="number">1</span>, <span class="number">2</span>), match=<span class="string">'e'</span>&gt;</span><br><span class="line">e</span><br><span class="line"></span><br><span class="line">s = <span class="string">'&lt;h1&gt;hello&lt;/h1&gt;'</span></span><br><span class="line">ret = re.search(<span class="string">'&lt;(?P&lt;h&gt;\w+)&gt;(?P&lt;h1&gt;\w+)&lt;(?P&lt;h2&gt;/\w+)&gt;'</span>)    <span class="comment"># 给分组取别名</span></span><br><span class="line">print(ret.group(<span class="string">'h'</span>))</span><br><span class="line">print(ret.group(<span class="string">'h1'</span>))</span><br><span class="line">print(ret.group(<span class="string">'h2'</span>))</span><br><span class="line">返回的结果为：</span><br><span class="line">h1</span><br><span class="line">hello</span><br><span class="line">/h1</span><br></pre></td></tr></table></figure>
-
-<p>面试题：</p>
-<ol>
-<li>什么是贪婪匹配和非贪婪匹配？</li>
-<li>search 和 match 的区别？</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/dict/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="刘硕">
-      <meta itemprop="description" content="不成为自己讨厌的人">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="刘硕的技术查阅手册">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/python-basic/dict/" class="post-title-link" itemprop="url">字典</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-02-15 13:43:07" itemprop="dateCreated datePublished" datetime="2020-02-15T13:43:07+08:00">2020-02-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="字典初识"><a href="#字典初识" class="headerlink" title="字典初识"></a>字典初识</h3><p>我们来看下面的一个例子：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">name_lst = [<span class="string">"新力"</span>, <span class="string">"一帆"</span>, <span class="string">"海绵"</span>, <span class="string">"秀"</span>]</span><br><span class="line">id_lst = [<span class="number">18</span>, <span class="number">9</span>, <span class="number">25</span>, <span class="number">50</span>]</span><br></pre></td></tr></table></figure>
-
-<p>其中，列表 <code>name_lst</code> 中存储的是同学的名字，<code>id_lst</code> 中存储的是对应同学的学号。例如，<code>新力</code> 的学号是 <code>18</code>。</p>
-<p>如果我们要查找新力的学号，就要去另一个列表中找到其索引对应的学号值，例如：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">name_lst[<span class="number">0</span>]</span><br><span class="line">id_lst[<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
-
-<p>这样的操作虽然也能满足我们的需求，但是显然有些繁琐。而且一旦任何一个列表中的索引发生了变化（比如进行了插入或者删除数据的操作），就要对另一个列表进行同样的改动，否则会造成混乱。</p>
-<p>如果我们使用字典来进行这一类操作，就可以避免这样的麻烦。</p>
-<p>字典也是 Python 中的基本数据类型之一。字典是 Python 中唯一一种包含键值对的数据类型。字典是一种键值对数据。</p>
-<p>字典在 Python 中的关键字是 <code>dict</code>。</p>
-<p>字典用来存储大量数据，数据量比列表存储的还要大。</p>
-<p>字典能够将数据和数据之间进行关联。</p>
-<p>字典的定义方法是这个样子的：<code>dic = {&#39;键&#39;: &#39;值&#39;}</code>，具体的例子就是：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">"新力"</span>: [<span class="string">"开车"</span>, <span class="string">"唱"</span>, <span class="string">"跳"</span>], <span class="string">"一帆"</span>: <span class="number">9</span>, <span class="number">25</span>: <span class="string">"海绵"</span>, <span class="literal">True</span>: <span class="string">"秀"</span>, (<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>): <span class="string">"大圣"</span>&#125;</span><br></pre></td></tr></table></figure>
-
-<p>通过键可以准确地找到其对应的值：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(dic[<span class="string">"新力"</span>])</span><br></pre></td></tr></table></figure>
-
-<p>在这里补充一个概念，<code>哈希</code>：</p>
-<ul>
-<li>可变数据类型不可哈希</li>
-<li>不可变数据类型可哈希</li>
-</ul>
-<p>目前我们学到的可变数据类型有：列表和字典；不可变数据类型有：整型、字符串、布尔值和元组。</p>
-<p>字典的键必须是不可变数据类型（也就是可哈希）且唯一（字典中的键只能存在一个）。如果字典中的键出现了重复，后面的键值对会覆盖前面的键值对。</p>
-<p>字典的值可以是任意的数据类型。</p>
-<p>字典本身也是一个可变数据类型：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;&#123;<span class="string">'a'</span>: <span class="number">1</span>&#125;: <span class="string">'alex'</span>&#125;</span><br><span class="line">print(dic)</span><br></pre></td></tr></table></figure>
-
-<p>运行上面的代码会报错，错误原因是字典是不可哈希的数据类型。也就是说，字典是可变的。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"C:/Users/Sure/PyProject/day05/01 exercise.py"</span>, line <span class="number">54</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    dic = &#123;&#123;<span class="string">'a'</span>: <span class="number">1</span>&#125;: <span class="string">'alex'</span>&#125;</span><br><span class="line">TypeError: unhashable type: <span class="string">'dict'</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="字典元素的增加"><a href="#字典元素的增加" class="headerlink" title="字典元素的增加"></a>字典元素的增加</h3><p>字典的增加操作可以通过 <code>dic[&quot;键&quot;] = &quot;值&quot;</code> 的方式实现：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">"key"</span>: <span class="number">1</span>&#125;</span><br><span class="line">dic[<span class="string">"alex"</span>] = <span class="number">89</span></span><br><span class="line">print(dic)</span><br></pre></td></tr></table></figure>
-
-<p>输出的内容为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="string">'key'</span>: <span class="number">1</span>, <span class="string">'alex'</span>: <span class="number">89</span>&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这种通过赋值的方法增加变量的方法有些”暴力“，因为如果字典中原本存在相同的键，赋值操作将把原来的键对应的值替换为新值：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key'</span>: <span class="number">1</span>, <span class="string">'alex'</span>: <span class="number">18</span>&#125;</span><br><span class="line">dic[<span class="string">"alex"</span>] = <span class="number">89</span></span><br><span class="line">print(dic)</span><br></pre></td></tr></table></figure>
-
-<p>输出的内容为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="string">'key'</span>: <span class="number">1</span>, <span class="string">'alex'</span>: <span class="number">89</span>&#125;</span><br></pre></td></tr></table></figure>
-
-<p>还有一种相对”温柔“的增加字典元素的方法，<code>.setdefault()</code>。通过这种方法，如果原字典中已经有了同样的键，返回值为改键对应的值，不会进行修改操作。如果原字典中不存在这样的值，将会增加新的键值对。值默认为 <code>None</code>，也可以自定义要添加的值。范围值为增加之后的键对应的新值。例如：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key'</span>: <span class="number">1</span>&#125;</span><br><span class="line">print(dic.setdefault(<span class="string">'key'</span>))</span><br><span class="line">print(dic.setdefault(<span class="string">'meet'</span>))</span><br><span class="line">print(dic.setdefault(<span class="string">'alex'</span>, <span class="number">89</span>))</span><br><span class="line">print(dic)</span><br></pre></td></tr></table></figure>
-
-<p>输出的结果为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span></span><br><span class="line"><span class="literal">None</span></span><br><span class="line"><span class="number">89</span></span><br><span class="line">&#123;<span class="string">'key'</span>: <span class="number">1</span>, <span class="string">'meet'</span>: <span class="literal">None</span>, <span class="string">'alex'</span>: <span class="number">89</span>&#125;</span><br></pre></td></tr></table></figure>
-
-<p>对于 <code>.setdefault()</code> 的返回值，可以这样记忆：最终字典的键对应的值是什么，就返回什么。</p>
-<img src="/python-basic/dict/%E5%AD%97%E5%85%B8setdefault%E6%96%B9%E6%B3%95.png" class="" title="字典setdefault方法">
-
-<p><code>.setdefault()</code> 方法是通过两个步骤进行的：</p>
-<ol>
-<li>先通过减去字典中查找，如果键存在，返回对应的值，不会继续执行第二步；如果键不存在，返回将要赋给该键的值，默认为 <code>None</code>，去执行第二步。</li>
-<li>将键和值添加到字典中</li>
-</ol>
-<h3 id="字典的删除"><a href="#字典的删除" class="headerlink" title="字典的删除"></a>字典的删除</h3><p>字典的删除主要有 <code>.clear()</code>、<code>.pop()</code>、<code>.popitem()</code> 和 <code>del</code> 四种方法。</p>
-<p>需要注意的是，字典没有 <code>.remove()</code> 方法。</p>
-<p><code>.clear()</code> 方法用来清空字典，使用该方法后，会得到一个空字典：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key'</span>: <span class="number">1</span>, <span class="string">'dsb'</span>: <span class="string">'alex'</span>&#125;</span><br><span class="line">dic.clear()    <span class="comment"># 字典是可变数据类型，可以直接用方法来修改，不必重新赋值</span></span><br><span class="line">print(dic)</span><br><span class="line"></span><br><span class="line">输出的结果为：&#123;&#125;</span><br></pre></td></tr></table></figure>
-
-<p><code>.pop()</code> 方法需要输入想要删除的键作为参数，返回的是被删除的键对应的值：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key'</span>: <span class="number">1</span>, <span class="string">'dsb'</span>: <span class="string">'alex'</span>&#125;</span><br><span class="line">print(dic.pop(<span class="string">'key'</span>))</span><br></pre></td></tr></table></figure>
-
-<p><code>.popitem()</code> 是随机删除。但是在 Python 3 和最新版本的 Python 2.7 中，默认删除字典的最后一组键值对，返回值为删除掉的键值对元组（注意，是元组，而不是像 <code>.pop()</code> 一样放回的是值）：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key'</span>: <span class="number">1</span>, <span class="string">'dsb'</span>: <span class="string">'alex'</span>&#125;</span><br><span class="line">print(dic.popitem())</span><br></pre></td></tr></table></figure>
-
-<p>输出的结果为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(<span class="string">'dsb'</span>, <span class="string">'alex'</span>)</span><br></pre></td></tr></table></figure>
-
-<p>与列表不同的是，字典中没有 <code>remove</code> 方法。</p>
-<p>字典中 <code>del</code> 方法的用法和列表十分相似，如果不指定要删除的键，将会删除整个字典：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key'</span>: <span class="number">1</span>, <span class="string">'dsb'</span>: <span class="string">'alex'</span>&#125;</span><br><span class="line"><span class="keyword">del</span> dic</span><br><span class="line">print(dic)</span><br></pre></td></tr></table></figure>
-
-<p>代码运行后报错，因为dic已经被完全删除了。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"C:/Users/Sure/PyProject/day05/01 exercise.py"</span>, line <span class="number">80</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    print(dic)</span><br><span class="line">NameError: name <span class="string">'dic'</span> <span class="keyword">is</span> <span class="keyword">not</span> defined</span><br></pre></td></tr></table></figure>
-
-<p>我们也可以通过指定键的方法，删除特定的键值对：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key'</span>: <span class="number">1</span>, <span class="string">'dsb'</span>: <span class="string">'alex'</span>&#125;</span><br><span class="line"><span class="keyword">del</span> dic[<span class="string">'dsb'</span>]</span><br><span class="line">print(dic)</span><br></pre></td></tr></table></figure>
-
-<p>输出的结果是：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="string">'key'</span>: <span class="number">1</span>&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="字典的修改"><a href="#字典的修改" class="headerlink" title="字典的修改"></a>字典的修改</h3><p>字典的修改有两种形式，第一种是用暴力增加的方法 <code>dic[&#39;键&#39;] = &#39;值&#39;</code> 对已经存在的键进行修改；第二种是通过 <code>.update()</code> 方法来合并两个字典。</p>
-<p>使用 <code>dic[&#39;键&#39;] = &#39;值&#39;</code> 进行修改，当字典中存在指定的键时，该键对应的值将会被替换为新的值：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">"key"</span>:<span class="number">1</span>,<span class="string">"dsb"</span>:<span class="string">"alex"</span>&#125;</span><br><span class="line">dic[<span class="string">"dsb"</span>] = <span class="string">"Alex"</span>  <span class="comment"># 修改</span></span><br><span class="line">dic[<span class="string">"ss"</span>] = <span class="string">"Alex"</span>   <span class="comment"># 增加</span></span><br><span class="line">print(dic)</span><br></pre></td></tr></table></figure>
-
-<p>输出的结果为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="string">'key'</span>: <span class="number">1</span>, <span class="string">'dsb'</span>: <span class="string">'Alex'</span>, <span class="string">'ss'</span>: <span class="string">'Alex'</span>&#125;</span><br></pre></td></tr></table></figure>
-
-<p><code>.update()</code> 方法可以将两个字典合并。<code>update</code> 中输入的字典的级别要高于前面的字典。也就是说，如果新输入的键已经在就字典中存在，该键对应的新值将对替换旧值：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key'</span>: <span class="number">1</span>, <span class="string">'dsb'</span>:<span class="string">'alex'</span>&#125;</span><br><span class="line">dic.update(&#123;<span class="string">'key'</span>: <span class="number">2</span>, <span class="string">'meet'</span>: <span class="number">23</span>&#125;)</span><br><span class="line">print(dic)</span><br></pre></td></tr></table></figure>
-
-<p>输出的结果为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="string">'key'</span>: <span class="number">2</span>, <span class="string">'dsb'</span>: <span class="string">'alex'</span>, <span class="string">'meet'</span>: <span class="number">23</span>&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="字典的查找"><a href="#字典的查找" class="headerlink" title="字典的查找"></a>字典的查找</h3><p>字典可以直接通过键来查找值，不过这种查找方式相对“暴力”：当键存在时，返回对应的值；当键不存在时，程序会报错：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key'</span>: <span class="number">1</span>, <span class="string">'dsb'</span>: <span class="string">'alex'</span>&#125;</span><br><span class="line">print(dic[<span class="string">'dsb'</span>])	<span class="comment"># 返回'dsb'</span></span><br><span class="line">print(dic[<span class="string">'alex'</span>])	<span class="comment"># 程序报错</span></span><br></pre></td></tr></table></figure>
-
-<p>因为这种直接查找的方法当键不存在时会报错，有时我们需要使用 <code>.get()</code> 方法：当键存在时，返回键对应的值；当键不存在时，返回 None：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key'</span>: <span class="number">1</span>, <span class="string">'dsb'</span>: <span class="string">'alex'</span>&#125;</span><br><span class="line">print(dic[<span class="string">'dsb'</span>])	<span class="comment"># 返回'dsb'</span></span><br><span class="line">print(dic[<span class="string">'alex'</span>])	<span class="comment"># 返回None</span></span><br></pre></td></tr></table></figure>
-
-<p>我们甚至可以改变键不存在时的返回值：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(dic.get(<span class="string">"alex"</span>, <span class="string">"没有找到啊"</span>))</span><br></pre></td></tr></table></figure>
-
-<p>我们也可以通过 <code>.keys()</code>、<code>.values()</code> 和 <code>.items()</code> 方法获取字典全部的键、值和键值对。这三个方法的返回值都是一种 <code>高仿列表</code>，可以迭代但不支持索引。我们可以通过list函数将返回的高仿列表转化为普通列表：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key'</span>: <span class="number">1</span>, <span class="string">'dsb'</span>: <span class="string">'alex'</span>&#125;</span><br><span class="line">print(dic.keys())</span><br><span class="line">print(dic.values())</span><br><span class="line">print(dic.items())</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> dic.keys():</span><br><span class="line">    print(i)</span><br><span class="line">print(list(dic.values()))</span><br></pre></td></tr></table></figure>
-
-<p>也可以使用 for 循环迭代字典，将会遍历字典的键：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key'</span>: <span class="number">1</span>, <span class="string">'dsb'</span>: <span class="string">'alex'</span>&#125;</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> dic:</span><br><span class="line">    print(i)</span><br></pre></td></tr></table></figure>
-
-<h3 id="字典的嵌套"><a href="#字典的嵌套" class="headerlink" title="字典的嵌套"></a>字典的嵌套</h3><p>有下面这样一个字典：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">house = &#123;</span><br><span class="line">    <span class="number">101</span>: &#123;<span class="number">1</span>: &#123;<span class="string">"皮裤男"</span>: &#123;<span class="string">"某女"</span>: [<span class="string">"小钢炮"</span>], <span class="string">"国际章"</span>: [<span class="string">"熊大"</span>, <span class="string">"熊二"</span>]&#125;,</span><br><span class="line">            <span class="number">2</span>: &#123;<span class="string">"林俊杰"</span>: [<span class="string">"磨牙"</span>]&#125;&#125;&#125;,</span><br><span class="line">    <span class="number">102</span>: &#123;<span class="number">1</span>: &#123;<span class="string">"皮裤女"</span>: &#123;<span class="string">"林宥嘉"</span>: [<span class="string">"说谎"</span>, <span class="string">"你是我的眼"</span>]&#125;&#125;,</span><br><span class="line">         <span class="number">2</span>: &#123;<span class="string">"王菲"</span>: [<span class="string">"天后"</span>, <span class="string">"传奇"</span>, <span class="string">"红豆"</span>, <span class="string">"笑忘书"</span>]&#125;&#125;,</span><br><span class="line">    <span class="number">103</span>: &#123;<span class="number">1</span>: &#123;<span class="string">"韦小宝"</span>: &#123;<span class="string">"阿珂"</span>: <span class="string">"刺客"</span>, <span class="string">"建宁"</span>: <span class="string">"公主"</span>, <span class="string">"双儿"</span>: <span class="string">"丫鬟"</span>, <span class="string">"教主老婆"</span>: <span class="string">"龙儿"</span>&#125;&#125;,</span><br><span class="line">         <span class="number">2</span>: &#123;<span class="string">"张无忌"</span>: &#123;<span class="string">"灭绝师太"</span>: <span class="string">"倚天剑"</span>, <span class="string">"金毛狮王"</span>: <span class="string">"屠龙刀"</span>, <span class="string">"张三丰"</span>: <span class="string">"太极拳"</span>&#125;&#125;&#125;,</span><br><span class="line">    <span class="number">104</span>: &#123;<span class="number">1</span>: &#123;<span class="string">"西游记"</span>: &#123;<span class="string">"大圣"</span>: <span class="string">"金箍撸撸棒"</span>, <span class="string">"唐僧"</span>: <span class="string">"叨逼叨"</span>, <span class="string">"八戒"</span>: <span class="string">"高老庄主任"</span>&#125;&#125;&#125;,</span><br><span class="line">    <span class="number">105</span>: &#123;<span class="number">1</span>: &#123;<span class="string">"水浒传"</span>: &#123;<span class="string">"武松"</span>: <span class="string">"打老虎"</span>, <span class="string">"鲁智笙"</span>: <span class="string">"拔树"</span>, <span class="string">"林冲"</span>: <span class="string">"教头"</span>, <span class="string">"宋江"</span>: <span class="string">"老大"</span>&#125;&#125;,</span><br><span class="line">         <span class="number">2</span>: &#123;<span class="string">"官场"</span>: &#123;<span class="string">"高俅"</span>: <span class="string">"足球"</span>&#125;&#125;&#125;,</span><br><span class="line">    <span class="number">106</span>: &#123;<span class="number">1</span>: &#123;<span class="string">"老男孩"</span>: &#123;<span class="string">"alex"</span>: <span class="string">"dsb"</span>, <span class="string">"wusir"</span>: <span class="string">"污"</span>, <span class="string">"宝元"</span>: <span class="string">"大卡车"</span>, <span class="string">"江毅"</span>: <span class="string">"兽"</span>&#125;&#125;&#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>要想找到里面的 <code>&quot;倚天剑&quot;</code> 的 <code>剑</code> 字和 <code>&quot;熊大&quot;</code> 的 <code>熊</code> 字，我们可以这样找到：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">print(house[<span class="number">103</span>][<span class="number">2</span>][<span class="string">'张无忌'</span>][<span class="string">'灭绝师太'</span>][<span class="number">2</span>])</span><br><span class="line">print(house[<span class="number">101</span>][<span class="number">1</span>][<span class="string">'皮裤男'</span>][<span class="string">'国际章'</span>][<span class="number">0</span>][<span class="number">0</span>])</span><br></pre></td></tr></table></figure>
-
-<p>从上面的例子中，我们就可以发现，字典相较于列表是很有优势的：</p>
-<ol>
-<li>字典查找内容更方便</li>
-<li>字典查找速度更快</li>
-</ol>
-<p>字典还可以简化流程控制的过程。</p>
-<p>举个例子，如果我们需要设计这样一个程序，用户输入编号，程序自动返回该编号对应的菜品。如果我们用 if 条件句来实现，将会非常繁琐：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    choose = int(input(<span class="string">"请输入数字（1-12）："</span>))</span><br><span class="line">    <span class="keyword">if</span> choose == <span class="number">1</span>:</span><br><span class="line">        print(<span class="string">'饺子'</span>)</span><br><span class="line">    <span class="keyword">elif</span> choose == <span class="number">2</span>:</span><br><span class="line">        print(<span class="string">'粥'</span>)</span><br><span class="line">    <span class="keyword">elif</span> choose == <span class="number">3</span>:</span><br><span class="line">        print(<span class="string">'面条'</span>)</span><br><span class="line">    <span class="keyword">elif</span> choose == <span class="number">4</span>:</span><br><span class="line">        print(<span class="string">'肉'</span>)</span><br><span class="line">    <span class="keyword">elif</span> choose == <span class="number">5</span>:</span><br><span class="line">        print(<span class="string">'土'</span>)</span><br><span class="line">    <span class="keyword">elif</span> choose == <span class="number">6</span>:</span><br><span class="line">        print(<span class="string">'东南风'</span>)</span><br><span class="line">    <span class="keyword">elif</span> choose == <span class="number">7</span>:</span><br><span class="line">        print(<span class="string">'切糕'</span>)</span><br><span class="line">    <span class="keyword">elif</span> choose == <span class="number">8</span>:</span><br><span class="line">        print(<span class="string">'烤全羊'</span>)</span><br><span class="line">    <span class="keyword">elif</span> choose == <span class="number">9</span>:</span><br><span class="line">        print(<span class="string">'烤骆驼'</span>)</span><br><span class="line">    <span class="keyword">elif</span> choose == <span class="number">10</span>:</span><br><span class="line">        print(<span class="string">'锅包肉'</span>)</span><br><span class="line">    <span class="keyword">elif</span> choose == <span class="number">11</span>:</span><br><span class="line">        print(<span class="string">'杀猪菜'</span>)</span><br><span class="line">    <span class="keyword">elif</span> choose == <span class="number">12</span>:</span><br><span class="line">        print(<span class="string">'乱炖'</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        print(<span class="string">'输入错误，请重新输入！'</span>)</span><br></pre></td></tr></table></figure>
-
-<p>如果我们使用字典的方法，只需要这样即可：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">"1"</span>: <span class="string">"饺子"</span>,</span><br><span class="line">       <span class="string">"2"</span>: <span class="string">"粥"</span>,</span><br><span class="line">       <span class="string">"3"</span>: <span class="string">"面条"</span>,</span><br><span class="line">       <span class="string">"4"</span>: <span class="string">"肉"</span>,</span><br><span class="line">       <span class="string">"5"</span>: <span class="string">"土"</span>,</span><br><span class="line">       <span class="string">"6"</span>: <span class="string">"东南风"</span>,</span><br><span class="line">       <span class="string">"7"</span>: <span class="string">"切糕"</span>,</span><br><span class="line">       <span class="string">"8"</span>: <span class="string">"烤全羊"</span>,</span><br><span class="line">       <span class="string">"9"</span>: <span class="string">"烤骆驼"</span>,</span><br><span class="line">       <span class="string">"10"</span>: <span class="string">"锅包肉"</span>,</span><br><span class="line">       <span class="string">"11"</span>: <span class="string">"杀猪菜"</span>,</span><br><span class="line">       <span class="string">"12"</span>: <span class="string">"乱炖"</span></span><br><span class="line">       &#125;</span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    choose = input(<span class="string">"请输入数字（1-12）："</span>)</span><br><span class="line">    <span class="keyword">if</span> choose <span class="keyword">in</span> dic:</span><br><span class="line">        print(dic[choose])</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        print(<span class="string">'输入错误，请重新输入！'</span>)</span><br></pre></td></tr></table></figure>
-
-<p>我们看到，使用字典之后，代码节省了不少，而且少了很多重复代码。以后如果需要增加或者删改列表，只需要在字典中进行操作即可，不需要对程序进行改动，后期维护也更为便利。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/translation/raspberry-gpio-python-examples/GPIO-function/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="刘硕">
-      <meta itemprop="description" content="不成为自己讨厌的人">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="刘硕的技术查阅手册">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/translation/raspberry-gpio-python-examples/GPIO-function/" class="post-title-link" itemprop="url">gpio_function（通道）</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-02-15 13:42:33" itemprop="dateCreated datePublished" datetime="2020-02-15T13:42:33+08:00">2020-02-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91/" itemprop="url" rel="index"><span itemprop="name">官方文档翻译</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>显示指定 GPIO 通道的功能。<br>例如：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> RPi.GPIO <span class="keyword">as</span> GPIO</span><br><span class="line"></span><br><span class="line">GPIO.setmode(GPIO.BOARD)</span><br><span class="line">func = GPIO.gpio_function(pin)</span><br></pre></td></tr></table></figure>
-
-<p>将会从下面的功能中返回一个值：<br><code>GPIO.IN</code>，<code>GPIO.OUT</code>，<code>GPIO.SPI</code>，<code>GPIO.I2C</code>，<code>GPIO.HARD_PWM</code>，<code>GPIO.SERIAL</code>，<code>GPIO.UNKNOWN</code></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1964,7 +1662,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">225</span>
+          <span class="site-state-item-count">229</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
