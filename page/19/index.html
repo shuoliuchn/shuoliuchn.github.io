@@ -230,6 +230,116 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/user-interface/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/python-basic/user-interface/" class="post-title-link" itemprop="url">用户交互语句</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-15 13:51:28" itemprop="dateCreated datePublished" datetime="2020-02-15T13:51:28+08:00">2020-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="print-语句"><a href="#print-语句" class="headerlink" title="print 语句"></a><code>print</code> 语句</h3><p>我们在讨论 Python 中基本数据类型时，已经讨论过 print 语句的基本用法，这里只是简单提一下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">123</span></span><br><span class="line">b = <span class="string">'abc'</span></span><br><span class="line">c = b + <span class="string">'d'</span></span><br><span class="line">print(a)      <span class="comment"># 打印一个变量</span></span><br><span class="line">print(b, c)   <span class="comment"># 打印多个变量</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="input-语句"><a href="#input-语句" class="headerlink" title="input 语句"></a><code>input</code> 语句</h3><p>在 Python 中，用 <code>input()</code> 函数实现用户和程序间的交互。<code>input</code> 是输入的意思。使用示例如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">qq_user = input(<span class="string">"QQ 账号："</span>)    <span class="comment"># 坑 --&gt; 阻塞</span></span><br><span class="line">qq_pwd = input(<span class="string">"QQ 密码："</span>)</span><br><span class="line">print(qq_user, qq_pwd)</span><br></pre></td></tr></table></figure>
+
+<p>当程序运行到 <code>input</code> 语句时，会发生阻塞，等待用户进行输入。程序会一直保持阻塞状态，除非用户输入内容或终止程序。</p>
+<p>需要注意的是，在 Python 3 中 <code>input</code> 获取的内容全都是字符串。因为这样的原因，下面的程序会报错：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">num = input(<span class="string">"请输入数字："</span>)</span><br><span class="line">print(num + <span class="number">5</span>)</span><br></pre></td></tr></table></figure>
+
+<p>这两行代码的本意是，当用户输入一个数字之后，程序自动输出一个比输入数字大 5 的数字。但是因为 <code>input</code> 获取的内容是字符串，字符串是不能和整型数字进行加和操作的，故而程序报错。我们可以使用 <code>tpye()</code> 函数查看变量的数据类型。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">num = input(<span class="string">"请输入数字："</span>)</span><br><span class="line">print(type(num))    <span class="comment"># 查看数据类型</span></span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">请输入数字：<span class="number">12</span></span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">str</span>'&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="int-和-str-语句"><a href="#int-和-str-语句" class="headerlink" title="int 和 str 语句"></a><code>int</code> 和 <code>str</code> 语句</h3><p>通过使用 <code>int()</code> 函数可以将字符串转化为整型数据。同样地，也可以使用 <code>str()</code> 函数，把整型数据转换成字符串。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a = int(<span class="string">'12'</span>)	<span class="comment"># 字符串转成整型</span></span><br><span class="line">b = str(<span class="number">23</span>)		<span class="comment"># 整型转成字符串</span></span><br></pre></td></tr></table></figure>
+
+<p>需要注意的是，使用 <code>int()</code> 函数将字符串转换为整型时，字符串中的内容必须全部都是数字，否则会报错：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>int(<span class="string">'abc123'</span>)</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">ValueError: invalid literal <span class="keyword">for</span> int() <span class="keyword">with</span> base <span class="number">10</span>: <span class="string">'abc123'</span></span><br></pre></td></tr></table></figure>
+
+<p>那么我们上面的例子就可以改成这个样子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">num = input(<span class="string">"请输入数字："</span>)</span><br><span class="line">a = int(num)</span><br><span class="line">print(a + <span class="number">5</span>)</span><br></pre></td></tr></table></figure>
+
+<p>这样的话，当我们输入一个数字之后，通过 <code>int()</code> 函数，输入内容转换成为整型，然后就可以进行加和操作了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">请输入数字：<span class="number">3</span></span><br><span class="line"><span class="number">8</span></span><br></pre></td></tr></table></figure>
+
+<p>也可以把 <code>inpu()</code> 操作直接放到 <code>int()</code> 函数中：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">num = int(input(<span class="string">"请输入数字："</span>))</span><br><span class="line">print(num + <span class="number">5</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="用户交互语句总结"><a href="#用户交互语句总结" class="headerlink" title="用户交互语句总结"></a>用户交互语句总结</h3><ul>
+<li><code>input()</code> 是输入，获取到的内容都是字符串</li>
+<li><code>type()</code> 函数用来查看数据类型</li>
+<li><code>int(&#39;字符串&#39;)</code> 可以将字符串转换成整型，字符串中的内容必须全部都是数字</li>
+<li><code>str(整型)</code> 函数可以将整型转换成字符串</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://sliu.vip/linux/directory-path/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1628,110 +1738,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/bug-bible/python-bug/UnboundLocalError/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="刘硕">
-      <meta itemprop="description" content="不成为自己讨厌的人">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="刘硕的技术查阅手册">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/bug-bible/python-bug/UnboundLocalError/" class="post-title-link" itemprop="url">UnboundLocalError</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-02-15 13:49:12" itemprop="dateCreated datePublished" datetime="2020-02-15T13:49:12+08:00">2020-02-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Bug-%E5%AE%9D%E5%85%B8/" itemprop="url" rel="index"><span itemprop="name">Bug 宝典</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="local-variable-‘b’-referenced-before-assignment"><a href="#local-variable-‘b’-referenced-before-assignment" class="headerlink" title="local variable ‘b’ referenced before assignment"></a>local variable ‘b’ referenced before assignment</h2><h3 id="1-1"><a href="#1-1" class="headerlink" title="1.1"></a>1.1</h3><p>报错信息：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"C:/Users/Sure/PyProject/day10/exercise.py"</span>, line <span class="number">227</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    print(func())</span><br><span class="line">  File <span class="string">"C:/Users/Sure/PyProject/day10/exercise.py"</span>, line <span class="number">225</span>, <span class="keyword">in</span> func</span><br><span class="line">    b += <span class="number">1</span></span><br><span class="line">UnboundLocalError: local variable <span class="string">'b'</span> referenced before assignment</span><br></pre></td></tr></table></figure>
-
-<p>错误代码：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">b = <span class="number">100</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">()</span>:</span></span><br><span class="line">    b += <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> b</span><br><span class="line">print(func())</span><br></pre></td></tr></table></figure>
-
-<p>错误原因：</p>
-<p>在局部空间修改全局变量，但是没有声明。</p>
-<p>解决方法：</p>
-<p>不建议在局部空间修改全局变量。如果一定要修改，使用global声明。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">b = <span class="number">100</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">global</span> b</span><br><span class="line">    b = b + <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> b</span><br><span class="line">print(func())</span><br></pre></td></tr></table></figure>
-
-<h3 id="1-2"><a href="#1-2" class="headerlink" title="1.2"></a>1.2</h3><p>报错信息：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Traceback (most recent call last):</span><br><span class="line">  File Assignment, line <span class="number">249</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    func()</span><br><span class="line">  File Assignment, line <span class="number">247</span>, <span class="keyword">in</span> func</span><br><span class="line">    print(name)</span><br><span class="line">UnboundLocalError: local variable <span class="string">'name'</span> referenced before assignment</span><br></pre></td></tr></table></figure>
-
-<p>错误代码：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">name = <span class="string">'宝元'</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">()</span>:</span></span><br><span class="line">    print(name)</span><br><span class="line">    name = <span class="string">'alex'</span></span><br><span class="line">func()</span><br></pre></td></tr></table></figure>
-
-<p>错误原因：</p>
-<p>在局部使用一次使用<code>name</code>这个变量时，局部不存在该变量，需要去全局寻找。此时局部已经认定<code>name</code>为全局变量。后面又在局部对<code>name</code>赋值，也就是试图在局部空间修改全局变量，却没有事先将变量声明为全局变量，所以会报错。</p>
-<p>解决方法：</p>
-<ol>
-<li>如果目的是要将全局变量中的<code>name</code>修改，那就先声明其为全局变量</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">name = <span class="string">'宝元'</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">global</span></span><br><span class="line">    print(name)</span><br><span class="line">    name = <span class="string">'alex'</span></span><br><span class="line">func()</span><br></pre></td></tr></table></figure>
-
-<ol start="2">
-<li>如果目的是想要在局部创建一个值为<code>alex</code>的新变量，那就换一个变量名，不要与全局变量冲突</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">name = <span class="string">'宝元'</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">global</span></span><br><span class="line">    print(name)</span><br><span class="line">    name1 = <span class="string">'alex'</span></span><br><span class="line">func()</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1804,7 +1810,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">229</span>
+          <span class="site-state-item-count">230</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

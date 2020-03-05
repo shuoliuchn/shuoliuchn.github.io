@@ -230,6 +230,110 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/bug-bible/python-bug/UnboundLocalError/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/bug-bible/python-bug/UnboundLocalError/" class="post-title-link" itemprop="url">UnboundLocalError</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-15 13:49:12" itemprop="dateCreated datePublished" datetime="2020-02-15T13:49:12+08:00">2020-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Bug-%E5%AE%9D%E5%85%B8/" itemprop="url" rel="index"><span itemprop="name">Bug 宝典</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="local-variable-‘b’-referenced-before-assignment"><a href="#local-variable-‘b’-referenced-before-assignment" class="headerlink" title="local variable ‘b’ referenced before assignment"></a>local variable ‘b’ referenced before assignment</h2><h3 id="1-1"><a href="#1-1" class="headerlink" title="1.1"></a>1.1</h3><p>报错信息：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"C:/Users/Sure/PyProject/day10/exercise.py"</span>, line <span class="number">227</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    print(func())</span><br><span class="line">  File <span class="string">"C:/Users/Sure/PyProject/day10/exercise.py"</span>, line <span class="number">225</span>, <span class="keyword">in</span> func</span><br><span class="line">    b += <span class="number">1</span></span><br><span class="line">UnboundLocalError: local variable <span class="string">'b'</span> referenced before assignment</span><br></pre></td></tr></table></figure>
+
+<p>错误代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">b = <span class="number">100</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">()</span>:</span></span><br><span class="line">    b += <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> b</span><br><span class="line">print(func())</span><br></pre></td></tr></table></figure>
+
+<p>错误原因：</p>
+<p>在局部空间修改全局变量，但是没有声明。</p>
+<p>解决方法：</p>
+<p>不建议在局部空间修改全局变量。如果一定要修改，使用global声明。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">b = <span class="number">100</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">global</span> b</span><br><span class="line">    b = b + <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> b</span><br><span class="line">print(func())</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-2"><a href="#1-2" class="headerlink" title="1.2"></a>1.2</h3><p>报错信息：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Traceback (most recent call last):</span><br><span class="line">  File Assignment, line <span class="number">249</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    func()</span><br><span class="line">  File Assignment, line <span class="number">247</span>, <span class="keyword">in</span> func</span><br><span class="line">    print(name)</span><br><span class="line">UnboundLocalError: local variable <span class="string">'name'</span> referenced before assignment</span><br></pre></td></tr></table></figure>
+
+<p>错误代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">name = <span class="string">'宝元'</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">()</span>:</span></span><br><span class="line">    print(name)</span><br><span class="line">    name = <span class="string">'alex'</span></span><br><span class="line">func()</span><br></pre></td></tr></table></figure>
+
+<p>错误原因：</p>
+<p>在局部使用一次使用<code>name</code>这个变量时，局部不存在该变量，需要去全局寻找。此时局部已经认定<code>name</code>为全局变量。后面又在局部对<code>name</code>赋值，也就是试图在局部空间修改全局变量，却没有事先将变量声明为全局变量，所以会报错。</p>
+<p>解决方法：</p>
+<ol>
+<li>如果目的是要将全局变量中的<code>name</code>修改，那就先声明其为全局变量</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">name = <span class="string">'宝元'</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">global</span></span><br><span class="line">    print(name)</span><br><span class="line">    name = <span class="string">'alex'</span></span><br><span class="line">func()</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>如果目的是想要在局部创建一个值为<code>alex</code>的新变量，那就换一个变量名，不要与全局变量冲突</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">name = <span class="string">'宝元'</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">global</span></span><br><span class="line">    print(name)</span><br><span class="line">    name1 = <span class="string">'alex'</span></span><br><span class="line">func()</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/comprehension/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1284,274 +1388,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-advanced/inheritance/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="刘硕">
-      <meta itemprop="description" content="不成为自己讨厌的人">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="刘硕的技术查阅手册">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/python-advanced/inheritance/" class="post-title-link" itemprop="url">继承（实现）关系</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-02-15 13:46:16" itemprop="dateCreated datePublished" datetime="2020-02-15T13:46:16+08:00">2020-02-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python-%E8%BF%9B%E9%98%B6/" itemprop="url" rel="index"><span itemprop="name">Python 进阶</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="面向对象与继承"><a href="#面向对象与继承" class="headerlink" title="面向对象与继承"></a>面向对象与继承</h3><p>面向对象思想有三大要素：</p>
-<ol>
-<li>继承</li>
-<li>封装</li>
-<li>多态</li>
-</ol>
-<p>面向对象编程（OOP）语言的一个重要功能就是“继承”：</p>
-<ul>
-<li>它可以使用现有类的所有功能，并在无需重新编写原来类的情况下，对这些功能进行扩展</li>
-<li>通过继承创建的新类被称为“子类”或“派生类”，被继承的类被称为“基类”、“父类”或“超类”</li>
-<li>在 Python 中，同时支持单继承与多继承</li>
-</ul>
-<h3 id="继承的概念"><a href="#继承的概念" class="headerlink" title="继承的概念"></a>继承的概念</h3><p>举个例子，我们现在像创建猪、狗和猫三个类，它们都有名字和年龄属性，也都有一个叫的方法。不同的是，猪有吃的方法、狗有看家的方法、猫有抓老鼠的方法。按照之前的学习，我们会将代码写成这样：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Pig</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, age)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">bark</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'叫'</span>)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">eat</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'吃'</span>)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, age)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">bark</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'叫'</span>)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">guarding</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'看家'</span>)</span><br><span class="line">        </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cat</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, age)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">bark</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'叫'</span>)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">catch</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'抓老鼠'</span>)</span><br></pre></td></tr></table></figure>
-
-<p>我们发现，虽然实现了需求，但是我们看到，这里面出现了大量的重复代码。如果我们能将这些重复代码封装起来，比如封装到一个动物类中，然后猪、狗和猫分别都继承这个动物类，就可以让代码更加简洁。</p>
-
-
-<p>具体的实现方法为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Animal</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, age)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">bark</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'叫'</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Pig</span><span class="params">(Animal)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">eat</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'吃'</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span><span class="params">(Animal)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">guarding</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'看家'</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Cat</span><span class="params">(Animal)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">catch</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'抓老鼠'</span>)</span><br><span class="line">mimi = Cat(<span class="string">'咪咪'</span>, <span class="number">3</span>)</span><br><span class="line">print(mimi.name, mimi.age)</span><br><span class="line">mimi.bark()</span><br><span class="line">mimi.catch()</span><br></pre></td></tr></table></figure>
-
-<p>输出的结果为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">咪咪 <span class="number">3</span></span><br><span class="line">叫</span><br><span class="line">抓老鼠</span><br></pre></td></tr></table></figure>
-
-<p>实现继承之后，子类将继承父类的属性和方法。</p>
-<p>不难看出，继承关系的特点为：</p>
-<ul>
-<li>增加了类的耦合性（耦合性不宜多，宜精）</li>
-<li>减少了重复代码</li>
-<li>使得代码更加规范化，合理化</li>
-</ul>
-<p>组合与继承的对比：</p>
-<ul>
-<li>组合<ul>
-<li>组合是指在新类里面创建原有类的对象，重复利用已有类的功能，是 <code>has-a</code> 的关系（如：猫有腿）</li>
-<li>原来类的对象作为整体，以新类的属性的形式存在</li>
-</ul>
-</li>
-<li>继承<ul>
-<li>继承允许设计人员根据其他类的实现来定义一个类的实现，是 <code>is-a</code> 的关系（如：猫是动物）</li>
-<li>子类可以直接使用父类中的属性和方法，就好像父类的属性和方法已经存在于子类中了一样</li>
-</ul>
-</li>
-</ul>
-<p>Python 3 中使用的都是新式类，如果一个类谁都不继承，那么它默认继承 object 类。</p>
-<p>继承虽然很好用，但是不能滥用，像之前说的，耦合程度不宜过高，否则逻辑会十分混乱：</p>
-<ul>
-<li>不要轻易地使用继承，除非两个类之间是 <code>is-a</code> 关系</li>
-<li>不要单纯地为了实现代码的重用而使用继承，因为过多的继承会破坏代码的可维护性，当父类被修改的时候，会影响到所有继承自它的子类，从而增加程序的维护难度与成本</li>
-<li>总结起来就是：组装的时候使用组合，扩展的时候使用继承</li>
-</ul>
-<p>回到我们刚才的例子，猪、狗、猫三各类都只有动物一个父类，这种只有一个父类的继承方式，我们称作为单继承。在单继承中，子类可以继承父类的属性和方法，修改父类，所有子类都会受到影响。</p>
-<h3 id="isinstance-和-issubclass"><a href="#isinstance-和-issubclass" class="headerlink" title="isinstance 和 issubclass"></a><code>isinstance</code> 和 <code>issubclass</code></h3><ul>
-<li><code>isinstance</code>：<ul>
-<li>用于检查实例类型</li>
-<li><code>isinstance(对象, 类)</code>，用来判断对象是不是该类的实例对象</li>
-</ul>
-</li>
-<li><code>issubclass</code>：<ul>
-<li>用于检查类继承</li>
-<li><code>issubclass(类1, 类2)</code>，用来判断类1是否是类2的子类</li>
-</ul>
-</li>
-</ul>
-<h3 id="类与数据类型"><a href="#类与数据类型" class="headerlink" title="类与数据类型"></a>类与数据类型</h3><p>Python 与其他编程语言不同，当我们定义一个 class 的时候，我们实际上就定义了一个数据类型。我们定义的数据类型和 Python 自带的数据类型，比如 str、list、dict 没什么两样：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">print(isinstance(<span class="number">10</span>, int))</span><br><span class="line"></span><br><span class="line">输出的结果为： <span class="literal">True</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="重写父类方法"><a href="#重写父类方法" class="headerlink" title="重写父类方法"></a>重写父类方法</h3><p>如果父类中的方法在子类中不适用，我们可以对其进行重写：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Animal</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, age)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">bark</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'叫'</span>)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span><span class="params">(Animal)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">bark</span><span class="params">(self)</span>:</span>    <span class="comment"># 重写叫的方法</span></span><br><span class="line">        print(<span class="string">'汪汪汪！'</span>)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">guarding</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'看家'</span>)</span><br><span class="line">  </span><br><span class="line">wangwang = Dog(<span class="string">'汪汪'</span>, <span class="number">3</span>)</span><br><span class="line">print(wangwang.name)</span><br><span class="line">wangwang.bark()</span><br></pre></td></tr></table></figure>
-
-<p>输出的结果为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">汪汪</span><br><span class="line">汪汪汪！</span><br></pre></td></tr></table></figure>
-
-<p>重写父类方法的原理是，当示例调用方法时，会先在自己的类方法中查找，如果找不到，才会去父类中查找是否有相应的方法。如果在自己的类方法中找到了需要的方法，就不会去父类中查找，也就调用不到父类的同名方法，从而实现对父类中方法的重写</p>
-
-
-<h3 id="调用父类方法"><a href="#调用父类方法" class="headerlink" title="调用父类方法"></a>调用父类方法</h3><p>但是有些时候，我们不得已会写一些重名的方法，比如父类和子类都会有 <code>__init__</code> 构造方法。但是我们在调用子类方法的同时，也希望调用到父类中相应的方法。我们可以通过父类的类名直接调用：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Father</span>:</span></span><br><span class="line">    eye_num = <span class="number">2</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, age)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">live_like_yemen</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'打儿子'</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Son</span><span class="params">(Father)</span>:</span></span><br><span class="line">    hair_color = <span class="string">'蓝色'</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, age, sex)</span>:</span></span><br><span class="line">        Father.__init__(self, name, age)</span><br><span class="line">        self.sex = sex</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">live_like_yemen</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'打弟弟'</span>)</span><br><span class="line"></span><br><span class="line">xiaoming = Son(<span class="string">'小明'</span>, <span class="number">16</span>, <span class="string">'男'</span>)</span><br><span class="line">xiaoming.live_like_yemen()</span><br><span class="line">print(xiaoming.name)</span><br></pre></td></tr></table></figure>
-
-<p>输出的结果为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">打弟弟</span><br><span class="line">小明</span><br></pre></td></tr></table></figure>
-
-<p>需要注意的是，在类中，self 永远指的是调用类的实例化对象。</p>
-<h3 id="super-方法"><a href="#super-方法" class="headerlink" title="super 方法"></a>super 方法</h3><p>在上面的例子中，如果没有 <code>Father.__init__(self, name, age)</code> 这行代码，在子类中就无法调用父类的构造方法，因为子类已经重写了构造方法。上面的方法虽然实现了预期的功能，但是并不符合开发规范。</p>
-<p>从子类中，调用父类中方法的关键字是 super，上述例子可修改为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Father</span>:</span></span><br><span class="line">    eye_num = <span class="number">2</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, age)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">live_like_yemen</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'打儿子'</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Son</span><span class="params">(Father)</span>:</span></span><br><span class="line">    hair_color = <span class="string">'蓝色'</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, age, sex)</span>:</span></span><br><span class="line">        super().__init__(name, age)    <span class="comment"># 也可以写为super(Son, self).__init__(name, age)</span></span><br><span class="line">        self.sex = sex</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">live_like_yemen</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'打弟弟'</span>)</span><br><span class="line"></span><br><span class="line">xiaoming = Son(<span class="string">'小明'</span>, <span class="number">16</span>, <span class="string">'男'</span>)</span><br><span class="line">xiaoming.live_like_yemen()</span><br><span class="line">print(xiaoming.name)</span><br></pre></td></tr></table></figure>
-
-<p>super 方法：</p>
-<ul>
-<li>子类如果编写了自己的构造方法，但是没有声明要调用父类的构造方法，而还需要父类的构造函数中初始化的一些属性，就会出现问题</li>
-<li>如果子类和父类都有构造函数，子类的构造函数其实是对父类的构造函数的重写。如果不显示调用父类构造函数，父类的构造函数便不会被执行</li>
-<li>解决方法：直接使用超类的类名调用超类构造方法，或者使用 super 函数 <code>super(当前类名, self).__init__()</code></li>
-</ul>
-<p>父类方法重写：</p>
-<ul>
-<li>子类可以重写父类中的方法</li>
-<li>通过 super 关键字可以调用父类中的方法</li>
-</ul>
-<h3 id="Python-中的多继承"><a href="#Python-中的多继承" class="headerlink" title="Python 中的多继承"></a>Python 中的多继承</h3><p>多重继承和多继承</p>
-<ul>
-<li><p>多重继承：包含多个间接父类</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span><span class="params">(object)</span>:</span> <span class="keyword">pass</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span><span class="params">(A)</span>:</span> <span class="keyword">pass</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span><span class="params">(B)</span>:</span> <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>多继承：有多个直接父类</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">X</span><span class="params">(object)</span>:</span> <span class="keyword">pass</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Y</span><span class="params">(object)</span>:</span> <span class="keyword">pass</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Z</span><span class="params">(object)</span>:</span> <span class="keyword">pass</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">M</span><span class="params">(X, Y, Z)</span>:</span> <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>大部分面向对象的编程语言（除了 C++）都只支持单继承，而不支持多继承</p>
-<ul>
-<li>多继承不仅增加了编程的复杂度，而且很容易导致一些莫名的错误<a href="在编程时，莫名其妙的错误最为可怕，因为不可预测，难以排除。">^1</a></li>
-</ul>
-</li>
-<li><p>Python 虽然在语法上明确支持多继承，但通常推荐如果不是很有必要，尽量不要使用多继承，而是使用单继承</p>
-<ul>
-<li>这样可以保证编程思路更清晰，而且可以避免很多麻烦</li>
-</ul>
-</li>
-<li><p>如果多个直接父类中包含了同名的方法</p>
-<ul>
-<li>排在前面的父类中的方法会“遮蔽“排在后面的父类中的同名方法</li>
-</ul>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">method</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'A_method'</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">method</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'B_method'</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">C</span><span class="params">(A, B)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">c = C()</span><br><span class="line">c.method()</span><br></pre></td></tr></table></figure>
-
-<p>输出的结果为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">A_method</span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<h3 id="钻石继承和-MRO"><a href="#钻石继承和-MRO" class="headerlink" title="钻石继承和 MRO"></a>钻石继承和 MRO</h3><p>我们刚刚谈到，即便不使用 super 方法，直接使用父类的类名，同样可以实现对父类方法的调用。那为什么更推荐使用 super 方法呢？</p>
-<p>这是因为当涉及到比较复杂得多继承关系，比如钻石继承关系时，会出现间接父类会被初始化多次的情况。</p>
-<p><img src="inherit.assets/1570786444427.png" alt="1570786444427"></p>
-<p>比如，我们来看下面这个钻石继承的例子，如果我们使用父类的类名调用构造方法：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">YeYe</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'初始化爷爷类'</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">QinBa</span><span class="params">(YeYe)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'进入化亲爸类'</span>)</span><br><span class="line">        YeYe.__init__(self)</span><br><span class="line">        print(<span class="string">'初始化亲爸类'</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GanDie</span><span class="params">(YeYe)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'进入化干爹类'</span>)</span><br><span class="line">        YeYe.__init__(self)</span><br><span class="line">        print(<span class="string">'初始化干爹类'</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ErZi</span><span class="params">(QinBa, GanDie)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'进入化儿子类'</span>)</span><br><span class="line">        QinBa.__init__(self)</span><br><span class="line">        GanDie.__init__(self)</span><br><span class="line">        print(<span class="string">'初始化儿子类'</span>)</span><br><span class="line">erzi = ErZi()</span><br></pre></td></tr></table></figure>
-
-<p>我们看到，程序运行后，爷爷类被初始化了两次。</p>
-
-
-<p>这是因为，当创建儿子对象时，会执行它的构造函数。首先打印的是儿子类中初始化方法的代码，然后执行秦霸的构造方法。在亲爸的构造方法中，也是先打印代码，然后执行爷爷的构造方法。执行完爷爷的构造方法之后，程序继续执行亲爸中剩余的代码，然后回到儿子类中，执行干爹的构造方法。在干爹的构造方法中，又要调用爷爷的构造方法。然后打印剩余代码，直至结束。</p>
-
-
-<p>我们看到，第五步和第十步都是要调用爷爷的构造方法，爷爷类被初始化了两次。这种情况一来没有必要，会占用很大空间，二来，多次初始化也会带来程序逻辑的混乱。</p>
-<p>如果我们改用 super 函数来进行这样的操作，就不会有这些麻烦：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">YeYe</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'初始化爷爷类'</span>)</span><br><span class="line">        </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">QinBa</span><span class="params">(YeYe)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'进入亲爸类'</span>)</span><br><span class="line">        super().__init__()</span><br><span class="line">        print(<span class="string">'初始化亲爸类'</span>)</span><br><span class="line">        </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GanDie</span><span class="params">(YeYe)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'进入干爹类'</span>)</span><br><span class="line">        super().__init__()</span><br><span class="line">        print(<span class="string">'初始化干爹类'</span>)</span><br><span class="line">        </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ErZi</span><span class="params">(QinBa, GanDie)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'进入儿子类'</span>)</span><br><span class="line">        super().__init__()</span><br><span class="line">        print(<span class="string">'初始化儿子类'</span>)</span><br><span class="line">        </span><br><span class="line">erzi = ErZi()</span><br></pre></td></tr></table></figure>
-
-<p>首先，我们发现，在儿子类中，我们只用一行代码指代调用两个直接父类的构造方法。然后，从结果上看，此时，爷爷类只被初始化一次。</p>
-
-
-<p>而且我们发现，代码的运行情况与多个装饰器装饰一个函数的情况很类似，子类的代码包含着父类的代码，一层套一层的形式。</p>
-<p>要解释这个现象，就要引入 super 方法的查找方法：方法解析顺序列表，MRO[^2]。这个列表是 super 解析父类继承顺序的依据，通过 C3 算法实现。使用 C3 算法计算 MRO 列表的方法可以参考我翻译的 <a href="/translation/python-MRO">Python 新式类继承关系的 C3 算法</a> 官方文档。</p>
-<p>查看 mro 的方法有两种：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">类名.mro()</span><br><span class="line">对象名.__class__.mro()</span><br></pre></td></tr></table></figure>
-
-<p>前面例子中的 mro 为：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[&lt;class '__main__.ErZi'&gt;, &lt;class '__main__.QinBa'&gt;, &lt;class '__main__.GanDie'&gt;, &lt;class '__main__.YeYe'&gt;, &lt;class 'object'&gt;]</span><br></pre></td></tr></table></figure>
-
-<p>我们说过，super 后面什么都不写，默认和 <code>super(当前类名, self)</code> 的写法一样。但事实上，super 的参数除了可以写当前类名外，还可以写它的父类[^3]的类名。此时，会执行在方法解析顺序列表中，该类下一个类的方法。</p>
-<p>补充了这些知识，我们就可以解释上面的程序运行的顺序了。</p>
-
-
-<p>super 关键字详解：</p>
-<ul>
-<li>基本结构：<code>super(class[, object or class])</code></li>
-<li>Python 3 可以直接使用 <code>super().xxx</code> 代替 <code>super(class, self).xxx</code></li>
-<li>使用多继承时，会涉及到查找顺序（MRO）、钻石继承等问题<ul>
-<li>单继承时，<code>类名.__init__()</code> 的方式和 <code>super().__init__()</code> 的方式调用父类中的方法没有什么差别</li>
-<li>使用 <code>类名.__init__()</code> 的方式在钻石继承时，会遇到初始化混乱的问题</li>
-</ul>
-</li>
-</ul>
-<p>super 内核的 mro 方法：返回的是一个类的方法解析顺序表（顺序结构）</p>
-<ul>
-<li><p>我们定义的每一个类，Python 都会计算出一个方法解析顺序（MRO[^2]）列表这也是 super 在父类中查找成员的顺序，它是通过 C3 线性算法来实现的</p>
-</li>
-<li><p>每个父类[^3]都存在且只在其中出现一次</p>
-</li>
-<li><p>我们可以通过下面两种方式获得某个类的 mro 列表：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">类名.mro()</span><br><span class="line">对象名.__class__.mro()</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>当使用 <code>super(cls, obj)</code> 时，Python 会在 <code>obj</code> 的 <code>mro</code> 列表上搜索 <code>cls</code> 的下一个类</p>
-</li>
-<li><p>事实上，super 和父类没有实质性的关联，我们也不一定非要把 super 后面的参数写成自己类的名字和 self。我们甚至可以很灵活地给 super 传参数</p>
-<ul>
-<li><p><code>super(cls, obj)</code> 获得的是 <code>cls</code> 在 obj 的 <code>MRO</code> 列表中的下一个类，<code>cls</code> 可以是任何一个类，<code>obj</code> 可以是任何一个对象，只要合理即可</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">class</span> <span class="title">ErZi</span><span class="params">(Qinba,GanDie)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        super(ErZi, self).__init__()</span><br><span class="line">        print(<span class="string">'初始化儿子'</span>)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>在前面我们定义儿子类的时候，如果我们不想调用亲爸的 <code>__init__()</code>，而是要调用干爹的 <code>__init__()</code>，只需把 super 写成 <code>super(Qinba, self).__init__()</code>，也就是这样：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">YeYe</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'初始化爷爷类'</span>)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">QinBa</span><span class="params">(YeYe)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'进入亲爸类'</span>)</span><br><span class="line">        super().__init__()</span><br><span class="line">        print(<span class="string">'初始化亲爸类'</span>)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GanDie</span><span class="params">(YeYe)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'进入干爹类'</span>)</span><br><span class="line">        super().__init__()</span><br><span class="line">        print(<span class="string">'初始化干爹类'</span>)</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ErZi</span><span class="params">(QinBa, GanDie)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'进入儿子类'</span>)</span><br><span class="line">        super(QinBa, self).__init__()</span><br><span class="line">        print(<span class="string">'初始化儿子类'</span>)</span><br><span class="line"></span><br><span class="line">erzi = ErZi()</span><br></pre></td></tr></table></figure>
-
-<p>其执行顺序为：</p>
-
-
-</li>
-</ul>
-</li>
-</ul>
-<p>[^2]: Method Resolution Order<br>[^3]: 包括直接父类和间接父类</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1624,7 +1460,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">229</span>
+          <span class="site-state-item-count">230</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

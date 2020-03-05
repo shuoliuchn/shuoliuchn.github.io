@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://sliu.vip/"/>
-  <updated>2020-03-04T16:53:49.000Z</updated>
+  <updated>2020-03-05T16:44:16.000Z</updated>
   <id>https://sliu.vip/</id>
   
   <author>
@@ -15,6 +15,25 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>使用 Celery 完成异步任务</title>
+    <link href="https://sliu.vip/project/renran-celery/"/>
+    <id>https://sliu.vip/project/renran-celery/</id>
+    <published>2020-03-05T16:44:16.000Z</published>
+    <updated>2020-03-05T16:44:16.000Z</updated>
+    
+    <summary type="html">
+    
+      Celery 是一个使用很广泛的异步框架，用 Python 开发。有些任务，我们不需要并行执行，可以将其设置为异步任务，与主线任务同步执行。
+    
+    </summary>
+    
+    
+      <category term="综合项目" scheme="https://sliu.vip/categories/%E7%BB%BC%E5%90%88%E9%A1%B9%E7%9B%AE/"/>
+    
+    
+  </entry>
   
   <entry>
     <title>Visual Studio Code Python 环境部署</title>
@@ -40,7 +59,7 @@
     <link href="https://sliu.vip/project/renran-register/"/>
     <id>https://sliu.vip/project/renran-register/</id>
     <published>2020-03-04T16:52:02.000Z</published>
-    <updated>2020-03-04T16:52:02.000Z</updated>
+    <updated>2020-03-05T16:46:01.000Z</updated>
     
     <summary type="html">
     
@@ -59,7 +78,7 @@
     <link href="https://sliu.vip/project/renran-xadmin/"/>
     <id>https://sliu.vip/project/renran-xadmin/</id>
     <published>2020-03-02T15:56:35.000Z</published>
-    <updated>2020-03-02T15:56:35.000Z</updated>
+    <updated>2020-03-05T16:46:03.000Z</updated>
     
     <summary type="html">
     
@@ -368,25 +387,6 @@
     <summary type="html">
     
       网络通信，传播的只能是字符串。对于字典、列表等数据，需要序列化成字符串之后才能传输。使用 JsonResponse 方法，封装了序列化的过程，让我们传输字典和列表数据更加高效。
-    
-    </summary>
-    
-    
-      <category term="Django" scheme="https://sliu.vip/categories/Django/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>Django 通过 form 表单和 ajax 上传文件</title>
-    <link href="https://sliu.vip/django/django-file-upload/"/>
-    <id>https://sliu.vip/django/django-file-upload/</id>
-    <published>2020-02-29T16:45:36.000Z</published>
-    <updated>2020-03-01T16:42:24.000Z</updated>
-    
-    <summary type="html">
-    
-      Django 文件上传的方式，包括表单上传和通过 ajax 上传。
     
     </summary>
     

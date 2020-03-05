@@ -230,6 +230,130 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-advanced/polymorphism/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/python-advanced/polymorphism/" class="post-title-link" itemprop="url">多态</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-15 13:54:54" itemprop="dateCreated datePublished" datetime="2020-02-15T13:54:54+08:00">2020-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python-%E8%BF%9B%E9%98%B6/" itemprop="url" rel="index"><span itemprop="name">Python 进阶</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="多态体现一，变量可以指向任意数据类型"><a href="#多态体现一，变量可以指向任意数据类型" class="headerlink" title="多态体现一，变量可以指向任意数据类型"></a>多态体现一，变量可以指向任意数据类型</h3><p>多态的第一种体现是，不关注对象的数据类型，同一个变量完全可以在不同的时间引用不同的对象</p>
+<p>Python 本身就是一种多态语言，不关心对象的类型</p>
+<ul>
+<li>对于弱类型的语言来说，变量并没有声明类型，因此同一个变量完全可以在不同的时间引用不同的对象</li>
+<li>毫无疑问，在 Python 中，对象是一块内存，内存中除了包含属性和方法之外，还包含了对象类型。我们通过引用来访问对象，比如 <code>a = A()</code>。首先，Python 创建一个对象 A，然后声明一个变量 a，再将变量 a 与对象 A 联系起来。变量 a 是没有类型的，它的类型取决于其关联的对象。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">10</span></span><br><span class="line">a = <span class="string">'alex'</span>    <span class="comment"># Python中的变量可以随时被赋值任意数据类型</span></span><br></pre></td></tr></table></figure>
+
+<p>我们曾经谈到过，Python 中的每一个类实际上就是一个数据类型，因此，变量也可以指向不同类的对象：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Bird</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">move</span><span class="params">(self, field)</span>:</span></span><br><span class="line">        print(<span class="string">'鸟儿在%s上自由地飞翔~'</span> % field)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Dog</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">move</span><span class="params">(self, field)</span>:</span></span><br><span class="line">        print(<span class="string">'狗狗在%s里飞快地奔跑~'</span> % field)</span><br><span class="line">x = Bird()</span><br><span class="line">x.move(<span class="string">'天空'</span>)</span><br><span class="line">x = Dog()</span><br><span class="line">x.move(<span class="string">'草地'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">鸟儿在天空上自由地飞翔~</span><br><span class="line">狗狗在草地里飞快地奔跑~</span><br></pre></td></tr></table></figure>
+
+<p>同一个变量x在执行同一个 <code>move()</code> 方法时，由于 x 指向的对象不同，因此呈现出不同的行为特征，这就是多态。</p>
+<h3 id="多态体现二，一类事物有多种形态（Polymorphic）"><a href="#多态体现二，一类事物有多种形态（Polymorphic）" class="headerlink" title="多态体现二，一类事物有多种形态（Polymorphic）"></a>多态体现二，一类事物有多种形态（Polymorphic）</h3><p>一个抽象类有多个子类，但方法实现不同</p>
+<ul>
+<li>例如：动物类有多个子类，每个子类都重新实现了父类的某个方法，但方法的实现不同（比如动物类都有休息的方法，但不同的动物休息的方式不尽相同）</li>
+<li>此时需要有继承，需要方法重写</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Girl</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">game</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'%s蹦蹦跳跳地玩耍...'</span> % self.name)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Nurse</span><span class="params">(Girl)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">game</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'%s脱裤子打针'</span> % self.name)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Boy</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">game</span><span class="params">(self, girl)</span>:</span></span><br><span class="line">        print(<span class="string">'%s和%s快乐地玩耍'</span> % (self.name, girl.name))</span><br><span class="line">        girl.game()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">xiaoming = Boy(<span class="string">'小明'</span>)</span><br><span class="line">xiaohong = Girl(<span class="string">'小红'</span>)</span><br><span class="line">xiaoli = Nurse(<span class="string">'小丽'</span>)</span><br><span class="line"></span><br><span class="line">xiaoming.game(xiaohong)</span><br><span class="line">xiaoming.game(xiaoli)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">小明和小红快乐地玩耍</span><br><span class="line">小红蹦蹦跳跳地玩耍...</span><br><span class="line">小明和小丽快乐地玩耍</span><br><span class="line">小丽脱裤子打针</span><br></pre></td></tr></table></figure>
+
+<p>Nurse 有 Girl 类的方法和属性，是它的子类。方法名虽然相同，但实现的方式略有差异。具有相同父类，继承相同方法，在子类中对父类的方法进行了修改，就是多态的第二种体现。</p>
+<h3 id="多态性"><a href="#多态性" class="headerlink" title="多态性"></a>多态性</h3><p>多态性（polymorphism）指的是，在多态基础上，定义统一的共同接口（在类的外面定义单独的函数），从而实现使用一个函数调用不同类的同名方法。</p>
+<p>不同类的对象作为函数的参数时，因为方法不同，得到的结果也会有差异。</p>
+<p>多态性的具体实现方法如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">relax</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'人需要休息'</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Alex</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">relax</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'睡觉'</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BigB</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">relax</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'买沙发'</span>)</span><br><span class="line">        </span><br><span class="line"><span class="comment"># 定义一个函数作为访问多个类的relax方法的统一接口</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">relax_func</span><span class="params">(person)</span>:</span></span><br><span class="line">    person.relax()</span><br><span class="line">    </span><br><span class="line">a = Alex()</span><br><span class="line">b = BigB()</span><br><span class="line">p = Person()</span><br><span class="line"></span><br><span class="line">relax_func(a)</span><br><span class="line">relax_func(b)</span><br><span class="line">relax_func(p)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">睡觉</span><br><span class="line">买沙发</span><br><span class="line">人需要休息</span><br></pre></td></tr></table></figure>
+
+<h3 id="鸭子类型"><a href="#鸭子类型" class="headerlink" title="鸭子类型"></a>鸭子类型</h3><p>鸭子类型是 Python 中比较推崇的多态的另一种体现形式。</p>
+<p>鸭子类型不关心类型，不需要继承，只关注方法的实现，这种情况被称为鸭子类型。</p>
+<p>鸭子类型名字的来源于一句话：“当看到一只鸟走起来像鸭子、游起来像鸭子、叫起来也像鸭子，那么这只鸟就可以被称作‘鸭子’”。</p>
+<p>套用过来就是，当两个类，有同名方法，不管这两个类是干什么用的，也不管它们之间有没有联系（依赖、组合或继承），都可以用同一个接口来调用。</p>
+<p>在鸭子类型中，关注的不是对象的类型本身，而是它是如何使用的。</p>
+<p>比如，人、鸭子、鱼、猪和船都会游泳，但是他们是不同的类，他们之间没有任何联系。而我们却可以在外面定义一个统一的接口来调用他们之间游泳的方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">swim</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'人可以游泳'</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Duck</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">swim</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'鸭子会游泳'</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Fish</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">swim</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'鱼会游泳'</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Pig</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">swim</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'猪会游泳'</span>)</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Ship</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">swim</span><span class="params">(self)</span>:</span></span><br><span class="line">        print(<span class="string">'船会游泳'</span>)</span><br><span class="line">   </span><br><span class="line"><span class="comment"># 建立鸭子类型</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">swimming</span><span class="params">(obj)</span>:</span></span><br><span class="line">    obj.swim()</span><br><span class="line">    </span><br><span class="line">xiaoming = Person()</span><br><span class="line">xiaohuang = Duck()</span><br><span class="line">paopao = Fish()</span><br><span class="line">peiqi = Pig()</span><br><span class="line">titanic = Ship()</span><br><span class="line"></span><br><span class="line">swimming(xiaoming)</span><br><span class="line">swimming(xiaohuang)</span><br><span class="line">swimming(paopao)</span><br><span class="line">swimming(peiqi)</span><br><span class="line">swimming(titanic)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">人可以游泳</span><br><span class="line">鸭子会游泳</span><br><span class="line">鱼会游泳</span><br><span class="line">猪会游泳</span><br><span class="line">船会游泳</span><br></pre></td></tr></table></figure>
+
+<h3 id="多态总结"><a href="#多态总结" class="headerlink" title="多态总结"></a>多态总结</h3><p>Python 是一门天然支持多态的编程语言。</p>
+<p>多态增加了程序的灵活性（通用性），以不变应万变，不论对象千变万化，使用者都是使用同一种形式（外部定义的一个函数）去调用。</p>
+<p>增加程序的可扩展性，通过继承某个类创建的一个新类，接口使用者无需更改自己的代码，还是用原方法调用。</p>
+<p>多态和多态性对比：</p>
+<p>多态强调的是，一类事物由不同的形态。</p>
+<p>多态性强调的是，同一操作，作用对象不同，表现出不同的实现方式（只关心行为结果）</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/recursion/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -548,104 +672,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/mind-map/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="刘硕">
-      <meta itemprop="description" content="不成为自己讨厌的人">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="刘硕的技术查阅手册">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/python-basic/mind-map/" class="post-title-link" itemprop="url">思维导图</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-02-15 13:53:36" itemprop="dateCreated datePublished" datetime="2020-02-15T13:53:36+08:00">2020-02-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>思维导图的作用主要是理清思路，用的时候顺藤摸瓜，能够随时联想到需要用到的知识点。</p>
-<p>此外，也能更快索引。查阅笔记资料时，更加得心应手，效率高。</p>
-<h3 id="推荐平台"><a href="#推荐平台" class="headerlink" title="推荐平台"></a>推荐平台</h3><ul>
-<li><a href="https://www.processon.com/" target="_blank" rel="noopener">ProcessOn</a><ul>
-<li>在线编辑，随处任何一台电脑都可以操作</li>
-<li>分享方便，任何人不许额外安装任何程序即可查看</li>
-<li>随时自动保存，文件在云端，几乎不会因意外原因丢失数据</li>
-<li>免费</li>
-</ul>
-</li>
-<li><a href="https://www.xmind.cn/" target="_blank" rel="noopener">XMind</a><ul>
-<li>专注制作思维导图，设计很好看，很精致</li>
-<li>断网时可以使用，且不受网速限制</li>
-<li>可以付费升级专业版，免费版功能能应付大部分日常使用</li>
-</ul>
-</li>
-</ul>
-<h3 id="核心三个按键"><a href="#核心三个按键" class="headerlink" title="核心三个按键"></a>核心三个按键</h3><ol>
-<li>空格（输入内容）</li>
-<li>回车（生成同级节点）</li>
-<li>Tab（生成次级节点）</li>
-</ol>
-<h3 id="制作技巧"><a href="#制作技巧" class="headerlink" title="制作技巧"></a>制作技巧</h3><ul>
-<li>按照树形结构，从粗到细有序进行</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/closure/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -767,6 +793,104 @@
 <li>装饰器</li>
 <li>防止数据被误改动</li>
 </ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/mind-map/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/python-basic/mind-map/" class="post-title-link" itemprop="url">思维导图</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-15 13:53:36" itemprop="dateCreated datePublished" datetime="2020-02-15T13:53:36+08:00">2020-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>思维导图的作用主要是理清思路，用的时候顺藤摸瓜，能够随时联想到需要用到的知识点。</p>
+<p>此外，也能更快索引。查阅笔记资料时，更加得心应手，效率高。</p>
+<h3 id="推荐平台"><a href="#推荐平台" class="headerlink" title="推荐平台"></a>推荐平台</h3><ul>
+<li><a href="https://www.processon.com/" target="_blank" rel="noopener">ProcessOn</a><ul>
+<li>在线编辑，随处任何一台电脑都可以操作</li>
+<li>分享方便，任何人不许额外安装任何程序即可查看</li>
+<li>随时自动保存，文件在云端，几乎不会因意外原因丢失数据</li>
+<li>免费</li>
+</ul>
+</li>
+<li><a href="https://www.xmind.cn/" target="_blank" rel="noopener">XMind</a><ul>
+<li>专注制作思维导图，设计很好看，很精致</li>
+<li>断网时可以使用，且不受网速限制</li>
+<li>可以付费升级专业版，免费版功能能应付大部分日常使用</li>
+</ul>
+</li>
+</ul>
+<h3 id="核心三个按键"><a href="#核心三个按键" class="headerlink" title="核心三个按键"></a>核心三个按键</h3><ol>
+<li>空格（输入内容）</li>
+<li>回车（生成同级节点）</li>
+<li>Tab（生成次级节点）</li>
+</ol>
+<h3 id="制作技巧"><a href="#制作技巧" class="headerlink" title="制作技巧"></a>制作技巧</h3><ul>
+<li>按照树形结构，从粗到细有序进行</li>
+</ul>
 
       
     </div>
@@ -1452,112 +1576,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-advanced/design-pattern/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="刘硕">
-      <meta itemprop="description" content="不成为自己讨厌的人">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="刘硕的技术查阅手册">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/python-advanced/design-pattern/" class="post-title-link" itemprop="url">常见设计模式</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-02-15 13:52:53" itemprop="dateCreated datePublished" datetime="2020-02-15T13:52:53+08:00">2020-02-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python-%E8%BF%9B%E9%98%B6/" itemprop="url" rel="index"><span itemprop="name">Python 进阶</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>先想象一下这样一个场景：去麦当劳点餐，我们想吃麦辣鸡腿堡、薯条和可乐。我们当然可以单点，但是如果我们对收银小姐姐说，请给我一份麦辣鸡腿堡套餐，就会方便很多。套餐是餐厅和我们约定好了的一个规范，如果大家都按照这个规范来点餐，就能够提高点餐效率。</p>
-<p>创建套餐是提高点餐效率的可重复使用的解决方法。套餐可以重复被点，而且提高了顾客和服务员之间的共同效率。</p>
-<p>类似地，在编写程序的软件世界，对于统一情境，众多软件开发任意经过长时间总结出了最佳的可重用的解决方案，就是软件的设计模式。</p>
-<p>软件世界本没有设计模式，开发人员多了，开发得久了，也便总结出了设计模式。</p>
-<p>设计模式有很多很多种，对于不同的场景有不同的设计模式。这里只介绍两种非常常见的设计模式：单例模式和工厂模式。</p>
-<h3 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h3><p>我们从前学习的类创建对象时，每个对象都是开辟相互独立的内存空间，它们各自的实例属性和方法是互无联系互不影响的。但是有的时候，我们只想创建一个对象，不管被实例化多少次，使用的对象都是一个。</p>
-<p>比如在开发过程中，不同的程序员负责不同的模块。他们都需要使用到一个类对象，但是用了不同的名字。但是到后来当程序运行的时候，他们有需要这些对象都是同一个对象。这就需要用到单例模式。</p>
-<p>单例模式是保证一个类仅有一个实例的设计模式。</p>
-<p>单例模式保证了程序在不同位置都可以且尽可以取到同一个对象的实例：如果实例不存在，则会创建一个实例；如果对象存在，则会返回这个实力。</p>
-<p>创建单例模式之前，我们要先讨论一下 <code>__new__()</code> 方法。同 <code>__init__()</code> 方法一样，<code>__new__()</code> 方法也是在创建对象时自动运行的。不同的是，<code>__init__()</code> 方法用来初始化对象，而 <code>__new()__</code> 方法用来创建对象。</p>
-<p>换句话说，<code>__new__()</code> 方法在对象创建之前就会运行，它是一个类方法。它的返回值就是新创建的对象。</p>
-<p>有了这些基础，结合我们从前学过的东西，就可以创建一个单例模式的类了：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span>:</span></span><br><span class="line">    <span class="comment"># 类属性，用来存放实例对象内存地址，同时也用来标记类是否已经被实例化，初始值为None</span></span><br><span class="line">    instance = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># cls用来指代类，args和kwargs用来接收参数，PyCharm默认填入，不必理会也不必修改</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__new__</span><span class="params">(cls, *args, **kwargs)</span>:</span></span><br><span class="line">        <span class="comment"># 如果没有实例化，就对其进行实例化操作，将实例化后的对象储存到类属性instance中</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> cls.instance:</span><br><span class="line">            <span class="comment"># 这里的参数只放cls，不能放*args和**kwargs</span></span><br><span class="line">            cls.instance = object.__new__(cls)</span><br><span class="line">        <span class="comment"># 不管开始的instance是否为空，此时它都已经储存了一个类对象，将其返回即可</span></span><br><span class="line">        <span class="keyword">return</span> cls.instance</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, age)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">xiaoli = Student(<span class="string">'小丽'</span>, <span class="number">16</span>)</span><br><span class="line">xiaoming = Student(<span class="string">'小明'</span>, <span class="number">18</span>)</span><br><span class="line">print(xiaoli.name)</span><br><span class="line">print(xiaoming.name)</span><br></pre></td></tr></table></figure>
-
-<p>输出结果为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">小明</span><br><span class="line">小明</span><br></pre></td></tr></table></figure>
-
-<p>需要注意的是，虽然不会创建新的实例对象，但是每当创建新对象时，初始化方法 <code>__init__()</code> 还是会执行的。因为是同一个对象，所以后面创建的实例属性就会覆盖从前创建的实例属性。</p>
-<p>因为单例模式太过常用且重要，所以我们往往将其单独写成一个类。继承这个单例模式类的新类也都会是单例模式：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Singleton</span>:</span></span><br><span class="line">    instance = <span class="literal">None</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__new__</span><span class="params">(cls, *args, **kwargs)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> cls.instance:</span><br><span class="line">            cls.instance = object.__new__(cls)</span><br><span class="line">        <span class="keyword">return</span> cls.instance</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span><span class="params">(Singleton)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name, age)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">xiaoli = Student(<span class="string">'小丽'</span>, <span class="number">16</span>)</span><br><span class="line">xiaoming = Student(<span class="string">'小明'</span>, <span class="number">18</span>)</span><br><span class="line">print(xiaoli.name)</span><br><span class="line">print(xiaoming.name)</span><br></pre></td></tr></table></figure>
-
-<h3 id="工厂模式"><a href="#工厂模式" class="headerlink" title="工厂模式"></a>工厂模式</h3><p>我们现在有这样一个需求：我们玩王者荣耀，想要一个物理伤害，射程远，可以持续输出的英雄。如果我们自己去找，很慢而且很麻烦。需要我们遍历所有人物的职业，然后才能确定射手类是我们想要的。</p>
-<p>但是我们其实可以把这件事情交给程序来做。只要我们提出需求（物理伤害，射程远，持续输出），程序自动给我们返回一个射手类的对象。这样就很方便了。</p>
-<p>这个帮我们创建类的类就是一个工厂类。这种编程模式，就是工厂模式。</p>
-<p>工厂模式就是不直接暴露对象的创建细节，而是通过一个共同的类来创建对象的模式，总共需要四个步骤：</p>
-<ol>
-<li>创建基类</li>
-<li>创建子类</li>
-<li>创建工厂类</li>
-<li>使用工厂模式</li>
-</ol>
-<p>事实上，工厂类中待我们选择的类并不要求非要继承自同一个父类。而且其实 Python 中所有类都继承自 project 类。所以前两步可以合并为一步，创建类。</p>
-<p>我们可以这样创建一个工厂模式的类：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建基类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_name</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self.name</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建子类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Male</span><span class="params">(Person)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">'Hello Mr.'</span> + self.get_name()</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Female</span><span class="params">(Person)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__str__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> <span class="string">'Hello Miss'</span> + self.get_name()</span><br><span class="line">    </span><br><span class="line"><span class="comment"># 创建工厂类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Factory</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_person</span><span class="params">(self, name, gender=<span class="string">'M'</span>)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> gender == <span class="string">'M'</span>:</span><br><span class="line">            <span class="keyword">return</span> Male(name)</span><br><span class="line">        <span class="keyword">if</span> gender == <span class="string">'F'</span>:</span><br><span class="line">            <span class="keyword">return</span> Female(name)</span><br><span class="line">        </span><br><span class="line"><span class="comment"># 使用工厂模式</span></span><br><span class="line">factory = Factory()</span><br><span class="line">person = fcatory.get_person(<span class="string">'Bob'</span>, <span class="string">'M'</span>)</span><br><span class="line">print(person)</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1630,7 +1648,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">229</span>
+          <span class="site-state-item-count">230</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

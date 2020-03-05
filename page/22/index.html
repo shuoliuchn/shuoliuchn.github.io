@@ -230,6 +230,142 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/flow-control/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/python-basic/flow-control/" class="post-title-link" itemprop="url">流程控制语句</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-15 13:43:48" itemprop="dateCreated datePublished" datetime="2020-02-15T13:43:48+08:00">2020-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>流程控制语句，也就是条件语句，通过选择判断，决定下一步的操作内容。例如：如果是男的，就来看我。</p>
+<p>流程控制语句的关键字是 <code>if</code>，是 <code>如果</code> 的意思。流程控制语句使用冒号 <code>:</code> 表示语句结束。</p>
+<p>Python 中使用缩进体现代码间的从属关系。一般使用四个空格或一个 <code>Tab</code> 键代表一次缩进。需要注意的是，编程时，不要混合使用 <code>Tab</code> 键和空格，否则一旦报错，很难找到问题的所在。PEP 8 规则建议使用四个空格表示缩进。PEP 8 规则是 Python 官方建议的代码风格指南。若想进一步了解这个规则可以参见我翻译的 <a href="/translation/PEP8">PEP 8 – Python代码格式规则</a>。</p>
+<p>知识点补充：在 Python 中，<code>=</code> 表示的是 <code>赋值</code> <strong>操作</strong>，会将等号右边的值赋值给等号左边的变量。而 <code>==</code> 表示的是<strong>判断</strong>两边的值是否相等，也就是 <code>等于</code> 的意思。</p>
+<h3 id="单-if"><a href="#单-if" class="headerlink" title="单 if"></a>单 if</h3><p>单 <code>if</code> 流程控制语句的伪代码格式为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">如果 条件:</span><br><span class="line">缩进 结果</span><br></pre></td></tr></table></figure>
+
+<p>具体示例如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sex = <span class="string">"男"</span></span><br><span class="line"><span class="keyword">if</span> sex == <span class="string">"男"</span>:</span><br><span class="line">    print(<span class="string">"就来看我"</span>)</span><br><span class="line">print(sex)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">就来看我</span><br><span class="line">男</span><br></pre></td></tr></table></figure>
+
+<h3 id="if-else-二选一"><a href="#if-else-二选一" class="headerlink" title="if else 二选一"></a>if else 二选一</h3><p><code>if else</code> 二选一流程控制语句的伪代码格式为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">如果 条件:</span><br><span class="line">缩进 结果</span><br><span class="line">否则:</span><br><span class="line">缩进 结果</span><br></pre></td></tr></table></figure>
+
+<p>具体示例如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="number">111</span>)</span><br><span class="line"><span class="keyword">if</span> <span class="number">3</span> &gt; <span class="number">2</span>:</span><br><span class="line">    print(<span class="number">11</span>)</span><br><span class="line">    print(<span class="number">22</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    print(<span class="number">333</span>)</span><br><span class="line">print(<span class="number">444</span>)</span><br></pre></td></tr></table></figure>
+
+<p>打印出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">111</span></span><br><span class="line"><span class="number">11</span></span><br><span class="line"><span class="number">22</span></span><br><span class="line"><span class="number">444</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="if-elif-elif-多选一或零"><a href="#if-elif-elif-多选一或零" class="headerlink" title="if elif elif 多选一或零"></a>if elif elif 多选一或零</h3><p>对于 <code>if elif elif</code> 多选一或零流程控制语句而言，只要其中任何一个条件成立，将执行其从属语句中的代码，而其他的语句将不被执行。其伪代码格式为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">如果 条件:</span><br><span class="line">缩进 结果</span><br><span class="line">再如果 条件:</span><br><span class="line">缩进 结果</span><br><span class="line">再如果 条件:</span><br><span class="line">缩进 结果</span><br><span class="line">再如果 条件:</span><br><span class="line">缩进 结果</span><br></pre></td></tr></table></figure>
+
+<p>具体示例如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="number">3</span>&gt;<span class="number">5</span>:</span><br><span class="line">    print(<span class="number">1</span>)</span><br><span class="line"><span class="keyword">elif</span> <span class="number">3</span>&gt;<span class="number">7</span>:</span><br><span class="line">    print(<span class="number">2</span>)</span><br><span class="line"><span class="keyword">elif</span> <span class="number">5</span>&gt;<span class="number">2</span>:</span><br><span class="line">    print(<span class="number">4</span>)</span><br><span class="line"><span class="keyword">elif</span> <span class="number">3</span>&gt;<span class="number">1</span>:</span><br><span class="line">    print(<span class="number">5</span>)</span><br></pre></td></tr></table></figure>
+
+<p>输出结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">4</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="if-elif-elif-else-多选一"><a href="#if-elif-elif-else-多选一" class="headerlink" title="if elif elif else 多选一"></a>if elif elif else 多选一</h3><p><code>if elif elif else</code> 多选一流程控制语句的伪代码格式为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">如果 条件:</span><br><span class="line">缩进 结果</span><br><span class="line">再如果 条件:</span><br><span class="line">缩进 结果</span><br><span class="line">再如果 条件:</span><br><span class="line">缩进 结果</span><br><span class="line">否则:</span><br><span class="line">缩进 结果</span><br></pre></td></tr></table></figure>
+
+<p>具体示例如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="number">3</span>&gt;<span class="number">12</span>:</span><br><span class="line">   print(<span class="number">1</span>)</span><br><span class="line"><span class="keyword">elif</span> <span class="number">3</span>&gt;<span class="number">11</span>:</span><br><span class="line">    print(<span class="number">2</span>)</span><br><span class="line"><span class="keyword">elif</span> <span class="number">4</span>&gt;<span class="number">12</span>:</span><br><span class="line">    print(<span class="number">3</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    print(<span class="number">5</span>)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">5</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="if-嵌套"><a href="#if-嵌套" class="headerlink" title="if 嵌套:"></a>if 嵌套:</h3><p><code>if</code> 嵌套流程控制语句的伪代码格式为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">如果 条件:</span><br><span class="line">缩进 如果 条件:</span><br><span class="line">     缩进 结果</span><br></pre></td></tr></table></figure>
+
+<p>具体示例如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">sex = <span class="string">"男"</span></span><br><span class="line">age = <span class="number">48</span></span><br><span class="line"><span class="keyword">if</span> sex == <span class="string">"女"</span>:</span><br><span class="line">    <span class="keyword">if</span> age == <span class="number">18</span>:</span><br><span class="line">        print(<span class="string">"进来坐坐"</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        print(<span class="string">"隔壁找三哥"</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    print(<span class="string">"去对门找alex"</span>)</span><br></pre></td></tr></table></figure>
+
+<p>输出结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">去对门找alex</span><br></pre></td></tr></table></figure>
+
+<h3 id="if-if-if-多选多"><a href="#if-if-if-多选多" class="headerlink" title="if if if  多选多"></a>if if if  多选多</h3><p><code>if if if</code> 多选多流程控制语句的伪代码格式为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">如果 条件:</span><br><span class="line">缩进 结果</span><br><span class="line">如果 条件:</span><br><span class="line">缩进 结果</span><br><span class="line">如果 条件:</span><br><span class="line">缩进 结果</span><br></pre></td></tr></table></figure>
+
+<p>具体示例如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="number">43</span> &gt; <span class="number">1</span>:</span><br><span class="line">    print(<span class="number">11</span>)</span><br><span class="line"><span class="keyword">if</span> <span class="number">43</span> &gt; <span class="number">2</span>:</span><br><span class="line">    print(<span class="number">11</span>)</span><br><span class="line"><span class="keyword">if</span> <span class="number">43</span> &gt; <span class="number">3</span>:</span><br><span class="line">    print(<span class="number">11</span>)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">11</span></span><br><span class="line"><span class="number">11</span></span><br><span class="line"><span class="number">11</span></span><br></pre></td></tr></table></figure>
+
+<p>补充内容：<code>and</code> 是 <code>和</code> 的意思。只有当 <code>and</code> 两端的值都为 <code>真</code> 时，会返回 <code>True</code>，否则都会返回 <code>False</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">user = input(<span class="string">"username:"</span>)</span><br><span class="line">pwd = input(<span class="string">"password:"</span>)</span><br><span class="line"><span class="comment"># and 是和</span></span><br><span class="line"><span class="keyword">if</span> user == <span class="string">"alex"</span> <span class="keyword">and</span> pwd == <span class="string">"alex123"</span>:</span><br><span class="line">    print(<span class="number">111</span>)</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/file/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1662,133 +1798,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/python-installation/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="刘硕">
-      <meta itemprop="description" content="不成为自己讨厌的人">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="刘硕的技术查阅手册">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/python-basic/python-installation/" class="post-title-link" itemprop="url">Python 安装</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-02-15 13:41:04" itemprop="dateCreated datePublished" datetime="2020-02-15T13:41:04+08:00">2020-02-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="Python-版本选择"><a href="#Python-版本选择" class="headerlink" title="Python 版本选择"></a>Python 版本选择</h3><p>因程序开发者未必及时更新 Python 程序，安装新版本 Python 可能会遇到兼容性问题，故而不建议安装最新版本的 Python。</p>
-<ul>
-<li>Win 10 安装 Python 3.6.8（<a href="https://www.python.org/ftp/python/3.6.8/python-3.6.8-amd64.exe" target="_blank" rel="noopener">官方下载链接</a>）</li>
-<li>Win 7 &amp; Win 8 安装 Python 3.5.0（<a href="https://www.python.org/ftp/python/3.5.0/python-3.5.0-amd64.exe" target="_blank" rel="noopener">官方下载链接</a>）</li>
-<li>在 Win10 以下版本的 Windows 操作系统中安装新版本的 Python 需要安装额外的系统补丁</li>
-<li>360 可解决 Win 7 不能顺利安装高版本（3.6.8 及以后）Python 的问题</li>
-</ul>
-<p>下载前确定电脑操作系统的位数，64 位操作系统安装 64 位的 Python 程序，32 位操作系统安装 32 位的 Python 程序。</p>
-<h3 id="Python-安装细节"><a href="#Python-安装细节" class="headerlink" title="Python 安装细节"></a>Python 安装细节</h3><p>双击下载好的安装包，出现 Python 的安装程序。注意勾选 <code>Add Python 3.6 to PATH</code> 的复选框，这个意思是把 Python 的安装路径加入到 <code>环境变量</code> 中。然后点击 <code>Customize installation</code>。</p>
-<img src="/python-basic/python-installation/py_setup_01.png" class="" title="py_setup_01">
-
-<p>这里一切按照默认即可，直接点击 <code>Next</code>。</p>
-<img src="/python-basic/python-installation/py_setup_02.png" class="" title="py_setup_02">
-
-<p>勾选最上面的 <code>Install for all users</code> 复选框，建议把安装路径设置为 <code>C:\Python36</code>。短路径名能方便以后操作。然后点击 <code>Install</code> 开始安装。</p>
-<img src="/python-basic/python-installation/py_setup_03.png" class="" title="py_setup_03">
-
-<p>当最后出现这个界面的时候，恭喜你，安装成功了。</p>
-<img src="/python-basic/python-installation/py_setup_04.png" class="" title="py_setup_04">
-
-<h3 id="验证是否安装成功"><a href="#验证是否安装成功" class="headerlink" title="验证是否安装成功"></a>验证是否安装成功</h3><p><code>Win + R</code> 打开 <code>运行</code>，输入 <code>cmd</code>，点击 <code>确定</code>。</p>
-<img src="/python-basic/python-installation/py_setup_05.png" class="" title="py_setup_05">
-
-<p>在命令行中输入 <code>python</code>，如果安装成功，界面会是这个样子的。</p>
-<img src="/python-basic/python-installation/py_setup_06.png" class="" title="py_setup_06">
-
-<p>输入第一行代码 <code>print (&quot;hello world!&quot;)</code>，按下 <code>回车</code> 键。</p>
-<img src="/python-basic/python-installation/py_setup_07.png" class="" title="py_setup_07">
-
-<p>就完成了我们的第一个 Python 命令。输入 <code>exit()</code>，退出 Python。</p>
-<h3 id="在命令行中用-Python-运行-py-文件"><a href="#在命令行中用-Python-运行-py-文件" class="headerlink" title="在命令行中用 Python 运行 .py 文件"></a>在命令行中用 Python 运行 <code>.py</code> 文件</h3><p>新建一个文本文档，命名为 <code>今天作业.txt</code>。</p>
-<img src="/python-basic/python-installation/py_setup_08.png" class="" title="py_setup_08">
-
-<p>用 <code>记事本</code> 打开文件，输入 <code>print(&quot;刘硕 &quot; * 100)</code>，保存然后关闭。</p>
-<img src="/python-basic/python-installation/py_setup_09.png" class="" title="py_setup_09">
-
-<p>将文件的后缀名改为 <code>py</code>。</p>
-<img src="/python-basic/python-installation/py_setup_10.png" class="" title="py_setup_10">
-
-<p>在命令行中输入<code>python C:\Users\Sure\Desktop\今天作业.py</code>。其中，<code>C:\Users\Sure\Desktop</code> 是文件的路径名。敲下 <code>回车</code> 键，就可以发现代码顺利运行啦。</p>
-<img src="/python-basic/python-installation/py_setup_11.png" class="" title="py_setup_11">
-
-<h3 id="配置环境变量"><a href="#配置环境变量" class="headerlink" title="配置环境变量"></a>配置环境变量</h3><p>如果在上一步骤，输入 <code>python C:\Users\Sure\Desktop\今天作业.py</code> 命令后，出现了 <code>&#39;python&#39; 不是内部或外部命令，也不是可运行的程序或批处理文件。</code> 的错误，意味着没有将 Python 的安装路径放在 <code>环境变量</code> 中。导致这个错误的原因很可能是在安装的第一步，忘记了勾选 <code>Add Python 3.6 to PATH</code> 前面的复选框。</p>
-<img src="/python-basic/python-installation/py_setup_12.png" class="" title="py_setup_12">
-
-<p>可以通过在 Python 前面加入 python 安装路径的方法顺利运行 <code>.py</code> 文件，但是这种方法比较麻烦且不实用。</p>
-<img src="/python-basic/python-installation/py_setup_13.png" class="" title="py_setup_13">
-
-<p>这时，就需要我们把Python的安装路径添加到<code>环境变量</code>中。</p>
-<p>配置环境变量的方法参见： <a href="/python-basic/environment-variable">环境变量的配置</a> </p>
-<p>重启命令行，输入<code>python C:\Users\Sure\Desktop\今天作业.py</code>，<code>py</code>文件顺利运行。</p>
-<img src="/python-basic/python-installation/py_setup_19.png" class="" title="py_setup_19">
-
-<h3 id="后缀名显示方法"><a href="#后缀名显示方法" class="headerlink" title="后缀名显示方法"></a>后缀名显示方法</h3><p>如果文件后缀名默认没有显示，可以用这个方法查看后缀名： <a href="/python-basic/show-suffix">后缀名显示方法</a> </p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1861,7 +1870,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">229</span>
+          <span class="site-state-item-count">230</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
