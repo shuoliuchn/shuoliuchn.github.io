@@ -22,15 +22,15 @@
     var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"appID":"PXY1Z6GHKT","apiKey":"eb82f2e78e3053f26aa408e9caa96d93","indexName":"blog","hits":{"per_page":10},"labels":{"input_placeholder":"要查点什么(✿◡‿◡)","hits_empty":"没有找到任何关于 ${query} 的结果╥﹏╥...","hits_stats":"搜索到 ${hits} 条记录，用时 ${time} ms o(*￣▽￣*)ブ"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="这一部分主要是一些 Python 中内置的高阶函数。所谓的高阶函数，就是以函数为参数的函数。 filter 函数filter 函数用来过滤掉不符合条件的元素。filter 函数有两个参数，第一个参数为规则函数，第二个参数为可迭代对象： 12345lst &#x3D; [1, 2, 3, 4, 5, 6, 7, 8]def foo(x):            # 规则函数    return x &gt;">
+  <meta name="description" content="高阶内置函数，也就是以函数为参数的函数，用来处理各种各样的数据，灵活运用会让代码非常简洁">
 <meta property="og:type" content="article">
 <meta property="og:title" content="高阶内置函数">
 <meta property="og:url" content="https://sliu.vip/python-basic/high-order-bif/index.html">
 <meta property="og:site_name" content="刘硕的技术查阅手册">
-<meta property="og:description" content="这一部分主要是一些 Python 中内置的高阶函数。所谓的高阶函数，就是以函数为参数的函数。 filter 函数filter 函数用来过滤掉不符合条件的元素。filter 函数有两个参数，第一个参数为规则函数，第二个参数为可迭代对象： 12345lst &#x3D; [1, 2, 3, 4, 5, 6, 7, 8]def foo(x):            # 规则函数    return x &gt;">
+<meta property="og:description" content="高阶内置函数，也就是以函数为参数的函数，用来处理各种各样的数据，灵活运用会让代码非常简洁">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-02-15T05:44:04.000Z">
-<meta property="article:modified_time" content="2020-02-29T02:34:01.866Z">
+<meta property="article:modified_time" content="2020-03-08T17:12:57.000Z">
 <meta property="article:author" content="刘硕">
 <meta property="article:tag" content="Python">
 <meta property="article:tag" content="全栈开发">
@@ -262,7 +262,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
+                <time title="修改时间：2020-03-09 01:12:57" itemprop="dateModified" datetime="2020-03-09T01:12:57+08:00">2020-03-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -282,6 +282,7 @@
               <span class="post-meta-item-text">阅读次数：</span>
               <span id="busuanzi_value_page_pv"></span>
             </span>
+            <div class="post-description">高阶内置函数，也就是以函数为参数的函数，用来处理各种各样的数据，灵活运用会让代码非常简洁</div>
 
         </div>
       </header>
@@ -293,7 +294,7 @@
 
       
         <p>这一部分主要是一些 Python 中内置的高阶函数。所谓的高阶函数，就是以函数为参数的函数。</p>
-<h3 id="filter-函数"><a href="#filter-函数" class="headerlink" title="filter 函数"></a><code>filter</code> 函数</h3><p>filter 函数用来过滤掉不符合条件的元素。filter 函数有两个参数，第一个参数为规则函数，第二个参数为可迭代对象：</p>
+<h3 id="filter-函数"><a href="#filter-函数" class="headerlink" title="filter 函数"></a>filter 函数</h3><p>filter 函数用来过滤掉不符合条件的元素。filter 函数有两个参数，第一个参数为规则函数，第二个参数为可迭代对象：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>]</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">foo</span><span class="params">(x)</span>:</span>            <span class="comment"># 规则函数</span></span><br><span class="line">    <span class="keyword">return</span> x &gt; <span class="number">4</span>       <span class="comment"># 规则函数的返回值需要是布尔值</span></span><br><span class="line">print(filter(foo, lst))</span><br><span class="line">print(list(filter(foo, lst)))</span><br></pre></td></tr></table></figure>
 
 <p>输出的结果为：</p>
@@ -309,7 +310,7 @@
 <p>输出的结果为：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[&#123;<span class="string">'id'</span>: <span class="number">1</span>, <span class="string">'name'</span>: <span class="string">'alex'</span>, <span class="string">'age'</span>: <span class="number">18</span>&#125;, &#123;<span class="string">'id'</span>: <span class="number">1</span>, <span class="string">'name'</span>: <span class="string">'wusir'</span>, <span class="string">'age'</span>: <span class="number">17</span>&#125;]</span><br></pre></td></tr></table></figure>
 
-<h3 id="map-函数"><a href="#map-函数" class="headerlink" title="map 函数"></a><code>map</code> 函数</h3><p>map 函数也称作映射函数，用来将可迭代对象中每个元素执行函数功能：</p>
+<h3 id="map-函数"><a href="#map-函数" class="headerlink" title="map 函数"></a>map 函数</h3><p>map 函数也称作映射函数，用来将可迭代对象中每个元素执行函数功能：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">8</span>, <span class="number">9</span>]</span><br><span class="line">print(map(str, lst))</span><br><span class="line">print(list(map(str, lst)))</span><br></pre></td></tr></table></figure>
 
 <p>输出的结果为：</p>
@@ -320,7 +321,7 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">lst1 = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</span><br><span class="line">lst2 = [<span class="number">3</span>,<span class="number">2</span>,<span class="number">1</span>]</span><br><span class="line">lst3 = [<span class="number">3</span>,<span class="number">2</span>,<span class="number">1</span>,<span class="number">5</span>]</span><br><span class="line">print(list(map(<span class="keyword">lambda</span> x, y, z: x + y + z, lst1, lst2, lst3)))</span><br><span class="line"></span><br><span class="line">输出的结果为：</span><br><span class="line">[<span class="number">7</span>, <span class="number">6</span>, <span class="number">5</span>]</span><br></pre></td></tr></table></figure>
 
 <p>如果可迭代对象长度不同，map 函数的迭代次数以最短的可迭代对象为准。</p>
-<h3 id="sorted-函数"><a href="#sorted-函数" class="headerlink" title="sorted 函数"></a><code>sorted</code> 函数</h3><p>sorted 函数用来将可迭代对象排序：</p>
+<h3 id="sorted-函数"><a href="#sorted-函数" class="headerlink" title="sorted 函数"></a>sorted 函数</h3><p>sorted 函数用来将可迭代对象排序：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">print(sorted(<span class="string">"alex,mdsb"</span>))  <span class="comment"># 升序</span></span><br><span class="line">print(sorted((<span class="string">'alex'</span>,<span class="string">'mdsb'</span>),reverse=<span class="literal">True</span>)) <span class="comment"># 降序</span></span><br><span class="line"></span><br><span class="line">dic = &#123;<span class="number">1</span>:<span class="string">'a'</span>,<span class="number">3</span>:<span class="string">'c'</span>,<span class="number">2</span>:<span class="string">'b'</span>&#125;</span><br><span class="line">print(sorted(dic))</span><br></pre></td></tr></table></figure>
 
 <p>输出的结果为：</p>
@@ -339,7 +340,7 @@
 <p>输出的结果为：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">-7</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">65</span>]</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">65</span>, <span class="number">-7</span>]</span><br><span class="line"><span class="literal">None</span></span><br><span class="line">[<span class="number">-7</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">65</span>]</span><br></pre></td></tr></table></figure>
 
-<h3 id="max-和-min-函数"><a href="#max-和-min-函数" class="headerlink" title="max 和 min 函数"></a><code>max</code> 和 <code>min</code> 函数</h3><p>max 和 min 函数用来选取可迭代对象中的最大值或最小值，可以指定规则函数进行更复杂的选择：</p>
+<h3 id="max-和-min-函数"><a href="#max-和-min-函数" class="headerlink" title="max 和 min 函数"></a>max 和 min 函数</h3><p>max 和 min 函数用来选取可迭代对象中的最大值或最小值，可以指定规则函数进行更复杂的选择：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">-9</span>, <span class="number">10</span>, <span class="number">-22</span>]</span><br><span class="line">print(max(lst))</span><br><span class="line">print(min(lst, key=abs))</span><br><span class="line">print(max(lst, key=<span class="keyword">lambda</span> x: pow(x, <span class="number">4</span>) - pow(x, <span class="number">2</span>) + x))</span><br></pre></td></tr></table></figure>
 
 <p>输出的结果为：</p>
@@ -351,7 +352,7 @@
 <p>输出的结果为：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">3</span></span><br><span class="line">c</span><br></pre></td></tr></table></figure>
 
-<h3 id="reduce-函数"><a href="#reduce-函数" class="headerlink" title="reduce 函数"></a><code>reduce</code> 函数</h3><p>reduce 函数用来进行累运算。规则函数中会有两个参数，第一个参数用来存储上一次运算的结果，第二个参数传入下一个值，返回值为运算操作。</p>
+<h3 id="reduce-函数"><a href="#reduce-函数" class="headerlink" title="reduce 函数"></a>reduce 函数</h3><p>reduce 函数用来进行累运算。规则函数中会有两个参数，第一个参数用来存储上一次运算的结果，第二个参数传入下一个值，返回值为运算操作。</p>
 <p>需要注意的是，在 Python 2 中，reduce 可以直接使用，而在 Python 3 中，需要在 functools 里面导入 reduce 函数：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> reduce</span><br></pre></td></tr></table></figure>
 
@@ -361,7 +362,7 @@
 <p>将函数用匿名函数整合会让代码更加简洁：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> reduce</span><br><span class="line">print(reduce(<span class="keyword">lambda</span> x, y: x * y, range(<span class="number">1</span>, <span class="number">6</span>)))</span><br></pre></td></tr></table></figure>
 
-<h3 id="zip-函数"><a href="#zip-函数" class="headerlink" title="zip 函数"></a><code>zip</code> 函数</h3><p>zip 是拉链的意思，用来将两个可迭代对象以关联起来，以返回值为 zip 对象，可以转换为列表，列表中的每个元素为原来的可迭代对象中的元素组成的元组：</p>
+<h3 id="zip-函数"><a href="#zip-函数" class="headerlink" title="zip 函数"></a>zip 函数</h3><p>zip 是拉链的意思，用来将两个可迭代对象以关联起来，以返回值为 zip 对象，可以转换为列表，列表中的每个元素为原来的可迭代对象中的元素组成的元组：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">lst1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]</span><br><span class="line">lst2 = [<span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>]</span><br><span class="line">print(zip(lst1, lst2))</span><br><span class="line">print(list(zip(lst1, lst2)))</span><br></pre></td></tr></table></figure>
 
 <p>返回的结果为：</p>
@@ -389,37 +390,37 @@
 </tr>
 </thead>
 <tbody><tr>
-<td align="center"><a href="#filter函数">filter</a></td>
+<td align="center">[filter](#filter 函数)</td>
 <td align="center">首位</td>
 <td align="center">1个</td>
 <td align="center">filter对象，可转换为列表</td>
 </tr>
 <tr>
-<td align="center"><a href="#map函数">map</a></td>
+<td align="center">[map](#map 函数)</td>
 <td align="center">首位</td>
 <td align="center">1个或多个</td>
 <td align="center">map对象，可转换为列表</td>
 </tr>
 <tr>
-<td align="center"><a href="#reduce函数">reduce</a></td>
+<td align="center">[reduce](#reduce 函数)</td>
 <td align="center">首位</td>
 <td align="center">2个</td>
 <td align="center">可迭代对象中的元素</td>
 </tr>
 <tr>
-<td align="center"><a href="#max和min函数">max和min</a></td>
+<td align="center">[max和min](#max 和 min 函数)</td>
 <td align="center">末尾，用key指明</td>
 <td align="center">1个</td>
 <td align="center">可迭代对象中的元素</td>
 </tr>
 <tr>
-<td align="center"><a href="#sorted函数">sorted</a></td>
+<td align="center">[sorted](#sorted 函数)</td>
 <td align="center">末尾，用key指明</td>
 <td align="center">1个</td>
 <td align="center">列表</td>
 </tr>
 <tr>
-<td align="center"><a href="#zip函数">zip</a></td>
+<td align="center">[zip](#zip 函数)</td>
 <td align="center">无</td>
 <td align="center">无</td>
 <td align="center">zip对象，可转换为列表或字典</td>
@@ -522,14 +523,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">230</span>
+          <span class="site-state-item-count">236</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
   </nav>

@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="Tu5vqPaUb8svfkPx5eetJFD84ciQCcWVXNatdsWtj9Q">
+  <meta name="baidu-site-verification" content="baidu_verify_FBq9PG4BBb">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"appID":"PXY1Z6GHKT","apiKey":"eb82f2e78e3053f26aa408e9caa96d93","indexName":"blog","hits":{"per_page":10},"labels":{"input_placeholder":"要查点什么(✿◡‿◡)","hits_empty":"没有找到任何关于 ${query} 的结果╥﹏╥...","hits_stats":"搜索到 ${hits} 条记录，用时 ${time} ms o(*￣▽￣*)ブ"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Django Bug 宝典之 FieldError 错误">
+<meta property="og:type" content="article">
+<meta property="og:title" content="FieldError">
+<meta property="og:url" content="https://sliu.vip/bug-bible/django-bug/FieldError/index.html">
+<meta property="og:site_name" content="刘硕的技术查阅手册">
+<meta property="og:description" content="Django Bug 宝典之 FieldError 错误">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-03-08T17:05:14.000Z">
+<meta property="article:modified_time" content="2020-03-08T17:05:14.000Z">
+<meta property="article:author" content="刘硕">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="全栈开发">
+<meta property="article:tag" content="并发编程">
+<meta property="article:tag" content="网络编程">
+<meta property="article:tag" content="爬虫">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="自动化测试">
+<meta property="article:tag" content="Web开发">
+<meta property="article:tag" content="HTML">
+<meta property="article:tag" content="CSS">
+<meta property="article:tag" content="JavaScript">
+<meta property="article:tag" content="jQuery">
+<meta property="article:tag" content="Bootstrap">
+<meta property="article:tag" content="测试自动化">
+<meta property="article:tag" content="Selenium">
+<meta property="article:tag" content="postman">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="Vue">
+<meta property="article:tag" content="drf">
+<meta property="article:tag" content="django">
+<meta property="article:tag" content="文档翻译">
+<meta property="article:tag" content="PEP8">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://sliu.vip/bug-bible/django-bug/FieldError/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>FieldError | 刘硕的技术查阅手册</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f14f123935d6183fdd06f8f1c4bc378f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="刘硕的技术查阅手册" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">刘硕的技术查阅手册</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">Python 全栈开发学习笔记</h1>
+      
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-toc">
+
+    <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-fw fa-rss"></i>订阅</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+  
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/bug-bible/django-bug/FieldError/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          FieldError
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-03-09 01:05:14" itemprop="dateCreated datePublished" datetime="2020-03-09T01:05:14+08:00">2020-03-09</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Bug-%E5%AE%9D%E5%85%B8/" itemprop="url" rel="index"><span itemprop="name">Bug 宝典</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <div class="post-description">Django Bug 宝典之 FieldError 错误</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="django-core-exceptions-FieldError-Unknown-field-s-tag-name-specified-for-CategoriesModel"><a href="#django-core-exceptions-FieldError-Unknown-field-s-tag-name-specified-for-CategoriesModel" class="headerlink" title="django.core.exceptions.FieldError: Unknown field(s) (tag_name) specified for CategoriesModel"></a>django.core.exceptions.FieldError: Unknown field(s) (tag_name) specified for CategoriesModel</h2><h3 id="错误1-1"><a href="#错误1-1" class="headerlink" title="错误1.1"></a>错误1.1</h3><p>报错信息：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br></pre></td><td class="code"><pre><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"C:/Users/Sure/PyProject/神器/hexo_migrator/manage.py"</span>, line <span class="number">21</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    main()</span><br><span class="line">  File <span class="string">"C:/Users/Sure/PyProject/神器/hexo_migrator/manage.py"</span>, line <span class="number">17</span>, <span class="keyword">in</span> main</span><br><span class="line">    execute_from_command_line(sys.argv)</span><br><span class="line">  File <span class="string">"C:\Users\Sure\Envs\hexo\lib\site-packages\django\core\management\__init__.py"</span>, line <span class="number">381</span>, <span class="keyword">in</span> execute_from_command_line</span><br><span class="line">    utility.execute()</span><br><span class="line">  File <span class="string">"C:\Users\Sure\Envs\hexo\lib\site-packages\django\core\management\__init__.py"</span>, line <span class="number">375</span>, <span class="keyword">in</span> execute</span><br><span class="line">    self.fetch_command(subcommand).run_from_argv(self.argv)</span><br><span class="line">  File <span class="string">"C:\Users\Sure\Envs\hexo\lib\site-packages\django\core\management\base.py"</span>, line <span class="number">323</span>, <span class="keyword">in</span> run_from_argv</span><br><span class="line">    self.execute(*args, **cmd_options)</span><br><span class="line">  File <span class="string">"C:\Users\Sure\Envs\hexo\lib\site-packages\django\core\management\commands\runserver.py"</span>, line <span class="number">60</span>, <span class="keyword">in</span> execute</span><br><span class="line">    super().execute(*args, **options)</span><br><span class="line">  File <span class="string">"C:\Users\Sure\Envs\hexo\lib\site-packages\django\core\management\base.py"</span>, line <span class="number">364</span>, <span class="keyword">in</span> execute</span><br><span class="line">    output = self.handle(*args, **options)</span><br><span class="line">  File <span class="string">"C:\Users\Sure\Envs\hexo\lib\site-packages\django\core\management\commands\runserver.py"</span>, line <span class="number">95</span>, <span class="keyword">in</span> handle</span><br><span class="line">    self.run(**options)</span><br><span class="line">  File <span class="string">"C:\Users\Sure\Envs\hexo\lib\site-packages\django\core\management\commands\runserver.py"</span>, line <span class="number">102</span>, <span class="keyword">in</span> run</span><br><span class="line">    autoreload.run_with_reloader(self.inner_run, **options)</span><br><span class="line">  File <span class="string">"C:\Users\Sure\Envs\hexo\lib\site-packages\django\utils\autoreload.py"</span>, line <span class="number">579</span>, <span class="keyword">in</span> run_with_reloader</span><br><span class="line">    start_django(reloader, main_func, *args, **kwargs)</span><br><span class="line">  File <span class="string">"C:\Users\Sure\Envs\hexo\lib\site-packages\django\utils\autoreload.py"</span>, line <span class="number">564</span>, <span class="keyword">in</span> start_django</span><br><span class="line">    reloader.run(django_main_thread)</span><br><span class="line">  File <span class="string">"C:\Users\Sure\Envs\hexo\lib\site-packages\django\utils\autoreload.py"</span>, line <span class="number">272</span>, <span class="keyword">in</span> run</span><br><span class="line">    get_resolver().urlconf_module</span><br><span class="line">  File <span class="string">"C:\Users\Sure\Envs\hexo\lib\site-packages\django\utils\functional.py"</span>, line <span class="number">80</span>, <span class="keyword">in</span> __get__</span><br><span class="line">    res = instance.__dict__[self.name] = self.func(instance)</span><br><span class="line">  File <span class="string">"C:\Users\Sure\Envs\hexo\lib\site-packages\django\urls\resolvers.py"</span>, line <span class="number">564</span>, <span class="keyword">in</span> urlconf_module</span><br><span class="line">    <span class="keyword">return</span> import_module(self.urlconf_name)</span><br><span class="line">  File <span class="string">"c:\python36\lib\importlib\__init__.py"</span>, line <span class="number">126</span>, <span class="keyword">in</span> import_module</span><br><span class="line">    <span class="keyword">return</span> _bootstrap._gcd_import(name[level:], package, level)</span><br><span class="line">  File <span class="string">"&lt;frozen importlib._bootstrap&gt;"</span>, line <span class="number">994</span>, <span class="keyword">in</span> _gcd_import</span><br><span class="line">  File <span class="string">"&lt;frozen importlib._bootstrap&gt;"</span>, line <span class="number">971</span>, <span class="keyword">in</span> _find_and_load</span><br><span class="line">Exception <span class="keyword">in</span> thread Thread<span class="number">-1</span>:</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"c:\python36\lib\threading.py"</span>, line <span class="number">916</span>, <span class="keyword">in</span> _bootstrap_inner</span><br><span class="line">    self.run()</span><br><span class="line">  File <span class="string">"c:\python36\lib\threading.py"</span>, line <span class="number">864</span>, <span class="keyword">in</span> run</span><br><span class="line">    self._target(*self._args, **self._kwargs)</span><br><span class="line">  File <span class="string">"C:\Users\Sure\Envs\hexo\lib\site-packages\django\utils\autoreload.py"</span>, line <span class="number">54</span>, <span class="keyword">in</span> wrapper</span><br><span class="line">    fn(*args, **kwargs)</span><br><span class="line">  File <span class="string">"C:\Users\Sure\Envs\hexo\lib\site-packages\django\core\management\commands\runserver.py"</span>, line <span class="number">117</span>, <span class="keyword">in</span> inner_run</span><br><span class="line">    self.check(display_num_errors=<span class="literal">True</span>)</span><br><span class="line">  File <span class="string">"C:\Users\Sure\Envs\hexo\lib\site-packages\django\core\management\base.py"</span>, line <span class="number">390</span>, <span class="keyword">in</span> check</span><br><span class="line">    include_deployment_checks=include_deployment_checks,</span><br><span class="line">  File <span class="string">"C:\Users\Sure\Envs\hexo\lib\site-packages\django\core\management\base.py"</span>, line <span class="number">377</span>, <span class="keyword">in</span> _run_checks</span><br><span class="line">    <span class="keyword">return</span> checks.run_checks(**kwargs)</span><br><span class="line">  File <span class="string">"C:\Users\Sure\Envs\hexo\lib\site-packages\django\core\checks\registry.py"</span>, line <span class="number">72</span>, <span class="keyword">in</span> run_checks</span><br><span class="line">    new_errors = check(app_configs=app_configs)</span><br><span class="line">  File <span class="string">"C:\Users\Sure\Envs\hexo\lib\site-packages\django\core\checks\urls.py"</span>, line <span class="number">13</span>, <span class="keyword">in</span> check_url_config</span><br><span class="line">    <span class="keyword">return</span> check_resolver(resolver)</span><br><span class="line">  File <span class="string">"C:\Users\Sure\Envs\hexo\lib\site-packages\django\core\checks\urls.py"</span>, line <span class="number">23</span>, <span class="keyword">in</span> check_resolver</span><br><span class="line">    <span class="keyword">return</span> check_method()</span><br><span class="line">  File <span class="string">"C:\Users\Sure\Envs\hexo\lib\site-packages\django\urls\resolvers.py"</span>, line <span class="number">398</span>, <span class="keyword">in</span> check</span><br><span class="line">    <span class="keyword">for</span> pattern <span class="keyword">in</span> self.url_patterns:</span><br><span class="line">  File <span class="string">"C:\Users\Sure\Envs\hexo\lib\site-packages\django\utils\functional.py"</span>, line <span class="number">80</span>, <span class="keyword">in</span> __get__</span><br><span class="line">    res = instance.__dict__[self.name] = self.func(instance)</span><br><span class="line">  File <span class="string">"C:\Users\Sure\Envs\hexo\lib\site-packages\django\urls\resolvers.py"</span>, line <span class="number">571</span>, <span class="keyword">in</span> url_patterns</span><br><span class="line">    patterns = getattr(self.urlconf_module, <span class="string">"urlpatterns"</span>, self.urlconf_module)</span><br><span class="line">  File <span class="string">"C:\Users\Sure\Envs\hexo\lib\site-packages\django\utils\functional.py"</span>, line <span class="number">80</span>, <span class="keyword">in</span> __get__</span><br><span class="line">    res = instance.__dict__[self.name] = self.func(instance)</span><br><span class="line">  File <span class="string">"C:\Users\Sure\Envs\hexo\lib\site-packages\django\urls\resolvers.py"</span>, line <span class="number">564</span>, <span class="keyword">in</span> urlconf_module</span><br><span class="line">    <span class="keyword">return</span> import_module(self.urlconf_name)</span><br><span class="line">  File <span class="string">"c:\python36\lib\importlib\__init__.py"</span>, line <span class="number">126</span>, <span class="keyword">in</span> import_module</span><br><span class="line">    <span class="keyword">return</span> _bootstrap._gcd_import(name[level:], package, level)</span><br><span class="line">  File <span class="string">"&lt;frozen importlib._bootstrap&gt;"</span>, line <span class="number">994</span>, <span class="keyword">in</span> _gcd_import</span><br><span class="line">  File <span class="string">"&lt;frozen importlib._bootstrap&gt;"</span>, line <span class="number">971</span>, <span class="keyword">in</span> _find_and_load</span><br><span class="line">  File <span class="string">"&lt;frozen importlib._bootstrap&gt;"</span>, line <span class="number">955</span>, <span class="keyword">in</span> _find_and_load_unlocked</span><br><span class="line">  File <span class="string">"&lt;frozen importlib._bootstrap&gt;"</span>, line <span class="number">665</span>, <span class="keyword">in</span> _load_unlocked</span><br><span class="line">  File <span class="string">"&lt;frozen importlib._bootstrap_external&gt;"</span>, line <span class="number">678</span>, <span class="keyword">in</span> exec_module</span><br><span class="line">  File <span class="string">"&lt;frozen importlib._bootstrap&gt;"</span>, line <span class="number">219</span>, <span class="keyword">in</span> _call_with_frames_removed</span><br><span class="line">  File <span class="string">"C:\Users\Sure\PyProject\神器\hexo_migrator\hexo_migrator\urls.py"</span>, line <span class="number">21</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    path(<span class="string">''</span>, include(<span class="string">'web.urls'</span>, namespace=<span class="string">'web'</span>)),</span><br><span class="line">  File <span class="string">"C:\Users\Sure\Envs\hexo\lib\site-packages\django\urls\conf.py"</span>, line <span class="number">34</span>, <span class="keyword">in</span> include</span><br><span class="line">    urlconf_module = import_module(urlconf_module)</span><br><span class="line">  File <span class="string">"c:\python36\lib\importlib\__init__.py"</span>, line <span class="number">126</span>, <span class="keyword">in</span> import_module</span><br><span class="line">    <span class="keyword">return</span> _bootstrap._gcd_import(name[level:], package, level)</span><br><span class="line">  File <span class="string">"&lt;frozen importlib._bootstrap&gt;"</span>, line <span class="number">994</span>, <span class="keyword">in</span> _gcd_import</span><br><span class="line">  File <span class="string">"&lt;frozen importlib._bootstrap&gt;"</span>, line <span class="number">971</span>, <span class="keyword">in</span> _find_and_load</span><br><span class="line">  File <span class="string">"&lt;frozen importlib._bootstrap&gt;"</span>, line <span class="number">955</span>, <span class="keyword">in</span> _find_and_load_unlocked</span><br><span class="line">  File <span class="string">"&lt;frozen importlib._bootstrap&gt;"</span>, line <span class="number">665</span>, <span class="keyword">in</span> _load_unlocked</span><br><span class="line">  File <span class="string">"&lt;frozen importlib._bootstrap_external&gt;"</span>, line <span class="number">678</span>, <span class="keyword">in</span> exec_module</span><br><span class="line">  File <span class="string">"&lt;frozen importlib._bootstrap&gt;"</span>, line <span class="number">219</span>, <span class="keyword">in</span> _call_with_frames_removed</span><br><span class="line">  File <span class="string">"C:\Users\Sure\PyProject\神器\hexo_migrator\web\urls.py"</span>, line <span class="number">2</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    <span class="keyword">from</span> . <span class="keyword">import</span> views</span><br><span class="line">  File <span class="string">"C:\Users\Sure\PyProject\神器\hexo_migrator\web\views.py"</span>, line <span class="number">6</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    <span class="keyword">from</span> . <span class="keyword">import</span> myforms, models</span><br><span class="line">  File <span class="string">"C:\Users\Sure\PyProject\神器\hexo_migrator\web\myforms.py"</span>, line <span class="number">64</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">TagsModelForm</span><span class="params">(forms.ModelForm)</span>:</span></span><br><span class="line">  File <span class="string">"C:\Users\Sure\Envs\hexo\lib\site-packages\django\forms\models.py"</span>, line <span class="number">266</span>, <span class="keyword">in</span> __new__</span><br><span class="line">    <span class="keyword">raise</span> FieldError(message)</span><br><span class="line">django.core.exceptions.FieldError: Unknown field(s) (tag_name) specified <span class="keyword">for</span> CategoriesModel</span><br><span class="line"></span><br><span class="line">  File <span class="string">"&lt;frozen importlib._bootstrap&gt;"</span>, line <span class="number">955</span>, <span class="keyword">in</span> _find_and_load_unlocked</span><br><span class="line">  File <span class="string">"&lt;frozen importlib._bootstrap&gt;"</span>, line <span class="number">665</span>, <span class="keyword">in</span> _load_unlocked</span><br><span class="line">  File <span class="string">"&lt;frozen importlib._bootstrap_external&gt;"</span>, line <span class="number">678</span>, <span class="keyword">in</span> exec_module</span><br><span class="line">  File <span class="string">"&lt;frozen importlib._bootstrap&gt;"</span>, line <span class="number">219</span>, <span class="keyword">in</span> _call_with_frames_removed</span><br><span class="line">  File <span class="string">"C:\Users\Sure\PyProject\神器\hexo_migrator\hexo_migrator\urls.py"</span>, line <span class="number">21</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    path(<span class="string">''</span>, include(<span class="string">'web.urls'</span>, namespace=<span class="string">'web'</span>)),</span><br><span class="line">  File <span class="string">"C:\Users\Sure\Envs\hexo\lib\site-packages\django\urls\conf.py"</span>, line <span class="number">34</span>, <span class="keyword">in</span> include</span><br><span class="line">    urlconf_module = import_module(urlconf_module)</span><br><span class="line">  File <span class="string">"c:\python36\lib\importlib\__init__.py"</span>, line <span class="number">126</span>, <span class="keyword">in</span> import_module</span><br><span class="line">    <span class="keyword">return</span> _bootstrap._gcd_import(name[level:], package, level)</span><br><span class="line">  File <span class="string">"&lt;frozen importlib._bootstrap&gt;"</span>, line <span class="number">994</span>, <span class="keyword">in</span> _gcd_import</span><br><span class="line">  File <span class="string">"&lt;frozen importlib._bootstrap&gt;"</span>, line <span class="number">971</span>, <span class="keyword">in</span> _find_and_load</span><br><span class="line">  File <span class="string">"&lt;frozen importlib._bootstrap&gt;"</span>, line <span class="number">955</span>, <span class="keyword">in</span> _find_and_load_unlocked</span><br><span class="line">  File <span class="string">"&lt;frozen importlib._bootstrap&gt;"</span>, line <span class="number">665</span>, <span class="keyword">in</span> _load_unlocked</span><br><span class="line">  File <span class="string">"&lt;frozen importlib._bootstrap_external&gt;"</span>, line <span class="number">678</span>, <span class="keyword">in</span> exec_module</span><br><span class="line">  File <span class="string">"&lt;frozen importlib._bootstrap&gt;"</span>, line <span class="number">219</span>, <span class="keyword">in</span> _call_with_frames_removed</span><br><span class="line">  File <span class="string">"C:\Users\Sure\PyProject\神器\hexo_migrator\web\urls.py"</span>, line <span class="number">2</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    <span class="keyword">from</span> . <span class="keyword">import</span> views</span><br><span class="line">  File <span class="string">"C:\Users\Sure\PyProject\神器\hexo_migrator\web\views.py"</span>, line <span class="number">6</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    <span class="keyword">from</span> . <span class="keyword">import</span> myforms, models</span><br><span class="line">  File <span class="string">"C:\Users\Sure\PyProject\神器\hexo_migrator\web\myforms.py"</span>, line <span class="number">64</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">TagsModelForm</span><span class="params">(forms.ModelForm)</span>:</span></span><br><span class="line">  File <span class="string">"C:\Users\Sure\Envs\hexo\lib\site-packages\django\forms\models.py"</span>, line <span class="number">266</span>, <span class="keyword">in</span> __new__</span><br><span class="line">    <span class="keyword">raise</span> FieldError(message)</span><br><span class="line">django.core.exceptions.FieldError: Unknown field(s) (tag_name) specified <span class="keyword">for</span> CategoriesModel</span><br></pre></td></tr></table></figure>
+
+<p>错误代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TagsModelForm</span><span class="params">(forms.ModelForm)</span>:</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></span><br><span class="line">        fields = [<span class="string">'tag_name'</span>]</span><br><span class="line">        model = models.CategoriesModel</span><br></pre></td></tr></table></figure>
+
+<p>错误原因：</p>
+<p>复制粘贴，导致模型名字忘记修改。应该是 TagsModel，写成了 CategoriesModel.</p>
+<p>解决方法：</p>
+<p>把模型名改回来。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TagsModelForm</span><span class="params">(forms.ModelForm)</span>:</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Meta</span>:</span></span><br><span class="line">        fields = [<span class="string">'tag_name'</span>]</span><br><span class="line">        model = models.TagsMode</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/project/renran-celery/" rel="prev" title="使用 Celery 完成异步任务">
+      <i class="fa fa-chevron-left"></i> 使用 Celery 完成异步任务
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/bug-bible/django-bug/NoReverseMatch/" rel="next" title="NoReverseMatch">
+      NoReverseMatch <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#django-core-exceptions-FieldError-Unknown-field-s-tag-name-specified-for-CategoriesModel"><span class="nav-number">1.</span> <span class="nav-text">django.core.exceptions.FieldError: Unknown field(s) (tag_name) specified for CategoriesModel</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#错误1-1"><span class="nav-number">1.1.</span> <span class="nav-text">错误1.1</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="刘硕"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">刘硕</p>
+  <div class="site-description" itemprop="description">不成为自己讨厌的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">236</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:liushuo432@outlook.com" title="E-Mail → mailto:liushuo432@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/2436055290" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;2436055290" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://wpa.qq.com/msgrd?v=3&uin=1696146913&site=qq&menu=yes" title="QQ → http:&#x2F;&#x2F;wpa.qq.com&#x2F;msgrd?v&#x3D;3&amp;uin&#x3D;1696146913&amp;site&#x3D;qq&amp;menu&#x3D;yes" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备20001451号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘硕</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.2" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="/js/love.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/Epsilon2.1.model.json"},"display":{"superSample":2,"width":200,"height":400,"position":"left","hOffset":-30,"vOffset":-40},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>

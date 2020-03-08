@@ -22,15 +22,15 @@
     var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"appID":"PXY1Z6GHKT","apiKey":"eb82f2e78e3053f26aa408e9caa96d93","indexName":"blog","hits":{"per_page":10},"labels":{"input_placeholder":"要查点什么(✿◡‿◡)","hits_empty":"没有找到任何关于 ${query} 的结果╥﹏╥...","hits_stats":"搜索到 ${hits} 条记录，用时 ${time} ms o(*￣▽￣*)ブ"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="二次编码编码回顾123456789101112131415ascii : 英文,数字,符号    英文: 1个字节,8位gbk   : 英文,数字,符号,中文    英文: 1个字节,8位    中文: 2个字节,16位unicode : 英文,数字,符号,中文    英文: 4个字节,32位    中文: 4个字节,32位utf-8 : 英文,数字,符号,中文    英文: 1个字节,8位">
+  <meta name="description" content="二次编码，用什么编码就要用什么解码">
 <meta property="og:type" content="article">
-<meta property="og:title" content="second-code">
+<meta property="og:title" content="二次编码">
 <meta property="og:url" content="https://sliu.vip/python-basic/second-code/index.html">
 <meta property="og:site_name" content="刘硕的技术查阅手册">
-<meta property="og:description" content="二次编码编码回顾123456789101112131415ascii : 英文,数字,符号    英文: 1个字节,8位gbk   : 英文,数字,符号,中文    英文: 1个字节,8位    中文: 2个字节,16位unicode : 英文,数字,符号,中文    英文: 4个字节,32位    中文: 4个字节,32位utf-8 : 英文,数字,符号,中文    英文: 1个字节,8位">
+<meta property="og:description" content="二次编码，用什么编码就要用什么解码">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-02-15T05:50:54.000Z">
-<meta property="article:modified_time" content="2020-02-29T02:34:01.866Z">
+<meta property="article:modified_time" content="2020-03-08T17:17:35.000Z">
 <meta property="article:author" content="刘硕">
 <meta property="article:tag" content="Python">
 <meta property="article:tag" content="全栈开发">
@@ -68,7 +68,7 @@
   };
 </script>
 
-  <title>second-code | 刘硕的技术查阅手册</title>
+  <title>二次编码 | 刘硕的技术查阅手册</title>
   
 
 
@@ -245,7 +245,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          second-code
+          二次编码
         </h2>
 
         <div class="post-meta">
@@ -262,7 +262,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
+                <time title="修改时间：2020-03-09 01:17:35" itemprop="dateModified" datetime="2020-03-09T01:17:35+08:00">2020-03-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -282,6 +282,7 @@
               <span class="post-meta-item-text">阅读次数：</span>
               <span id="busuanzi_value_page_pv"></span>
             </span>
+            <div class="post-description">二次编码，用什么编码就要用什么解码</div>
 
         </div>
       </header>
@@ -292,9 +293,9 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="二次编码"><a href="#二次编码" class="headerlink" title="二次编码"></a>二次编码</h3><h4 id="编码回顾"><a href="#编码回顾" class="headerlink" title="编码回顾"></a>编码回顾</h4><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">ascii : 英文,数字,符号</span><br><span class="line">    英文: <span class="number">1</span>个字节,<span class="number">8</span>位</span><br><span class="line"></span><br><span class="line">gbk   : 英文,数字,符号,中文</span><br><span class="line">    英文: <span class="number">1</span>个字节,<span class="number">8</span>位</span><br><span class="line">    中文: <span class="number">2</span>个字节,<span class="number">16</span>位</span><br><span class="line"></span><br><span class="line">unicode : 英文,数字,符号,中文</span><br><span class="line">    英文: <span class="number">4</span>个字节,<span class="number">32</span>位</span><br><span class="line">    中文: <span class="number">4</span>个字节,<span class="number">32</span>位</span><br><span class="line"></span><br><span class="line">utf<span class="number">-8</span> : 英文,数字,符号,中文</span><br><span class="line">    英文: <span class="number">1</span>个字节,<span class="number">8</span>位</span><br><span class="line">    欧洲: <span class="number">2</span>个字节,<span class="number">16</span>位</span><br><span class="line">    亚洲: <span class="number">3</span>个字节,<span class="number">24</span>位</span><br></pre></td></tr></table></figure>
+        <h3 id="编码回顾"><a href="#编码回顾" class="headerlink" title="编码回顾"></a>编码回顾</h3><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">ascii : 英文,数字,符号</span><br><span class="line">    英文: <span class="number">1</span>个字节,<span class="number">8</span>位</span><br><span class="line"></span><br><span class="line">gbk   : 英文,数字,符号,中文</span><br><span class="line">    英文: <span class="number">1</span>个字节,<span class="number">8</span>位</span><br><span class="line">    中文: <span class="number">2</span>个字节,<span class="number">16</span>位</span><br><span class="line"></span><br><span class="line">unicode : 英文,数字,符号,中文</span><br><span class="line">    英文: <span class="number">4</span>个字节,<span class="number">32</span>位</span><br><span class="line">    中文: <span class="number">4</span>个字节,<span class="number">32</span>位</span><br><span class="line"></span><br><span class="line">utf<span class="number">-8</span> : 英文,数字,符号,中文</span><br><span class="line">    英文: <span class="number">1</span>个字节,<span class="number">8</span>位</span><br><span class="line">    欧洲: <span class="number">2</span>个字节,<span class="number">16</span>位</span><br><span class="line">    亚洲: <span class="number">3</span>个字节,<span class="number">24</span>位</span><br></pre></td></tr></table></figure>
 
-<p>在 python 3 的内存中使用的是 Unicode 编码，而硬盘中存储时使用的是用户选择的编码方式<a href="对于中文来说，主要是gbk和utf-8">^1</a>。这样一来，就需要进行 Unicode 和其他编码方式的转变，也就涉及到<strong>编码</strong>和<strong>解码</strong>的问题。</p>
+<p>#<br>在 python 3 的内存中使用的是 Unicode 编码，而硬盘中存储时使用的是用户选择的编码方式[^1]。这样一来，就需要进行 Unicode 和其他编码方式的转变，也就涉及到<strong>编码</strong>和<strong>解码</strong>的问题。</p>
 <p>编码是将字符转化为二进制的形式，使用的是 <code>.encode()</code> 方法：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">"你好"</span></span><br><span class="line">s1 = s.encode(<span class="string">"utf-8"</span>)       <span class="comment"># 编码</span></span><br><span class="line">print(s1)</span><br><span class="line"></span><br><span class="line">输出的内容为： <span class="string">b'\xe4\xbd\xa0\xe5\xa5\xbd'</span></span><br></pre></td></tr></table></figure>
 
@@ -307,6 +308,7 @@
 <li>存储，涉及到文件操作</li>
 <li>传输，涉及到网络编程</li>
 </ol>
+<p>[^1]: 对于中文来说，主要是 gbk 和 utf-8</p>
 
     </div>
 
@@ -388,7 +390,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#二次编码"><span class="nav-number">1.</span> <span class="nav-text">二次编码</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#编码回顾"><span class="nav-number">1.1.</span> <span class="nav-text">编码回顾</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#编码回顾"><span class="nav-number">1.</span> <span class="nav-text">编码回顾</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -404,14 +406,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">230</span>
+          <span class="site-state-item-count">236</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
   </nav>

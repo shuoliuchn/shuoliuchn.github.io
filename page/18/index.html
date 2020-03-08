@@ -230,6 +230,771 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/closure/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/python-basic/closure/" class="post-title-link" itemprop="url">闭包</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-15 13:53:36" itemprop="dateCreated datePublished" datetime="2020-02-15T13:53:36+08:00">2020-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>在编程时，我们会处理到很多数据。但是对于一些数据，我们只想使用，不想修改。我们可以使用 <code>闭包</code> 来防止不经意间的数据修改。</p>
+<p>闭包的作用主要有两个：</p>
+<ol>
+<li>保护数据安全</li>
+<li>保护数据干净性</li>
+</ol>
+<p>满足下面两个条件的函数就是一个实用的闭包：</p>
+<ol>
+<li>在嵌套函数内，使用非全局变量（且不使用本层变量）</li>
+<li>将嵌套函数本身返回</li>
+</ol>
+<p>我们可以用<code>.__closure__</code>方法来查看一个函数是否是一个闭包。当返回值为None时，说明该函数不是闭包，当返回值中有变量的内存地址时，说明该函数是一个闭包。</p>
+<p>例如，下面的函数就是一个闭包：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">()</span>:</span></span><br><span class="line">    a = <span class="number">10</span>    <span class="comment"># 自由变量</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">foo</span><span class="params">()</span>:</span></span><br><span class="line">        print(a)</span><br><span class="line">    <span class="keyword">return</span> foo</span><br><span class="line">f = func()</span><br><span class="line">print(f.__closure__)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(&lt;cell at <span class="number">0x000001F7D6277648</span>: int object at <span class="number">0x00000000669D8190</span>&gt;,)</span><br></pre></td></tr></table></figure>
+
+<p>方法中的 <code>closure</code> 就是 <code>闭包</code> 的意思。返回的 <code>cell</code> 是一个 <code>单元格</code> 对象，用来储存闭包中需要使用到的变量。</p>
+<p>当函数执行完成后（也就是 <code>fun()</code> 这个步骤），函数体会被销毁。但是闭包 <code>foo</code> 被返回给了 <code>f</code>，还会被用到，所以照常存在。而闭包中需要使用的变量 <code>a</code>，此时已经不在函数 <code>func</code> 中，因为 <code>func</code> 本身已经不复存在。变量 <code>a</code> 在函数销毁后，升级为 <code>自由变量</code>。</p>
+<p>闭包是怎么做到保护数据的作用的呢？</p>
+<p>比如我们现在有这样一个需求：使用一个函数，每天输入当天营业额，打印出这几天的平均营业额。</p>
+<p>如果我们把营业额的数据储存在列表中，放到全局，可以这样实现功能：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">lst = []</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">ave_turnover</span><span class="params">(turnover_today)</span>:</span></span><br><span class="line">    lst.append(turnover_today)</span><br><span class="line">    ave = sum(lst) / len(lst)</span><br><span class="line">    print(ave)</span><br><span class="line">ave_turnover(<span class="number">12000</span>)</span><br><span class="line">ave_turnover(<span class="number">15000</span>)</span><br><span class="line">ave_turnover(<span class="number">14000</span>)</span><br><span class="line">ave_turnover(<span class="number">12000</span>)</span><br><span class="line">ave_turnover(<span class="number">25000</span>)</span><br><span class="line">ave_turnover(<span class="number">21000</span>)</span><br><span class="line">ave_turnover(<span class="number">9000</span>)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">12000.0</span></span><br><span class="line"><span class="number">13500.0</span></span><br><span class="line"><span class="number">13666.666666666666</span></span><br><span class="line"><span class="number">13250.0</span></span><br><span class="line"><span class="number">15600.0</span></span><br><span class="line"><span class="number">16500.0</span></span><br><span class="line"><span class="number">15428.57142857143</span></span><br></pre></td></tr></table></figure>
+
+<p>如果有一天，我们不小心在全局对 <code>lst</code> 列表做了修改：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">lst = []</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">ave_turnover</span><span class="params">(turnover_today)</span>:</span></span><br><span class="line">    lst.append(turnover_today)</span><br><span class="line">    ave = sum(lst) / len(lst)</span><br><span class="line">    print(ave)</span><br><span class="line">ave_turnover(<span class="number">12000</span>)</span><br><span class="line">ave_turnover(<span class="number">15000</span>)</span><br><span class="line">lst[<span class="number">1</span>] = <span class="number">10</span></span><br><span class="line">ave_turnover(<span class="number">14000</span>)</span><br><span class="line">ave_turnover(<span class="number">12000</span>)</span><br><span class="line">ave_turnover(<span class="number">25000</span>)</span><br><span class="line">ave_turnover(<span class="number">21000</span>)</span><br><span class="line">ave_turnover(<span class="number">9000</span>)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">12000.0</span></span><br><span class="line"><span class="number">13500.0</span></span><br><span class="line"><span class="number">8670.0</span></span><br><span class="line"><span class="number">9502.5</span></span><br><span class="line"><span class="number">12602.0</span></span><br><span class="line"><span class="number">14001.666666666666</span></span><br><span class="line"><span class="number">13287.142857142857</span></span><br></pre></td></tr></table></figure>
+
+<p>这就导致了数据的改变，使得第三天之后的数据全都不准确。</p>
+<p>如果我们把重要的数据 <code>lst</code> 封装到闭包中保护起来，就不会有这种烦恼了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">ave_turnover</span><span class="params">()</span>:</span></span><br><span class="line">    lst = []</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span><span class="params">(turnover_today)</span>:</span></span><br><span class="line">        lst.append(turnover_today)</span><br><span class="line">        ave = sum(lst) / len(lst)</span><br><span class="line">        print(ave)</span><br><span class="line">    <span class="keyword">return</span> inner</span><br><span class="line">f = ave_turnover()</span><br><span class="line">f(<span class="number">12000</span>)</span><br><span class="line">f(<span class="number">15000</span>)</span><br><span class="line">lst = [<span class="number">10</span>]</span><br><span class="line">f(<span class="number">14000</span>)</span><br><span class="line">f(<span class="number">12000</span>)</span><br><span class="line">f(<span class="number">25000</span>)</span><br><span class="line">f(<span class="number">21000</span>)</span><br><span class="line">f(<span class="number">9000</span>)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">12000.0</span></span><br><span class="line"><span class="number">13500.0</span></span><br><span class="line"><span class="number">13666.666666666666</span></span><br><span class="line"><span class="number">13250.0</span></span><br><span class="line"><span class="number">15600.0</span></span><br><span class="line"><span class="number">16500.0</span></span><br><span class="line"><span class="number">15428.57142857143</span></span><br></pre></td></tr></table></figure>
+
+<p>对于闭包，除了 <code>.__closure__</code> 方法之外，还有可以用来查看自由变量的 <code>.__code__.co_freevars</code> 方法，和可以用来查看局部变量的 <code>.__code__.co_varnames</code> 方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">ave_turnover</span><span class="params">()</span>:</span></span><br><span class="line">    lst = []</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span><span class="params">(turnover_today)</span>:</span></span><br><span class="line">        lst.append(turnover_today)</span><br><span class="line">        ave = sum(lst) / len(lst)</span><br><span class="line">        print(ave)</span><br><span class="line">    <span class="keyword">return</span> inner</span><br><span class="line">f = ave_turnover()</span><br><span class="line">print(f.__closure__)             <span class="comment"># 判定是否是一个闭包</span></span><br><span class="line">print(f.__code__.co_freevars)    <span class="comment"># 查看自由变量</span></span><br><span class="line">print(f.__code__.co_varnames)    <span class="comment"># 查看局部变量</span></span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(&lt;cell at <span class="number">0x0000027A31A27648</span>: list object at <span class="number">0x0000027A31AD8C08</span>&gt;,)</span><br><span class="line">(<span class="string">'lst'</span>,)</span><br><span class="line">(<span class="string">'turnover_today'</span>, <span class="string">'ave'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>没有将嵌套的函数返回的函数也可以是一个闭包，但是这个闭包没有办法被使用：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">()</span>:</span></span><br><span class="line">    a = <span class="number">10</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">foo</span><span class="params">()</span>:</span></span><br><span class="line">        print(a)</span><br><span class="line">    print(foo.__closure__)</span><br><span class="line">func()</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(&lt;cell at <span class="number">0x000001BE85EA7648</span>: int object at <span class="number">0x00000000669D8190</span>&gt;,)</span><br></pre></td></tr></table></figure>
+
+<p>闭包也可以通过外层函数加两个括号的方法来调用：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">()</span>:</span></span><br><span class="line">    a = <span class="number">10</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">foo</span><span class="params">()</span>:</span></span><br><span class="line">        print(a)</span><br><span class="line">    <span class="keyword">return</span> foo</span><br><span class="line">func()()</span><br></pre></td></tr></table></figure>
+
+<p>外层函数的参数也是局部变量，所以内层函数使用外层参数的形式也可以构成闭包：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(a, b)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span><span class="params">()</span>:</span></span><br><span class="line">        print(a)</span><br><span class="line">        print(b)</span><br><span class="line">    <span class="keyword">return</span> inner</span><br><span class="line">a = <span class="number">11</span></span><br><span class="line">b = <span class="number">12</span></span><br><span class="line">ret = wrapper(a, b)</span><br><span class="line">print(ret.__closure__)</span><br><span class="line">print(ret.__code__.co_freevars)</span><br><span class="line">print(ret.__code__.co_varnames)</span><br><span class="line">ret()</span><br></pre></td></tr></table></figure>
+
+<p>返回的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(&lt;cell at <span class="number">0x0000021A67AFB648</span>: int object at <span class="number">0x00000000702D81B0</span>&gt;, &lt;cell at <span class="number">0x0000021A67AFB9A8</span>: int object at <span class="number">0x00000000702D81D0</span>&gt;)</span><br><span class="line">(<span class="string">'a'</span>, <span class="string">'b'</span>)</span><br><span class="line">()</span><br><span class="line"><span class="number">11</span></span><br><span class="line"><span class="number">12</span></span><br></pre></td></tr></table></figure>
+
+<p>闭包的应用场景主要有两个：</p>
+<ol>
+<li>装饰器</li>
+<li>防止数据被误改动</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/translation/raspberry-gpio-python-examples/output/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/translation/raspberry-gpio-python-examples/output/" class="post-title-link" itemprop="url">GPIO 输出</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-15 13:53:14" itemprop="dateCreated datePublished" datetime="2020-02-15T13:53:14+08:00">2020-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-21 17:36:12" itemprop="dateModified" datetime="2020-02-21T17:36:12+08:00">2020-02-21</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91/" itemprop="url" rel="index"><span itemprop="name">官方文档翻译</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>GPIO模块的输出方法使用实例。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/translation/raspberry-gpio-python-examples/output/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/while-cycle/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/python-basic/while-cycle/" class="post-title-link" itemprop="url">while 循环</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-15 13:53:10" itemprop="dateCreated datePublished" datetime="2020-02-15T13:53:10+08:00">2020-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-09 01:19:14" itemprop="dateModified" datetime="2020-03-09T01:19:14+08:00">2020-03-09</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>while 循环，天然死循环，要想办法让它变得有限</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/python-basic/while-cycle/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/var-const-com/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/python-basic/var-const-com/" class="post-title-link" itemprop="url">变量、常量和注释</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-15 13:53:08" itemprop="dateCreated datePublished" datetime="2020-02-15T13:53:08+08:00">2020-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><p>先介绍一个 <code>print</code> 函数，用来打印（输出）数据。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(<span class="number">111</span>)</span><br><span class="line"><span class="number">111</span></span><br></pre></td></tr></table></figure>
+
+<p>变量的官方定义：将程序中运行的中间值，临时存储起来，以便再次使用。</p>
+<p>通俗来讲，变量就是给数据起一个昵称，方便调用。</p>
+<p>下面的是一个典型的赋值变量的语句：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">name = <span class="string">"alex"</span></span><br></pre></td></tr></table></figure>
+
+<p>其中，<code>alex</code> 是赋值给变量的值，也就是数据；<code>=</code> 代表的是赋值操作；<code>name</code> 是变量名。通过 <code>print(name)</code> 操作来使用定义的变量名：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>name = <span class="string">"alex"</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(name)</span><br><span class="line">alex</span><br></pre></td></tr></table></figure>
+
+<p>变量名（其他 Python 中的标识符如函数名、类名、模块名等也要遵循这个规则）命名规范：</p>
+<ol>
+<li>变量名只能由数字、字母和下划线组成</li>
+<li>不能以数字开头</li>
+<li>禁止使用python中的关键字</li>
+<li>变量名要具有可描述性</li>
+<li>变量名要区分大小写</li>
+<li>不能使用中文和拼音</li>
+<li>推荐写法：<ul>
+<li>驼峰体</li>
+<li>下划线（官方推荐）</li>
+</ul>
+</li>
+</ol>
+<p>以数字为开头命名变量会报错：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">1</span>a = <span class="string">'alex'</span></span><br><span class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span></span><br><span class="line">    <span class="number">1</span>a = <span class="string">'alex'</span></span><br><span class="line">     ^</span><br><span class="line">SyntaxError: invalid syntax</span><br></pre></td></tr></table></figure>
+
+<p>驼峰体和下划线命名变量示例，很显然下划线的命名法更直观些：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">AlexOfOldboy = <span class="number">89</span>	<span class="comment"># 这是驼峰体</span></span><br><span class="line">alex_of_oldboy = <span class="number">89</span>	<span class="comment"># 这是下划线</span></span><br></pre></td></tr></table></figure>
+
+<p>Python 中的变量名是区分大小写的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>name = <span class="string">'alex'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>Name = <span class="string">'leo'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(name)</span><br><span class="line">alex</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(Name)</span><br><span class="line">leo</span><br></pre></td></tr></table></figure>
+
+<p>Python 中的关键字：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'False'</span>, <span class="string">'None'</span>, <span class="string">'True'</span>, <span class="string">'and'</span>, <span class="string">'as'</span>, <span class="string">'assert'</span>, <span class="string">'break'</span>, <span class="string">'class'</span>, <span class="string">'continue'</span>, <span class="string">'def'</span>, <span class="string">'del'</span>, <span class="string">'elif'</span>, <span class="string">'else'</span>, <span class="string">'except'</span>, <span class="string">'finally'</span>, <span class="string">'for'</span>, <span class="string">'from'</span>, <span class="string">'global'</span>, <span class="string">'if'</span>, <span class="string">'import'</span>, <span class="string">'in'</span>, <span class="string">'is'</span>, <span class="string">'lambda'</span>, <span class="string">'nonlocal'</span>, <span class="string">'not'</span>, <span class="string">'or'</span>,<span class="string">'pass'</span>, <span class="string">'raise'</span>, <span class="string">'return'</span>, <span class="string">'try'</span>, <span class="string">'while'</span>, <span class="string">'with'</span>, <span class="string">'yield'</span>]</span><br></pre></td></tr></table></figure>
+
+<p><code>print</code> 可以打印多个内容，以逗号分隔：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>age1 = <span class="number">19</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(age, age1)</span><br><span class="line"><span class="number">18</span> <span class="number">19</span></span><br></pre></td></tr></table></figure>
+
+<p>请看下面一段赋值操作：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">age = <span class="number">18</span></span><br><span class="line">age1 = age</span><br><span class="line">age2 = age1</span><br><span class="line">age = <span class="number">20</span></span><br><span class="line">age1 = <span class="number">19</span></span><br><span class="line">print(age, age1, age2)</span><br></pre></td></tr></table></figure>
+
+<p>最终打印出来的结果是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">20</span> <span class="number">19</span> <span class="number">18</span></span><br></pre></td></tr></table></figure>
+
+<p>具体的赋值操作如下图所示：</p>
+<img src="/python-basic/var-const-com/QQ%E5%9B%BE%E7%89%8720190905213207.png" class="" title="QQ图片20190905213207">
+
+<p>第一步，在内存中开辟一块内存，把 <code>18</code> 储存在内存中。然后变量名 <code>age</code> 指向 <code>18</code> 对应的内存地址。第二步和第三步，<code>age1</code> 和 <code>age2</code> 也分别指向 <code>18</code> 的内存地址。第四步，变量名 <code>age</code> 指向 <code>20</code> 对应的内存地址，同时不再指向 <code>18</code>。第五步，变量名 <code>age1</code> 指向 <code>19</code> 对应的内存地址，同时不再指向 <code>18</code>。最终的结果是，<code>age2</code> 指向 <code>18</code>，<code>age1</code> 指向 <code>19</code>，<code>age</code> 指向 <code>20</code>。</p>
+<h3 id="常量"><a href="#常量" class="headerlink" title="常量"></a>常量</h3><p>在 Python 中，没有严格意义的常量。大家约定俗成的是，变量名大写的变量就被视为常量，在程序执行过程中一般不会被轻易修改。例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ID = <span class="number">110120130140150</span></span><br><span class="line">ID = <span class="string">"123123213"</span>    <span class="comment"># 不建议在程序执行过程中随意修改</span></span><br></pre></td></tr></table></figure>
+
+<p>变量与常量的应用场景：</p>
+<ul>
+<li>变量用于我们后期开发使用</li>
+<li>常量用于配置文件中</li>
+</ul>
+<h3 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h3><p>注释的作用是给一些晦涩难懂的代码进行标注或解释。被注释的代码不会被执行。</p>
+<p>Python 中的注释分为两种：</p>
+<ul>
+<li>单行注释（当行注释）：用 <code>#</code> 开头表示</li>
+<li>多行注释：用三对 <code>“ ”</code> 或 <code>‘ ’</code> 包裹，可以换行</li>
+</ul>
+<p>具体示例为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 这个是单行注释的示例</span></span><br><span class="line"><span class="comment"># 换行之后要在开头加一个#</span></span><br><span class="line"></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">窗前明月光,</span></span><br><span class="line"><span class="string">玻璃好上霜.</span></span><br><span class="line"><span class="string">要不及时擦,</span></span><br><span class="line"><span class="string">整不好就脏.</span></span><br><span class="line"><span class="string">"""</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/notes/django-distribute-static/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/notes/django-distribute-static/" class="post-title-link" itemprop="url">使用 Django 搭建静态文件分发服务器</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-15 13:53:03" itemprop="dateCreated datePublished" datetime="2020-02-15T13:53:03+08:00">2020-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B5%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习实践笔记</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="问题的产生"><a href="#问题的产生" class="headerlink" title="问题的产生"></a>问题的产生</h2><p>CRM 项目已经想好，想要部署到线上。</p>
+<p>将 Django 项目部署项目之前，将 settings 中的 DEBUG 变量设置成 False，并指定授权访问的 IP：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">DEBUG = <span class="literal">False</span></span><br><span class="line">ALLOWED_HOSTS = [<span class="string">'*'</span>]    <span class="comment"># '*'代表允许所有 IP 访问项目</span></span><br></pre></td></tr></table></figure>
+
+<p>然后以 <code>0.0.0.0:80</code> 启动 Django 项目：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo python3 manage.py runserver 0.0.0.0:80</span><br></pre></td></tr></table></figure>
+
+<p>浏览器输入服务器的 IP 访问项目。却发现什么样式都不见了。</p>
+<img src="/notes/django-distribute-static/1579001343615.png" class="" width="1579001343615">
+
+<p>造成这种情况的原因是，Django 线上模式的静态文件托管是无效的。因为 Django 的静态文件托管很脆弱，无法应对复杂的线上环境。</p>
+<p>我们知道这是 Django 的好心。可是对我来说却坏透了：除了 Django 之外，我不知道别的静态文件托管方式。</p>
+<p>老师说，可以使用 Nginx 托管静态文件，但是这东西我也只知其名，根本不会用。</p>
+<p>也就是说，现在的我处在一个尴尬的空窗期：能用 Django 把项目写出来，但是没办法部署到线上。</p>
+<p>上次的 rbac 项目我成功使用码云的 <code>Gitee Pages</code> 服务托管了静态文件。但是一来，我不能过分依赖别人——码云服务器并不稳定，而且偶尔会拒绝外部访问。二来，这次我试图用码云托管静态文件时，出现了错误， <code>Gitee Pages</code> 服务干脆不能启动。</p>
+<img src="/notes/django-distribute-static/1579001813164.png" class="" width="1579001813164">
+
+<p>如果慢慢研究，我或许能找出其中的问题。但有一个念头出现在我的脑海，其实这个想法我一直都有，那就是，我可不可以<strong>把静态文件也部署到服务器上</strong>，使用除 80 之外的端口（比如：8080）。而项目中的静态文件也不使用 Django 托管，而是让它去服务器中拿。</p>
+<p>我觉得这是可行。一不做二不休，干起来呀~</p>
+<h2 id="静态文件托管项目"><a href="#静态文件托管项目" class="headerlink" title="静态文件托管项目"></a>静态文件托管项目</h2><p>新建一个 Django 项目，把需要部署的静态文件放到一个文件夹中。为了图方便，我直接放在了 template 文件夹中。这是不规范的，因为 template 文件夹一般放的都是 html 文件。因为是权宜之计，而且也没有指望在这个项目里放什么 html 文件，让这个目录空着也不太好不是。</p>
+<img src="/notes/django-distribute-static/1579002751188.png" class="" width="1579002751188">
+
+<p>文件拷贝完成，就该指定规则。</p>
+<p>我的思路是，当有访问请求过来时，<strong>根据访问请求的路径，返回他需要的静态文件</strong>。比如，当访问请求是 <code>IP:PORT/NBCrm/adminAuth/css/style.css</code> 时，就返回给他 <code>\templates\NBCrm\auth\css\style.css</code> 这个文件。</p>
+<p>若根据不同请求分别配置 url 路由显然是不恰当的。首先，静态文件太多，我不可能给每个文件都分配路由，写视图函数。然后，那样的写法可移植性太差。如果我需要增加静态文件，还要再分配路由，再写视图函数。也会有大量重复代码。总是，是很不合理的。</p>
+<p>既然要处理所有的请求，我何不干脆在中间件针对所有的请求进行处理呢？也就是说，当访问请求过来时，先在中间件处理。中间件拿到请求的路径，直接把文件返回给访问者，就不去找路由了。这样一来，路径就成了参数，我们只需要写一个函数就能完成文件处理了。</p>
+<p>写成的代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> django.http <span class="keyword">import</span> StreamingHttpResponse</span><br><span class="line"><span class="keyword">from</span> django.utils.deprecation <span class="keyword">import</span> MiddlewareMixin</span><br><span class="line"><span class="keyword">from</span> django.conf <span class="keyword">import</span> settings</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">StaticDirect</span><span class="params">(MiddlewareMixin)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">process_request</span><span class="params">(self, request)</span>:</span></span><br><span class="line">        base_dir = settings.BASE_DIR</span><br><span class="line">        <span class="comment"># URL路径之间以“/”分隔，但是Windows系统中的路径分隔符是“\”，所以要拆分重组</span></span><br><span class="line">        request_path_list = request.path.split(<span class="string">'/'</span>)</span><br><span class="line">        <span class="comment"># 拼接文件路径，我的静态文件放在了 templates 文件夹下</span></span><br><span class="line">        file_path = os.path.join(base_dir, <span class="string">'templates'</span>, *request_path_list)</span><br><span class="line">        file_name = os.path.basename(file_path)</span><br><span class="line">        <span class="comment"># 以下是返回文件的基本操作</span></span><br><span class="line">        file = open(file_path, <span class="string">'rb'</span>)</span><br><span class="line">        response = StreamingHttpResponse(file)</span><br><span class="line">        response[<span class="string">'Content-Type'</span>] = <span class="string">'application/octet-stream'</span></span><br><span class="line">        response[<span class="string">'Content-Disposition'</span>] = <span class="string">f'attachment;filename="<span class="subst">&#123;file_name&#125;</span>"'</span></span><br><span class="line">        <span class="keyword">return</span> response</span><br></pre></td></tr></table></figure>
+
+<p>不要忘了在 settings.py 的设置中加入我们的中间件：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">MIDDLEWARE = [</span><br><span class="line">    <span class="string">'django.middleware.security.SecurityMiddleware'</span>,</span><br><span class="line">    <span class="string">'django.contrib.sessions.middleware.SessionMiddleware'</span>,</span><br><span class="line">    <span class="string">'django.middleware.common.CommonMiddleware'</span>,</span><br><span class="line">    <span class="string">'django.middleware.csrf.CsrfViewMiddleware'</span>,</span><br><span class="line">    <span class="string">'django.contrib.auth.middleware.AuthenticationMiddleware'</span>,</span><br><span class="line">    <span class="string">'django.contrib.messages.middleware.MessageMiddleware'</span>,</span><br><span class="line">    <span class="string">'django.middleware.clickjacking.XFrameOptionsMiddleware'</span>,</span><br><span class="line">    <span class="string">'app01.mymiddlewares.mymiddleware.LoginAuth'</span>,</span><br><span class="line">    <span class="string">'rbac.mymiddleware.auth.Auth'</span>,    <span class="comment"># 也就是这一行</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<p>至此，我们静态文件托管项目已经基本完成。非常容易对不对~</p>
+<h2 id="原项目（CRM）的修改"><a href="#原项目（CRM）的修改" class="headerlink" title="原项目（CRM）的修改"></a>原项目（CRM）的修改</h2><p>我最开始的想法是，让静态文件托管项目在本地运行，也就是把 IP 设置成 <code>127.0.0.1</code>。那么如果我要访问静态文件，比如刚刚的 <code>style.css</code>，只需要把 css 样式的引入方式写成：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">href</span>=<span class="string">"https://127.0.0.1:8080/NBCrm/adminAuth/css/style.css"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>我们在调试时，css 文件的引入方式为：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">href</span>=<span class="string">"&#123;% static 'auth/css/style.css' %&#125;"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>我们发现，如果我们使用新的写法，会对原来的写法有较大改动，一条一条改起来很麻烦。</p>
+<p>另一方面，我们或许会改变 IP 和端口号。对于前面的写法，修改起来是极麻烦的。</p>
+<p>于是，我决定通过自定义标签的方式对原来的代码进行修改。自定义标签这样写：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django <span class="keyword">import</span> template</span><br><span class="line"><span class="keyword">from</span> django.conf <span class="keyword">import</span> settings</span><br><span class="line"></span><br><span class="line">register = template.Library()</span><br><span class="line"></span><br><span class="line"><span class="meta">@register.simple_tag</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">static_url</span><span class="params">(static_path)</span>:</span></span><br><span class="line">    static_list = static_path.split(<span class="string">'/'</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">'/'</span>.join([settings.STATIC_HOST] + static_list)</span><br></pre></td></tr></table></figure>
+
+<p>静态文件托管项目的ip和端口信息记录在 <code>setting.py</code> 文件的 <code>STATIC_HOST</code> 中：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">STATIC_HOST = <span class="string">'http://127.0.0.1:8080'</span></span><br></pre></td></tr></table></figure>
+
+<p>我给自定义标签取的名字为 <code>static_url</code>。这样，我只需要修改少量代码就可以顺利指向我们的静态文件托管项目上来：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">href</span>=<span class="string">"&#123;% static_url 'NBCrm/auth/css/style.css' %&#125;"</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>路径前面加了一个 NBCrm 是因为要区分 CRM 项目 和 rbac 项目而分别建立的两个文件夹。其实不这样做也是可以的，仅仅是为了增加程序的规范性（时而要规范，时而不规范，真香~）。</p>
+<p>把所有的静态文件都按此格式修改，就算大功告成。以后要想修改 IP 地址或端口，直接去 <code>settings.py</code> 文件中修改相应的内容即可。</p>
+<h2 id="静态文件托管在-127-0-0-1-测试"><a href="#静态文件托管在-127-0-0-1-测试" class="headerlink" title="静态文件托管在 127.0.0.1 测试"></a>静态文件托管在 <code>127.0.0.1</code> 测试</h2><p>现在，我们完成了静态文件托管项目的创建和原项目为使用托管项目而做出的修改。万事俱备，只欠东风。</p>
+<p>把项目传到服务器上。可以使用 ftp，也可以使用 git，都挺好用的。</p>
+<p>然后，按预定的思路，先在 <code>127.0.0.1:8080</code> 下，以 nohub 模式启动静态文件托管系统（首先当然要用 cd 命令把工作目录转到静态文件托管系统项目目录下）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo nohup python3 manage.py runserver 127.0.0.1:8080 &amp;</span><br></pre></td></tr></table></figure>
+
+<p>接着，在 80 端口，以线上模式部署 CRM 项目（当然也要先 cd 目录）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo python3 manage.py runserver 0.0.0.0:80</span><br></pre></td></tr></table></figure>
+
+<p>打开浏览器测试。果然不出所料，没有成功/(ㄒoㄒ)/~~</p>
+<img src="/notes/django-distribute-static/1579005785237.png" class="" width="1579005785237">
+
+<p>思考一下浏览器请求的顺序，便可恍然大悟。首先，浏览器向服务器发送访问请求。CRM项目，也就是 Django 帮我们渲染好页面，并返回给我们。注意下图中的第三步我加粗的部分：渲染出来的 IP 是 <code>127.0.0.1</code>。这些内容会以 HTML 页面的形式返回到我们的浏览器中。浏览器解析页面，当发现这个样式外链时，自然会去相应的地址发出请求。而这个地址是 <code>127.0.0.1</code>，也就是指代用户的电脑。于是就向用户电脑发送访问请求。很显然，用户电脑上是没有静态文件托管系统的，于是什么静态文件也拿不到。而对于我们服务器上的静态文件托管系统，却无人对其访问。![静态文件托管系统ip问题 (django-distribute-static.assets\静态文件托管系统ip问题 (1).png)](C:\Users\Sure\OneDrive - RLS ,inc\Downloads\静态文件托管系统ip问题 (1).png)</p>
+<p>这样看来，将静态文件托管到本地回环地址 <code>127.0.0.1</code> 是不合理的。把它以线上模式部署也变成了理所当然的选择。</p>
+<h2 id="静态文件以线上模式托管"><a href="#静态文件以线上模式托管" class="headerlink" title="静态文件以线上模式托管"></a>静态文件以线上模式托管</h2><p>上文说到，静态文件不该托管在  <code>127.0.0.1</code>。若要以线上模式托管，就要修改 <code>settings.py</code> 的配置。文章最开始的地方已经提到了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">DEBUG = <span class="literal">False</span></span><br><span class="line">ALLOWED_HOSTS = [<span class="string">'*'</span>]</span><br></pre></td></tr></table></figure>
+
+<p>Django 文件可以在不停止项目运行的情况下修改，所以一般情况无需终止进程。不过这次我们要修改 IP，所以还是要终止一下。</p>
+<p>首先，使用命令找到 Django 的进程号：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -ef|grep <span class="string">"python"</span></span><br></pre></td></tr></table></figure>
+
+<p>得到的结果是这样的：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">root       924     1  0  2019 ?        00:00:00 /usr/bin/python3 /usr/bin/networkd-dispatcher --run-startup-triggers</span><br><span class="line">root       962     1  0  2019 ?        00:00:00 /usr/bin/python3 /usr/share/unattended-upgrades/unattended-upgrade-shutdown --<span class="built_in">wait</span>-for-signal</span><br><span class="line">root      8618 26216  0 21:17 pts/0    00:00:00 sudo nohup python3 manage.py runserver 127.0.0.1:8080</span><br><span class="line">root      8619  8618  0 21:17 pts/0    00:00:00 python3 manage.py runserver 127.0.0.1:8080</span><br><span class="line">root      8630  8619  1 21:17 pts/0    00:00:00 /usr/bin/python3 manage.py runserver 127.0.0.1:8080</span><br><span class="line">ubuntu    8718 26216  0 21:18 pts/0    00:00:00 grep --color=auto python</span><br><span class="line">root     25109     1  0 Jan12 ?        00:00:00 sudo nohup python3 manage.py runserver 0.0.0.0:80</span><br><span class="line">root     25110 25109  0 Jan12 ?        00:00:00 python3 manage.py runserver 0.0.0.0:80</span><br><span class="line">root     25117 25110  0 Jan12 ?        00:20:57 /usr/bin/python3 manage.py runserver 0.0.0.0:80</span><br></pre></td></tr></table></figure>
+
+<p>我们找到 <code>/usr/bin/python3 manage.py runserver 127.0.0.1:8080</code> 对应的进程，其编号是 8630，使用命令将其终止：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo <span class="built_in">kill</span> -s 9 8630</span><br></pre></td></tr></table></figure>
+
+<p>然后，以线上模式运行我们的静态文件托管项目：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo nohup python3 manage.py runserver 0.0.0.0:8080 &amp;</span><br></pre></td></tr></table></figure>
+
+<p>再次访问，就会发现，页面成了这个样子：</p>
+<img src="/notes/django-distribute-static/1579008162415.png" class="" width="1579008162415">
+
+<p>这怎么说呢？成功一半：图片成功返回，但是样式全部失效。其实也可以说，我们成功了一多半：图片顺利出现，说明连接已经顺利建立，我们成功和静态文件托管系统通信。而且如果我们使用浏览器的控制台查看网络情况就会发现，其实我们的 css 和 js 文件也都接收到了，只是样式没有生效而已：</p>
+<img src="/notes/django-distribute-static/1579009110902.png" class="" width="1579009110902">
+
+<p>此时，其实已经超出我所学的范围了。不过我还是有一个不置可否地猜测：是不是浏览器在接收样式文件时需要声明一下文件类型，才能应用样式呢？</p>
+<p>于是，我开始进行对返回文档格式进行指定的尝试。</p>
+<h2 id="指定静态文件的格式"><a href="#指定静态文件的格式" class="headerlink" title="指定静态文件的格式"></a>指定静态文件的格式</h2><p>我的这个猜想并不是凭空产生的。还记得我们在写静态文件托管项目的时候，我说，有一段是返回文件的固定写法吗？也就是这段代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">file = open(file_path, <span class="string">'rb'</span>)</span><br><span class="line">response = StreamingHttpResponse(file)</span><br><span class="line">response[<span class="string">'Content-Type'</span>] = <span class="string">'application/octet-stream'</span></span><br><span class="line">response[<span class="string">'Content-Disposition'</span>] = <span class="string">f'attachment;filename="<span class="subst">&#123;file_name&#125;</span>"'</span></span><br></pre></td></tr></table></figure>
+
+<p>按道理讲，这四行代码，每一行都改有其存在的意义，也就是有修改的必要。否则，应该封装到方法中，而不是每次都要进行配置。出第三行外，每一行代码的作用都显而易见，我也不必多说。</p>
+<p>唯独这第三行代码，从名称上看，该是指定文件的类型的。但是我一直都是使用这种写法，从来没有改过。但既然可以指定，就应该能指定成其他形式。想到在 css 样式的格式似乎是 “text/css”，js 的格式该是“text/javascript”。抱着试试看的态度，我把代码写成了这个样子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">f_extension = os.path.splitext(file_name)[<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> f_extension == <span class="string">'.css'</span>:</span><br><span class="line">    print(<span class="string">'css'</span>)</span><br><span class="line">    response[<span class="string">'Content-Type'</span>] = <span class="string">'text/css'</span></span><br><span class="line"><span class="keyword">elif</span> f_extension == <span class="string">'.js'</span>:</span><br><span class="line">    print(<span class="string">'js'</span>)</span><br><span class="line">    response[<span class="string">'Content-Type'</span>] = <span class="string">'text/javascript'</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    response[<span class="string">'Content-Type'</span>] = <span class="string">'application/octet-stream'</span></span><br></pre></td></tr></table></figure>
+
+<p>再次刷新运行，终于，得偿所愿，所有样式全部出现：</p>
+<img src="/notes/django-distribute-static/1579009847425.png" class="" width="1579009847425">
+
+<p>不过故事到这里还没有完全结束，因为很显然，文件类型不仅仅有 css 和 js 两种。对于其他数据类型，尤其是各种图片，万一也需要指定格式，岂不是又无法识别了吗？</p>
+<p>我猜想，这种格式要求应该是 http 协议簇中有规定的。于是在网上一搜，果不其然，搜到 HTTP content-type 对照表。针对不同的文件扩展名，给出特定的 content-type 规范写法，比如：</p>
+<table>
+<thead>
+<tr>
+<th align="left">文件扩展名</th>
+<th align="left">Content-Type(Mime-Type)</th>
+<th align="left">文件扩展名</th>
+<th align="left">Content-Type(Mime-Type)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">.*（ 二进制流，不知道下载文件类型）</td>
+<td align="left">application/octet-stream</td>
+<td align="left">.tif</td>
+<td align="left">image/tiff</td>
+</tr>
+<tr>
+<td align="left">.001</td>
+<td align="left">application/x-001</td>
+<td align="left">.301</td>
+<td align="left">application/x-301</td>
+</tr>
+<tr>
+<td align="left">.323</td>
+<td align="left">text/h323</td>
+<td align="left">.906</td>
+<td align="left">application/x-906</td>
+</tr>
+<tr>
+<td align="left">.907</td>
+<td align="left">drawing/907</td>
+<td align="left">.a11</td>
+<td align="left">application/x-a11</td>
+</tr>
+<tr>
+<td align="left">.acp</td>
+<td align="left">audio/x-mei-aac</td>
+<td align="left">.ai</td>
+<td align="left">application/postscript</td>
+</tr>
+<tr>
+<td align="left">.aif</td>
+<td align="left">audio/aiff</td>
+<td align="left">.aifc</td>
+<td align="left">audio/aiff</td>
+</tr>
+</tbody></table>
+<p>更加详细的可以参见 <a href="https://www.runoob.com/http/http-content-type.html" target="_blank" rel="noopener">HTTP content-type</a> 。</p>
+<p>使用简单的脚本，即可得到文件扩展名和 content-type 作为键值对的字典。这个字典我贴在了文章的最底下，各位朋友若有需要，请自便。</p>
+<p>有了这个字典，稍加修饰，便让代码更加简洁，通用性也更强：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">StaticDirect</span><span class="params">(MiddlewareMixin)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">process_request</span><span class="params">(self, request)</span>:</span></span><br><span class="line">        base_dir = settings.BASE_DIR</span><br><span class="line">        print(request.path)</span><br><span class="line">        request_path_list = request.path.split(<span class="string">'/'</span>)</span><br><span class="line">        file_path = os.path.join(base_dir, <span class="string">'templates'</span>, *request_path_list)</span><br><span class="line">        file_name = os.path.basename(file_path)</span><br><span class="line">        file = open(file_path, <span class="string">'rb'</span>)</span><br><span class="line">        response = StreamingHttpResponse(file)</span><br><span class="line">        f_extension = os.path.splitext(file_name)[<span class="number">1</span>]</span><br><span class="line">        response[<span class="string">'Content-Type'</span>] = content_type_dict.get(f_extension) <span class="keyword">or</span> content_type_dict.get(<span class="string">'.*'</span>)</span><br><span class="line">        response[<span class="string">'Content-Disposition'</span>] = <span class="string">f'attachment;filename="<span class="subst">&#123;file_name&#125;</span>"'</span></span><br><span class="line">        <span class="keyword">return</span> response</span><br></pre></td></tr></table></figure>
+
+<p>倒数第二行代码我使用了一个短路操作：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">response[<span class="string">'Content-Type'</span>] = content_type_dict.get(f_extension) <span class="keyword">or</span> content_type_dict.get(<span class="string">'.*'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>意思是，如果字典中没有找到相应的后缀名，就用通用模式返回数据。</p>
+<h1 id="HTTP-content-type-与扩展名对应字典"><a href="#HTTP-content-type-与扩展名对应字典" class="headerlink" title="HTTP content-type 与扩展名对应字典"></a>HTTP content-type 与扩展名对应字典</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br></pre></td><td class="code"><pre><span class="line">content_type_dict=&#123;</span><br><span class="line">    <span class="string">'.*'</span>: <span class="string">'application/octet-stream'</span>,</span><br><span class="line">    <span class="string">'.tif'</span>: <span class="string">'application/x-tif'</span>,</span><br><span class="line">    <span class="string">'.001'</span>: <span class="string">'application/x-001'</span>,</span><br><span class="line">    <span class="string">'.301'</span>: <span class="string">'application/x-301'</span>,</span><br><span class="line">    <span class="string">'.323'</span>: <span class="string">'text/h323'</span>,</span><br><span class="line">    <span class="string">'.906'</span>: <span class="string">'application/x-906'</span>,</span><br><span class="line">    <span class="string">'.907'</span>: <span class="string">'drawing/907'</span>,</span><br><span class="line">    <span class="string">'.a11'</span>: <span class="string">'application/x-a11'</span>,</span><br><span class="line">    <span class="string">'.acp'</span>: <span class="string">'audio/x-mei-aac'</span>,</span><br><span class="line">    <span class="string">'.ai'</span>: <span class="string">'application/postscript'</span>,</span><br><span class="line">    <span class="string">'.aif'</span>: <span class="string">'audio/aiff'</span>,</span><br><span class="line">    <span class="string">'.aifc'</span>: <span class="string">'audio/aiff'</span>,</span><br><span class="line">    <span class="string">'.aiff'</span>: <span class="string">'audio/aiff'</span>,</span><br><span class="line">    <span class="string">'.anv'</span>: <span class="string">'application/x-anv'</span>,</span><br><span class="line">    <span class="string">'.asa'</span>: <span class="string">'text/asa'</span>,</span><br><span class="line">    <span class="string">'.asf'</span>: <span class="string">'video/x-ms-asf'</span>,</span><br><span class="line">    <span class="string">'.asp'</span>: <span class="string">'text/asp'</span>,</span><br><span class="line">    <span class="string">'.asx'</span>: <span class="string">'video/x-ms-asf'</span>,</span><br><span class="line">    <span class="string">'.au'</span>: <span class="string">'audio/basic'</span>,</span><br><span class="line">    <span class="string">'.avi'</span>: <span class="string">'video/avi'</span>,</span><br><span class="line">    <span class="string">'.awf'</span>: <span class="string">'application/vnd.adobe.workflow'</span>,</span><br><span class="line">    <span class="string">'.biz'</span>: <span class="string">'text/xml'</span>,</span><br><span class="line">    <span class="string">'.bmp'</span>: <span class="string">'application/x-bmp'</span>,</span><br><span class="line">    <span class="string">'.bot'</span>: <span class="string">'application/x-bot'</span>,</span><br><span class="line">    <span class="string">'.c4t'</span>: <span class="string">'application/x-c4t'</span>,</span><br><span class="line">    <span class="string">'.c90'</span>: <span class="string">'application/x-c90'</span>,</span><br><span class="line">    <span class="string">'.cal'</span>: <span class="string">'application/x-cals'</span>,</span><br><span class="line">    <span class="string">'.cat'</span>: <span class="string">'application/vnd.ms-pki.seccat'</span>,</span><br><span class="line">    <span class="string">'.cdf'</span>: <span class="string">'application/x-netcdf'</span>,</span><br><span class="line">    <span class="string">'.cdr'</span>: <span class="string">'application/x-cdr'</span>,</span><br><span class="line">    <span class="string">'.cel'</span>: <span class="string">'application/x-cel'</span>,</span><br><span class="line">    <span class="string">'.cer'</span>: <span class="string">'application/x-x509-ca-cert'</span>,</span><br><span class="line">    <span class="string">'.cg4'</span>: <span class="string">'application/x-g4'</span>,</span><br><span class="line">    <span class="string">'.cgm'</span>: <span class="string">'application/x-cgm'</span>,</span><br><span class="line">    <span class="string">'.cit'</span>: <span class="string">'application/x-cit'</span>,</span><br><span class="line">    <span class="string">'.class'</span>: <span class="string">'java/*'</span>,</span><br><span class="line">    <span class="string">'.cml'</span>: <span class="string">'text/xml'</span>,</span><br><span class="line">    <span class="string">'.cmp'</span>: <span class="string">'application/x-cmp'</span>,</span><br><span class="line">    <span class="string">'.cmx'</span>: <span class="string">'application/x-cmx'</span>,</span><br><span class="line">    <span class="string">'.cot'</span>: <span class="string">'application/x-cot'</span>,</span><br><span class="line">    <span class="string">'.crl'</span>: <span class="string">'application/pkix-crl'</span>,</span><br><span class="line">    <span class="string">'.crt'</span>: <span class="string">'application/x-x509-ca-cert'</span>,</span><br><span class="line">    <span class="string">'.csi'</span>: <span class="string">'application/x-csi'</span>,</span><br><span class="line">    <span class="string">'.css'</span>: <span class="string">'text/css'</span>,</span><br><span class="line">    <span class="string">'.cut'</span>: <span class="string">'application/x-cut'</span>,</span><br><span class="line">    <span class="string">'.dbf'</span>: <span class="string">'application/x-dbf'</span>,</span><br><span class="line">    <span class="string">'.dbm'</span>: <span class="string">'application/x-dbm'</span>,</span><br><span class="line">    <span class="string">'.dbx'</span>: <span class="string">'application/x-dbx'</span>,</span><br><span class="line">    <span class="string">'.dcd'</span>: <span class="string">'text/xml'</span>,</span><br><span class="line">    <span class="string">'.dcx'</span>: <span class="string">'application/x-dcx'</span>,</span><br><span class="line">    <span class="string">'.der'</span>: <span class="string">'application/x-x509-ca-cert'</span>,</span><br><span class="line">    <span class="string">'.dgn'</span>: <span class="string">'application/x-dgn'</span>,</span><br><span class="line">    <span class="string">'.dib'</span>: <span class="string">'application/x-dib'</span>,</span><br><span class="line">    <span class="string">'.dll'</span>: <span class="string">'application/x-msdownload'</span>,</span><br><span class="line">    <span class="string">'.doc'</span>: <span class="string">'application/msword'</span>,</span><br><span class="line">    <span class="string">'.dot'</span>: <span class="string">'application/msword'</span>,</span><br><span class="line">    <span class="string">'.drw'</span>: <span class="string">'application/x-drw'</span>,</span><br><span class="line">    <span class="string">'.dtd'</span>: <span class="string">'text/xml'</span>,</span><br><span class="line">    <span class="string">'.dwf'</span>: <span class="string">'application/x-dwf'</span>,</span><br><span class="line">    <span class="string">'.dwg'</span>: <span class="string">'application/x-dwg'</span>,</span><br><span class="line">    <span class="string">'.dxb'</span>: <span class="string">'application/x-dxb'</span>,</span><br><span class="line">    <span class="string">'.dxf'</span>: <span class="string">'application/x-dxf'</span>,</span><br><span class="line">    <span class="string">'.edn'</span>: <span class="string">'application/vnd.adobe.edn'</span>,</span><br><span class="line">    <span class="string">'.emf'</span>: <span class="string">'application/x-emf'</span>,</span><br><span class="line">    <span class="string">'.eml'</span>: <span class="string">'message/rfc822'</span>,</span><br><span class="line">    <span class="string">'.ent'</span>: <span class="string">'text/xml'</span>,</span><br><span class="line">    <span class="string">'.epi'</span>: <span class="string">'application/x-epi'</span>,</span><br><span class="line">    <span class="string">'.eps'</span>: <span class="string">'application/postscript'</span>,</span><br><span class="line">    <span class="string">'.etd'</span>: <span class="string">'application/x-ebx'</span>,</span><br><span class="line">    <span class="string">'.exe'</span>: <span class="string">'application/x-msdownload'</span>,</span><br><span class="line">    <span class="string">'.fax'</span>: <span class="string">'image/fax'</span>,</span><br><span class="line">    <span class="string">'.fdf'</span>: <span class="string">'application/vnd.fdf'</span>,</span><br><span class="line">    <span class="string">'.fif'</span>: <span class="string">'application/fractals'</span>,</span><br><span class="line">    <span class="string">'.fo'</span>: <span class="string">'text/xml'</span>,</span><br><span class="line">    <span class="string">'.frm'</span>: <span class="string">'application/x-frm'</span>,</span><br><span class="line">    <span class="string">'.g4'</span>: <span class="string">'application/x-g4'</span>,</span><br><span class="line">    <span class="string">'.gbr'</span>: <span class="string">'application/x-gbr'</span>,</span><br><span class="line">    <span class="string">'.'</span>: <span class="string">'application/x-'</span>,</span><br><span class="line">    <span class="string">'.gif'</span>: <span class="string">'image/gif'</span>,</span><br><span class="line">    <span class="string">'.gl2'</span>: <span class="string">'application/x-gl2'</span>,</span><br><span class="line">    <span class="string">'.gp4'</span>: <span class="string">'application/x-gp4'</span>,</span><br><span class="line">    <span class="string">'.hgl'</span>: <span class="string">'application/x-hgl'</span>,</span><br><span class="line">    <span class="string">'.hmr'</span>: <span class="string">'application/x-hmr'</span>,</span><br><span class="line">    <span class="string">'.hpg'</span>: <span class="string">'application/x-hpgl'</span>,</span><br><span class="line">    <span class="string">'.hpl'</span>: <span class="string">'application/x-hpl'</span>,</span><br><span class="line">    <span class="string">'.hqx'</span>: <span class="string">'application/mac-binhex40'</span>,</span><br><span class="line">    <span class="string">'.hrf'</span>: <span class="string">'application/x-hrf'</span>,</span><br><span class="line">    <span class="string">'.hta'</span>: <span class="string">'application/hta'</span>,</span><br><span class="line">    <span class="string">'.htc'</span>: <span class="string">'text/x-component'</span>,</span><br><span class="line">    <span class="string">'.htm'</span>: <span class="string">'text/html'</span>,</span><br><span class="line">    <span class="string">'.html'</span>: <span class="string">'text/html'</span>,</span><br><span class="line">    <span class="string">'.htt'</span>: <span class="string">'text/webviewhtml'</span>,</span><br><span class="line">    <span class="string">'.htx'</span>: <span class="string">'text/html'</span>,</span><br><span class="line">    <span class="string">'.icb'</span>: <span class="string">'application/x-icb'</span>,</span><br><span class="line">    <span class="string">'.ico'</span>: <span class="string">'application/x-ico'</span>,</span><br><span class="line">    <span class="string">'.iff'</span>: <span class="string">'application/x-iff'</span>,</span><br><span class="line">    <span class="string">'.ig4'</span>: <span class="string">'application/x-g4'</span>,</span><br><span class="line">    <span class="string">'.igs'</span>: <span class="string">'application/x-igs'</span>,</span><br><span class="line">    <span class="string">'.iii'</span>: <span class="string">'application/x-iphone'</span>,</span><br><span class="line">    <span class="string">'.img'</span>: <span class="string">'application/x-img'</span>,</span><br><span class="line">    <span class="string">'.ins'</span>: <span class="string">'application/x-internet-signup'</span>,</span><br><span class="line">    <span class="string">'.isp'</span>: <span class="string">'application/x-internet-signup'</span>,</span><br><span class="line">    <span class="string">'.IVF'</span>: <span class="string">'video/x-ivf'</span>,</span><br><span class="line">    <span class="string">'.java'</span>: <span class="string">'java/*'</span>,</span><br><span class="line">    <span class="string">'.jfif'</span>: <span class="string">'image/jpeg'</span>,</span><br><span class="line">    <span class="string">'.jpe'</span>: <span class="string">'application/x-jpe'</span>,</span><br><span class="line">    <span class="string">'.jpeg'</span>: <span class="string">'image/jpeg'</span>,</span><br><span class="line">    <span class="string">'.jpg'</span>: <span class="string">'application/x-jpg'</span>,</span><br><span class="line">    <span class="string">'.js'</span>: <span class="string">'application/x-javascript'</span>,</span><br><span class="line">    <span class="string">'.jsp'</span>: <span class="string">'text/html'</span>,</span><br><span class="line">    <span class="string">'.la1'</span>: <span class="string">'audio/x-liquid-file'</span>,</span><br><span class="line">    <span class="string">'.lar'</span>: <span class="string">'application/x-laplayer-reg'</span>,</span><br><span class="line">    <span class="string">'.latex'</span>: <span class="string">'application/x-latex'</span>,</span><br><span class="line">    <span class="string">'.lavs'</span>: <span class="string">'audio/x-liquid-secure'</span>,</span><br><span class="line">    <span class="string">'.lbm'</span>: <span class="string">'application/x-lbm'</span>,</span><br><span class="line">    <span class="string">'.lmsff'</span>: <span class="string">'audio/x-la-lms'</span>,</span><br><span class="line">    <span class="string">'.ls'</span>: <span class="string">'application/x-javascript'</span>,</span><br><span class="line">    <span class="string">'.ltr'</span>: <span class="string">'application/x-ltr'</span>,</span><br><span class="line">    <span class="string">'.m1v'</span>: <span class="string">'video/x-mpeg'</span>,</span><br><span class="line">    <span class="string">'.m2v'</span>: <span class="string">'video/x-mpeg'</span>,</span><br><span class="line">    <span class="string">'.m3u'</span>: <span class="string">'audio/mpegurl'</span>,</span><br><span class="line">    <span class="string">'.m4e'</span>: <span class="string">'video/mpeg4'</span>,</span><br><span class="line">    <span class="string">'.mac'</span>: <span class="string">'application/x-mac'</span>,</span><br><span class="line">    <span class="string">'.man'</span>: <span class="string">'application/x-troff-man'</span>,</span><br><span class="line">    <span class="string">'.math'</span>: <span class="string">'text/xml'</span>,</span><br><span class="line">    <span class="string">'.mdb'</span>: <span class="string">'application/x-mdb'</span>,</span><br><span class="line">    <span class="string">'.mfp'</span>: <span class="string">'application/x-shockwave-flash'</span>,</span><br><span class="line">    <span class="string">'.mht'</span>: <span class="string">'message/rfc822'</span>,</span><br><span class="line">    <span class="string">'.mhtml'</span>: <span class="string">'message/rfc822'</span>,</span><br><span class="line">    <span class="string">'.mi'</span>: <span class="string">'application/x-mi'</span>,</span><br><span class="line">    <span class="string">'.mid'</span>: <span class="string">'audio/mid'</span>,</span><br><span class="line">    <span class="string">'.midi'</span>: <span class="string">'audio/mid'</span>,</span><br><span class="line">    <span class="string">'.mil'</span>: <span class="string">'application/x-mil'</span>,</span><br><span class="line">    <span class="string">'.mml'</span>: <span class="string">'text/xml'</span>,</span><br><span class="line">    <span class="string">'.mnd'</span>: <span class="string">'audio/x-musicnet-download'</span>,</span><br><span class="line">    <span class="string">'.mns'</span>: <span class="string">'audio/x-musicnet-stream'</span>,</span><br><span class="line">    <span class="string">'.mocha'</span>: <span class="string">'application/x-javascript'</span>,</span><br><span class="line">    <span class="string">'.movie'</span>: <span class="string">'video/x-sgi-movie'</span>,</span><br><span class="line">    <span class="string">'.mp1'</span>: <span class="string">'audio/mp1'</span>,</span><br><span class="line">    <span class="string">'.mp2'</span>: <span class="string">'audio/mp2'</span>,</span><br><span class="line">    <span class="string">'.mp2v'</span>: <span class="string">'video/mpeg'</span>,</span><br><span class="line">    <span class="string">'.mp3'</span>: <span class="string">'audio/mp3'</span>,</span><br><span class="line">    <span class="string">'.mp4'</span>: <span class="string">'video/mpeg4'</span>,</span><br><span class="line">    <span class="string">'.mpa'</span>: <span class="string">'video/x-mpg'</span>,</span><br><span class="line">    <span class="string">'.mpd'</span>: <span class="string">'application/vnd.ms-project'</span>,</span><br><span class="line">    <span class="string">'.mpe'</span>: <span class="string">'video/x-mpeg'</span>,</span><br><span class="line">    <span class="string">'.mpeg'</span>: <span class="string">'video/mpg'</span>,</span><br><span class="line">    <span class="string">'.mpg'</span>: <span class="string">'video/mpg'</span>,</span><br><span class="line">    <span class="string">'.mpga'</span>: <span class="string">'audio/rn-mpeg'</span>,</span><br><span class="line">    <span class="string">'.mpp'</span>: <span class="string">'application/vnd.ms-project'</span>,</span><br><span class="line">    <span class="string">'.mps'</span>: <span class="string">'video/x-mpeg'</span>,</span><br><span class="line">    <span class="string">'.mpt'</span>: <span class="string">'application/vnd.ms-project'</span>,</span><br><span class="line">    <span class="string">'.mpv'</span>: <span class="string">'video/mpg'</span>,</span><br><span class="line">    <span class="string">'.mpv2'</span>: <span class="string">'video/mpeg'</span>,</span><br><span class="line">    <span class="string">'.mpw'</span>: <span class="string">'application/vnd.ms-project'</span>,</span><br><span class="line">    <span class="string">'.mpx'</span>: <span class="string">'application/vnd.ms-project'</span>,</span><br><span class="line">    <span class="string">'.mtx'</span>: <span class="string">'text/xml'</span>,</span><br><span class="line">    <span class="string">'.mxp'</span>: <span class="string">'application/x-mmxp'</span>,</span><br><span class="line">    <span class="string">'.net'</span>: <span class="string">'image/pnetvue'</span>,</span><br><span class="line">    <span class="string">'.nrf'</span>: <span class="string">'application/x-nrf'</span>,</span><br><span class="line">    <span class="string">'.nws'</span>: <span class="string">'message/rfc822'</span>,</span><br><span class="line">    <span class="string">'.odc'</span>: <span class="string">'text/x-ms-odc'</span>,</span><br><span class="line">    <span class="string">'.out'</span>: <span class="string">'application/x-out'</span>,</span><br><span class="line">    <span class="string">'.p10'</span>: <span class="string">'application/pkcs10'</span>,</span><br><span class="line">    <span class="string">'.p12'</span>: <span class="string">'application/x-pkcs12'</span>,</span><br><span class="line">    <span class="string">'.p7b'</span>: <span class="string">'application/x-pkcs7-certificates'</span>,</span><br><span class="line">    <span class="string">'.p7c'</span>: <span class="string">'application/pkcs7-mime'</span>,</span><br><span class="line">    <span class="string">'.p7m'</span>: <span class="string">'application/pkcs7-mime'</span>,</span><br><span class="line">    <span class="string">'.p7r'</span>: <span class="string">'application/x-pkcs7-certreqresp'</span>,</span><br><span class="line">    <span class="string">'.p7s'</span>: <span class="string">'application/pkcs7-signature'</span>,</span><br><span class="line">    <span class="string">'.pc5'</span>: <span class="string">'application/x-pc5'</span>,</span><br><span class="line">    <span class="string">'.pci'</span>: <span class="string">'application/x-pci'</span>,</span><br><span class="line">    <span class="string">'.pcl'</span>: <span class="string">'application/x-pcl'</span>,</span><br><span class="line">    <span class="string">'.pcx'</span>: <span class="string">'application/x-pcx'</span>,</span><br><span class="line">    <span class="string">'.pdf'</span>: <span class="string">'application/pdf'</span>,</span><br><span class="line">    <span class="string">'.pdx'</span>: <span class="string">'application/vnd.adobe.pdx'</span>,</span><br><span class="line">    <span class="string">'.pfx'</span>: <span class="string">'application/x-pkcs12'</span>,</span><br><span class="line">    <span class="string">'.pgl'</span>: <span class="string">'application/x-pgl'</span>,</span><br><span class="line">    <span class="string">'.pic'</span>: <span class="string">'application/x-pic'</span>,</span><br><span class="line">    <span class="string">'.pko'</span>: <span class="string">'application/vnd.ms-pki.pko'</span>,</span><br><span class="line">    <span class="string">'.pl'</span>: <span class="string">'application/x-perl'</span>,</span><br><span class="line">    <span class="string">'.plg'</span>: <span class="string">'text/html'</span>,</span><br><span class="line">    <span class="string">'.pls'</span>: <span class="string">'audio/scpls'</span>,</span><br><span class="line">    <span class="string">'.plt'</span>: <span class="string">'application/x-plt'</span>,</span><br><span class="line">    <span class="string">'.png'</span>: <span class="string">'application/x-png'</span>,</span><br><span class="line">    <span class="string">'.pot'</span>: <span class="string">'application/vnd.ms-powerpoint'</span>,</span><br><span class="line">    <span class="string">'.ppa'</span>: <span class="string">'application/vnd.ms-powerpoint'</span>,</span><br><span class="line">    <span class="string">'.ppm'</span>: <span class="string">'application/x-ppm'</span>,</span><br><span class="line">    <span class="string">'.pps'</span>: <span class="string">'application/vnd.ms-powerpoint'</span>,</span><br><span class="line">    <span class="string">'.ppt'</span>: <span class="string">'application/x-ppt'</span>,</span><br><span class="line">    <span class="string">'.pr'</span>: <span class="string">'application/x-pr'</span>,</span><br><span class="line">    <span class="string">'.prf'</span>: <span class="string">'application/pics-rules'</span>,</span><br><span class="line">    <span class="string">'.prn'</span>: <span class="string">'application/x-prn'</span>,</span><br><span class="line">    <span class="string">'.prt'</span>: <span class="string">'application/x-prt'</span>,</span><br><span class="line">    <span class="string">'.ps'</span>: <span class="string">'application/postscript'</span>,</span><br><span class="line">    <span class="string">'.ptn'</span>: <span class="string">'application/x-ptn'</span>,</span><br><span class="line">    <span class="string">'.pwz'</span>: <span class="string">'application/vnd.ms-powerpoint'</span>,</span><br><span class="line">    <span class="string">'.r3t'</span>: <span class="string">'text/vnd.rn-realtext3d'</span>,</span><br><span class="line">    <span class="string">'.ra'</span>: <span class="string">'audio/vnd.rn-realaudio'</span>,</span><br><span class="line">    <span class="string">'.ram'</span>: <span class="string">'audio/x-pn-realaudio'</span>,</span><br><span class="line">    <span class="string">'.ras'</span>: <span class="string">'application/x-ras'</span>,</span><br><span class="line">    <span class="string">'.rat'</span>: <span class="string">'application/rat-file'</span>,</span><br><span class="line">    <span class="string">'.rdf'</span>: <span class="string">'text/xml'</span>,</span><br><span class="line">    <span class="string">'.rec'</span>: <span class="string">'application/vnd.rn-recording'</span>,</span><br><span class="line">    <span class="string">'.red'</span>: <span class="string">'application/x-red'</span>,</span><br><span class="line">    <span class="string">'.rgb'</span>: <span class="string">'application/x-rgb'</span>,</span><br><span class="line">    <span class="string">'.rjs'</span>: <span class="string">'application/vnd.rn-realsystem-rjs'</span>,</span><br><span class="line">    <span class="string">'.rjt'</span>: <span class="string">'application/vnd.rn-realsystem-rjt'</span>,</span><br><span class="line">    <span class="string">'.rlc'</span>: <span class="string">'application/x-rlc'</span>,</span><br><span class="line">    <span class="string">'.rle'</span>: <span class="string">'application/x-rle'</span>,</span><br><span class="line">    <span class="string">'.rm'</span>: <span class="string">'application/vnd.rn-realmedia'</span>,</span><br><span class="line">    <span class="string">'.rmf'</span>: <span class="string">'application/vnd.adobe.rmf'</span>,</span><br><span class="line">    <span class="string">'.rmi'</span>: <span class="string">'audio/mid'</span>,</span><br><span class="line">    <span class="string">'.rmj'</span>: <span class="string">'application/vnd.rn-realsystem-rmj'</span>,</span><br><span class="line">    <span class="string">'.rmm'</span>: <span class="string">'audio/x-pn-realaudio'</span>,</span><br><span class="line">    <span class="string">'.rmp'</span>: <span class="string">'application/vnd.rn-rn_music_package'</span>,</span><br><span class="line">    <span class="string">'.rms'</span>: <span class="string">'application/vnd.rn-realmedia-secure'</span>,</span><br><span class="line">    <span class="string">'.rmvb'</span>: <span class="string">'application/vnd.rn-realmedia-vbr'</span>,</span><br><span class="line">    <span class="string">'.rmx'</span>: <span class="string">'application/vnd.rn-realsystem-rmx'</span>,</span><br><span class="line">    <span class="string">'.rnx'</span>: <span class="string">'application/vnd.rn-realplayer'</span>,</span><br><span class="line">    <span class="string">'.rp'</span>: <span class="string">'image/vnd.rn-realpix'</span>,</span><br><span class="line">    <span class="string">'.rpm'</span>: <span class="string">'audio/x-pn-realaudio-plugin'</span>,</span><br><span class="line">    <span class="string">'.rsml'</span>: <span class="string">'application/vnd.rn-rsml'</span>,</span><br><span class="line">    <span class="string">'.rt'</span>: <span class="string">'text/vnd.rn-realtext'</span>,</span><br><span class="line">    <span class="string">'.rtf'</span>: <span class="string">'application/x-rtf'</span>,</span><br><span class="line">    <span class="string">'.rv'</span>: <span class="string">'video/vnd.rn-realvideo'</span>,</span><br><span class="line">    <span class="string">'.sam'</span>: <span class="string">'application/x-sam'</span>,</span><br><span class="line">    <span class="string">'.sat'</span>: <span class="string">'application/x-sat'</span>,</span><br><span class="line">    <span class="string">'.sdp'</span>: <span class="string">'application/sdp'</span>,</span><br><span class="line">    <span class="string">'.sdw'</span>: <span class="string">'application/x-sdw'</span>,</span><br><span class="line">    <span class="string">'.sit'</span>: <span class="string">'application/x-stuffit'</span>,</span><br><span class="line">    <span class="string">'.slb'</span>: <span class="string">'application/x-slb'</span>,</span><br><span class="line">    <span class="string">'.sld'</span>: <span class="string">'application/x-sld'</span>,</span><br><span class="line">    <span class="string">'.slk'</span>: <span class="string">'drawing/x-slk'</span>,</span><br><span class="line">    <span class="string">'.smi'</span>: <span class="string">'application/smil'</span>,</span><br><span class="line">    <span class="string">'.smil'</span>: <span class="string">'application/smil'</span>,</span><br><span class="line">    <span class="string">'.smk'</span>: <span class="string">'application/x-smk'</span>,</span><br><span class="line">    <span class="string">'.snd'</span>: <span class="string">'audio/basic'</span>,</span><br><span class="line">    <span class="string">'.sol'</span>: <span class="string">'text/plain'</span>,</span><br><span class="line">    <span class="string">'.sor'</span>: <span class="string">'text/plain'</span>,</span><br><span class="line">    <span class="string">'.spc'</span>: <span class="string">'application/x-pkcs7-certificates'</span>,</span><br><span class="line">    <span class="string">'.spl'</span>: <span class="string">'application/futuresplash'</span>,</span><br><span class="line">    <span class="string">'.spp'</span>: <span class="string">'text/xml'</span>,</span><br><span class="line">    <span class="string">'.ssm'</span>: <span class="string">'application/streamingmedia'</span>,</span><br><span class="line">    <span class="string">'.sst'</span>: <span class="string">'application/vnd.ms-pki.certstore'</span>,</span><br><span class="line">    <span class="string">'.stl'</span>: <span class="string">'application/vnd.ms-pki.stl'</span>,</span><br><span class="line">    <span class="string">'.stm'</span>: <span class="string">'text/html'</span>,</span><br><span class="line">    <span class="string">'.sty'</span>: <span class="string">'application/x-sty'</span>,</span><br><span class="line">    <span class="string">'.svg'</span>: <span class="string">'text/xml'</span>,</span><br><span class="line">    <span class="string">'.swf'</span>: <span class="string">'application/x-shockwave-flash'</span>,</span><br><span class="line">    <span class="string">'.tdf'</span>: <span class="string">'application/x-tdf'</span>,</span><br><span class="line">    <span class="string">'.tg4'</span>: <span class="string">'application/x-tg4'</span>,</span><br><span class="line">    <span class="string">'.tga'</span>: <span class="string">'application/x-tga'</span>,</span><br><span class="line">    <span class="string">'.tiff'</span>: <span class="string">'image/tiff'</span>,</span><br><span class="line">    <span class="string">'.tld'</span>: <span class="string">'text/xml'</span>,</span><br><span class="line">    <span class="string">'.top'</span>: <span class="string">'drawing/x-top'</span>,</span><br><span class="line">    <span class="string">'.torrent'</span>: <span class="string">'application/x-bittorrent'</span>,</span><br><span class="line">    <span class="string">'.tsd'</span>: <span class="string">'text/xml'</span>,</span><br><span class="line">    <span class="string">'.txt'</span>: <span class="string">'text/plain'</span>,</span><br><span class="line">    <span class="string">'.uin'</span>: <span class="string">'application/x-icq'</span>,</span><br><span class="line">    <span class="string">'.uls'</span>: <span class="string">'text/iuls'</span>,</span><br><span class="line">    <span class="string">'.vcf'</span>: <span class="string">'text/x-vcard'</span>,</span><br><span class="line">    <span class="string">'.vda'</span>: <span class="string">'application/x-vda'</span>,</span><br><span class="line">    <span class="string">'.vdx'</span>: <span class="string">'application/vnd.visio'</span>,</span><br><span class="line">    <span class="string">'.vml'</span>: <span class="string">'text/xml'</span>,</span><br><span class="line">    <span class="string">'.vpg'</span>: <span class="string">'application/x-vpeg005'</span>,</span><br><span class="line">    <span class="string">'.vsd'</span>: <span class="string">'application/x-vsd'</span>,</span><br><span class="line">    <span class="string">'.vss'</span>: <span class="string">'application/vnd.visio'</span>,</span><br><span class="line">    <span class="string">'.vst'</span>: <span class="string">'application/x-vst'</span>,</span><br><span class="line">    <span class="string">'.vsw'</span>: <span class="string">'application/vnd.visio'</span>,</span><br><span class="line">    <span class="string">'.vsx'</span>: <span class="string">'application/vnd.visio'</span>,</span><br><span class="line">    <span class="string">'.vtx'</span>: <span class="string">'application/vnd.visio'</span>,</span><br><span class="line">    <span class="string">'.vxml'</span>: <span class="string">'text/xml'</span>,</span><br><span class="line">    <span class="string">'.wav'</span>: <span class="string">'audio/wav'</span>,</span><br><span class="line">    <span class="string">'.wax'</span>: <span class="string">'audio/x-ms-wax'</span>,</span><br><span class="line">    <span class="string">'.wb1'</span>: <span class="string">'application/x-wb1'</span>,</span><br><span class="line">    <span class="string">'.wb2'</span>: <span class="string">'application/x-wb2'</span>,</span><br><span class="line">    <span class="string">'.wb3'</span>: <span class="string">'application/x-wb3'</span>,</span><br><span class="line">    <span class="string">'.wbmp'</span>: <span class="string">'image/vnd.wap.wbmp'</span>,</span><br><span class="line">    <span class="string">'.wiz'</span>: <span class="string">'application/msword'</span>,</span><br><span class="line">    <span class="string">'.wk3'</span>: <span class="string">'application/x-wk3'</span>,</span><br><span class="line">    <span class="string">'.wk4'</span>: <span class="string">'application/x-wk4'</span>,</span><br><span class="line">    <span class="string">'.wkq'</span>: <span class="string">'application/x-wkq'</span>,</span><br><span class="line">    <span class="string">'.wks'</span>: <span class="string">'application/x-wks'</span>,</span><br><span class="line">    <span class="string">'.wm'</span>: <span class="string">'video/x-ms-wm'</span>,</span><br><span class="line">    <span class="string">'.wma'</span>: <span class="string">'audio/x-ms-wma'</span>,</span><br><span class="line">    <span class="string">'.wmd'</span>: <span class="string">'application/x-ms-wmd'</span>,</span><br><span class="line">    <span class="string">'.wmf'</span>: <span class="string">'application/x-wmf'</span>,</span><br><span class="line">    <span class="string">'.wml'</span>: <span class="string">'text/vnd.wap.wml'</span>,</span><br><span class="line">    <span class="string">'.wmv'</span>: <span class="string">'video/x-ms-wmv'</span>,</span><br><span class="line">    <span class="string">'.wmx'</span>: <span class="string">'video/x-ms-wmx'</span>,</span><br><span class="line">    <span class="string">'.wmz'</span>: <span class="string">'application/x-ms-wmz'</span>,</span><br><span class="line">    <span class="string">'.wp6'</span>: <span class="string">'application/x-wp6'</span>,</span><br><span class="line">    <span class="string">'.wpd'</span>: <span class="string">'application/x-wpd'</span>,</span><br><span class="line">    <span class="string">'.wpg'</span>: <span class="string">'application/x-wpg'</span>,</span><br><span class="line">    <span class="string">'.wpl'</span>: <span class="string">'application/vnd.ms-wpl'</span>,</span><br><span class="line">    <span class="string">'.wq1'</span>: <span class="string">'application/x-wq1'</span>,</span><br><span class="line">    <span class="string">'.wr1'</span>: <span class="string">'application/x-wr1'</span>,</span><br><span class="line">    <span class="string">'.wri'</span>: <span class="string">'application/x-wri'</span>,</span><br><span class="line">    <span class="string">'.wrk'</span>: <span class="string">'application/x-wrk'</span>,</span><br><span class="line">    <span class="string">'.ws'</span>: <span class="string">'application/x-ws'</span>,</span><br><span class="line">    <span class="string">'.ws2'</span>: <span class="string">'application/x-ws'</span>,</span><br><span class="line">    <span class="string">'.wsc'</span>: <span class="string">'text/scriptlet'</span>,</span><br><span class="line">    <span class="string">'.wsdl'</span>: <span class="string">'text/xml'</span>,</span><br><span class="line">    <span class="string">'.wvx'</span>: <span class="string">'video/x-ms-wvx'</span>,</span><br><span class="line">    <span class="string">'.xdp'</span>: <span class="string">'application/vnd.adobe.xdp'</span>,</span><br><span class="line">    <span class="string">'.xdr'</span>: <span class="string">'text/xml'</span>,</span><br><span class="line">    <span class="string">'.xfd'</span>: <span class="string">'application/vnd.adobe.xfd'</span>,</span><br><span class="line">    <span class="string">'.xfdf'</span>: <span class="string">'application/vnd.adobe.xfdf'</span>,</span><br><span class="line">    <span class="string">'.xhtml'</span>: <span class="string">'text/html'</span>,</span><br><span class="line">    <span class="string">'.xls'</span>: <span class="string">'application/x-xls'</span>,</span><br><span class="line">    <span class="string">'.xlw'</span>: <span class="string">'application/x-xlw'</span>,</span><br><span class="line">    <span class="string">'.xml'</span>: <span class="string">'text/xml'</span>,</span><br><span class="line">    <span class="string">'.xpl'</span>: <span class="string">'audio/scpls'</span>,</span><br><span class="line">    <span class="string">'.xq'</span>: <span class="string">'text/xml'</span>,</span><br><span class="line">    <span class="string">'.xql'</span>: <span class="string">'text/xml'</span>,</span><br><span class="line">    <span class="string">'.xquery'</span>: <span class="string">'text/xml'</span>,</span><br><span class="line">    <span class="string">'.xsd'</span>: <span class="string">'text/xml'</span>,</span><br><span class="line">    <span class="string">'.xsl'</span>: <span class="string">'text/xml'</span>,</span><br><span class="line">    <span class="string">'.xslt'</span>: <span class="string">'text/xml'</span>,</span><br><span class="line">    <span class="string">'.xwd'</span>: <span class="string">'application/x-xwd'</span>,</span><br><span class="line">    <span class="string">'.x_b'</span>: <span class="string">'application/x-x_b'</span>,</span><br><span class="line">    <span class="string">'.sis'</span>: <span class="string">'application/vnd.symbian.install'</span>,</span><br><span class="line">    <span class="string">'.sisx'</span>: <span class="string">'application/vnd.symbian.install'</span>,</span><br><span class="line">    <span class="string">'.x_t'</span>: <span class="string">'application/x-x_t'</span>,</span><br><span class="line">    <span class="string">'.ipa'</span>: <span class="string">'application/vnd.iphone'</span>,</span><br><span class="line">    <span class="string">'.apk'</span>: <span class="string">'application/vnd.android.package-archive'</span>,</span><br><span class="line">    <span class="string">'.xap'</span>: <span class="string">'application/x-silverlight-app'</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/translation/raspberry-gpio-python-examples/controlling-LED-and-switch/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/translation/raspberry-gpio-python-examples/controlling-LED-and-switch/" class="post-title-link" itemprop="url">GPIO 控制 LED 和开关</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-02-15 13:53:00" itemprop="dateCreated datePublished" datetime="2020-02-15T13:53:00+08:00">2020-02-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91/" itemprop="url" rel="index"><span itemprop="name">官方文档翻译</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>使用  <a href="https://gpiozero.readthedocs.io/" target="_blank" rel="noopener">GPIO Zero</a>  库，简单快速入门使用 Python 控制 GPIO 设备。</p>
+<h2 id="LED"><a href="#LED" class="headerlink" title="LED"></a>LED</h2><p>控制连接在 GPIO17 上的 LED，你可以使用这些代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> gpiozero <span class="keyword">import</span> LED</span><br><span class="line"><span class="keyword">from</span> time <span class="keyword">import</span> sleep</span><br><span class="line"></span><br><span class="line">led = LED(<span class="number">17</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    led.on()</span><br><span class="line">    sleep(<span class="number">1</span>)</span><br><span class="line">    led.off()</span><br><span class="line">    sleep(<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<p>在诸如 Thonny 之类的 IDE 中执行代码，就可以看见 LED 时亮时灭反复闪烁。</p>
+<p>LED 方法包括 <code>on()</code>、<code>off()</code>、<code>toggle()</code> 和 <code>blink()</code>。</p>
+<h2 id="按钮"><a href="#按钮" class="headerlink" title="按钮"></a>按钮</h2><p>读取连接到 GPIO2 上的按钮的状态，你可以使用这些代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> gpiozero <span class="keyword">import</span> Button</span><br><span class="line"><span class="keyword">from</span> time <span class="keyword">import</span> sleep</span><br><span class="line"></span><br><span class="line">button = Button(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    <span class="keyword">if</span> button.is_pressed:</span><br><span class="line">        print(<span class="string">"Pressed"</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        print(<span class="string">"Released"</span>)</span><br><span class="line">    sleep(<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<p>从功能上讲有 <code>is_pressed</code>和 <code>is_held</code> 属性；回调 <code>when_pressed</code>、<code>when_released</code> 和 <code>when_held</code>；方法 <code>wait_for_press()</code> 和 <code>wait_for_release</code>。</p>
+<h2 id="按钮-LED"><a href="#按钮-LED" class="headerlink" title="按钮 + LED"></a>按钮 + LED</h2><p>把 LED 和 按钮联用，你可以使用这些代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> gpiozero <span class="keyword">import</span> LED, Button</span><br><span class="line"></span><br><span class="line">led = LED(<span class="number">17</span>)</span><br><span class="line">button = Button(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    <span class="keyword">if</span> button.is_pressed:</span><br><span class="line">        led.on()</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        led.off()</span><br></pre></td></tr></table></figure>
+
+<p>也可以这样：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> gpiozero <span class="keyword">import</span> LED, Button</span><br><span class="line"></span><br><span class="line">led = LED(<span class="number">17</span>)</span><br><span class="line">button = Button(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    button.wait_for_press()</span><br><span class="line">    led.on()</span><br><span class="line">    button.wait_for_release()</span><br><span class="line">    led.off()</span><br></pre></td></tr></table></figure>
+
+<p>或者：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> gpiozero <span class="keyword">import</span> LED, Button</span><br><span class="line"></span><br><span class="line">led = LED(<span class="number">17</span>)</span><br><span class="line">button = Button(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">button.when_pressed = led.on</span><br><span class="line">button.when_released = led.off</span><br></pre></td></tr></table></figure>
+
+<h2 id="GPIO-Zero-文档"><a href="#GPIO-Zero-文档" class="headerlink" title="GPIO Zero 文档"></a>GPIO Zero 文档</h2><p>GPIO Zero 支持很多其他的 GPIO 设备。在 <a href="https://gpiozero.readthedocs.io/" target="_blank" rel="noopener">gpiozero.readthedocs.io</a> 可以找到这个库的完整文档。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-advanced/design-pattern/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -664,720 +1429,11 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/list/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="刘硕">
-      <meta itemprop="description" content="不成为自己讨厌的人">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="刘硕的技术查阅手册">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/python-basic/list/" class="post-title-link" itemprop="url">列表</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-02-15 13:52:15" itemprop="dateCreated datePublished" datetime="2020-02-15T13:52:15+08:00">2020-02-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="列表的定义"><a href="#列表的定义" class="headerlink" title="列表的定义"></a>列表的定义</h3><p>同 <code>整型</code>、<code>字符串</code> 和 <code>布尔值</code> 一样，<code>列表</code> 也是 Python 中的基本数据结构之一。<code>列表</code> 的关键字是 <code>list</code>。在 Python 中，最常用的三种用来储存数据的数据结构分别是 <code>字典</code>、<code>列表</code> 和 <code>字符串</code>，可见它是十分重要的。</p>
-<p>列表的作用更像是一种容器，形象一点说就是我们用的书包：</p>
-<ol>
-<li>列表能储存大量数据</li>
-<li>列表能储存不同数据类型的数据</li>
-</ol>
-<p>与列表相对照，我们先来观察一下这样一个字符串：<code>a = &#39;123alexTrue&#39;</code> 这个字符串中包含数字、字母和布尔值，但是表现出来的全都是字符串。我们虽然能够通过索引取到内容，但取到的值仍然是字符串。这就需要我们进行额外的判断转换操作。列表则不同，列表可以储存不同类型的数据，并且可以随时把它们直接取出来用。就像把东西装到书包里，用的时候直接取出来即可。</p>
-<p>我们可以通过如下方法定义一个列表：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="number">1</span>, <span class="string">'alex'</span>, <span class="literal">True</span>]</span><br></pre></td></tr></table></figure>
-
-<p>列表中的每个元素以逗号分隔。各个元素以原本的数据类型存储在列表中。</p>
-<p>列表是可变数据类型，因此可以对列表本身进行修改。与字符串方法不同，列表方法一般没有返回值，而是直接对原列表进行修改。所以一般也不需要使用变量接收返回值。</p>
-<h3 id="列表元素的增加"><a href="#列表元素的增加" class="headerlink" title="列表元素的增加"></a>列表元素的增加</h3><p>列表元素的增加主要有三种方法：<code>.append()</code>、<code>.insert()</code> 和 <code>.extend()</code>。</p>
-<p><code>.append()</code> 方法实在列表的末尾添加内容。<code>.append()</code> 的参数就是需要增加的列表元素：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="string">'Python学习手册'</span>, <span class="string">'核心编程'</span>]</span><br><span class="line">print(lst.append(<span class="string">"流畅的Python"</span>))</span><br><span class="line">print(lst)</span><br></pre></td></tr></table></figure>
-
-<p>输出的结果是：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="literal">None</span></span><br><span class="line">[<span class="string">'Python学习手册'</span>, <span class="string">'核心编程'</span>, <span class="string">'流畅的Python'</span>]</span><br></pre></td></tr></table></figure>
-
-<p><code>None</code> 在 Python 中是 <code>空</code> 的意思。<code>.append()</code> 方法的返回值为 <code>None</code>。而当我们打印列表 <code>lst</code> 时发现，列表已经被改变。这里我们可以得出结论：</p>
-<ul>
-<li>列表是可变数据类型</li>
-<li><code>.append()</code> 操作会直接对列表进行修改而不需要重新赋值</li>
-</ul>
-<p><code>.insert()</code> 方法用来向列表中插入数据。<code>.insert()</code> 方法有两个参数，<code>参数 1</code> 是要插入位置的 <code>索引值</code>，<code>参数 2</code> 是要插入的 <code>内容</code>：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="string">'Python学习手册'</span>, <span class="string">'核心编程'</span>]</span><br><span class="line">lst.insert(<span class="number">1</span>, <span class="string">'流畅的Python'</span>)</span><br><span class="line">print(lst)</span><br></pre></td></tr></table></figure>
-
-<p>输出的结果是：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'Python学习手册'</span>, <span class="string">'流畅的Python'</span>, <span class="string">'核心编程'</span>]</span><br></pre></td></tr></table></figure>
-
-<p>实际操作中，不推荐使用 <code>.insert()</code> 方法。因为一旦使用这个方法，需要把插入位置后的每一个元素都后移一位，且发生索引值的变化，有可能给项目带来不可预测的影响。</p>
-<p><code>.extend()</code> 方法也是在列表的最后插入内容。<code>.extend()</code> 方法的参数必须是可迭代对象。执行 <code>.extend()</code> 方法时，会将参数内容 <code>迭代追加</code> 到列表结尾：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="string">'Python学习手册'</span>, <span class="string">'核心编程'</span>]</span><br><span class="line">lst.extend(<span class="string">'流畅的Python'</span>)</span><br><span class="line">print(lst)</span><br></pre></td></tr></table></figure>
-
-<p>输出的结果为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'Python学习手册'</span>, <span class="string">'核心编程'</span>, <span class="string">'流'</span>, <span class="string">'畅'</span>, <span class="string">'的'</span>, <span class="string">'P'</span>, <span class="string">'y'</span>, <span class="string">'t'</span>, <span class="string">'h'</span>, <span class="string">'o'</span>, <span class="string">'n'</span>]</span><br></pre></td></tr></table></figure>
-
-<p><code>.extend()</code> 方法用来将多个数据 <em>批量</em>添加到列表末尾。</p>
-<h3 id="列表元素的删除"><a href="#列表元素的删除" class="headerlink" title="列表元素的删除"></a>列表元素的删除</h3><p>列表元素的删除主要有四种方法：<code>.remove()</code>、<code>.pop()</code>、<code>.clear()</code> 和 <code>del</code>。</p>
-<p><code>.remove()</code> 方法可以删除指定元素名的列表元素，它的参数是要删除元素的元素名：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="string">'大圣'</span>, <span class="string">'海芋'</span>, <span class="string">'新力'</span>, <span class="string">'一帆'</span>, <span class="string">'靓仔'</span>, <span class="string">'石淦'</span>]</span><br><span class="line">lst.remove(<span class="string">'新力'</span>)</span><br><span class="line">print(lst)</span><br></pre></td></tr></table></figure>
-
-<p>输出的结果为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'大圣'</span>, <span class="string">'海芋'</span>, <span class="string">'一帆'</span>, <span class="string">'靓仔'</span>, <span class="string">'石淦'</span>]</span><br></pre></td></tr></table></figure>
-
-<p><code>.pop()</code> 方法如果不加参数的话，默认删除列表中的最后一个元素，并且有返回值，返回的内容是是被删除的元素。<code>.pop()</code> 是唯一一个有返回值的列表元素删除方法：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="string">'大圣'</span>, <span class="string">'海芋'</span>, <span class="string">'新力'</span>, <span class="string">'一帆'</span>, <span class="string">'靓仔'</span>, <span class="string">'石淦'</span>]</span><br><span class="line">print(lst.pop())</span><br><span class="line">print(lst)</span><br></pre></td></tr></table></figure>
-
-<p>输出的结果为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">石淦</span><br><span class="line">[<span class="string">'大圣'</span>, <span class="string">'海芋'</span>, <span class="string">'新力'</span>, <span class="string">'一帆'</span>, <span class="string">'靓仔'</span>]</span><br></pre></td></tr></table></figure>
-
-<p><code>.pop()</code> 方法也可以通过输入索引参数的方法，删除指定位置的列表元素：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="string">'大圣'</span>, <span class="string">'海芋'</span>, <span class="string">'新力'</span>, <span class="string">'一帆'</span>, <span class="string">'靓仔'</span>, <span class="string">'石淦'</span>]</span><br><span class="line">print(lst.pop(<span class="number">1</span>))</span><br><span class="line">print(lst)</span><br></pre></td></tr></table></figure>
-
-<p>输出的结果为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">海芋</span><br><span class="line">[<span class="string">'大圣'</span>, <span class="string">'新力'</span>, <span class="string">'一帆'</span>, <span class="string">'靓仔'</span>, <span class="string">'石淦'</span>]</span><br></pre></td></tr></table></figure>
-
-<p><code>.clear()</code> 方法用来将列表清空，最终会得到一个空列表：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="string">'大圣'</span>, <span class="string">'海芋'</span>, <span class="string">'新力'</span>, <span class="string">'一帆'</span>, <span class="string">'靓仔'</span>, <span class="string">'石淦'</span>]</span><br><span class="line">lst.clear()</span><br><span class="line">print(lst)</span><br><span class="line"></span><br><span class="line">输出的结果为： []</span><br></pre></td></tr></table></figure>
-
-<p><code>del</code> 是用来删除的关键字。<code>del</code> 后面直接跟列表名，会将列表整个删除掉：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="string">'大圣'</span>, <span class="string">'海芋'</span>, <span class="string">'新力'</span>, <span class="string">'一帆'</span>, <span class="string">'靓仔'</span>, <span class="string">'石淦'</span>]</span><br><span class="line"><span class="keyword">del</span> lst</span><br><span class="line">print(lst)</span><br></pre></td></tr></table></figure>
-
-<p>程序运行后报错：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"C:/Users/Sure/PyProject/day04/02 exercise.py"</span>, line <span class="number">31</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    print(lst)</span><br><span class="line">NameError: name <span class="string">'lst'</span> <span class="keyword">is</span> <span class="keyword">not</span> defined</span><br></pre></td></tr></table></figure>
-
-<p>程序报错，因为 <code>lst</code> 已经被从内从中整个移除。后来 <code>print</code> 调用 <code>lst</code> 时，找不到相应的内容，所以报错。</p>
-<p>也可以用 <code>del</code> 删除指定索引的列表元素：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="string">'大圣'</span>, <span class="string">'海芋'</span>, <span class="string">'新力'</span>, <span class="string">'一帆'</span>, <span class="string">'靓仔'</span>, <span class="string">'石淦'</span>]</span><br><span class="line"><span class="keyword">del</span> lst[<span class="number">2</span>]</span><br><span class="line">print(lst)</span><br></pre></td></tr></table></figure>
-
-<p>输出的结果为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'大圣'</span>, <span class="string">'海芋'</span>, <span class="string">'一帆'</span>, <span class="string">'靓仔'</span>, <span class="string">'石淦'</span>]</span><br></pre></td></tr></table></figure>
-
-<p><code>del</code>也可以通过切片来批量删除多个列表元素：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="string">'大圣'</span>, <span class="string">'海芋'</span>, <span class="string">'新力'</span>, <span class="string">'一帆'</span>, <span class="string">'靓仔'</span>, <span class="string">'石淦'</span>]</span><br><span class="line"><span class="keyword">del</span> lst[<span class="number">1</span>:<span class="number">4</span>]</span><br><span class="line">print(lst)</span><br></pre></td></tr></table></figure>
-
-<p>输出结果为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'大圣'</span>, <span class="string">'靓仔'</span>, <span class="string">'石淦'</span>]</span><br></pre></td></tr></table></figure>
-
-<h3 id="列表元素的修改"><a href="#列表元素的修改" class="headerlink" title="列表元素的修改"></a>列表元素的修改</h3><p>列表元素可以通过索引值赋值直接修改：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="string">"大圣"</span>, <span class="string">"海煜"</span>, <span class="string">"新力"</span>, <span class="string">"一帆"</span>, <span class="string">"靓仔"</span>, <span class="string">"石淦"</span>]</span><br><span class="line">lst[<span class="number">2</span>] = <span class="string">'秀色可餐'</span></span><br><span class="line">print(lst)</span><br></pre></td></tr></table></figure>
-
-<p>输出的结果为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'大圣'</span>, <span class="string">'海煜'</span>, <span class="string">'秀色可餐'</span>, <span class="string">'一帆'</span>, <span class="string">'靓仔'</span>, <span class="string">'石淦'</span>]</span><br></pre></td></tr></table></figure>
-
-<p>也可以通过列表的切片方法对列表元素进行批量修改：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="string">"大圣"</span>, <span class="string">"海煜"</span>, <span class="string">"新力"</span>, <span class="string">"一帆"</span>, <span class="string">"靓仔"</span>, <span class="string">"石淦"</span>]</span><br><span class="line">lst[<span class="number">1</span>:<span class="number">4</span>] = <span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span></span><br><span class="line">print(lst)</span><br></pre></td></tr></table></figure>
-
-<p>输出的结果是：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'大圣'</span>, <span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="string">'靓仔'</span>, <span class="string">'石淦'</span>]</span><br></pre></td></tr></table></figure>
-
-<p>切片获取的内容空间是连续的时候，修改时内容可以多可以少；切片获取的内容空间是不连续的时候，修改时内容必须一一对应：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="string">"大圣"</span>, <span class="string">"海煜"</span>, <span class="string">"新力"</span>, <span class="string">"一帆"</span>, <span class="string">"靓仔"</span>, <span class="string">"石淦"</span>]</span><br><span class="line">lst[<span class="number">1</span>:<span class="number">4</span>] = <span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>    <span class="comment"># 切片空间连续，可多</span></span><br><span class="line">print(lst)</span><br><span class="line">lst = [<span class="string">"大圣"</span>, <span class="string">"海煜"</span>, <span class="string">"新力"</span>, <span class="string">"一帆"</span>, <span class="string">"靓仔"</span>, <span class="string">"石淦"</span>]</span><br><span class="line">lst[<span class="number">1</span>:<span class="number">4</span>] = <span class="number">10</span>, <span class="number">20</span>    <span class="comment"># 切片空间连续，可少</span></span><br><span class="line">print(lst)</span><br><span class="line">lst = [<span class="string">"大圣"</span>, <span class="string">"海煜"</span>, <span class="string">"新力"</span>, <span class="string">"一帆"</span>, <span class="string">"靓仔"</span>, <span class="string">"石淦"</span>]</span><br><span class="line">lst[<span class="number">1</span>:<span class="number">5</span>:<span class="number">2</span>] = [<span class="string">'alex'</span>, <span class="string">'wusir'</span>]    <span class="comment"># 切片空间不连续，必须一一对应</span></span><br><span class="line">print(lst)</span><br></pre></td></tr></table></figure>
-
-<p>输出的结果为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'大圣'</span>, <span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>, <span class="number">40</span>, <span class="string">'靓仔'</span>, <span class="string">'石淦'</span>]</span><br><span class="line">[<span class="string">'大圣'</span>, <span class="number">10</span>, <span class="number">20</span>, <span class="string">'靓仔'</span>, <span class="string">'石淦'</span>]</span><br><span class="line">[<span class="string">'大圣'</span>, <span class="string">'alex'</span>, <span class="string">'新力'</span>, <span class="string">'wusir'</span>, <span class="string">'靓仔'</span>, <span class="string">'石淦'</span>]</span><br></pre></td></tr></table></figure>
-
-<h3 id="列表元素的查看"><a href="#列表元素的查看" class="headerlink" title="列表元素的查看"></a>列表元素的查看</h3><p>列表元素可以通过索引查询和 for 循环遍历两种方法查看：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="string">"大圣"</span>, <span class="string">"海煜"</span>, <span class="string">"新力"</span>, <span class="string">"一帆"</span>, <span class="string">"靓仔"</span>, <span class="string">"石淦"</span>]</span><br><span class="line">print(lst[<span class="number">3</span>])</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> lst:</span><br><span class="line">    print(i)</span><br></pre></td></tr></table></figure>
-
-<p>需要注意的是，进行切片操作时，获取的内容时切片的原数据本身。也就是说，切片不会改变数据类型。字符串切片后得到的还是字符串，列表切片后得到的还是列表：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="string">"大圣"</span>, <span class="string">"海煜"</span>, <span class="string">"新力"</span>, <span class="string">"一帆"</span>, <span class="string">"靓仔"</span>, <span class="string">"石淦"</span>]</span><br><span class="line">print(lst[<span class="number">1</span>:<span class="number">4</span>])</span><br><span class="line"></span><br><span class="line">a = <span class="string">'alex'</span></span><br><span class="line">print(a[<span class="number">1</span>:<span class="number">3</span>])</span><br></pre></td></tr></table></figure>
-
-<p>输出的结果为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'海煜'</span>, <span class="string">'新力'</span>, <span class="string">'一帆'</span>]</span><br><span class="line">le</span><br></pre></td></tr></table></figure>
-
-<h3 id="列表总结"><a href="#列表总结" class="headerlink" title="列表总结"></a>列表总结</h3><ul>
-<li>列表是可变数据类型，可迭代数据类型，有序的数据结构</li>
-<li>列表用来储存大量数据，并且可以储存不同数据类型</li>
-<li>列表就是一个容器</li>
-<li>列表储存的是元素的内存地址</li>
-</ul>
-<h3 id="列表的嵌套"><a href="#列表的嵌套" class="headerlink" title="列表的嵌套"></a>列表的嵌套</h3><p>因为列表可以储存各种数据类型的数据，那么列表当然也可以储存列表，这就造成了列表的嵌套。</p>
-<p>现在有这样一个相互嵌套的列表：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="number">1</span>, <span class="string">"alex"</span>, <span class="literal">True</span>, [<span class="string">"wusir"</span>, <span class="string">"污"</span>, [<span class="string">"嫂子"</span>,<span class="string">"衣服多"</span>]], [<span class="string">"alex"</span>, <span class="string">"吹nb"</span>, <span class="string">"熬鸡汤"</span>, [<span class="string">"嫂子"</span>, <span class="string">"教育"</span>, <span class="string">"从基层做起"</span>]]]</span><br></pre></td></tr></table></figure>
-
-<p>如果我们想调用其中的 <code>&quot;衣服多&quot;</code> 这个字符串，该怎么做呢？</p>
-<p>我们可以像下面这样逐层操作：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lst1 = lst[<span class="number">3</span>]</span><br><span class="line">lst2 = lst1[<span class="number">2</span>]</span><br><span class="line">lst3 = lst2[<span class="number">1</span>]</span><br></pre></td></tr></table></figure>
-
-<p>这样，<code>lst3</code> 就是我们想要的 <code>&quot;衣服多&quot;</code> 字符串。</p>
-<p>但是这样的操作实在太过繁琐。我们发现，<code>lst1 = lst[3]</code>，既然如此，第二个式子我们可不可以把 <code>lst1[2]</code> 替换成 <code>lst[3][2]</code> 呢？那进一步说，我们可不可以直接通过 <code>lst[3][2][1]</code> 来调出 <code>&quot;衣服多&quot;</code> 字符串呢？</p>
-<p>答案是完全可以的：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="number">1</span>, <span class="string">"alex"</span>, <span class="literal">True</span>, [<span class="string">"wusir"</span>, <span class="string">"污"</span>, [<span class="string">"嫂子"</span>, <span class="string">"衣服多"</span>]], [<span class="string">"alex"</span>, <span class="string">"吹nb"</span>, <span class="string">"熬鸡汤"</span>, [<span class="string">"嫂子"</span>, <span class="string">"教育"</span>, <span class="string">"从基层做起"</span>]]]</span><br><span class="line">print(lst[<span class="number">3</span>][<span class="number">2</span>][<span class="number">1</span>])</span><br><span class="line">print(lst[<span class="number">4</span>][<span class="number">3</span>][<span class="number">1</span>])</span><br></pre></td></tr></table></figure>
-
-<p>打印出的结果是：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">衣服多</span><br><span class="line">教育</span><br></pre></td></tr></table></figure>
-
-<p>像这样调用嵌套在内层列表元素的方法也被称作 <code>降维</code>，就是将类似于 <code>[&quot;wusir&quot;, &quot;污&quot;, [&quot;嫂子&quot;, &quot;衣服多&quot;]</code> 的结构当作一个元素查看。</p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/hashlib/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="刘硕">
-      <meta itemprop="description" content="不成为自己讨厌的人">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="刘硕的技术查阅手册">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/python-basic/hashlib/" class="post-title-link" itemprop="url">hashlib 模块</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-02-15 13:51:56" itemprop="dateCreated datePublished" datetime="2020-02-15T13:51:56+08:00">2020-02-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>hashlib 也称摘要算法或加密算法，其主要功能是对数据进行加密和校验文件的一致性。</p>
-<p>hashlib 支持的加密算法有：md5、sha1、sha256 和 sha512。加密复杂度和花费时间依次增加。</p>
-<p>加密算法的特点有：</p>
-<ol>
-<li>内容相同，密文一定相同；</li>
-<li>加密的密文是不可逆的；</li>
-<li>加密过程为：明文 –&gt; 字节 –&gt; 密文。</li>
-</ol>
-<p>简单的加密操作为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line">s = <span class="string">'abc'</span></span><br><span class="line">md5 = hashlib.md5()    <span class="comment"># 选择加密方式，初始化一个加密</span></span><br><span class="line">md5.update(s.encode(<span class="string">'utf-8'</span>))    <span class="comment"># 将要加密的内容，添加到m中</span></span><br><span class="line">print(md5.hexdigest())</span><br></pre></td></tr></table></figure>
-
-<p>输出的结果为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">900150983</span>cd24fb0d6963f7d28e17f72</span><br></pre></td></tr></table></figure>
-
-<p>也可以通过添加一些字符的方式，增加破解难度，称作加盐：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line">user = input(<span class="string">'username:'</span>)</span><br><span class="line">pwd = input(<span class="string">'pwd:'</span>)</span><br><span class="line">md5 = hashlib.md5(<span class="string">'oldboy'</span>.encode(<span class="string">'utf-8'</span>))    <span class="comment"># 加盐</span></span><br><span class="line">md5.update(pwd.encode(<span class="string">'utf-8'</span>))</span><br><span class="line">print(md5.hexdigest())</span><br></pre></td></tr></table></figure>
-
-<p>除了像上面那样设定固定的盐，我们还可以使用用户名来实现动态加盐：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line">user = input(<span class="string">'username:'</span>)</span><br><span class="line">pwd = input(<span class="string">'pwd:'</span>)</span><br><span class="line">md5 = hashlib.md5(user.encode(<span class="string">'utf-8'</span>))</span><br><span class="line">md5.update(pwd.encode(<span class="string">'utf-8'</span>))</span><br><span class="line">print(md5.hexdigest())</span><br></pre></td></tr></table></figure>
-
-<p>除了 md5 之外，也可以使用其他方式进行加密，操作是完全相同的：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line">sha1 = hashlib.sha1()</span><br><span class="line">sha1.update(<span class="string">'alex'</span>.encode(<span class="string">'utf-8'</span>))</span><br><span class="line">print(sha1.hexdigest())</span><br></pre></td></tr></table></figure>
-
-<p>同样的内容使用同样的方法加密，即便使用不同的方式编码，最终加密出来的结果也是相同的：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line">sha256 = hashlib.sha256()</span><br><span class="line">sha256.update(<span class="string">'wusir'</span>.encode(<span class="string">'utf-8'</span>))</span><br><span class="line">print(sha256.hexdigest())</span><br><span class="line"></span><br><span class="line">sha256 = hashlib.sha256()</span><br><span class="line">sha256.update(<span class="string">'wusir'</span>.encode(<span class="string">'gbk'</span>))</span><br><span class="line">print(sha256.hexdigest())</span><br></pre></td></tr></table></figure>
-
-<p>输出的结果为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">49</span>be7bb8561373ffbccbac435bbdfd6ba8d2f973ec7154b3ae7adf266b929ca9</span><br><span class="line"><span class="number">49</span>be7bb8561373ffbccbac435bbdfd6ba8d2f973ec7154b3ae7adf266b929ca9</span><br></pre></td></tr></table></figure>
-
-<p>虽然加密结果一致，但还是建议尽量使用 utf-8 进行编码。</p>
-<p>对于一个长字符串，同时输入和分段输入，得到的加密结果也是一样的：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line">md5obj = hashlib.md5()</span><br><span class="line">md5obj.update(<span class="string">'alex'</span>.encode(<span class="string">'utf-8'</span>))</span><br><span class="line">md5obj.update(<span class="string">'wusir'</span>.encode(<span class="string">'utf-8'</span>))</span><br><span class="line">print(md5obj.hexdigest())</span><br><span class="line"></span><br><span class="line">md5obj = hashlib.md5()</span><br><span class="line">md5obj.update(<span class="string">'alexwusir'</span>.encode(<span class="string">'utf-8'</span>))</span><br><span class="line">print(md5obj.hexdigest())</span><br></pre></td></tr></table></figure>
-
-<p>输出的结果为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a5e646f24aa7314d8ba3dce048358e90</span><br><span class="line">a5e646f24aa7314d8ba3dce048358e90</span><br></pre></td></tr></table></figure>
-
-<p>因此，对于大文件来说，我们可以逐行加密来节省内存空间。</p>
-<p>总结起来，加密的基本结构为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line">md5obj = hashlib.md5(盐)</span><br><span class="line">md5obj.update(加密的内容.encode(<span class="string">'utf-8'</span>))</span><br><span class="line">print(md5obj.hexdigest())</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/show-suffix/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="刘硕">
-      <meta itemprop="description" content="不成为自己讨厌的人">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="刘硕的技术查阅手册">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/python-basic/show-suffix/" class="post-title-link" itemprop="url">后缀名显示方法</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-02-15 13:51:53" itemprop="dateCreated datePublished" datetime="2020-02-15T13:51:53+08:00">2020-02-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>由于设置原因，我们可能看不到文件的后缀名。但有时我们又要用到后缀名，就需要通过设置，让后缀名显示出来。</p>
-<h3 id="Windows-系统通用"><a href="#Windows-系统通用" class="headerlink" title="Windows 系统通用"></a>Windows 系统通用</h3><p>如果文件后缀名默认没有显示，可以打开 <code>控制面板</code>，将查看方式调为 <code>大图标</code>。</p>
-<img src="/python-basic/show-suffix/py_setup_20.png" class="" title="py_setup_20">
-
-<p>找到 <code>资源管理器选项</code>（Win 7 中是 <code>文件夹选项</code>）</p>
-<img src="/python-basic/show-suffix/py_setup_21.png" class="" title="py_setup_21">
-
-<p>在 <code>查看</code> 标签中，将 <code>隐藏已知文件类型的扩展名</code> 前的复选框取消勾选，然后就能查看和编辑文件的扩展名了。</p>
-<img src="/python-basic/show-suffix/py_setup_22.png" class="" title="py_setup_22">
-
-<h3 id="Win-10-系统"><a href="#Win-10-系统" class="headerlink" title="Win 10 系统"></a>Win 10 系统</h3><p>win 10 系统显示后缀名就很容易了。直接点击文件资源管理器菜单栏中的 <code>查看</code> 选项卡，然后就有展示 <code>文件扩展名</code> 的选项了。</p>
-<img src="/python-basic/show-suffix/1579587639244.png" class="" width="1579587639244">
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/environment-variable/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="刘硕">
-      <meta itemprop="description" content="不成为自己讨厌的人">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="刘硕的技术查阅手册">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/python-basic/environment-variable/" class="post-title-link" itemprop="url">Windows 系统环境变量的配置</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-02-15 13:51:50" itemprop="dateCreated datePublished" datetime="2020-02-15T13:51:50+08:00">2020-02-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Windows 系统中的可执行程序一般以 <code>exe</code> 做后缀。</p>
-<p>把 exe 文件所在的文件夹放在系统环境变量的 path 变量中，就可以使用终端直接输入程序名执行该程序了。</p>
-<p>例如，如果没有将 Python 所在目录放到环境变量中，在终端直接输入 python 命令就会提示 <code>‘python’ 不是内部或外部命令，也不是可运行的程序</code>：</p>
-<img src="/python-basic/environment-variable/py_setup_12.png" class="" title="py_setup_12">
-
-<p>要解决这个问题，可以将 Python 的安装目录放到环境变量中。</p>
-<p>右键 <code>此电脑</code> （也可能叫 <code>我的电脑</code>、<code>计算机</code>、<code>此电脑</code> 等等）图标，点击 <code>属性</code>。点击左侧的<code>高级系统设置</code>。</p>
-<img src="/python-basic/environment-variable/py_setup_14.png" class="" title="py_setup_14">
-
-<p>也可以使用小娜或者其他工具搜索 <code>高级系统设置</code>，直接打开。</p>
-<img src="/python-basic/environment-variable/1579578151110.png" class="" width="1579578151110">
-
-<p>选择 <code>环境变量</code></p>
-<img src="/python-basic/environment-variable/py_setup_15.png" class="" title="py_setup_15">
-
-<p>在 <code>系统环境变量</code> 中找到 <code>Path</code> 变量，点击 <code>编辑</code>。</p>
-<img src="/python-basic/environment-variable/py_setup_16.png" class="" title="py_setup_16">
-
-<p>点击 <code>新建</code>。</p>
-<img src="/python-basic/environment-variable/py_setup_17.png" class="" title="py_setup_17">
-
-<p>将 Python 的安装路径插入到 <code>环境变量</code> 中，点击 <code>确定</code>，退出编辑界面。</p>
-<img src="/python-basic/environment-variable/py_setup_18.png" class="" title="py_setup_18">
-
-<p>然后就可以在终端中直接使用 python 命令运行 Python 代码了。</p>
-<img src="/python-basic/environment-variable/1579587121571.png" class="" width="1579587121571">
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/deconstruction/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="刘硕">
-      <meta itemprop="description" content="不成为自己讨厌的人">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="刘硕的技术查阅手册">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/python-basic/deconstruction/" class="post-title-link" itemprop="url">解构</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-02-15 13:51:50" itemprop="dateCreated datePublished" datetime="2020-02-15T13:51:50+08:00">2020-02-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>我们刚刚提到了字典的 <code>.items()</code> 方法会返回键值对元组的键值对元组列表：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key'</span>: <span class="number">1</span>, <span class="string">'dsb'</span>: <span class="string">'alex'</span>&#125;</span><br><span class="line">print(dic.items())</span><br></pre></td></tr></table></figure>
-
-<p>输出的内容为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dict_items([(<span class="string">'key'</span>, <span class="number">1</span>), (<span class="string">'dsb'</span>, <span class="string">'alex'</span>)])</span><br></pre></td></tr></table></figure>
-
-<p>我们得到的是一个键值对列表，每个键值对以元组的形式存在。</p>
-<p>如果现在，我们需要提取其中的每个元素，可以这样操作：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key'</span>: <span class="number">1</span>, <span class="string">'dsb'</span>: <span class="string">'alex'</span>&#125;</span><br><span class="line">lst = list(dic.items())</span><br><span class="line">print(lst[<span class="number">0</span>][<span class="number">0</span>])</span><br><span class="line">print(lst[<span class="number">0</span>][<span class="number">1</span>])</span><br><span class="line">print(lst[<span class="number">1</span>][<span class="number">0</span>])</span><br><span class="line">print(lst[<span class="number">1</span>][<span class="number">1</span>])</span><br></pre></td></tr></table></figure>
-
-<p>虽然能够实现，但是十分繁琐，这就需要用到结构的方法。</p>
-<p>结构的基本样式是这样的：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a, b = (<span class="number">10</span>, <span class="number">20</span>)</span><br><span class="line">print(a)</span><br><span class="line">print(b)</span><br></pre></td></tr></table></figure>
-
-<p>可以看出，<code>10</code> 和 <code>20</code> 的值分别被赋给了 <code>a</code> 和 <code>b</code>。这种将等号右面的数据分别赋值给等号前面的变量的方法，就是解构。</p>
-<p>在看下面的例子：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a, b = <span class="string">'你好'</span></span><br><span class="line">print(a)</span><br><span class="line">print(b)</span><br></pre></td></tr></table></figure>
-
-<p><code>a</code> 获取到了 <code>你</code>，<code>b</code> 获取到了 <code>好</code>。也就是说，结构不仅适用于元组，也适用于字符串。事实上，只要是可迭代的对象，都可以用来解构：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">a,b,c = [<span class="number">10</span>,<span class="number">20</span>,<span class="number">30</span>]</span><br><span class="line">print(a)</span><br><span class="line">print(b)</span><br><span class="line">print(c)</span><br><span class="line"></span><br><span class="line">a,b = &#123;<span class="string">"key"</span>:<span class="number">1</span>,<span class="string">"key2"</span>:<span class="number">2</span>&#125;</span><br><span class="line">print(a)</span><br><span class="line">print(b)</span><br></pre></td></tr></table></figure>
-
-<p>需要注意的是，字典在进行迭代操作时，只会返回键，而不会返回值。</p>
-<p>结构时，等式左边的变量数要和右边的元素数目相等，否则就会报错。</p>
-<p>如果想要使用少数的变量来接收更多的元素，就需要使用 <code>*</code> 来将最后面的多个元素进行 <code>聚合</code>：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a, b, *c = (<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>)</span><br><span class="line">print(a)</span><br><span class="line">print(b)</span><br><span class="line">print(c)</span><br></pre></td></tr></table></figure>
-
-<p>输出的结果是：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line">[<span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]</span><br></pre></td></tr></table></figure>
-
-<p><code>3</code>、<code>4</code>、<code>5</code> 和 <code>6</code> 被统一 <code>打包</code> 给了 <code>c</code>，<code>打包</code> 后的数据以 <code>列表</code> 的形式储存。</p>
-<p>返回前面字典的 <code>.items()</code> 方法返回值的使用上，如果用结构的方法，我们可以很容易地打印出键值对的内容来：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key1'</span>: <span class="number">1</span>, <span class="string">'key2'</span>: <span class="number">2</span>, <span class="string">'key3'</span>: <span class="number">3</span>, <span class="string">'key4'</span>: <span class="number">4</span>&#125;</span><br><span class="line"><span class="keyword">for</span> k, v <span class="keyword">in</span> dic.items():</span><br><span class="line">    print(k, v)</span><br></pre></td></tr></table></figure>
-
-<p>输出的内容为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">key1 <span class="number">1</span></span><br><span class="line">key2 <span class="number">2</span></span><br><span class="line">key3 <span class="number">3</span></span><br><span class="line">key4 <span class="number">4</span></span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/lambda/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="刘硕">
-      <meta itemprop="description" content="不成为自己讨厌的人">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="刘硕的技术查阅手册">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/python-basic/lambda/" class="post-title-link" itemprop="url">匿名函数</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-02-15 13:51:29" itemprop="dateCreated datePublished" datetime="2020-02-15T13:51:29+08:00">2020-02-15</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>匿名函数的关键字是 lambda。匿名函数在高阶函数中应用十分广泛，它能极大地简化代码。</p>
-<p>比如这个经典的函数定义和调用的代码：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(a, b)</span>:</span></span><br><span class="line">    c = a + b</span><br><span class="line">    <span class="keyword">return</span> c</span><br><span class="line">print(func(<span class="number">1</span>, <span class="number">2</span>))</span><br></pre></td></tr></table></figure>
-
-<p>如果使用匿名函数，只需要两行代码即可：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">f = <span class="keyword">lambda</span> a, b: a + b</span><br><span class="line">print(f(<span class="number">1</span>, <span class="number">2</span>))</span><br></pre></td></tr></table></figure>
-
-<p>甚至一行代码就能实现：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print((<span class="keyword">lambda</span> a, b: a + b)(<span class="number">1</span>, <span class="number">2</span>))</span><br></pre></td></tr></table></figure>
-
-<p>在上面的代码中：</p>
-<ul>
-<li>lambda 和 def 的作用类似，用来声明要定义一个函数</li>
-<li><code>a, b</code> 和 <code>(a, b)</code> 的表达含义类似，用来声明形参</li>
-<li><code>: a + b</code> 和 <code>return a + b</code> 的含义类似，用来声明返回值</li>
-</ul>
-<p>在匿名函数中的形参可以接受位置参数，动态位置参数，默认参数，动态关键字参数，也可以什么都不写。</p>
-<p>匿名函数的冒号 <code>:</code> 后面接的是函数的返回值，只能返回一个数据，而且是必须要写的。</p>
-<p>当 for 循环和匿名函数一起使用时，会有一个坑：如果是先循环后调用，for 循环的变量会使用最后一个，而不是期间每个元素的值：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">lst = []    <span class="comment"># [func,func,func]</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">3</span>):</span><br><span class="line">    lst.append(<span class="keyword">lambda</span> :i)</span><br><span class="line">    </span><br><span class="line"><span class="keyword">for</span> j <span class="keyword">in</span> lst:</span><br><span class="line">    print(j())</span><br></pre></td></tr></table></figure>
-
-<p>输出的结果为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">2</span></span><br><span class="line"><span class="number">2</span></span><br></pre></td></tr></table></figure>
-
-<p>当第一个循环结束时，列表中存储的值为三个匿名函数的内存地址。每个匿名函数实际上只有一个内容：返回 i。但是在调用之前，这一行代码并不会执行，函数中记录的还是一个 i。当循环结束，我们调用这些函数时，i 已经变成了 2。虽然前两个函数被加入到列表中时 i 的值还是 1 和 2，但它们没有被记录在函数中。</p>
-<p>我们可以把上面的代码拆分开，这样看起来会直观些：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">lst = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">3</span>):</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">()</span>:</span></span><br><span class="line">        <span class="keyword">return</span> i</span><br><span class="line">    lst.append(func)</span><br><span class="line"><span class="keyword">for</span> j <span class="keyword">in</span> lst:</span><br><span class="line">    print(j())</span><br></pre></td></tr></table></figure>
-
-<p>如果将匿名函数和 for 循环封装在列表推导式中，会更有迷惑性：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">g = [<span class="keyword">lambda</span> :i+<span class="number">1</span> <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">3</span>)]</span><br><span class="line">print([em() <span class="keyword">for</span> em <span class="keyword">in</span> g])</span><br><span class="line"></span><br><span class="line">输出的结果为：</span><br><span class="line">[<span class="number">3</span>, <span class="number">3</span>, <span class="number">3</span>]</span><br></pre></td></tr></table></figure>
-
-<p>对于生成器表达式，情况又发生了变化——因为当函数被拿出来之后，循环才会向下走：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">g = (<span class="keyword">lambda</span> :i+<span class="number">1</span> <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">3</span>))</span><br><span class="line">print([em() <span class="keyword">for</span> em <span class="keyword">in</span> g])</span><br><span class="line"></span><br><span class="line">输出的结果为：</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/17/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><span class="page-number current">18</span><a class="page-number" href="/page/19/">19</a><span class="space">&hellip;</span><a class="page-number" href="/page/23/">23</a><a class="extend next" rel="next" href="/page/19/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/17/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/17/">17</a><span class="page-number current">18</span><a class="page-number" href="/page/19/">19</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><a class="extend next" rel="next" href="/page/19/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1445,14 +1501,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">230</span>
+          <span class="site-state-item-count">236</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
   </nav>

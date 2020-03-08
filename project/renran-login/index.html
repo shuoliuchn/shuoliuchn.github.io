@@ -40,7 +40,7 @@
 <meta property="og:image" content="https://sliu.vip/project/renran-login/renran-login.assets/1578277442350.png">
 <meta property="og:image" content="https://sliu.vip/project/renran-login/renran-login.assets/1578277500168.png">
 <meta property="article:published_time" content="2020-02-29T16:54:49.000Z">
-<meta property="article:modified_time" content="2020-03-04T16:51:50.000Z">
+<meta property="article:modified_time" content="2020-03-08T17:08:56.000Z">
 <meta property="article:author" content="刘硕">
 <meta property="article:tag" content="Python">
 <meta property="article:tag" content="全栈开发">
@@ -273,7 +273,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-03-05 00:51:50" itemprop="dateModified" datetime="2020-03-05T00:51:50+08:00">2020-03-05</time>
+                <time title="修改时间：2020-03-09 01:08:56" itemprop="dateModified" datetime="2020-03-09T01:08:56+08:00">2020-03-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -393,7 +393,7 @@
 <td>账户创建的时间。 当账号创建时，默认设置为当前的 date/time。</td>
 </tr>
 </tbody></table>
-<h5 id="常用方法"><a href="#常用方法" class="headerlink" title="常用方法"></a>常用方法</h5><ul>
+<h4 id="常用方法"><a href="#常用方法" class="headerlink" title="常用方法"></a>常用方法</h4><ul>
 <li><p><code>set_password(raw_password)</code></p>
 <p>设置用户的密码为给定的原始字符串，并负责密码的。 不会保存 User 对象。当 raw_password 为 None 时，密码将设置为一个不可用的密码。</p>
 </li>
@@ -401,7 +401,7 @@
 <p>如果给定的 raw_password 是用户的真实密码，则返回 True，可以在校验用户密码时使用。</p>
 </li>
 </ul>
-<h5 id="管理器方法"><a href="#管理器方法" class="headerlink" title="管理器方法"></a>管理器方法</h5><p>管理器方法即可以通过 <code>User.objects.</code> 进行调用的方法。</p>
+<h4 id="管理器方法"><a href="#管理器方法" class="headerlink" title="管理器方法"></a>管理器方法</h4><p>管理器方法即可以通过 <code>User.objects.</code> 进行调用的方法。</p>
 <ul>
 <li><p><code>create_user(username, email=None, password=None, **extra_fields)</code></p>
 <p>创建、保存并返回一个 User 对象。</p>
@@ -772,7 +772,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前端显示登陆页面"><span class="nav-number">1.</span> <span class="nav-text">前端显示登陆页面</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#登录页组件"><span class="nav-number">1.1.</span> <span class="nav-text">登录页组件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#绑定登陆页面路由地址"><span class="nav-number">1.2.</span> <span class="nav-text">绑定登陆页面路由地址</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#调整首页头部子组件中登陆按钮的链接信息"><span class="nav-number">1.2.1.</span> <span class="nav-text">调整首页头部子组件中登陆按钮的链接信息</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#后端实现登陆认证"><span class="nav-number">2.</span> <span class="nav-text">后端实现登陆认证</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Django-用户模型类"><span class="nav-number">2.1.</span> <span class="nav-text">Django 用户模型类</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#常用方法"><span class="nav-number">2.1.0.1.</span> <span class="nav-text">常用方法</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#管理器方法"><span class="nav-number">2.1.0.2.</span> <span class="nav-text">管理器方法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建用户模块的子应用"><span class="nav-number">2.2.</span> <span class="nav-text">创建用户模块的子应用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建自定义的用户模型类"><span class="nav-number">2.3.</span> <span class="nav-text">创建自定义的用户模型类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Django-REST-framework-JWT"><span class="nav-number">2.4.</span> <span class="nav-text">Django REST framework JWT</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JWT-的构成"><span class="nav-number">2.5.</span> <span class="nav-text">JWT 的构成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#header"><span class="nav-number">2.6.</span> <span class="nav-text">header</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#payload"><span class="nav-number">2.7.</span> <span class="nav-text">payload</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#signature"><span class="nav-number">2.8.</span> <span class="nav-text">signature</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装配置-JWT"><span class="nav-number">2.9.</span> <span class="nav-text">安装配置 JWT</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#手动生成-JWT"><span class="nav-number">2.10.</span> <span class="nav-text">手动生成 JWT</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#后端实现登陆认证接口"><span class="nav-number">2.11.</span> <span class="nav-text">后端实现登陆认证接口</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#前端实现登陆功能"><span class="nav-number">3.</span> <span class="nav-text">前端实现登陆功能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#前端保存-JWT"><span class="nav-number">3.1.</span> <span class="nav-text">前端保存 JWT</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多条件登录"><span class="nav-number">4.</span> <span class="nav-text">多条件登录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在登录认证中接入腾讯防水墙验证码"><span class="nav-number">5.</span> <span class="nav-text">在登录认证中接入腾讯防水墙验证码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#前端获取显示并校验验证码"><span class="nav-number">5.1.</span> <span class="nav-text">前端获取显示并校验验证码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#完善逻辑的验证码登录认证"><span class="nav-number">5.2.</span> <span class="nav-text">完善逻辑的验证码登录认证</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前端显示登陆页面"><span class="nav-number">1.</span> <span class="nav-text">前端显示登陆页面</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#登录页组件"><span class="nav-number">1.1.</span> <span class="nav-text">登录页组件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#绑定登陆页面路由地址"><span class="nav-number">1.2.</span> <span class="nav-text">绑定登陆页面路由地址</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#调整首页头部子组件中登陆按钮的链接信息"><span class="nav-number">1.2.1.</span> <span class="nav-text">调整首页头部子组件中登陆按钮的链接信息</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#后端实现登陆认证"><span class="nav-number">2.</span> <span class="nav-text">后端实现登陆认证</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Django-用户模型类"><span class="nav-number">2.1.</span> <span class="nav-text">Django 用户模型类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#常用方法"><span class="nav-number">2.1.1.</span> <span class="nav-text">常用方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#管理器方法"><span class="nav-number">2.1.2.</span> <span class="nav-text">管理器方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建用户模块的子应用"><span class="nav-number">2.2.</span> <span class="nav-text">创建用户模块的子应用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建自定义的用户模型类"><span class="nav-number">2.3.</span> <span class="nav-text">创建自定义的用户模型类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Django-REST-framework-JWT"><span class="nav-number">2.4.</span> <span class="nav-text">Django REST framework JWT</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JWT-的构成"><span class="nav-number">2.5.</span> <span class="nav-text">JWT 的构成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#header"><span class="nav-number">2.6.</span> <span class="nav-text">header</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#payload"><span class="nav-number">2.7.</span> <span class="nav-text">payload</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#signature"><span class="nav-number">2.8.</span> <span class="nav-text">signature</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装配置-JWT"><span class="nav-number">2.9.</span> <span class="nav-text">安装配置 JWT</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#手动生成-JWT"><span class="nav-number">2.10.</span> <span class="nav-text">手动生成 JWT</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#后端实现登陆认证接口"><span class="nav-number">2.11.</span> <span class="nav-text">后端实现登陆认证接口</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#前端实现登陆功能"><span class="nav-number">3.</span> <span class="nav-text">前端实现登陆功能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#前端保存-JWT"><span class="nav-number">3.1.</span> <span class="nav-text">前端保存 JWT</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多条件登录"><span class="nav-number">4.</span> <span class="nav-text">多条件登录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在登录认证中接入腾讯防水墙验证码"><span class="nav-number">5.</span> <span class="nav-text">在登录认证中接入腾讯防水墙验证码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#前端获取显示并校验验证码"><span class="nav-number">5.1.</span> <span class="nav-text">前端获取显示并校验验证码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#完善逻辑的验证码登录认证"><span class="nav-number">5.2.</span> <span class="nav-text">完善逻辑的验证码登录认证</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -788,14 +788,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">230</span>
+          <span class="site-state-item-count">236</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
   </nav>
