@@ -34,8 +34,8 @@
 <meta property="og:image" content="https://sliu.vip/linux/python-virtualenv/image-20200206111537830.png">
 <meta property="og:image" content="https://sliu.vip/linux/python-virtualenv/1581259421255.png">
 <meta property="og:image" content="https://sliu.vip/linux/python-virtualenv/1581260032472.png">
-<meta property="article:published_time" content="2020-02-17T10:36:34.000Z">
-<meta property="article:modified_time" content="2020-03-08T17:07:49.000Z">
+<meta property="article:published_time" content="2020-03-13T05:53:10.878Z">
+<meta property="article:modified_time" content="2020-03-13T06:53:09.071Z">
 <meta property="article:author" content="刘硕">
 <meta property="article:tag" content="Python">
 <meta property="article:tag" content="全栈开发">
@@ -165,6 +165,11 @@
     <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
 
   </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
         <li class="menu-item menu-item-categories">
 
     <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
@@ -260,16 +265,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2020-02-17 18:36:34" itemprop="dateCreated datePublished" datetime="2020-02-17T18:36:34+08:00">2020-02-17</time>
+              <time title="创建时间：2020-03-13 13:53:10 / 修改时间：14:53:09" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:10+08:00">2020-03-13</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-03-09 01:07:49" itemprop="dateModified" datetime="2020-03-09T01:07:49+08:00">2020-03-09</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -329,10 +328,10 @@
 
 <ol>
 <li><p>在物理解释器环境下，安装 virualenv：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># pip3 install -i https://pypi.douban.com/simple virtualenv</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# pip3 install -i https://pypi.douban.com/simple virtualenv</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>通过命令创建虚拟环境，且是一个没有任何模块的，纯净的 Python 3 解释器：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># mkdir /opt/venvs</span></span><br><span class="line">[root@localhost ~]<span class="comment"># cd /opt/venvs/</span></span><br><span class="line">[root@localhost venvs]<span class="comment"># virtualenv --no-site-packages --python=python3 venv1</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# mkdir /opt/venvs</span><br><span class="line">[root@localhost ~]# cd /opt/venvs/</span><br><span class="line">[root@localhost venvs]# virtualenv --no-site-packages --python=python3 venv1</span><br></pre></td></tr></table></figure>
 
 <p>命令解释：</p>
 <ul>
@@ -343,10 +342,10 @@
 </ul>
 </li>
 <li><p>查看 venv1 文件夹，我们可以看到装有 Python 3 和 pip 3 的可执行文件的 bin 目录。通过命令发现没有多余的第三方包：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost venvs]<span class="comment"># ls ./venv1/bin/</span></span><br><span class="line">activate      activate.fish  activate_this.py  easy_install      pip   pip3.6  python3    python-config</span><br><span class="line">activate.csh  activate.ps1   activate.xsh      easy_install-3.6  pip3  python  python3.6  wheel</span><br><span class="line">(venv1) [root@localhost venvs]<span class="comment"># pip3 list</span></span><br><span class="line">Package    Version</span><br><span class="line">---------- -------</span><br><span class="line">pip        20.0.2 </span><br><span class="line">setuptools 45.2.0 </span><br><span class="line">wheel      0.34.2</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost venvs]# ls ./venv1/bin/</span><br><span class="line">activate      activate.fish  activate_this.py  easy_install      pip   pip3.6  python3    python-config</span><br><span class="line">activate.csh  activate.ps1   activate.xsh      easy_install-3.6  pip3  python  python3.6  wheel</span><br><span class="line">(venv1) [root@localhost venvs]# pip3 list</span><br><span class="line">Package    Version</span><br><span class="line">---------- -------</span><br><span class="line">pip        20.0.2 </span><br><span class="line">setuptools 45.2.0 </span><br><span class="line">wheel      0.34.2</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>创建好 venv1 后，我们再创建一个 venv2 虚拟环境，用于安装 django 2.0.1：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost venvs]<span class="comment"># virtualenv --no-site-packages --python=python3 /opt/venvs/venv2</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost venvs]# virtualenv --no-site-packages --python=python3 /opt/venvs/venv2</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>使用命令激活虚拟环境：</p>
 <figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root<span class="symbol">@localhost</span> venvs]<span class="meta"># source ./venv1/bin/activate</span></span><br><span class="line">(venv1) [root<span class="symbol">@localhost</span> venvs]<span class="meta">#</span></span><br></pre></td></tr></table></figure>
@@ -354,12 +353,12 @@
 <p>前面出现了提示符<code>(venv1)</code>，说明进入到虚拟环境中。</p>
 </li>
 <li><p>检查虚拟环境是否正常：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(venv1) [root@localhost venvs]<span class="comment"># which python3</span></span><br><span class="line">/opt/venvs/venv1/bin/python3</span><br><span class="line">(venv1) [root@localhost venvs]<span class="comment"># which pip3</span></span><br><span class="line">/opt/venvs/venv1/bin/pip3</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(venv1) [root@localhost venvs]# which python3</span><br><span class="line">/opt/venvs/venv1/bin/python3</span><br><span class="line">(venv1) [root@localhost venvs]# which pip3</span><br><span class="line">/opt/venvs/venv1/bin/pip3</span><br></pre></td></tr></table></figure>
 
 <p>Python 3 和 pip 3 均位于虚拟环境目录下，说明环境运行正常。</p>
 </li>
 <li><p>可以用命令退出虚拟环境：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(venv1) [root@localhost venvs]<span class="comment"># deactivate</span></span><br><span class="line">[root@localhost venvs]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(venv1) [root@localhost venvs]# deactivate</span><br><span class="line">[root@localhost venvs]#</span><br></pre></td></tr></table></figure>
 
 <p>退出虚拟环境后，系统会自动删除 venv1 的环境变量。</p>
 </li>
@@ -368,13 +367,13 @@
 <p>具体的配置流程为：</p>
 <ol>
 <li><p>激活虚拟环境 venv1：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost venvs]<span class="comment"># source ./venv1/bin/activate</span></span><br><span class="line">(venv1) [root@localhost venvs]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost venvs]# source ./venv1/bin/activate</span><br><span class="line">(venv1) [root@localhost venvs]#</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>安装 django 1.11.9：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv1) [root@localhost venvs]<span class="comment"># pip3 install -i https://pypi.douban.com/simple django==1.11.9</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv1) [root@localhost venvs]# pip3 install -i https://pypi.douban.com/simple django==1.11.9</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>创建 django 项目，编写 hello 视图函数：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv1) [root@localhost venvs]<span class="comment"># django-admin startproject dj1</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv1) [root@localhost venvs]# django-admin startproject dj1</span><br></pre></td></tr></table></figure>
 
 <p>修改 settings.py 的 ALLOWED_HOSTS 配置为：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALLOWED_HOSTS = [<span class="string">"*"</span>]</span><br></pre></td></tr></table></figure>
@@ -390,13 +389,13 @@
 <p>具体流程为：</p>
 <ol>
 <li><p>退出 venv1，激活 venv2：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(venv1) [root@localhost venvs]<span class="comment"># deactivate</span></span><br><span class="line">[root@localhost venvs]<span class="comment"># source ./venv2/bin/activate</span></span><br><span class="line">(venv2) [root@localhost venvs]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(venv1) [root@localhost venvs]# deactivate</span><br><span class="line">[root@localhost venvs]# source ./venv2/bin/activate</span><br><span class="line">(venv2) [root@localhost venvs]#</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>检查模块是否干净：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(venv2) [root@localhost venvs]<span class="comment"># pip3 list</span></span><br><span class="line">Package    Version</span><br><span class="line">---------- -------</span><br><span class="line">pip        20.0.2 </span><br><span class="line">setuptools 45.2.0 </span><br><span class="line">wheel      0.34.2</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(venv2) [root@localhost venvs]# pip3 list</span><br><span class="line">Package    Version</span><br><span class="line">---------- -------</span><br><span class="line">pip        20.0.2 </span><br><span class="line">setuptools 45.2.0 </span><br><span class="line">wheel      0.34.2</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>安装 django 2.0.1：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv2) [root@localhost venvs]<span class="comment"># pip3 install -i https://pypi.douban.com/simple django==2.0.1</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv2) [root@localhost venvs]# pip3 install -i https://pypi.douban.com/simple django==2.0.1</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>创建django项目，编写MTV，运行页面，返回”我是来自于venv2的django2项目”。</p>
 </li>
@@ -453,8 +452,8 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/linux/python-requirements/" rel="prev" title="导出导入 Python 依赖">
-      <i class="fa fa-chevron-left"></i> 导出导入 Python 依赖
+    <a href="/linux/nginx-virtual-server/" rel="prev" title="nginx 的虚拟主机">
+      <i class="fa fa-chevron-left"></i> nginx 的虚拟主机
     </a></div>
       <div class="post-nav-item">
     <a href="/linux/software-installation/" rel="next" title="Linux 软件安装流程 - nginx 的安装">
@@ -535,7 +534,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">236</span>
+          <span class="site-state-item-count">241</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -544,6 +543,12 @@
           
         <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
 </div>

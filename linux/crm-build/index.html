@@ -37,8 +37,8 @@
 <meta property="og:image" content="https://sliu.vip/linux/crm-build/1581144016414.png">
 <meta property="og:image" content="https://sliu.vip/linux/crm-build/image-20200207163337987.png">
 <meta property="og:image" content="https://sliu.vip/linux/crm-build/1581146856257.png">
-<meta property="article:published_time" content="2020-02-17T06:32:21.000Z">
-<meta property="article:modified_time" content="2020-02-29T02:34:02.068Z">
+<meta property="article:published_time" content="2020-03-13T05:53:10.938Z">
+<meta property="article:modified_time" content="2020-03-13T06:53:09.101Z">
 <meta property="article:author" content="刘硕">
 <meta property="article:tag" content="Python">
 <meta property="article:tag" content="全栈开发">
@@ -168,6 +168,11 @@
     <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
 
   </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
         <li class="menu-item menu-item-categories">
 
     <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
@@ -263,16 +268,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2020-02-17 14:32:21" itemprop="dateCreated datePublished" datetime="2020-02-17T14:32:21+08:00">2020-02-17</time>
+              <time title="创建时间：2020-03-13 13:53:10 / 修改时间：14:53:09" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:10+08:00">2020-03-13</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-29 10:34:02" itemprop="dateModified" datetime="2020-02-29T10:34:02+08:00">2020-02-29</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -317,80 +316,80 @@
 
 <p>服务器中环境比较复杂，为了不影响其他项目的运行，项目部署一般在虚拟的 Python 环境中进行。</p>
 <p>因此，首先要配置一个 Python 的虚拟环境。在配置之前，要查看是否安装了 virtualenv：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost etc]<span class="comment"># which virtualenv</span></span><br><span class="line">/usr/bin/<span class="built_in">which</span>: no virtualenv <span class="keyword">in</span> (/usr/<span class="built_in">local</span>/sbin:/usr/<span class="built_in">local</span>/bin:/usr/sbin:/usr/bin:/root/bin:/etc/python36/bin:/opt/python36/bin)</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost etc]# which virtualenv</span><br><span class="line">/usr/bin/which: no virtualenv in (/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin:/etc/python36/bin:/opt/python36/bin)</span><br></pre></td></tr></table></figure>
 
 <p>若出现上面的提示，说明需要先安装：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install -i https://pypi.douban.com/simple virtualenv</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install -i https://pypi.douban.com/simple virtualenv</span><br></pre></td></tr></table></figure>
 
 <p>进入想要存放虚拟环境的文件夹，创建虚拟 Python 环境：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost etc]<span class="comment"># mkdir /opt/venvs</span></span><br><span class="line">[root@localhost etc]<span class="comment"># cd /opt/venvs/</span></span><br><span class="line">[root@localhost venvs]<span class="comment"># virtualenv --no-site-packages --python=python3 venv_crm</span></span><br><span class="line">[root@localhost venvs]<span class="comment"># cd venv_crm/</span></span><br><span class="line">[root@localhost venv_crm]<span class="comment"># </span></span><br><span class="line">[root@localhost venv_crm]<span class="comment"># source ./bin/activate</span></span><br><span class="line">(venv_crm) [root@localhost venv_crm]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost etc]# mkdir /opt/venvs</span><br><span class="line">[root@localhost etc]# cd /opt/venvs/</span><br><span class="line">[root@localhost venvs]# virtualenv --no-site-packages --python=python3 venv_crm</span><br><span class="line">[root@localhost venvs]# cd venv_crm/</span><br><span class="line">[root@localhost venv_crm]# </span><br><span class="line">[root@localhost venv_crm]# source ./bin/activate</span><br><span class="line">(venv_crm) [root@localhost venv_crm]#</span><br></pre></td></tr></table></figure>
 
 <p>以后的配置，都会在这个虚拟环境中进行。</p>
 <p>虚拟环境激活后，安装 uwsgi 工具：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost venv_crm]<span class="comment"># pip3 install -i https://pypi.douban.com/simple uwsgi</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost venv_crm]# pip3 install -i https://pypi.douban.com/simple uwsgi</span><br></pre></td></tr></table></figure>
 
 <h3 id="上传-crm-代码"><a href="#上传-crm-代码" class="headerlink" title="上传 crm 代码"></a>上传 crm 代码</h3><p>把我们的 crm 项目打包成 zip，在 Xshell 上通过 lrzsz 工具上传至 Linux。</p>
 <img src="/linux/crm-build/rz.gif" class="" title="rz">
 
 <p>若没有 lrzsz 工具，可能会无法发送，需要先安装这个工具：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install lrzsz</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install lrzsz</span><br></pre></td></tr></table></figure>
 
 <p>若是 mac 用户，可以使用 scp 命令传输。</p>
 <p>收到 crm 项目的 zip 压缩文件后，使用 unzip 命令解压缩。当然，要先安装 unzip 工具：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost ~]<span class="comment"># yum install unzip -y</span></span><br><span class="line">(venv_crm) [root@localhost ~]<span class="comment"># unzip CRM.zip</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost ~]# yum install unzip -y</span><br><span class="line">(venv_crm) [root@localhost ~]# unzip CRM.zip</span><br></pre></td></tr></table></figure>
 
 <h3 id="安装-crm-项目依赖的环境"><a href="#安装-crm-项目依赖的环境" class="headerlink" title="安装 crm 项目依赖的环境"></a>安装 crm 项目依赖的环境</h3><h4 id="安装-django"><a href="#安装-django" class="headerlink" title="安装 django"></a>安装 django</h4><p>进入 crm 项目第一层文件夹，尝试启动 crm 项目：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost ~]<span class="comment"># cd CRM</span></span><br><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># ls</span></span><br><span class="line">app01  CRM  manage.py  rbac  utils</span><br><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># python3 manage.py runserver</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost ~]# cd CRM</span><br><span class="line">(venv_crm) [root@localhost CRM]# ls</span><br><span class="line">app01  CRM  manage.py  rbac  utils</span><br><span class="line">(venv_crm) [root@localhost CRM]# python3 manage.py runserver</span><br></pre></td></tr></table></figure>
 
 <p>运行出错，错误信息为：</p>
 <figure class="highlight vbnet"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ImportError: Couldn<span class="comment">'t import Django. Are you sure it's installed and available on your PYTHONPATH environment variable? Did you forget to activate a virtual environment?</span></span><br></pre></td></tr></table></figure>
 
 <p>这是因为虚拟环境中没有 django。兵来将挡水来土掩，安装 django 就是了：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># pip3 install -i https://pypi.douban.com/simple django==1.11.9</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]# pip3 install -i https://pypi.douban.com/simple django==1.11.9</span><br></pre></td></tr></table></figure>
 
 <h4 id="安装-pymysql"><a href="#安装-pymysql" class="headerlink" title="安装 pymysql"></a>安装 pymysql</h4><p>安装好 django，继续尝试启动 crm 项目：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># python3 manage.py runserver</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]# python3 manage.py runserver</span><br></pre></td></tr></table></figure>
 
 <p>程序再次报错，这次的报错信息是：</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">ModuleNotFoundError:</span> <span class="literal">No</span> <span class="string">module</span> <span class="string">named</span> <span class="string">'pymysql'</span></span><br></pre></td></tr></table></figure>
 
 <p>看来我们还需要安装 pymysql 模块：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># pip3 install -i https://pypi.douban.com/simple pymysql</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]# pip3 install -i https://pypi.douban.com/simple pymysql</span><br></pre></td></tr></table></figure>
 
 <h4 id="安装-django-multiselectfield"><a href="#安装-django-multiselectfield" class="headerlink" title="安装 django-multiselectfield"></a>安装 django-multiselectfield</h4><p>继续，尝试启动 crm 项目：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># python3 manage.py runserver</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]# python3 manage.py runserver</span><br></pre></td></tr></table></figure>
 
 <p>有报错了，报错信息为：</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">ModuleNotFoundError:</span> <span class="literal">No</span> <span class="string">module</span> <span class="string">named</span> <span class="string">'multiselectfield'</span></span><br></pre></td></tr></table></figure>
 
 <p>这里提示的是没有安装 multiselectfield 模块。但主要注意的是，包的名字是 django-multiselectfield 而不是直接的 multiselectfield：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># pip3 install -i https://pypi.douban.com/simple django-multiselectfield</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]# pip3 install -i https://pypi.douban.com/simple django-multiselectfield</span><br></pre></td></tr></table></figure>
 
 <h4 id="一键安装-crm-依赖环境"><a href="#一键安装-crm-依赖环境" class="headerlink" title="一键安装 crm 依赖环境"></a>一键安装 crm 依赖环境</h4><p>除了像我们前面逐次尝试逐个安装的方式外，我们还可以通过 pip 的 freeze 功能批量导出和导入所有模块。</p>
 <p>在我们编写 crm 项目的操作系统中输入命令，批量导出模块信息至 <code>requirements.txt</code> 文件中：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 freeze &gt; requirements.txt</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 freeze &gt; requirements.txt</span><br></pre></td></tr></table></figure>
 
 <p>在 cmd 所在文件夹会出现一个 <code>requirements.txt</code> 文件，里面有所有的模块名和版本号信息。</p>
 <p>把这个文件发送到 Linux 系统中，通过命令批量导入依赖的包：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install -r requirements.txt</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install -r requirements.txt</span><br></pre></td></tr></table></figure>
 
 <h3 id="配置数据库"><a href="#配置数据库" class="headerlink" title="配置数据库"></a>配置数据库</h3><h4 id="安装-MariaDB（MySQL）"><a href="#安装-MariaDB（MySQL）" class="headerlink" title="安装 MariaDB（MySQL）"></a>安装 MariaDB（MySQL）</h4><p>安装好各种 crm 依赖的环境之后，crm 项目依然无法正常运行：因为我们还没有安装 MySQL 数据库。</p>
 <p>在 CentOS 中，由于 MySQL 已经开始收费，有开源组织创建了一个完全一模一样的数据库，就是 MariaDB 数据库。</p>
 <p>可以使用 yum 直接安装 MariaDB：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># yum install mariadb-server mariadb -y</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]# yum install mariadb-server mariadb -y</span><br></pre></td></tr></table></figure>
 
 <p>通过 yum 安装的 MariaDB 数据库服务可以通过 systemctl 命令启动：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># systemctl start mariadb</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]# systemctl start mariadb</span><br></pre></td></tr></table></figure>
 
 <p>为测试 MariaDB 运行状态，我们可以尝试登录。MariaDB 的用法同 MySQL 完全一致，甚至连接命令使用的也是 mysql：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># mysql -uroot -p</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]# mysql -uroot -p</span><br></pre></td></tr></table></figure>
 
 <p>初始密码默认为空，直接回车即可进入 MariaDB。使用命令修改密码为 123：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MariaDB [(none)]&gt; set password &#x3D; password(&#39;123&#39;);</span><br></pre></td></tr></table></figure>
 
 <p>若数据库名称和密码会发生变化，还需要修改 <code>settings.py</code> 中数据库部分的配置。</p>
 <h4 id="导出和导入数据库数据"><a href="#导出和导入数据库数据" class="headerlink" title="导出和导入数据库数据"></a>导出和导入数据库数据</h4><p>在 Windows 中通过命令导出数据库中的数据：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqldump -uroot -p crm &gt; crm.sql</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqldump -uroot -p crm &gt; crm.sql</span><br></pre></td></tr></table></figure>
 
 <p>把导出的 <code>crm.sql</code> 文件传到 Linux 中。创建并进入 crm 数据库，使用命令导入数据：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">MariaDB [(none)]&gt; create database crm;</span><br><span class="line">Query OK, 1 row affected (0.00 sec)</span><br><span class="line">MariaDB [(none)]&gt; use crm;</span><br><span class="line">Database changed</span><br><span class="line">MariaDB [crm]&gt; source ~&#x2F;crm.sql</span><br></pre></td></tr></table></figure>
@@ -399,13 +398,13 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">MariaDB [crm]&gt; show tables;</span><br><span class="line">+----------------------------+</span><br><span class="line">| Tables_in_crm              |</span><br><span class="line">+----------------------------+</span><br><span class="line">| app01_campuses             |</span><br><span class="line">| app01_classlist            |</span><br><span class="line">| app01_classlist_teachers   |</span><br><span class="line">| app01_consultrecord        |</span><br><span class="line">| app01_courserecord         |</span><br><span class="line">| app01_customer             |</span><br><span class="line">| app01_customer_class_list  |</span><br><span class="line">| app01_enrollment           |</span><br><span class="line">| app01_studyrecord          |</span><br><span class="line">| app01_userinfo             |</span><br><span class="line">| app01_userinfo_roles       |</span><br><span class="line">| auth_group                 |</span><br><span class="line">| auth_group_permissions     |</span><br><span class="line">| auth_permission            |</span><br><span class="line">| auth_user                  |</span><br><span class="line">| auth_user_groups           |</span><br><span class="line">| auth_user_user_permissions |</span><br><span class="line">| django_admin_log           |</span><br><span class="line">| django_content_type        |</span><br><span class="line">| django_migrations          |</span><br><span class="line">| django_session             |</span><br><span class="line">| rbac_menu                  |</span><br><span class="line">| rbac_permission            |</span><br><span class="line">| rbac_role                  |</span><br><span class="line">| rbac_role_permissions      |</span><br><span class="line">+----------------------------+</span><br><span class="line">25 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">MariaDB [crm]&gt; select * from rbac_role;</span><br><span class="line">+----+-----------+</span><br><span class="line">| id | role_name |</span><br><span class="line">+----+-----------+</span><br><span class="line">|  2 | CEO       |</span><br><span class="line">|  3 | 销售      |</span><br><span class="line">|  4 | 讲师      |</span><br><span class="line">+----+-----------+</span><br><span class="line">3 rows in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">MariaDB [crm]&gt;</span><br></pre></td></tr></table></figure>
 
 <h3 id="配置-settings-py"><a href="#配置-settings-py" class="headerlink" title="配置 settings.py"></a>配置 <code>settings.py</code></h3><p>再次调试 crm ，应该就可以正常运行了。将其配置在 <code>0.0.0.0:8000</code>，并尝试通过浏览器访问，部署之前，或许需要清空防火墙列表：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># iptables -F</span></span><br><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># python3 manage.py runserver 0.0.0.0:8000</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]# iptables -F</span><br><span class="line">(venv_crm) [root@localhost CRM]# python3 manage.py runserver 0.0.0.0:8000</span><br></pre></td></tr></table></figure>
 
 <p>虽然访问被禁止，但已经能看见 django 的大黄页，至少说明我们成功连接到了 Linux 的 django。禁止访问的原因是，我们没有在 settings.py 中指定 ALLOWED_HOSTS。</p>
 <img src="/linux/crm-build/1581138963892.png" class="" width="1581138963892">
 
 <p><code>ctrl + c</code> 终止运行中的 django 项目。使用 vim 命令编辑 settings.py 文件：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># vim CRM/settings.py</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]# vim CRM/settings.py</span><br></pre></td></tr></table></figure>
 
 <p>找到 ALLOWED_HOSTS，在列表中添加 <code>‘*’</code>：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALLOWED_HOSTS = [<span class="string">'*'</span>]</span><br></pre></td></tr></table></figure>
@@ -415,13 +414,13 @@
 
 <h3 id="uwsgi-启动-django"><a href="#uwsgi-启动-django" class="headerlink" title="uwsgi 启动 django"></a>uwsgi 启动 django</h3><p>虽然刚刚我们已经成功运行好 django 项目。但是我们前面讨论过，django 使用的是 python 自带的 wsgiref，性能较低。平时的测试足够用，但并不适合线上的高并发环境。所以我们需要使用 uwsgi，使用多进程的方式启动 django。</p>
 <h4 id="配置-uwsgi-ini-文件"><a href="#配置-uwsgi-ini-文件" class="headerlink" title="配置 uwsgi.ini 文件"></a>配置 <code>uwsgi.ini</code> 文件</h4><p>进入 crm 项目的第一层文件夹，在此处创建一个 <code>uwsgi.ini</code> 文件：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># pwd</span></span><br><span class="line">/root/CRM</span><br><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># vim uwsgi.ini</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]# pwd</span><br><span class="line">/root/CRM</span><br><span class="line">(venv_crm) [root@localhost CRM]# vim uwsgi.ini</span><br></pre></td></tr></table></figure>
 
 <p>在刚刚创建的文件中写入如下配置信息：</p>
 <figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[uwsgi]</span></span><br><span class="line"><span class="comment"># Django-related settings</span></span><br><span class="line"><span class="comment"># the base directory (full path)</span></span><br><span class="line"><span class="comment"># 填入你crm项目的第一层绝对路径</span></span><br><span class="line"><span class="attr">chdir</span>           = /root/CRM</span><br><span class="line"><span class="comment"># Django's wsgi file</span></span><br><span class="line"><span class="comment"># 这个wsgi.py文件，在第二层的crm目录下</span></span><br><span class="line"><span class="attr">module</span>          = CRM.wsgi</span><br><span class="line"><span class="comment"># the virtualenv (full path)</span></span><br><span class="line"><span class="comment"># 填写虚拟环境的绝对路径</span></span><br><span class="line"><span class="attr">home</span>            = /opt/venvs/venv_crm</span><br><span class="line"><span class="comment"># process-related settings</span></span><br><span class="line"><span class="comment"># master</span></span><br><span class="line"><span class="attr">master</span>          = <span class="literal">true</span></span><br><span class="line"><span class="comment"># maximum number of worker processes</span></span><br><span class="line"><span class="comment"># 定义uwsgi的工作进程数，优化公式是 2 * cpu_核数 + 1 </span></span><br><span class="line"><span class="attr">processes</span>       = <span class="number">3</span></span><br><span class="line"><span class="comment"># the socket (use the full path to be safe</span></span><br><span class="line"><span class="comment"># 这个socket参数是把你的crm启动在一个基于uwsgi协议的socket链接上，用户无法直接访问了</span></span><br><span class="line"><span class="comment"># 启动在socket链接上，就只能用nginx通过uwsgi协议反向代理，用户无法直接访问了</span></span><br><span class="line"><span class="comment"># 保护后端进程的安全，以及高性能 </span></span><br><span class="line"><span class="comment"># 这个socket也就是crm启动的地址和端口 </span></span><br><span class="line"><span class="attr">socket</span>          = <span class="number">0.0</span>.<span class="number">0.0</span>:<span class="number">8000</span></span><br><span class="line"><span class="comment"># ... with appropriate permissions - may be needed</span></span><br><span class="line"><span class="comment"># chmod-socket    = 664</span></span><br><span class="line"><span class="comment"># clear environment on exit</span></span><br><span class="line"><span class="attr">vacuum</span>          = <span class="literal">true</span></span><br></pre></td></tr></table></figure>
 
 <h4 id="启动-uwsgi"><a href="#启动-uwsgi" class="headerlink" title="启动 uwsgi"></a>启动 uwsgi</h4><p>使用 uwsgi 命令，指定 uwsgi.ini 配置文件，启动 crm 程序，要注意找到 uwsgi 的位置：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># uwsgi --ini uwsgi.ini</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]# uwsgi --ini uwsgi.ini</span><br></pre></td></tr></table></figure>
 
 <p>启动成功后，发现提示网页无法正常工作：</p>
 <img src="/linux/crm-build/1581140304786.png" class="" width="1581140304786">
@@ -431,7 +430,7 @@
 <figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">server</span> &#123;</span><br><span class="line">    <span class="attribute">listen</span>       <span class="number">80</span> default_server;</span><br><span class="line">    <span class="attribute">listen</span>       [::]:<span class="number">80</span> default_server;</span><br><span class="line">    <span class="attribute">server_name</span>  _;</span><br><span class="line">    <span class="attribute">root</span>         /usr/share/nginx/html;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Load configuration files for the default server block.</span></span><br><span class="line">    <span class="attribute">include</span> /etc/nginx/default.d/<span class="regexp">*.conf</span>;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">location</span> / &#123;</span><br><span class="line">    	<span class="comment"># proxy_pass 处理的是 http 请求转发</span></span><br><span class="line">    	<span class="comment"># 这里要用基于 uwsgi 的转发参数</span></span><br><span class="line">        <span class="attribute">uwsgi_pass</span> <span class="number">0.0.0.0:8000</span>;</span><br><span class="line">        <span class="attribute">include</span> uwsgi_params;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">error_page</span> <span class="number">404</span> /<span class="number">404</span>.html;</span><br><span class="line">    	<span class="attribute">location</span> = /40x.html &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="attribute">error_page</span> <span class="number">500</span> <span class="number">502</span> <span class="number">503</span> <span class="number">504</span> /50x.html;</span><br><span class="line">    	<span class="attribute">location</span> = /50x.html &#123;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>修改好配置文件，保存并退出。平滑重启 nginx，并启动 uwsgi 服务：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># nginx -s reload</span></span><br><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># uwsgi --ini uwsgi.ini</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]# nginx -s reload</span><br><span class="line">(venv_crm) [root@localhost CRM]# uwsgi --ini uwsgi.ini</span><br></pre></td></tr></table></figure>
 
 <p>浏览器中输入服务器的 IP 地址。注意不要去 8000 端口，因为 nginx 监听的是 80 端口。如果访问 8000 端口，依然是直接访问的 uwsgi，还是无法正常访问。</p>
 <h4 id="静态文件托管"><a href="#静态文件托管" class="headerlink" title="静态文件托管"></a>静态文件托管</h4><p>当我们直接输入 IP 地址访问时，访问成功。但遇到一个问题——我们丢失了全部的样式，或者说，静态文件全部失效了。</p>
@@ -442,46 +441,46 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">STATIC_ROOT = <span class="string">'/tmp/crm_static'</span></span><br></pre></td></tr></table></figure>
 
 <p>保存退出，使用命令导出 crm 项目中的静态文件至刚刚指定的文件夹中：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># python3 manage.py collectstatic</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]# python3 manage.py collectstatic</span><br></pre></td></tr></table></figure>
 
 <p>查看我们指定的静态文件存放的路径，发现静态文件已经成功提出出来：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># ls /tmp/crm_static/</span></span><br><span class="line">admin  adminLTE  auth  __init__.py  rbac</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]# ls /tmp/crm_static/</span><br><span class="line">admin  adminLTE  auth  __init__.py  rbac</span><br></pre></td></tr></table></figure>
 
 <p>提取出静态文件后，我们需要在 nginx 的配置中指定静态文件所在的位置。首先当然是打开 nginx.conf 配置文件：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># vim /etc/nginx/nginx.conf</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]# vim /etc/nginx/nginx.conf</span><br></pre></td></tr></table></figure>
 
 <p>在 server 中原来的 location 下添加一条新的 location 配置：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">location / &#123;</span><br><span class="line">    uwsgi_pass 0.0.0.0:8000;</span><br><span class="line">    include uwsgi_params;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">location /static &#123;</span><br><span class="line">	<span class="built_in">alias</span> /tmp/crm_static;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">location / &#123;</span><br><span class="line">    uwsgi_pass 0.0.0.0:8000;</span><br><span class="line">    include uwsgi_params;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">location /static &#123;</span><br><span class="line">	alias /tmp/crm_static;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>这条配置的意思是给路径做一个别名，当发送来 <code>/static</code> 的请求时，到我们指定的静态文件存放位置返回静态文件。这个过程由 nginx 自动执行，不需要像后端发送请求。</p>
 <p>静态文件，别名的修改原理图如下：</p>
 <img src="/linux/crm-build/image-20200207163337987.png" class="" title="image-20200207163337987">
 
 <p>保存并退出配置，平滑重启 nginx，启动 uwsgi 服务：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># nginx -s reload</span></span><br><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># uwsgi --ini uwsgi.ini</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]# nginx -s reload</span><br><span class="line">(venv_crm) [root@localhost CRM]# uwsgi --ini uwsgi.ini</span><br></pre></td></tr></table></figure>
 
 <p>此时，我们就可以直接输入 IP，正常访问我们的 crm 项目了。</p>
 <img src="/linux/crm-build/1581146856257.png" class="" width="1581146856257">
 
 <h3 id="Supervisor-进程管理工具"><a href="#Supervisor-进程管理工具" class="headerlink" title="Supervisor 进程管理工具"></a>Supervisor 进程管理工具</h3><p>其实，我们已经完成了 crm 项目的部署。但是有这样一个问题：如果 uwsgi 因为某种原因崩溃了，而我们又没有及时发现。但是用户看来，会觉得网站很不好用。这时，我们就可以使用 Supervisor 进程管理工具。当后端进程崩溃时，Supervisor 会自动检测并自动重启 uwsgi 进程。</p>
 <p>首先，还是要安装 Supervisor 工具：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># yum install supervisor -y</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]# yum install supervisor -y</span><br></pre></td></tr></table></figure>
 
 <p>紧接着，使用命令生成 Supervisor 配置文件，定义管理 crm 的任务：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># echo_supervisord_conf &gt; /etc/supervisor.conf</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]# echo_supervisord_conf &gt; /etc/supervisor.conf</span><br></pre></td></tr></table></figure>
 
 <p>修改配置文件，在最底行，输入如下内容，Supervisor 其实也就是帮助用户执行命令而已：</p>
 <figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[program:crm]</span></span><br><span class="line"><span class="attr">command</span>=/opt/venvs/venv_crm/bin/uwsgi --ini  /root/CRM/uwsgi.ini    <span class="comment">; 程序启动命令，绝对路径</span></span><br><span class="line"><span class="attr">autostart</span>=<span class="literal">true</span>       <span class="comment">; 在supervisord启动的时候也自动启动</span></span><br><span class="line"><span class="attr">startsecs</span>=<span class="number">10</span>         <span class="comment">; 启动10秒后没有异常退出，就表示进程正常启动了，默认为1秒</span></span><br><span class="line"><span class="attr">autorestart</span>=<span class="literal">true</span>     <span class="comment">; 程序退出后自动重启,可选值：[unexpected,true,false]，默认为unexpected，表示进程意外杀死后才重启</span></span><br><span class="line"></span><br><span class="line"><span class="attr">stopasgroup</span>=<span class="literal">true</span>     <span class="comment">;默认为false,进程被杀死时，是否向这个进程组发送stop信号，包括子进程</span></span><br><span class="line"><span class="attr">killasgroup</span>=<span class="literal">true</span>     <span class="comment">;默认为false，向进程组发送kill信号，包括子进程</span></span><br></pre></td></tr></table></figure>
 
 <p>第一行 program 冒号后的 crm，就管理任务的一个名字而已，随便叫什么，自己能够看的懂就好。</p>
 <p>此时，我们就可以用命令启动 Supervisor，然后查看被管理的任务，可以通过 ps 命令查看 uwsgi 是否顺利启动：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># supervisord -c /etc/supervisor.conf </span></span><br><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># ps -ef | grep uwsgi</span></span><br><span class="line">root      37003  37002  0 15:50 ?        00:00:00 /opt/venvs/venv_crm/bin/uwsgi --ini /root/CRM/uwsgi.ini</span><br><span class="line">root      37005  37003  0 15:50 ?        00:00:00 /opt/venvs/venv_crm/bin/uwsgi --ini /root/CRM/uwsgi.ini</span><br><span class="line">root      37006  37003  0 15:50 ?        00:00:00 /opt/venvs/venv_crm/bin/uwsgi --ini /root/CRM/uwsgi.ini</span><br><span class="line">root      37007  37003  0 15:50 ?        00:00:00 /opt/venvs/venv_crm/bin/uwsgi --ini /root/CRM/uwsgi.ini</span><br><span class="line">root      37009  35426  0 15:51 pts/0    00:00:00 grep --color=auto uwsgi</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]# supervisord -c /etc/supervisor.conf </span><br><span class="line">(venv_crm) [root@localhost CRM]# ps -ef | grep uwsgi</span><br><span class="line">root      37003  37002  0 15:50 ?        00:00:00 /opt/venvs/venv_crm/bin/uwsgi --ini /root/CRM/uwsgi.ini</span><br><span class="line">root      37005  37003  0 15:50 ?        00:00:00 /opt/venvs/venv_crm/bin/uwsgi --ini /root/CRM/uwsgi.ini</span><br><span class="line">root      37006  37003  0 15:50 ?        00:00:00 /opt/venvs/venv_crm/bin/uwsgi --ini /root/CRM/uwsgi.ini</span><br><span class="line">root      37007  37003  0 15:50 ?        00:00:00 /opt/venvs/venv_crm/bin/uwsgi --ini /root/CRM/uwsgi.ini</span><br><span class="line">root      37009  35426  0 15:51 pts/0    00:00:00 grep --color=auto uwsgi</span><br></pre></td></tr></table></figure>
 
 <p>尝试杀死 uwsgi 进程，再使用 ps 命令查看：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># pkill uwsgi</span></span><br><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># ps -ef | grep uwsgi</span></span><br><span class="line">root      37003  37002  0 15:50 ?        00:00:01 /opt/venvs/venv_crm/bin/uwsgi --ini /root/CRM/uwsgi.ini</span><br><span class="line">root      37012  37003  0 15:53 ?        00:00:00 /opt/venvs/venv_crm/bin/uwsgi --ini /root/CRM/uwsgi.ini</span><br><span class="line">root      37013  37003  0 15:53 ?        00:00:00 /opt/venvs/venv_crm/bin/uwsgi --ini /root/CRM/uwsgi.ini</span><br><span class="line">root      37014  37003  0 15:53 ?        00:00:00 /opt/venvs/venv_crm/bin/uwsgi --ini /root/CRM/uwsgi.ini</span><br><span class="line">root      37016  35426  0 15:53 pts/0    00:00:00 grep --color=auto uwsgi</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]# pkill uwsgi</span><br><span class="line">(venv_crm) [root@localhost CRM]# ps -ef | grep uwsgi</span><br><span class="line">root      37003  37002  0 15:50 ?        00:00:01 /opt/venvs/venv_crm/bin/uwsgi --ini /root/CRM/uwsgi.ini</span><br><span class="line">root      37012  37003  0 15:53 ?        00:00:00 /opt/venvs/venv_crm/bin/uwsgi --ini /root/CRM/uwsgi.ini</span><br><span class="line">root      37013  37003  0 15:53 ?        00:00:00 /opt/venvs/venv_crm/bin/uwsgi --ini /root/CRM/uwsgi.ini</span><br><span class="line">root      37014  37003  0 15:53 ?        00:00:00 /opt/venvs/venv_crm/bin/uwsgi --ini /root/CRM/uwsgi.ini</span><br><span class="line">root      37016  35426  0 15:53 pts/0    00:00:00 grep --color=auto uwsgi</span><br></pre></td></tr></table></figure>
 
 <p>可以使用 Supervisor 的任务管理命令 supervisorctl 查看、启动或终止进程：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]<span class="comment"># supervisorctl -c /etc/supervisor.conf </span></span><br><span class="line">crm                              RUNNING   pid 37003, uptime 0:04:58</span><br><span class="line">supervisor&gt; stop crm</span><br><span class="line">crm: stopped</span><br><span class="line">supervisor&gt; start crm</span><br><span class="line">crm: started</span><br><span class="line">supervisor&gt; restart crm</span><br><span class="line">crm: stopped</span><br><span class="line">crm: started</span><br><span class="line">supervisor&gt; status crm</span><br><span class="line">crm                              RUNNING   pid 37054, uptime 0:00:16</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">(venv_crm) [root@localhost CRM]# supervisorctl -c /etc/supervisor.conf </span><br><span class="line">crm                              RUNNING   pid 37003, uptime 0:04:58</span><br><span class="line"><span class="meta">supervisor&gt;</span><span class="bash"> stop crm</span></span><br><span class="line">crm: stopped</span><br><span class="line"><span class="meta">supervisor&gt;</span><span class="bash"> start crm</span></span><br><span class="line">crm: started</span><br><span class="line"><span class="meta">supervisor&gt;</span><span class="bash"> restart crm</span></span><br><span class="line">crm: stopped</span><br><span class="line">crm: started</span><br><span class="line"><span class="meta">supervisor&gt;</span><span class="bash"> status crm</span></span><br><span class="line">crm                              RUNNING   pid 37054, uptime 0:00:16</span><br></pre></td></tr></table></figure>
 
 <p>大功告成，我们顺利实现 crm 的部署上线~</p>
 
@@ -499,12 +498,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/linux/common-command/" rel="prev" title="Linux 常用命令">
-      <i class="fa fa-chevron-left"></i> Linux 常用命令
+    <a href="/linux/yum/" rel="prev" title="Linux 的软件包管理工具 yum">
+      <i class="fa fa-chevron-left"></i> Linux 的软件包管理工具 yum
     </a></div>
       <div class="post-nav-item">
-    <a href="/linux/dns/" rel="next" title="dns 域名解析">
-      dns 域名解析 <i class="fa fa-chevron-right"></i>
+    <a href="/linux/nginx-multi-virtual-server/" rel="next" title="nginx 的多虚拟主机配置">
+      nginx 的多虚拟主机配置 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -581,7 +580,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">236</span>
+          <span class="site-state-item-count">241</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -590,6 +589,12 @@
           
         <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
 </div>

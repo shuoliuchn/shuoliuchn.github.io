@@ -157,6 +157,11 @@
     <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
 
   </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
         <li class="menu-item menu-item-categories">
 
     <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
@@ -230,7 +235,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-advanced/rpc/">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/django/drf-deserialization/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -244,560 +249,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/python-advanced/rpc/" class="post-title-link" itemprop="url">RPC 的原理和简单使用</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-02-29 00:43:34" itemprop="dateCreated datePublished" datetime="2020-02-29T00:43:34+08:00">2020-02-29</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-03-01 00:55:42" itemprop="dateModified" datetime="2020-03-01T00:55:42+08:00">2020-03-01</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python-%E8%BF%9B%E9%98%B6/" itemprop="url" rel="index"><span itemprop="name">Python 进阶</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>RPC，Remote Procedure Call，直译过来就是远程过程调用，是一种进程间的通信方式。占资源少，性能消耗低，传输效率高，但是实现起来比较复杂。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/python-advanced/rpc/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/project/renran-pc-build/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="刘硕">
-      <meta itemprop="description" content="不成为自己讨厌的人">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="刘硕的技术查阅手册">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/project/renran-pc-build/" class="post-title-link" itemprop="url">荏苒资讯前端项目搭建</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-02-28 01:06:36" itemprop="dateCreated datePublished" datetime="2020-02-28T01:06:36+08:00">2020-02-28</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-29 00:43:26" itemprop="dateModified" datetime="2020-02-29T00:43:26+08:00">2020-02-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%BB%BC%E5%90%88%E9%A1%B9%E7%9B%AE/" itemprop="url" rel="index"><span itemprop="name">综合项目</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>荏苒资讯项目之前端项目框架的搭建和模板的使用。基本上是一些安装环境和复制粘贴的过程，流水线操作，没啥好说的。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/project/renran-pc-build/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/translation/django-rest-framework-tutorial/authentication-permission/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="刘硕">
-      <meta itemprop="description" content="不成为自己讨厌的人">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="刘硕的技术查阅手册">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/translation/django-rest-framework-tutorial/authentication-permission/" class="post-title-link" itemprop="url">教程 4：认证 Authentication 和权限 Permission</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-02-26 19:27:38" itemprop="dateCreated datePublished" datetime="2020-02-26T19:27:38+08:00">2020-02-26</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-03-05 00:55:02" itemprop="dateModified" datetime="2020-03-05T00:55:02+08:00">2020-03-05</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91/" itemprop="url" rel="index"><span itemprop="name">官方文档翻译</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Django REST framework 官方文档翻译之认证与权限，介绍 drf 权限组建的用法。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/translation/django-rest-framework-tutorial/authentication-permission/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-advanced/queue-rabbitmq/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="刘硕">
-      <meta itemprop="description" content="不成为自己讨厌的人">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="刘硕的技术查阅手册">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/python-advanced/queue-rabbitmq/" class="post-title-link" itemprop="url">消息队列和 RabbitMQ</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-02-26 19:26:05" itemprop="dateCreated datePublished" datetime="2020-02-26T19:26:05+08:00">2020-02-26</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-03-06 00:46:04" itemprop="dateModified" datetime="2020-03-06T00:46:04+08:00">2020-03-06</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python-%E8%BF%9B%E9%98%B6/" itemprop="url" rel="index"><span itemprop="name">Python 进阶</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>消息队列和 RabbitMQ 的用法。消息队列是针对生产者消费者模型的解决方案，解耦合。RabbitMQ 是一款经典的消息队列工具。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/python-advanced/queue-rabbitmq/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/translation/django-rest-framework-tutorial/class-based-view/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="刘硕">
-      <meta itemprop="description" content="不成为自己讨厌的人">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="刘硕的技术查阅手册">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/translation/django-rest-framework-tutorial/class-based-view/" class="post-title-link" itemprop="url">教程 3：类视图 Class-based View</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-02-26 00:48:35" itemprop="dateCreated datePublished" datetime="2020-02-26T00:48:35+08:00">2020-02-26</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91/" itemprop="url" rel="index"><span itemprop="name">官方文档翻译</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Django REST framework 官方文档翻译之类视图，使用类视图，利用扩展视图类和通用视图类的扩展子类，极大简化代码。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/translation/django-rest-framework-tutorial/class-based-view/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/project/renran-proj-build/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="刘硕">
-      <meta itemprop="description" content="不成为自己讨厌的人">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="刘硕的技术查阅手册">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/project/renran-proj-build/" class="post-title-link" itemprop="url">荏苒资讯后端项目搭建</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-02-26 00:48:09" itemprop="dateCreated datePublished" datetime="2020-02-26T00:48:09+08:00">2020-02-26</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-29 00:43:26" itemprop="dateModified" datetime="2020-02-29T00:43:26+08:00">2020-02-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%BB%BC%E5%90%88%E9%A1%B9%E7%9B%AE/" itemprop="url" rel="index"><span itemprop="name">综合项目</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>荏苒资讯的搭建，包括目录构造，和 Django 项目的创建。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/project/renran-proj-build/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/project/renran-envir/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="刘硕">
-      <meta itemprop="description" content="不成为自己讨厌的人">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="刘硕的技术查阅手册">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/project/renran-envir/" class="post-title-link" itemprop="url">荏苒资讯项目环境部署</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-02-26 00:47:18" itemprop="dateCreated datePublished" datetime="2020-02-26T00:47:18+08:00">2020-02-26</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%BB%BC%E5%90%88%E9%A1%B9%E7%9B%AE/" itemprop="url" rel="index"><span itemprop="name">综合项目</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>荏苒资讯的环境安装</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/project/renran-envir/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/project/renran-basic-requirement/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="刘硕">
-      <meta itemprop="description" content="不成为自己讨厌的人">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="刘硕的技术查阅手册">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/project/renran-basic-requirement/" class="post-title-link" itemprop="url">项目开发基础概念和需求分析</a>
+            <a href="/django/drf-deserialization/" class="post-title-link" itemprop="url">反序列化</a>
         </h2>
 
         <div class="post-meta">
@@ -808,7 +260,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-02-26 00:46:17 / 修改时间：01:01:20" itemprop="dateCreated datePublished" datetime="2020-02-26T00:46:17+08:00">2020-02-26</time>
+              <time title="创建时间：2020-03-13 13:53:10 / 修改时间：14:53:09" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:10+08:00">2020-03-13</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -816,7 +268,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%BB%BC%E5%90%88%E9%A1%B9%E7%9B%AE/" itemprop="url" rel="index"><span itemprop="name">综合项目</span></a>
+                  <a href="/categories/Django/" itemprop="url" rel="index"><span itemprop="name">Django</span></a>
                 </span>
             </span>
 
@@ -831,10 +283,460 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>荏苒项目的开发基本概念，以及基本开发思路</p>
+          <p>反序列化，也就是将用户输入的数据存储到数据库中。因为要涉及到校验数据准确性的问题，相较于序列化，操作要更繁琐些。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/project/renran-basic-requirement/">
+              <a class="btn" href="/django/drf-deserialization/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/django/drf-authentication-permission/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/django/drf-authentication-permission/" class="post-title-link" itemprop="url">认证 Authentication 和权限 Permission</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-03-13 13:53:10 / 修改时间：14:53:09" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:10+08:00">2020-03-13</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Django/" itemprop="url" rel="index"><span itemprop="name">Django</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>DRF 的认证和权限，用来对一些敏感数据进行限制，只有指定用户才能访问。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/django/drf-authentication-permission/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/django/drf-api-view/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/django/drf-api-view/" class="post-title-link" itemprop="url">基本视图类 APIView</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-03-13 13:53:10 / 修改时间：14:53:09" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:10+08:00">2020-03-13</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Django/" itemprop="url" rel="index"><span itemprop="name">Django</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>Django REST framework 的 APIView 基本视图类，是 DRF 提供的所有视图类的基类，也是可自定性最强的一个视图类。当然，功能很少，操作十分繁琐。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/django/drf-api-view/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/django/drf-generic-view/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/django/drf-generic-view/" class="post-title-link" itemprop="url">通用视图类 GenericAPIView</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-03-13 13:53:10 / 修改时间：14:53:09" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:10+08:00">2020-03-13</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Django/" itemprop="url" rel="index"><span itemprop="name">Django</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>Django REST framework 的通用视图类，把视图中独特的代码抽出来，让代码更加通用。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/django/drf-generic-view/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/django/django-orm-single/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/django/django-orm-single/" class="post-title-link" itemprop="url">Django 模型 model 数据库 ORM 单表操作</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-03-13 13:53:10 / 修改时间：14:53:09" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:10+08:00">2020-03-13</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Django/" itemprop="url" rel="index"><span itemprop="name">Django</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>ORM 的初识和单表操作，主要是单表的增删改查。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/django/django-orm-single/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/django/django-ajax/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/django/django-ajax/" class="post-title-link" itemprop="url">Django 使用 ajax 和通过 csrf 认证的三种方式</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-03-13 13:53:10 / 修改时间：14:53:09" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:10+08:00">2020-03-13</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Django/" itemprop="url" rel="index"><span itemprop="name">Django</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>Django 中使用 ajax 发送异步请求的方法，以及解决 csrf 跨站请求伪造防御机制的方法。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/django/django-ajax/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/django/drf-front-rear-sep/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/django/drf-front-rear-sep/" class="post-title-link" itemprop="url">前后端分离相关概念</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-03-13 13:53:10 / 修改时间：14:53:08" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:10+08:00">2020-03-13</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Django/" itemprop="url" rel="index"><span itemprop="name">Django</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>前后端分离的相关理论，包括前后端分不分离的差异，API 接口的讨论，以及简要介绍 DRF 所遵循的 RESTful 规范，讨论了序列化，还简要介绍了 DRF。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/django/drf-front-rear-sep/">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -881,8 +783,9 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2020-02-26 00:44:15" itemprop="dateCreated datePublished" datetime="2020-02-26T00:44:15+08:00">2020-02-26</time>
+              <time title="创建时间：2020-03-13 13:53:10 / 修改时间：14:53:08" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:10+08:00">2020-03-13</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -932,7 +835,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/django/django-views/">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/django/drf-serializer/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -946,7 +849,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/django/django-views/" class="post-title-link" itemprop="url">Django 视图 view</a>
+            <a href="/django/drf-serializer/" class="post-title-link" itemprop="url">序列化器 Serializer</a>
         </h2>
 
         <div class="post-meta">
@@ -955,8 +858,9 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2020-02-26 00:43:41" itemprop="dateCreated datePublished" datetime="2020-02-26T00:43:41+08:00">2020-02-26</time>
+              <time title="创建时间：2020-03-13 13:53:10 / 修改时间：14:53:08" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:10+08:00">2020-03-13</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -979,10 +883,85 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>Django 的视图，讨论了 CBV 和 FBV 以及给视图加装饰器的方法。</p>
+          <p>序列化器，就是 DRF 用来实现序列化和反序列化的工具。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/django/django-views/">
+              <a class="btn" href="/django/drf-serializer/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/django/APIView/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/django/APIView/" class="post-title-link" itemprop="url">APIView</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-03-13 13:53:10 / 修改时间：14:53:08" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:10+08:00">2020-03-13</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Django/" itemprop="url" rel="index"><span itemprop="name">Django</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>APIView 是 DRF 所有视图类的基类，相较于 Django 自带的视图 View，的自动化程度更高，代码更简短，更易用。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/django/APIView/">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1006,7 +985,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/25/">25</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1074,7 +1053,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">236</span>
+          <span class="site-state-item-count">241</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1083,6 +1062,12 @@
           
         <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
 </div>

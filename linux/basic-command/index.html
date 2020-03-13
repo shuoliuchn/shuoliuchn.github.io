@@ -30,8 +30,8 @@
 <meta property="og:description" content="Linux 的基本使用命令，包括各种常见的文件操作命令。都是日常经常用得到的，供检索用">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://sliu.vip/linux/basic-command/1581324652904.png">
-<meta property="article:published_time" content="2020-02-17T06:29:44.000Z">
-<meta property="article:modified_time" content="2020-02-23T16:14:51.000Z">
+<meta property="article:published_time" content="2020-03-13T05:53:10.923Z">
+<meta property="article:modified_time" content="2020-03-13T06:53:09.093Z">
 <meta property="article:author" content="刘硕">
 <meta property="article:tag" content="Python">
 <meta property="article:tag" content="全栈开发">
@@ -161,6 +161,11 @@
     <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
 
   </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
         <li class="menu-item menu-item-categories">
 
     <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
@@ -256,16 +261,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2020-02-17 14:29:44" itemprop="dateCreated datePublished" datetime="2020-02-17T14:29:44+08:00">2020-02-17</time>
+              <time title="创建时间：2020-03-13 13:53:10 / 修改时间：14:53:09" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:10+08:00">2020-03-13</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-24 00:14:51" itemprop="dateModified" datetime="2020-02-24T00:14:51+08:00">2020-02-24</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -299,31 +298,31 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">命令   可选参数   你要操作的对象</span><br></pre></td></tr></table></figure>
 
 <h3 id="增"><a href="#增" class="headerlink" title="增"></a>增</h3><h4 id="mkdir-创建文件夹"><a href="#mkdir-创建文件夹" class="headerlink" title="mkdir 创建文件夹"></a>mkdir 创建文件夹</h4><p>mkdir 命令用于创建新的文件夹，可使用相对路径或绝对路径创建：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir  <span class="built_in">test</span>  <span class="comment"># 创建名为test的文件夹，等同于 mkdir  ./test</span></span><br><span class="line">mkdir  /tmp/linux</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir  test  # 创建名为test的文件夹，等同于 mkdir  ./test</span><br><span class="line">mkdir  /tmp/linux</span><br></pre></td></tr></table></figure>
 
 <p>若要同时创建两个或多个文件夹，可以用空格分隔开，例如在 test 目录中创建 boy 和 girl 两个文件夹：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span>  <span class="built_in">test</span></span><br><span class="line">mkdir  boy gilr</span><br><span class="line"> <span class="comment"># 另一种写法：</span></span><br><span class="line">mkdir  /root/<span class="built_in">test</span>/&#123;man,woman&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd  test</span><br><span class="line">mkdir  boy gilr</span><br><span class="line"><span class="meta"> #</span><span class="bash"> 另一种写法：</span></span><br><span class="line">mkdir  /root/test/&#123;man,woman&#125;</span><br></pre></td></tr></table></figure>
 
 <p>mkdir 默认是无法创建多层文件夹的。若要创建多层文件夹，需要指定 <code>-p</code> 参数递归创建文件夹：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir  -p  /root/<span class="built_in">test</span>/男同学/豹哥</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir  -p  /root/test/男同学/豹哥</span><br></pre></td></tr></table></figure>
 
 <h4 id="touch-创建文本文件"><a href="#touch-创建文本文件" class="headerlink" title="touch 创建文本文件"></a>touch 创建文本文件</h4><p> 使用 touch 命令的可以创建普通文本文件，也就是用来存放字符串的文件：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">touch 今天学Linux贼开心  <span class="comment"># 创建一个文本文件，文件名为："今天学Linux贼开心"</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">touch 今天学Linux贼开心  # 创建一个文本文件，文件名为："今天学Linux贼开心"</span><br></pre></td></tr></table></figure>
 
 <h3 id="删"><a href="#删" class="headerlink" title="删"></a>删</h3><h4 id="rm-删除"><a href="#rm-删除" class="headerlink" title="rm 删除"></a>rm 删除</h4><p>rm，即 remove，用来删除文件或文件夹（Linux 中一切接文件，所以文件夹也是一种文件）。其基本语法为：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm  可选参数   文件名</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm  可选参数   文件名</span><br></pre></td></tr></table></figure>
 
 <p>例如，删除 <code>test.txt</code> 文件：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm test.txt  <span class="comment"># 默认会让用户确认是否删除，输入y删除，输入n取消</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm test.txt  # 默认会让用户确认是否删除，输入y删除，输入n取消</span><br></pre></td></tr></table></figure>
 
 <p>如果需要强制删除文件，不必给我们提示，可以在删除的时候加上 -f 参数：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm -f  test.txt</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm -f  test.txt</span><br></pre></td></tr></table></figure>
 
 <p>注意！！<code>rm -f</code> 是强制删除文件，不给用户任何提示，危险慎用！！！</p>
 <p>注意！！<code>rm -f</code> 是强制删除文件，不给用户任何提示，危险慎用！！！</p>
 <p>注意！！<code>rm -f</code> 是强制删除文件，不给用户任何提示，危险慎用！！！</p>
 <p>rm 命令默认只能删除文件。若要删除文件夹，需要加上 -r 参数。此时，会递归删除指定文件夹以及其中全部内容：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm -r  /<span class="built_in">test</span>  <span class="comment"># 递归删除根目录下的浩哥，及其子文件夹</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm -r  /test  # 递归删除根目录下的浩哥，及其子文件夹</span><br></pre></td></tr></table></figure>
 
 <p>同样地，对于每个即将删除的文件/文件夹，系统都会向用户再次确认。只有当用户输入 y 确认后，才会删除掉。</p>
 <p>接下来要提到的命令，很好用，但也很危险，一定要看仔细了。</p>
@@ -332,123 +331,123 @@
 <p>危险命令！！！！！！！！！！！慎用！！！！看好了</p>
 <p>如果文件夹中的内容过多，我们不想每个文件都确认一下，可以使用 -rf 参数，强制递归删除文件和文件夹，且不会给用户任何提示。</p>
 <p>因为不会有提示，所以敲命令时一定要仔细，其用法为：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rm  -rf  /tmp/*  <span class="comment"># 删除tmp下所有内容 </span></span><br><span class="line">rm  -rf  /tmp/   <span class="comment"># 不加*是会直接删除这个文件夹</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rm  -rf  /tmp/*  # 删除tmp下所有内容 </span><br><span class="line">rm  -rf  /tmp/   # 不加*是会直接删除这个文件夹</span><br></pre></td></tr></table></figure>
 
 <p>下面这条命令，无论何时何地，断然不要用！！！</p>
 <p>下面这条命令，无论何时何地，绝对不要用！！！</p>
 <p>下面这条命令，无论何时何地，千万不要用！！！</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm -rf /*    <span class="comment"># 删除所有文件</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rm -rf /*    # 删除所有文件</span><br></pre></td></tr></table></figure>
 
 
 
 <h3 id="改"><a href="#改" class="headerlink" title="改"></a>改</h3><h4 id="cd-切换目录"><a href="#cd-切换目录" class="headerlink" title="cd 切换目录"></a>cd 切换目录</h4><p>cd，即 change  directory 更改目录。其用法为：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span>  /   <span class="comment"># 切换目录到 根目录下  </span></span><br><span class="line"><span class="built_in">cd</span>  ./tmp   <span class="comment"># 切换到当前目录下的tmp文件夹中</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd  /   # 切换目录到 根目录下  </span><br><span class="line">cd  ./tmp   # 切换到当前目录下的tmp文件夹中</span><br></pre></td></tr></table></figure>
 
 <h4 id="exit-退出-Linux"><a href="#exit-退出-Linux" class="headerlink" title="exit 退出 Linux"></a>exit 退出 Linux</h4><p>exit 命令用来退出 Linux 系统：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">exit</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exit</span><br></pre></td></tr></table></figure>
 
 <h4 id="clear-清空屏幕"><a href="#clear-清空屏幕" class="headerlink" title="clear 清空屏幕"></a>clear 清空屏幕</h4><p>clear 命令用来清空屏幕，删除屏幕中显示的左右内容：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">clear</span><br></pre></td></tr></table></figure>
 
-<h4 id="hostnamectl-主机名控制"><a href="#hostnamectl-主机名控制" class="headerlink" title="hostnamectl 主机名控制"></a>hostnamectl 主机名控制</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hostnamectl   <span class="built_in">set</span>-hostname  linuxlearning <span class="comment"># 修改主机名，重新登陆生效</span></span><br></pre></td></tr></table></figure>
+<h4 id="hostnamectl-主机名控制"><a href="#hostnamectl-主机名控制" class="headerlink" title="hostnamectl 主机名控制"></a>hostnamectl 主机名控制</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hostnamectl   set-hostname  linuxlearning # 修改主机名，重新登陆生效</span><br></pre></td></tr></table></figure>
 
 
 
 <h4 id="Linux-的特殊重定向符号"><a href="#Linux-的特殊重定向符号" class="headerlink" title="Linux 的特殊重定向符号"></a>Linux 的特殊重定向符号</h4><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt;  <span class="comment"># 重定向输出覆盖符，类似于Python的w模式，覆盖写</span></span><br><span class="line"><span class="meta">&gt;&gt;</span> <span class="comment"># 重定向追加输出符，类似于Python的a模式，追加写入</span></span><br><span class="line"></span><br><span class="line">&lt;  <span class="comment"># 重定向写入覆盖符，数据库数据导入时候用到</span></span><br><span class="line">&lt;&lt; <span class="comment"># 重定向追加写入符</span></span><br></pre></td></tr></table></figure>
 <p>我们用的比较多的是前两个符号，作用是将前一个命令输出的内容写入到文件中：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># echo "大师兄，三师弟被妖怪抓走了~"  &gt;  test.txt</span></span><br><span class="line">[root@localhost ~]<span class="comment"># echo "大师兄，师傅被妖怪抓走了~" &gt;&gt; test.txt</span></span><br><span class="line">[root@localhost ~]<span class="comment"># echo "大师兄，快来救我！！" &gt;&gt; test.txt</span></span><br><span class="line">[root@localhost ~]<span class="comment"># cat -n test.txt</span></span><br><span class="line">     1	大师兄，三师弟被妖怪抓走了~</span><br><span class="line">     2	大师兄，师傅被妖怪抓走了~</span><br><span class="line">     3	大师兄，快来救我！！</span><br><span class="line">[root@localhost ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# echo "大师兄，三师弟被妖怪抓走了~"  &gt;  test.txt</span><br><span class="line">[root@localhost ~]# echo "大师兄，师傅被妖怪抓走了~" &gt;&gt; test.txt</span><br><span class="line">[root@localhost ~]# echo "大师兄，快来救我！！" &gt;&gt; test.txt</span><br><span class="line">[root@localhost ~]# cat -n test.txt</span><br><span class="line">     1	大师兄，三师弟被妖怪抓走了~</span><br><span class="line">     2	大师兄，师傅被妖怪抓走了~</span><br><span class="line">     3	大师兄，快来救我！！</span><br><span class="line">[root@localhost ~]#</span><br></pre></td></tr></table></figure>
 
 <h4 id="cp-复制"><a href="#cp-复制" class="headerlink" title="cp 复制"></a>cp 复制</h4><p>cp，即 copy，用于复制文件或文件夹。其基本语法为：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp  源文件  拷贝后的文件</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp  源文件  拷贝后的文件</span><br></pre></td></tr></table></figure>
 
 <p>直接使用 cp 命令可以拷贝单个的文件：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp  test.txt   test.txt.bak  <span class="comment">#拷贝单个文件</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp  test.txt   test.txt.bak  #拷贝单个文件</span><br></pre></td></tr></table></figure>
 
 <p>但是如果要拷贝文件夹，需要使用 -r 参数，进行递归拷贝：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp -r <span class="built_in">test</span> /tmp    <span class="comment"># 递归拷贝当前目录下的test文件夹所有内容到/tmp目录下</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp -r test /tmp    # 递归拷贝当前目录下的test文件夹所有内容到/tmp目录下</span><br></pre></td></tr></table></figure>
 
 <h4 id="mv-移动和重命名"><a href="#mv-移动和重命名" class="headerlink" title="mv 移动和重命名"></a>mv 移动和重命名</h4><p>mv，即 move，主要有两个作用：一个是移动文件的作用，另一个是重命名的作用。</p>
 <p>mv 可以用来移动文件或文件夹的路径：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mv    /tmp/<span class="built_in">test</span>/  /    <span class="comment"># 移动test文件夹至根目录</span></span><br><span class="line">mv   ./test.txt  ../   <span class="comment"># 把当前目录下的test.txt移动到上一级目录去</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mv    /tmp/test/  /    # 移动test文件夹至根目录</span><br><span class="line">mv   ./test.txt  ../   # 把当前目录下的test.txt移动到上一级目录去</span><br></pre></td></tr></table></figure>
 
 <p>mv 也可以起到重命名文件的作用</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mv shi.txt  好诗.txt    <span class="comment"># 将“shi.txt”重命名为“好诗.txt”</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mv shi.txt  好诗.txt    # 将“shi.txt”重命名为“好诗.txt”</span><br></pre></td></tr></table></figure>
 
 <p>mv 也可以用来重命名文件夹，但是有个小小的坑：<br>第一种情况，新的文件夹名字不存在，则成功实现重命名：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mv <span class="built_in">test</span>/   linuxtest</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mv test/   linuxtest</span><br></pre></td></tr></table></figure>
 
 <p>第二种情况，新的文件夹名字存在，则是移动到该文件夹的目录下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># ls</span></span><br><span class="line">linuxtest  <span class="built_in">test</span></span><br><span class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># mv test linuxtest</span></span><br><span class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># ls</span></span><br><span class="line">linuxtest</span><br><span class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># ls linuxtest/</span></span><br><span class="line"><span class="built_in">test</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost test]# ls</span><br><span class="line">linuxtest  test</span><br><span class="line">[root@localhost test]# mv test linuxtest</span><br><span class="line">[root@localhost test]# ls</span><br><span class="line">linuxtest</span><br><span class="line">[root@localhost test]# ls linuxtest/</span><br><span class="line">test</span><br></pre></td></tr></table></figure>
 
 <h3 id="查"><a href="#查" class="headerlink" title="查"></a>查</h3><p>很多信息其实直接从命令行前的提示就可以看出来：</p>
 <img src="/linux/basic-command/1581324652904.png" class="" width="1581324652904">
 
 <h4 id="pwd-打印工作目录"><a href="#pwd-打印工作目录" class="headerlink" title="pwd 打印工作目录"></a>pwd 打印工作目录</h4><p>pwd，即 print working direcotry，用来打印当前所在的工作目录，也就是我在哪的意思，输出当前所处的绝对路径。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># pwd</span></span><br><span class="line">/root/<span class="built_in">test</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost test]# pwd</span><br><span class="line">/root/test</span><br></pre></td></tr></table></figure>
 
 <h4 id="whoami-查看用户名"><a href="#whoami-查看用户名" class="headerlink" title="whoami 查看用户名"></a>whoami 查看用户名</h4><p>whoami，即 who am I，我是谁的意思，用来查看当前登录用户的用户名：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># whoami</span></span><br><span class="line">root</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# whoami</span><br><span class="line">root</span><br></pre></td></tr></table></figure>
 
 <h4 id="hostname-主机名"><a href="#hostname-主机名" class="headerlink" title="hostname 主机名"></a>hostname 主机名</h4><p>用来查看主机名字：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># hostname</span></span><br><span class="line">localhost</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# hostname</span><br><span class="line">localhost</span><br></pre></td></tr></table></figure>
 
 <h4 id="which-命令位置"><a href="#which-命令位置" class="headerlink" title="which 命令位置"></a>which 命令位置</h4><p>which，哪一个，用来查看命令所处的位置。是去环境变量中查找是否有相应的命令文件： </p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">which</span> python  <span class="comment"># 去环境变量中寻找是否存在python解释器，也就是PATH变量</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">which python  # 去环境变量中寻找是否存在python解释器，也就是PATH变量</span><br></pre></td></tr></table></figure>
 
 <h4 id="ls-查看文件夹内容"><a href="#ls-查看文件夹内容" class="headerlink" title="ls 查看文件夹内容"></a>ls 查看文件夹内容</h4><p>ls，即 list，列出文件夹中所有的文件和文件夹内容的命令：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># ls    # ls不接参数，查看当前目录中的内容</span></span><br><span class="line">anaconda-ks.cfg  dj  <span class="built_in">test</span>  test.py  test.txt  test.txt.bak</span><br><span class="line">[root@localhost ~]<span class="comment"># ls /usr/    # 查看指定文件夹中的内容</span></span><br><span class="line">bin  etc  games  include  lib  lib64  libexec  <span class="built_in">local</span>  sbin  share  src  tmp</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# ls    # ls不接参数，查看当前目录中的内容</span><br><span class="line">anaconda-ks.cfg  dj  test  test.py  test.txt  test.txt.bak</span><br><span class="line">[root@localhost ~]# ls /usr/    # 查看指定文件夹中的内容</span><br><span class="line">bin  etc  games  include  lib  lib64  libexec  local  sbin  share  src  tmp</span><br></pre></td></tr></table></figure>
 
 <p>ls 可以接 <code>-l</code> 参数，查看文件详细信息，可简写作 <code>ll</code>：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># ls -l</span></span><br><span class="line">total 16</span><br><span class="line">-rw-------. 1 root root 1253 Feb  4 20:00 anaconda-ks.cfg</span><br><span class="line">drwxr-xr-x. 4 root root   64 Feb  5 14:44 dj</span><br><span class="line">drwxr-xr-x. 3 root root   23 Feb 10 16:24 <span class="built_in">test</span></span><br><span class="line">-rw-r--r--. 1 root root  118 Feb  6 19:59 test.py</span><br><span class="line">-rw-r--r--. 1 root root  110 Feb 10 15:53 test.txt</span><br><span class="line">-rw-r--r--. 1 root root  110 Feb 10 16:06 test.txt.bak</span><br><span class="line">[root@localhost ~]<span class="comment"># ll</span></span><br><span class="line">total 16</span><br><span class="line">-rw-------. 1 root root 1253 Feb  4 20:00 anaconda-ks.cfg</span><br><span class="line">drwxr-xr-x. 4 root root   64 Feb  5 14:44 dj</span><br><span class="line">drwxr-xr-x. 3 root root   23 Feb 10 16:24 <span class="built_in">test</span></span><br><span class="line">-rw-r--r--. 1 root root  118 Feb  6 19:59 test.py</span><br><span class="line">-rw-r--r--. 1 root root  110 Feb 10 15:53 test.txt</span><br><span class="line">-rw-r--r--. 1 root root  110 Feb 10 16:06 test.txt.bak</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# ls -l</span><br><span class="line">total 16</span><br><span class="line">-rw-------. 1 root root 1253 Feb  4 20:00 anaconda-ks.cfg</span><br><span class="line">drwxr-xr-x. 4 root root   64 Feb  5 14:44 dj</span><br><span class="line">drwxr-xr-x. 3 root root   23 Feb 10 16:24 test</span><br><span class="line">-rw-r--r--. 1 root root  118 Feb  6 19:59 test.py</span><br><span class="line">-rw-r--r--. 1 root root  110 Feb 10 15:53 test.txt</span><br><span class="line">-rw-r--r--. 1 root root  110 Feb 10 16:06 test.txt.bak</span><br><span class="line">[root@localhost ~]# ll</span><br><span class="line">total 16</span><br><span class="line">-rw-------. 1 root root 1253 Feb  4 20:00 anaconda-ks.cfg</span><br><span class="line">drwxr-xr-x. 4 root root   64 Feb  5 14:44 dj</span><br><span class="line">drwxr-xr-x. 3 root root   23 Feb 10 16:24 test</span><br><span class="line">-rw-r--r--. 1 root root  118 Feb  6 19:59 test.py</span><br><span class="line">-rw-r--r--. 1 root root  110 Feb 10 15:53 test.txt</span><br><span class="line">-rw-r--r--. 1 root root  110 Feb 10 16:06 test.txt.bak</span><br></pre></td></tr></table></figure>
 
 <p>可以使用 <code>-a</code> 参数查看隐藏文件，Linux 中以 <code>.</code> 开头的文件夹即是隐藏文件：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># ls -a</span></span><br><span class="line">.                .bash_logout   .cshrc          .python_history    <span class="built_in">test</span>          .viminfo</span><br><span class="line">..               .bash_profile  dj              .rediscli_history  test.py</span><br><span class="line">anaconda-ks.cfg  .bashrc        .mysql_history  .ssh               test.txt</span><br><span class="line">.bash_history    .cache         .pki            .tcshrc            test.txt.bak</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# ls -a</span><br><span class="line">.                .bash_logout   .cshrc          .python_history    test          .viminfo</span><br><span class="line">..               .bash_profile  dj              .rediscli_history  test.py</span><br><span class="line">anaconda-ks.cfg  .bashrc        .mysql_history  .ssh               test.txt</span><br><span class="line">.bash_history    .cache         .pki            .tcshrc            test.txt.bak</span><br></pre></td></tr></table></figure>
 
 <p>Linux 有几个比较特殊的文件夹，可以通过 ls 命令来查看：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ls .    <span class="comment"># 点代表特殊文件夹，代表当前目录</span></span><br><span class="line">ls ..   <span class="comment"># 上级目录</span></span><br><span class="line">ls  -   <span class="comment"># 上一次的工作目录</span></span><br><span class="line">ls  ~   <span class="comment"># 当前登录用户的 家目录</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ls .    # 点代表特殊文件夹，代表当前目录</span><br><span class="line">ls ..   # 上级目录</span><br><span class="line">ls  -   # 上一次的工作目录</span><br><span class="line">ls  ~   # 当前登录用户的 家目录</span><br></pre></td></tr></table></figure>
 
 <h4 id="cat-查看文件内容"><a href="#cat-查看文件内容" class="headerlink" title="cat 查看文件内容"></a>cat 查看文件内容</h4><p>cat 命令用来查询文件内容的，其基本语法为：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat  文件名</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat  文件名</span><br></pre></td></tr></table></figure>
 
 <p>例如：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># cat test.txt</span></span><br><span class="line">大师兄，三师弟被妖怪抓走了~</span><br><span class="line">大师兄，师傅被妖怪抓走了~</span><br><span class="line">大师兄，快来救我！！</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# cat test.txt</span><br><span class="line">大师兄，三师弟被妖怪抓走了~</span><br><span class="line">大师兄，师傅被妖怪抓走了~</span><br><span class="line">大师兄，快来救我！！</span><br></pre></td></tr></table></figure>
 
 <p>cat 后接 -n 可以显示出行号：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># cat -n test.txt</span></span><br><span class="line">     1	大师兄，三师弟被妖怪抓走了~</span><br><span class="line">     2	大师兄，师傅被妖怪抓走了~</span><br><span class="line">     3	大师兄，快来救我！！</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# cat -n test.txt</span><br><span class="line">     1	大师兄，三师弟被妖怪抓走了~</span><br><span class="line">     2	大师兄，师傅被妖怪抓走了~</span><br><span class="line">     3	大师兄，快来救我！！</span><br></pre></td></tr></table></figure>
 
 <p>cat 命令可以结合 [特殊重定向符号](#Linux 的特殊重定向符号) 向文件中写入内容：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># touch first.py</span></span><br><span class="line">[root@localhost ~]<span class="comment"># cat &gt;&gt; first.py&lt;&lt;EOF</span></span><br><span class="line">&gt; <span class="comment">#!coding:utf8</span></span><br><span class="line">&gt; <span class="built_in">print</span>(<span class="string">'来左边跟我一起画个龙，在你右边划一刀彩虹'</span>)</span><br><span class="line">&gt; EOF</span><br><span class="line">[root@localhost ~]<span class="comment"># cat first.py</span></span><br><span class="line"><span class="comment">#!coding:utf8</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">'来左边跟我一起画个龙，在你右边划一刀彩虹'</span>)</span><br><span class="line">[root@localhost ~]<span class="comment"># python first.py </span></span><br><span class="line">来左边跟我一起画个龙，在你右边划一刀彩虹</span><br><span class="line">[root@localhost ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# touch first.py</span><br><span class="line">[root@localhost ~]# cat &gt;&gt; first.py&lt;&lt;EOF</span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> <span class="comment">#!coding:utf8</span></span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> <span class="built_in">print</span>(<span class="string">'来左边跟我一起画个龙，在你右边划一刀彩虹'</span>)</span></span><br><span class="line"><span class="meta">&gt;</span><span class="bash"> EOF</span></span><br><span class="line">[root@localhost ~]# cat first.py</span><br><span class="line"><span class="meta">#</span><span class="bash">!coding:utf8</span></span><br><span class="line">print('来左边跟我一起画个龙，在你右边划一刀彩虹')</span><br><span class="line">[root@localhost ~]# python first.py </span><br><span class="line">来左边跟我一起画个龙，在你右边划一刀彩虹</span><br><span class="line">[root@localhost ~]#</span><br></pre></td></tr></table></figure>
 
 <h4 id="echo-打印"><a href="#echo-打印" class="headerlink" title="echo 打印"></a>echo 打印</h4><p>echo 命令用于打印的内容，例如：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># echo "大郎，起来喝药了"</span></span><br><span class="line">大郎，起来喝药了</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# echo "大郎，起来喝药了"</span><br><span class="line">大郎，起来喝药了</span><br></pre></td></tr></table></figure>
 
 <p>也可以将内容赋值给变量，然后直接打印变量名。Linux 这样定义一个变量：</p>
 <figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">name</span>=<span class="string">"大郎"</span></span><br></pre></td></tr></table></figure>
 
 <p>通过在变量名前加一个 <code>$</code> 符号的形式取出变量的值：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="variable">$name</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo $name</span><br></pre></td></tr></table></figure>
 
 <h4 id="Linux-的命令帮助信息查看"><a href="#Linux-的命令帮助信息查看" class="headerlink" title="Linux 的命令帮助信息查看"></a>Linux 的命令帮助信息查看</h4><p>有 <code>--help</code> 和 <code>man</code> 两种方式查看命令的帮助信息：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ls --<span class="built_in">help</span>   <span class="comment"># 查看简单帮助信息</span></span><br><span class="line">man ls      <span class="comment"># man手册，查看命令的详细说明文档</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ls --help   # 查看简单帮助信息</span><br><span class="line">man ls      # man手册，查看命令的详细说明文档</span><br></pre></td></tr></table></figure>
 
 <h4 id="find-查询"><a href="#find-查询" class="headerlink" title="find 查询"></a>find 查询</h4><p>find 命令用来查询搜索，其基本语法为：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find  从哪找   -name   你要找的东西名字是什么</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find  从哪找   -name   你要找的东西名字是什么</span><br></pre></td></tr></table></figure>
 
 
 <p>例如，在 Linux 下全局搜索以 <code>.txt</code> 结尾的文件，其中 <code>*</code> 为通配符，可以匹配任意内容：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find  /   -name   <span class="string">"*.txt"</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find  /   -name   "*.txt"</span><br></pre></td></tr></table></figure>
 
 <p>再比如，在 <code>/etc/</code> 目录下，进行局部搜索，找出网卡的文件，提示，网卡文件名字以 <code>ifcfg</code> 开头：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find   /etc     -name     <span class="string">"ifcfg*"</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find   /etc     -name     "ifcfg*"</span><br></pre></td></tr></table></figure>
 
 <p>除了指定文件名查找，还可以附加 -type 参数查找某一类型的文件，诸如：</p>
 <figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">b</span> <span class="string">- 块设备文件</span></span><br><span class="line"><span class="attr">d</span> <span class="string">- 目录</span></span><br><span class="line"><span class="attr">c</span> <span class="string">- 字符设备文件</span></span><br><span class="line"><span class="attr">p</span> <span class="string">- 管道文件</span></span><br><span class="line"><span class="attr">l</span> <span class="string">- 符号链接文件</span></span><br><span class="line"><span class="attr">f</span> <span class="string">- 普通文件</span></span><br><span class="line"><span class="attr">s</span> <span class="string">- socket文件</span></span><br></pre></td></tr></table></figure>
 
 <p>全局搜索和 Python 相关的文件夹：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find  /  -<span class="built_in">type</span>  d   -name <span class="string">"python*"</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find  /  -type  d   -name "python*"</span><br></pre></td></tr></table></figure>
 
 <p>全局搜索，和 Python 相关的文件：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find  /  -<span class="built_in">type</span>  f   -name <span class="string">"python*"</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find  /  -type  f   -name "python*"</span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -464,12 +463,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/bug-bible/vue-bug/TypeError/" rel="prev" title="TypeError">
-      <i class="fa fa-chevron-left"></i> TypeError
+    <a href="/linux/server-linux/" rel="prev" title="服务器与 Linux 基础知识">
+      <i class="fa fa-chevron-left"></i> 服务器与 Linux 基础知识
     </a></div>
       <div class="post-nav-item">
-    <a href="/linux/centos-vmware/" rel="next" title="虚拟机安装 CentOS">
-      虚拟机安装 CentOS <i class="fa fa-chevron-right"></i>
+    <a href="/linux/yum/" rel="next" title="Linux 的软件包管理工具 yum">
+      Linux 的软件包管理工具 yum <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -546,7 +545,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">236</span>
+          <span class="site-state-item-count">241</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -555,6 +554,12 @@
           
         <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
 </div>

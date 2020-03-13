@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="Tu5vqPaUb8svfkPx5eetJFD84ciQCcWVXNatdsWtj9Q">
+  <meta name="baidu-site-verification" content="baidu_verify_FBq9PG4BBb">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"appID":"PXY1Z6GHKT","apiKey":"eb82f2e78e3053f26aa408e9caa96d93","indexName":"blog","hits":{"per_page":10},"labels":{"input_placeholder":"要查点什么(✿◡‿◡)","hits_empty":"没有找到任何关于 ${query} 的结果╥﹏╥...","hits_stats":"搜索到 ${hits} 条记录，用时 ${time} ms o(*￣▽￣*)ブ"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="FastDFS 是用 C 语言编写的一款开源的分布式文件系统。FastDFS 为互联网量身定制， 充分考虑了冗余备份、负载均衡、线性扩容等机制，并注重高可用、高性能等指标。使用 FastDFS 可以很容易搭建一套高性能的文件服务器集群，提供文件上传、下载等服务。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="FastDFS 分布式文件存储系统">
+<meta property="og:url" content="https://sliu.vip/project/renran-fastdfs/index.html">
+<meta property="og:site_name" content="刘硕的技术查阅手册">
+<meta property="og:description" content="FastDFS 是用 C 语言编写的一款开源的分布式文件系统。FastDFS 为互联网量身定制， 充分考虑了冗余备份、负载均衡、线性扩容等机制，并注重高可用、高性能等指标。使用 FastDFS 可以很容易搭建一套高性能的文件服务器集群，提供文件上传、下载等服务。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sliu.vip/project/renran-fastdfs/1578541560774.png">
+<meta property="og:image" content="https://sliu.vip/project/renran-fastdfs/1583936992719.png">
+<meta property="og:image" content="https://sliu.vip/project/renran-fastdfs/1583937450785.png">
+<meta property="og:image" content="https://sliu.vip/project/renran-fastdfs/1583939400199.png">
+<meta property="article:published_time" content="2020-03-13T05:53:34.075Z">
+<meta property="article:modified_time" content="2020-03-13T10:11:03.244Z">
+<meta property="article:author" content="刘硕">
+<meta property="article:tag" content="Python">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sliu.vip/project/renran-fastdfs/1578541560774.png">
+
+<link rel="canonical" href="https://sliu.vip/project/renran-fastdfs/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>FastDFS 分布式文件存储系统 | 刘硕的技术查阅手册</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f14f123935d6183fdd06f8f1c4bc378f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="刘硕的技术查阅手册" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">刘硕的技术查阅手册</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">Python 全栈开发学习笔记</h1>
+      
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-toc">
+
+    <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-rss">
+
+    <a href="/atom.xml" rel="section"><i class="fa fa-fw fa-rss"></i>订阅</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+  
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/project/renran-fastdfs/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          FastDFS 分布式文件存储系统
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-03-13 13:53:34 / 修改时间：18:11:03" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:34+08:00">2020-03-13</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BB%BC%E5%90%88%E9%A1%B9%E7%9B%AE/" itemprop="url" rel="index"><span itemprop="name">综合项目</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <div class="post-description">FastDFS 是用 C 语言编写的一款开源的分布式文件系统。FastDFS 为互联网量身定制， 充分考虑了冗余备份、负载均衡、线性扩容等机制，并注重高可用、高性能等指标。使用 FastDFS 可以很容易搭建一套高性能的文件服务器集群，提供文件上传、下载等服务。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="FastDFS-简介"><a href="#FastDFS-简介" class="headerlink" title="FastDFS 简介"></a>FastDFS 简介</h2><p>FastDFS 是用 C 语言编写的一款开源的分布式文件系统。FastDFS 为互联网量身定制， 充分考虑了冗余备份、负载均衡、线性扩容等机制，并注重高可用、高性能等指标。使用 FastDFS 可以很容易搭建一套高性能的文件服务器集群，提供文件上传、下载等服务。</p>
+<p>为什么要用 FastDFS？</p>
+<ol>
+<li>解决海量存储，同时存储容量扩展方便。</li>
+<li>解决文件内容重复, 如果用户上传的文件重复（文件指纹一样 md5_files. sha1_files），那么系统只有存储一份数据，这项技术目前被广泛应用在网盘和即时通讯中。</li>
+<li>结合 Nginx 提高网站读取图片的效率。</li>
+</ol>
+<h2 id="FastDFS-的原理"><a href="#FastDFS-的原理" class="headerlink" title="FastDFS 的原理"></a>FastDFS 的原理</h2><p>FastDFS 架构包括 Tracker server 和 Storage server。客户端请求 Tracker server 件上传、下载文件，通过 Tracker server 调度最终由 Storage server 完成文件上传和下载。</p>
+<ul>
+<li><code>Tracker server</code> 作用是负载均衡和存储调度，通过 Tracker server 在文件上传时可以根据一些 策略算法找到 Storage server 提供文件上传服务。可以将 tracker 称为 <code>追踪服务器</code> 或 <code>调度服务器</code>。</li>
+<li><code>Storage server</code> 作用是文件存储，客户端上传的文件最终存储在 Storage 服务器上， Storage Serve利用操作系统 的文件系统来管理文件。可以将 storage 称为 <code>存储服务器</code>。</li>
+</ul>
+
+
+<p>服务端由两部分组成:</p>
+<ul>
+<li>Tracker：管理集群，tracker 也可以实现集群。每个 tracker 节点地位平等。收集 Storage 集群的状态。</li>
+<li>Storage：实际保存文件， Storage 分为多个组，每个组之间保存的文件是不同的。每个组内部可以有多个成员。组成员内部保存的内容是一样的，组成员的地位是一致的，没有主从的概念。</li>
+</ul>
+<h2 id="文件上传流程"><a href="#文件上传流程" class="headerlink" title="文件上传流程"></a>文件上传流程</h2><img src="/project/renran-fastdfs/1578541560774.png" class="" width="1578541560774">
+
+<p>客户端上传文件后存储服务器将文件 ID 返回给客户端，此文件 ID 用于以后访问该文 件的索引信息。文件索引信息包括:组名，虚拟磁盘路径，数据两级目录，文件名。</p>
+<ul>
+<li>组名：文件上传后所在的 storage 组名称，在文件上传成功后有 storage 服务器返回， 需要客户端自行保存。</li>
+<li>虚拟磁盘路径：storage 配置的虚拟路径，与磁盘选项 <code>store_path*</code> 对应。如果配置了 store_path0 则是 M00，如果配置了 store_path1 则是 M01，以此类推。</li>
+<li>数据两级目录：storage 服务器在每个虚拟磁盘路径下创建的两级目录，用于存储数据 文件。</li>
+<li>文件名：与文件上传时不同。是由存储服务器根据特定信息生成，文件名包含:源存储 服务器 IP 地址、文件创建时间戳、文件大小、随机数和文件拓展名等信息。</li>
+</ul>
+<h2 id="使用-Docker-安装-FastDFS"><a href="#使用-Docker-安装-FastDFS" class="headerlink" title="使用 Docker 安装 FastDFS"></a>使用 Docker 安装 FastDFS</h2><p>首先要安装 Docker，Docker 的安装可以参见  <a href="/project/docker">Docker 介绍和基本使用</a>。</p>
+<h3 id="获取镜像"><a href="#获取镜像" class="headerlink" title="获取镜像"></a>获取镜像</h3><p>可以到 docker 中使用 search 搜索已有的 FastDFS Docker 镜像来部署和运行 FastDFS。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker search fastdfs</span><br></pre></td></tr></table></figure>
+
+<p>下载镜像评分最靠前的那个版本：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker pull season/fastdfs</span><br></pre></td></tr></table></figure>
+
+<p>也可是直接使用笔记中提供给大家的镜像备份文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker load -i ~/Desktop/season_fastdfs.tar.gz</span><br></pre></td></tr></table></figure>
+
+<p>加载好镜像后，就可以开启运行 FastDFS 的 tracker 和 storage 了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker image ls</span><br></pre></td></tr></table></figure>
+
+<h3 id="运行-tracker"><a href="#运行-tracker" class="headerlink" title="运行 tracker"></a>运行 tracker</h3><p>查看 fastdfs 的端口是否被占用，如果被占用，先要解除占用（没有结果就是没有占用）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -aon | grep 22122</span><br></pre></td></tr></table></figure>
+
+<p>在家目录下创建 tracker 调度服务器器的运行目录 tracker_data：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir ~/tracker_data</span><br></pre></td></tr></table></figure>
+
+<p>创建容器开启 tracker 服务：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker run --restart=always -itd --name=tracker -v ~/tracker_data:/fastdfs/tracker/data --net=host season/fastdfs tracker</span><br></pre></td></tr></table></figure>
+
+<p>经过上面的操作，就创建了 fastdfs 的调度服务器了，默认端口在 22122。</p>
+<p>执行如下命令查看tracker是否运行起来：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker container ls</span><br></pre></td></tr></table></figure>
+
+<p>如果想停止 tracker 服务，可以执行如下命令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker container stop tracker</span><br></pre></td></tr></table></figure>
+
+<p>停止后，重新运行 tracker，可以执行如下命令</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker container start tracker</span><br></pre></td></tr></table></figure>
+
+<h3 id="运行-storage"><a href="#运行-storage" class="headerlink" title="运行 storage"></a>运行 storage</h3><p>通过以下命令查找到上面 stacker server 的 IP 地址。注意，不能使用 127.0.0.1。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ifconfig</span><br><span class="line"><span class="comment"># 或者</span></span><br><span class="line">ip -a</span><br></pre></td></tr></table></figure>
+
+<img src="/project/renran-fastdfs/1583936992719.png" class="" width="1583936992719">
+
+<p>本机创建目录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mkdir ~/storage_data  <span class="comment"># 存储服务器的运行目录</span></span><br><span class="line">mkdir ~/store_path    <span class="comment"># 存储服务器保存文件目录</span></span><br></pre></td></tr></table></figure>
+
+<p>执行如下命令开启 storage 服务，注意修改 IP 为刚刚查找到的 Ubuntu 的 IP：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker run --restart=always -itd --network=host --name=storage -v ~/storage_data:/fastdfs/storage/data -v ~/store_path:/fastdfs/store_path -e TRACKER_SERVER:192.168.248.134:22122 season/fastdfs storage</span><br></pre></td></tr></table></figure>
+
+<p>强调：<code>TRACKER_SERVER=本机的ip地址:22122</code> 本机 IP 地址不要使用 <code>127.0.0.1</code>。个人开发有时候连接公共 wifi 或者家庭 wifi，有可能会导致 IP 发生变化。</p>
+<p>执行如下命令查看 storage 是否运行起来</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker container ls</span><br></pre></td></tr></table></figure>
+
+<h3 id="调整配置"><a href="#调整配置" class="headerlink" title="调整配置"></a>调整配置</h3><p>指定 storage 服务器注册到 trakcer 服务器的 IP 地址是没有生效的。所以我们需要手动设置 storage 的配置文件。</p>
+<p>进入 storage 容器下，将 fdfs_conf 目录下的 storage.conf 文件拷贝到当前用户家目录下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># sudo docker cp &lt;容器名称/容器ID&gt;:&lt;容器内的文件路径&gt; &lt;本机的文件目录&gt;  # 从容器内部复制指定文件到本机</span></span><br><span class="line"><span class="comment"># sudo docker cp &lt;本机的文件路径&gt; &lt;容器名称/容器ID&gt;:&lt;容器内的文件目录&gt;  # 从本机复制指定文件到容器内部</span></span><br><span class="line">sudo docker cp storage:/fdfs_conf/storage.conf ~/</span><br></pre></td></tr></table></figure>
+
+<p>编辑文件，找到 tracker_server 配置项，修改为本地 IP 地址：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo vim ~/storage.conf</span><br><span class="line">:<span class="built_in">set</span> nu          <span class="comment"># 显示行号</span></span><br><span class="line">:114             <span class="comment"># 跳转到111行</span></span><br><span class="line">tracker_server=192.168.248.134:22122</span><br></pre></td></tr></table></figure>
+
+<img src="/project/renran-fastdfs/1583937450785.png" class="" width="1583937450785">
+
+<p>将编辑好的文件再从本机拷贝到容器 storage 内部：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo docker cp ~/storage.conf  storage:/fdfs_conf/</span><br><span class="line">sudo docker cp ~/storage.conf  tracker:/fdfs_conf/</span><br></pre></td></tr></table></figure>
+
+<p>重启 storage 存储服务器</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo docker container stop storage</span><br><span class="line">sudo docker container start storage</span><br><span class="line"><span class="comment"># 或者</span></span><br><span class="line">sudo docker container restart storage</span><br></pre></td></tr></table></figure>
+
+<p>进入 tracker 调度服务器容器中，查看调度服务器和存储服务器是否连接上了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo docker <span class="built_in">exec</span> -it storage bash</span><br><span class="line"><span class="built_in">cd</span> /fdfs_conf/</span><br><span class="line">fdfs_monitor storage.conf</span><br></pre></td></tr></table></figure>
+
+<h2 id="FastDFS-客户端与自定义文件存储系统"><a href="#FastDFS-客户端与自定义文件存储系统" class="headerlink" title="FastDFS 客户端与自定义文件存储系统"></a>FastDFS 客户端与自定义文件存储系统</h2><h3 id="FastDFS-的-Python-客户端"><a href="#FastDFS-的-Python-客户端" class="headerlink" title="FastDFS 的 Python 客户端"></a>FastDFS 的 Python 客户端</h3><p>Python 版本的 FastDFS 客户端使用说明参考 <a href="https://github.com/jefforeilly/fdfs_client-py" target="_blank" rel="noopener">https://github.com/jefforeilly/fdfs_client-py</a></p>
+<h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><p>安装提供给大家的 <code>fdfs_client-py-master.zip</code> 到虚拟环境中</p>
+<p>注意：一定要安装都当前项目的虚拟环境中，否则安装到了全局环境中。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pip install https://github.com/JaceHo/fdfs_client-py/archive/master.zip</span><br><span class="line">pip install mutagen</span><br><span class="line">pip install requests</span><br></pre></td></tr></table></figure>
+
+<h4 id="使用-FastDFS-客户端"><a href="#使用-FastDFS-客户端" class="headerlink" title="使用 FastDFS 客户端"></a>使用 FastDFS 客户端</h4><p>使用 FastDFS 客户端，需要有配置文件。我们在 <code>renranapi/utils</code> 目录下新建 fastdfs 目录，创建客户端配置文件 <code>client.conf</code> 到这个目录中，添加如下信息（注意修改配置中的 IP 地址）：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># connect timeout in seconds</span></span><br><span class="line"><span class="comment"># default value is 30s</span></span><br><span class="line"><span class="attr">connect_timeout</span>=<span class="number">30</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># network timeout in seconds</span></span><br><span class="line"><span class="comment"># default value is 30s</span></span><br><span class="line"><span class="attr">network_timeout</span>=<span class="number">120</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># the base path to store log files</span></span><br><span class="line"><span class="attr">base_path</span>=/home/moluo/Desktop/renran/renranapi/logs</span><br><span class="line"></span><br><span class="line"><span class="comment"># tracker_server can ocur more than once, and tracker_server format is</span></span><br><span class="line"><span class="comment">#  "host:port", host can be hostname or ip address</span></span><br><span class="line"><span class="attr">tracker_server</span>=<span class="number">192.168</span>.<span class="number">248.134</span>:<span class="number">22122</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#standard log level as syslog, case insensitive, value list:</span></span><br><span class="line"><span class="comment">### emerg for emergency</span></span><br><span class="line"><span class="comment">### alert</span></span><br><span class="line"><span class="comment">### crit for critical</span></span><br><span class="line"><span class="comment">### error</span></span><br><span class="line"><span class="comment">### warn for warning</span></span><br><span class="line"><span class="comment">### notice</span></span><br><span class="line"><span class="comment">### info</span></span><br><span class="line"><span class="comment">### debug</span></span><br><span class="line"><span class="attr">log_level</span>=info</span><br><span class="line"></span><br><span class="line"><span class="comment"># if use connection pool</span></span><br><span class="line"><span class="comment"># default value is false</span></span><br><span class="line"><span class="comment"># since V4.05</span></span><br><span class="line"><span class="attr">use_connection_pool</span> = <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># connections whose the idle time exceeds this time will be closed</span></span><br><span class="line"><span class="comment"># unit: second</span></span><br><span class="line"><span class="comment"># default value is 3600</span></span><br><span class="line"><span class="comment"># since V4.05</span></span><br><span class="line"><span class="attr">connection_pool_max_idle_time</span> = <span class="number">3600</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># if load FastDFS parameters from tracker server</span></span><br><span class="line"><span class="comment"># since V4.05</span></span><br><span class="line"><span class="comment"># default value is false</span></span><br><span class="line"><span class="attr">load_fdfs_parameters_from_tracker</span>=<span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># if use storage ID instead of IP address</span></span><br><span class="line"><span class="comment"># same as tracker.conf</span></span><br><span class="line"><span class="comment"># valid only when load_fdfs_parameters_from_tracker is false</span></span><br><span class="line"><span class="comment"># default value is false</span></span><br><span class="line"><span class="comment"># since V4.05</span></span><br><span class="line"><span class="attr">use_storage_id</span> = <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># specify storage ids filename, can use relative or absolute path</span></span><br><span class="line"><span class="comment"># same as tracker.conf</span></span><br><span class="line"><span class="comment"># valid only when load_fdfs_parameters_from_tracker is false</span></span><br><span class="line"><span class="comment"># since V4.05</span></span><br><span class="line"><span class="attr">storage_ids_filename</span> = storage_ids.conf</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#HTTP settings</span></span><br><span class="line"><span class="attr">http.tracker_server_port</span>=<span class="number">80</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#use "#include" directive to include HTTP other settiongs</span></span><br><span class="line"><span class="comment">##include http.conf</span></span><br></pre></td></tr></table></figure>
+
+<p>上传文件需要先创建 fdfs_client.client.Fdfs_client 的对象，并指明配置文件，如</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 进入django的终端下测试  python manage.py shell</span></span><br><span class="line"><span class="keyword">from</span> fdfs_client.client <span class="keyword">import</span> Fdfs_client</span><br><span class="line">client = Fdfs_client(<span class="string">'renranapi/utils/fastdfs/client.conf'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>通过创建的客户端对象执行上传文件的方法</p>
+<p>client 对象的操作方法文档：<a href="https://github.com/JaceHo/fdfs_client-py" target="_blank" rel="noopener">https://github.com/JaceHo/fdfs_client-py</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">client.upload_by_filename(文件名)</span><br><span class="line"><span class="comment"># 或</span></span><br><span class="line">client.upload_by_buffer(文件bytes数据)</span><br></pre></td></tr></table></figure>
+
+<p>如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> fdfs_client.client <span class="keyword">import</span> Fdfs_client</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>client = Fdfs_client(<span class="string">'renranapi/utils/fastdfs/client.conf'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>client.upload_by_filename(<span class="string">'/home/moluo/Desktop/bing-img/bing.lylares.com-2020-02-05-4k.jpg'</span>)</span><br><span class="line">getting connection</span><br><span class="line">&lt;fdfs_client.connection.Connection object at <span class="number">0x7f8b61e45d30</span>&gt;</span><br><span class="line">&lt;fdfs_client.fdfs_protol.Tracker_header object at <span class="number">0x7f8b61e45be0</span>&gt;</span><br><span class="line">&#123;<span class="string">'Group name'</span>: <span class="string">'group1'</span>, <span class="string">'Remote file_id'</span>: <span class="string">'group1/M00/00/00/wKj4hl5o_kyABl6vADOY1Ss5BK8.com-20'</span>, <span class="string">'Status'</span>: <span class="string">'Upload successed.'</span>, <span class="string">'Local file name'</span>: <span class="string">'/home/moluo/Desktop/bing-img/bing.lylares.com-2020-02-05-4k.jpg'</span>, <span class="string">'Uploaded size'</span>: <span class="string">'3.00MB'</span>, <span class="string">'Storage IP'</span>: <span class="string">'192.168.248.134'</span>&#125;</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Remote file_id 即为 FastDFS 保存的文件的路径</li>
+</ul>
+<img src="/project/renran-fastdfs/1583939400199.png" class="" width="1583939400199">
+
+<h3 id="自定义-Django-文件存储系统"><a href="#自定义-Django-文件存储系统" class="headerlink" title="自定义 Django 文件存储系统"></a>自定义 Django 文件存储系统</h3><p>学习 Django 框架的文件存储在本地，我们接下来需要将文件保存到 FastDFS 服务器上，所以需要自定义文件存储系统。</p>
+<p>官方文档说明，指出自定义文件存储系统的方法如下：</p>
+<ol>
+<li><p>需要继承自 <code>django.core.files.storage.Storage</code>，如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.core.files.storage <span class="keyword">import</span> Storage</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FastDFSStorage</span><span class="params">(Storage)</span>:</span></span><br><span class="line">    ...</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>支持 Django 不带任何参数来实例化存储类，也就是说任何设置都应该从 <code>django.conf.settings</code> 中获取：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.conf <span class="keyword">import</span> settings</span><br><span class="line"><span class="keyword">from</span> django.core.files.storage <span class="keyword">import</span> Storage</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FastDFSStorage</span><span class="params">(Storage)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, base_url=None, client_conf=None)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> base_url <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            base_url = settings.FDFS_URL</span><br><span class="line">        self.base_url = base_url</span><br><span class="line">        <span class="keyword">if</span> client_conf <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            client_conf = settings.FDFS_CLIENT_CONF</span><br><span class="line">        self.client_conf = client_conf</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>存储类中必须实现<code>_open()</code>和<code>_save()</code>方法，以及任何后续使用中可能用到的其他方法。</p>
+<ul>
+<li><p><code>_open(name, mode=&#39;rb&#39;)</code></p>
+<p>被 <code>Storage.open()</code> 调用，在打开文件时被使用。</p>
+</li>
+<li><p><code>_save(name, content)</code></p>
+<p>被 <code>Storage.save()</code> 调用，name 是传入的文件名，content 是 Django 接收到的文件内容。该方法需要将 content 文件内容保存。</p>
+<p>Django 会将该方法的返回值保存到数据库中对应的文件字段，也就是说该方法应该返回要保存在数据库中的文件名称信息。</p>
+</li>
+<li><p><code>exists(name)</code></p>
+<p>如果名为 name 的文件在文件系统中存在，则返回 True，否则返回 False。</p>
+</li>
+<li><p><code>url(name)</code></p>
+<p>返回文件的完整访问 URL。</p>
+</li>
+<li><p><code>delete(name)</code></p>
+<p>删除名为 name 的文件。</p>
+</li>
+<li><p><code>listdir(path)</code></p>
+<p>列出指定路径的内容。</p>
+</li>
+<li><p><code>size(name)</code></p>
+<p>返回name文件的总大小</p>
+</li>
+</ul>
+</li>
+</ol>
+<p>注意，并不是这些方法全部都要实现，可以省略用不到的方法。</p>
+<ol start="4">
+<li>需要为存储类添加<code>django.utils.deconstruct.deconstructible</code> 装饰器</li>
+</ol>
+<p>根据上面的规则，我们在 <code>renranapi/utils/fastdfs</code> 目录中创建 <code>fdfs_storage.py</code> 文件，实现可以使用 FastDFS 存储文件的存储类如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.conf <span class="keyword">import</span> settings</span><br><span class="line"><span class="keyword">from</span> django.core.files.storage <span class="keyword">import</span> Storage</span><br><span class="line"><span class="keyword">from</span> django.utils.deconstruct <span class="keyword">import</span> deconstructible</span><br><span class="line"><span class="keyword">from</span> fdfs_client.client <span class="keyword">import</span> Fdfs_client</span><br><span class="line"></span><br><span class="line"><span class="meta">@deconstructible</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FastDFSStorage</span><span class="params">(Storage)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, base_url=None, client_conf=None)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        初始化</span></span><br><span class="line"><span class="string">        :param base_url: 用于构造图片完整路径使用，图片服务器的域名</span></span><br><span class="line"><span class="string">        :param client_conf: FastDFS客户端配置文件的路径</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">if</span> base_url <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            base_url = settings.FDFS_URL</span><br><span class="line">        self.base_url = base_url</span><br><span class="line">        <span class="keyword">if</span> client_conf <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            client_conf = settings.FDFS_CLIENT_CONF</span><br><span class="line">        self.client_conf = client_conf</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_open</span><span class="params">(self, name, mode=<span class="string">'rb'</span>)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        用不到打开文件，所以省略</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_save</span><span class="params">(self, name, content)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        在FastDFS中保存文件</span></span><br><span class="line"><span class="string">        :param name: 传入的文件名</span></span><br><span class="line"><span class="string">        :param content: 文件内容</span></span><br><span class="line"><span class="string">        :return: 保存到数据库中的FastDFS的文件名</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        client = Fdfs_client(self.client_conf)</span><br><span class="line">        ret = client.upload_by_buffer(content.read())</span><br><span class="line">        <span class="keyword">if</span> ret.get(<span class="string">"Status"</span>) != <span class="string">"Upload successed."</span>:</span><br><span class="line">            <span class="keyword">raise</span> Exception(<span class="string">"upload file failed"</span>)</span><br><span class="line">        file_name = ret.get(<span class="string">"Remote file_id"</span>)</span><br><span class="line">        <span class="keyword">return</span> file_name</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">url</span><span class="params">(self, name)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        返回文件的完整URL路径</span></span><br><span class="line"><span class="string">        :param name: 数据库中保存的文件名</span></span><br><span class="line"><span class="string">        :return: 完整的URL</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">return</span> self.base_url + name</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">exists</span><span class="params">(self, name)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        判断文件是否存在，FastDFS可以自行解决文件的重名问题</span></span><br><span class="line"><span class="string">        所以此处返回False，告诉Django上传的都是新文件</span></span><br><span class="line"><span class="string">        :param name:  文件名</span></span><br><span class="line"><span class="string">        :return: False</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="在-Django-配置中设置自定义文件存储类"><a href="#在-Django-配置中设置自定义文件存储类" class="headerlink" title="在 Django 配置中设置自定义文件存储类"></a>在 Django 配置中设置自定义文件存储类</h3><p>在 <code>settings/dev.py</code> 文件中添加设置（修改 IP 地址）：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># django文件存储</span></span><br><span class="line">DEFAULT_FILE_STORAGE = <span class="string">'renranapi.utils.fastdfs.fdfs_storage.FastDFSStorage'</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># FastDFS</span></span><br><span class="line">FDFS_URL = <span class="string">'http://192.168.248.134:8888/'</span>  <span class="comment"># 访问图片的路径域名 ip地址修改为自己机器的ip地址</span></span><br><span class="line">FDFS_CLIENT_CONF = os.path.join(BASE_DIR, <span class="string">'utils/fastdfs/client.conf'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>在 xadmin 中，直接通过轮播图功能测试下上传文件是否能调用 Fdfs_client 把文件上传到 FastDFS 中。</p>
+<h3 id="使用-nginx-代理访问-Fastdfs-的图片"><a href="#使用-nginx-代理访问-Fastdfs-的图片" class="headerlink" title="使用 nginx 代理访问 Fastdfs 的图片"></a>使用 nginx 代理访问 Fastdfs 的图片</h3><p>我们已经完成了 django 上传文件到 fastdfs，接下来我们需要在浏览器中显示上传的图片。我们使用镜像来完成这个功能。这个镜像本质就是一个 nginx。</p>
+<ol>
+<li><p>把镜像加载到docker中</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker load -i ~/Desktop/fastdfs_nginx_0.0.1.tar.gz</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建容器</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker run -itd --restart=always --network=host --name=fdfs_nginx -v /home/moluo/store_path/:/home/store_path fastdfs_nginx:0.0.1</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>进入镜像里面，执行以下命令，启动 nginx</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo docker container <span class="built_in">exec</span> -it fdfs_nginx bash</span><br><span class="line">/usr/<span class="built_in">local</span>/nginx/sbin/nginx</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"># Python</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/project/docker/" rel="prev" title="Docker 介绍和基本使用">
+      <i class="fa fa-chevron-left"></i> Docker 介绍和基本使用
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/python-basic/hans_count/" rel="next" title="使用 Python 统计中文字符的数量">
+      使用 Python 统计中文字符的数量 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#FastDFS-简介"><span class="nav-number">1.</span> <span class="nav-text">FastDFS 简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FastDFS-的原理"><span class="nav-number">2.</span> <span class="nav-text">FastDFS 的原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文件上传流程"><span class="nav-number">3.</span> <span class="nav-text">文件上传流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用-Docker-安装-FastDFS"><span class="nav-number">4.</span> <span class="nav-text">使用 Docker 安装 FastDFS</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#获取镜像"><span class="nav-number">4.1.</span> <span class="nav-text">获取镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运行-tracker"><span class="nav-number">4.2.</span> <span class="nav-text">运行 tracker</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运行-storage"><span class="nav-number">4.3.</span> <span class="nav-text">运行 storage</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#调整配置"><span class="nav-number">4.4.</span> <span class="nav-text">调整配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FastDFS-客户端与自定义文件存储系统"><span class="nav-number">5.</span> <span class="nav-text">FastDFS 客户端与自定义文件存储系统</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#FastDFS-的-Python-客户端"><span class="nav-number">5.1.</span> <span class="nav-text">FastDFS 的 Python 客户端</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#安装"><span class="nav-number">5.1.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用-FastDFS-客户端"><span class="nav-number">5.1.2.</span> <span class="nav-text">使用 FastDFS 客户端</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#自定义-Django-文件存储系统"><span class="nav-number">5.2.</span> <span class="nav-text">自定义 Django 文件存储系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在-Django-配置中设置自定义文件存储类"><span class="nav-number">5.3.</span> <span class="nav-text">在 Django 配置中设置自定义文件存储类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-nginx-代理访问-Fastdfs-的图片"><span class="nav-number">5.4.</span> <span class="nav-text">使用 nginx 代理访问 Fastdfs 的图片</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="刘硕"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">刘硕</p>
+  <div class="site-description" itemprop="description">不成为自己讨厌的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">241</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:liushuo432@outlook.com" title="E-Mail → mailto:liushuo432@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/2436055290" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;2436055290" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://wpa.qq.com/msgrd?v=3&uin=1696146913&site=qq&menu=yes" title="QQ → http:&#x2F;&#x2F;wpa.qq.com&#x2F;msgrd?v&#x3D;3&amp;uin&#x3D;1696146913&amp;site&#x3D;qq&amp;menu&#x3D;yes" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备20001451号 </a>
+      <img src="/images/beian_icon.png" style="display: inline-block;"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=21142102000063" rel="noopener" target="_blank">辽公网安备 21142102000063号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘硕</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.2" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="/js/love.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/Epsilon2.1.model.json"},"display":{"superSample":2,"width":200,"height":400,"position":"left","hOffset":-30,"vOffset":-40},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>

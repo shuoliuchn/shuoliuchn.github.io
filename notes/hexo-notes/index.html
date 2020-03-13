@@ -29,8 +29,8 @@
 <meta property="og:site_name" content="刘硕的技术查阅手册">
 <meta property="og:description" content="hexo 的使用笔记。把博客布置在 hexo 上，非常美观好用。这只是我自己用到的一些命令，肯定不全。还是多看看官方文档比较好。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-02-17T16:06:59.000Z">
-<meta property="article:modified_time" content="2020-02-25T16:46:15.000Z">
+<meta property="article:published_time" content="2020-03-13T05:53:09.474Z">
+<meta property="article:modified_time" content="2020-03-13T06:53:08.355Z">
 <meta property="article:author" content="刘硕">
 <meta property="article:tag" content="Python">
 <meta property="article:tag" content="全栈开发">
@@ -159,6 +159,11 @@
     <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
 
   </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
         <li class="menu-item menu-item-categories">
 
     <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
@@ -254,16 +259,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2020-02-18 00:06:59" itemprop="dateCreated datePublished" datetime="2020-02-18T00:06:59+08:00">2020-02-18</time>
+              <time title="创建时间：2020-03-13 13:53:09 / 修改时间：14:53:08" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:09+08:00">2020-03-13</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-26 00:46:15" itemprop="dateModified" datetime="2020-02-26T00:46:15+08:00">2020-02-26</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -295,21 +294,21 @@
       
         <h3 id="hexo-的安装"><a href="#hexo-的安装" class="headerlink" title="hexo 的安装"></a>hexo 的安装</h3><p>hexo 需要有 node 和 git 环境。</p>
 <p>安装好依赖，即可通过 npm 安装 hexo：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
 
 <h3 id="hexo-项目的初始化"><a href="#hexo-项目的初始化" class="headerlink" title="hexo 项目的初始化"></a>hexo 项目的初始化</h3><p>进入要存放 hexo 项目的文件夹，运行命令初始化创建一个 hexo 项目：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /tmp/hexo</span><br><span class="line">hexo init</span><br><span class="line"> <span class="comment"># hexo也可以初始化到指定文件夹：</span></span><br><span class="line">hexo init /tmp/hexo</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cd /tmp/hexo</span><br><span class="line">hexo init</span><br><span class="line"><span class="meta"> #</span><span class="bash"> hexo也可以初始化到指定文件夹：</span></span><br><span class="line">hexo init /tmp/hexo</span><br></pre></td></tr></table></figure>
 
 <p>在项目文件夹中运行命令，会自动根据刚刚生成的 package.json 文件安装 npm 依赖的包：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install</span><br></pre></td></tr></table></figure>
 
 <p>博客文章 md 文件保存在 <code>source/_posts</code> 目录下，模板文件保存在 <code>theme</code> 文件夹中，<code>_config.yml</code> 为配置文件。</p>
 <h3 id="hexo-的命令写法"><a href="#hexo-的命令写法" class="headerlink" title="hexo 的命令写法"></a>hexo 的命令写法</h3><p>以下的命令，如无说明，都是默认在刚刚初始化的 hexo 的文件夹下进行的。</p>
 <p>hexo 命令会在当前文件夹即其外层文件夹中寻找。若有 hexo 项目，则可正常运行。若无 hexo 项目，需要指定 hexo 项目的文件夹：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo --cwd /tmp/hexo server</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo --cwd /tmp/hexo server</span><br></pre></td></tr></table></figure>
 
 <h3 id="创建博客"><a href="#创建博客" class="headerlink" title="创建博客"></a>创建博客</h3><p>可以使用命令创建博客：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new [layout] &lt;title&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new [layout] &lt;title&gt;</span><br></pre></td></tr></table></figure>
 
 <p>可以在命令中指定文章的布局（layout），默认为 <code>post</code>，可以通过修改 <code>_config.yml</code> 中的 <code>default_layout</code> 参数来指定默认布局。</p>
 <p>命令执行后，会在 <code>source/_posts</code> 目录下生成一个 md 文件。</p>
@@ -324,7 +323,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;% asset_img slug [title] %&#125;</span><br><span class="line"># 例如</span><br><span class="line">&#123;% asset_img example.jpg This is an example image %&#125;</span><br></pre></td></tr></table></figure>
 
 <h3 id="模板下载"><a href="#模板下载" class="headerlink" title="模板下载"></a>模板下载</h3><p>安装主题和渲染器（GitHub 访问太慢，已经转移至码云）：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> https://gitee.com/shuoliuchn/maupassant-hexo.git themes/maupassant</span><br><span class="line">npm install hexo-renderer-pug --save</span><br><span class="line">npm install hexo-renderer-sass --save</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git clone https://gitee.com/shuoliuchn/maupassant-hexo.git themes/maupassant</span><br><span class="line">npm install hexo-renderer-pug --save</span><br><span class="line">npm install hexo-renderer-sass --save</span><br></pre></td></tr></table></figure>
 
 <p>编辑 Hexo 目录下的 <code>_config.yml</code>，将 <code>theme</code> 的值改为 <code>maupassant</code>。</p>
 <p>更多配置信息，参见： <a href="https://www.haomwei.com/technology/maupassant-hexo.html" target="_blank" rel="noopener">https://www.haomwei.com/technology/maupassant-hexo.html</a></p>
@@ -344,7 +343,7 @@
 <li><p>打开文件 <code>node_modules/nunjucks/src/lexer.js</code></p>
 </li>
 <li><p>找到这样两行代码：</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> VARIABLE_START = <span class="string">'&#123;&#123;'</span>;</span><br><span class="line"><span class="keyword">var</span> VARIABLE_END = <span class="string">'&#125;&#125;'</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> VARIABLE_START = <span class="string">'&#123;% raw %&#125;&#123;&#123;&#123;% endraw %&#125;'</span>;</span><br><span class="line"><span class="keyword">var</span> VARIABLE_END = <span class="string">'&#123;% raw %&#125;&#125;&#125;&#123;% endraw %&#125;'</span>;</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>将其修改为：</p>
 <figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> VARIABLE_START = <span class="string">'&#123;$'</span>;</span><br><span class="line"><span class="keyword">var</span> VARIABLE_END = <span class="string">'$&#125;'</span>;</span><br></pre></td></tr></table></figure>
@@ -352,14 +351,14 @@
 </li>
 </ol>
 <h3 id="部署上线"><a href="#部署上线" class="headerlink" title="部署上线"></a>部署上线</h3><p>编译：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo generate</span><br><span class="line"><span class="comment"># 可简写为：</span></span><br><span class="line">hexo g</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo generate</span><br><span class="line"><span class="meta">#</span><span class="bash"> 可简写为：</span></span><br><span class="line">hexo g</span><br></pre></td></tr></table></figure>
 
 <p>运行服务，服务默认运行在 4000 端口，绑定 <code>0.0.0.0</code> 的 IP 地址：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">hexo server</span><br><span class="line"><span class="comment"># 可简写为：</span></span><br><span class="line">hexo s</span><br><span class="line"><span class="comment"># 后台运行：</span></span><br><span class="line">hexo s &amp;</span><br><span class="line"><span class="comment"># 可指定端口：</span></span><br><span class="line">hexo server -p 5000</span><br><span class="line"><span class="comment"># 亦可指定 ip：</span></span><br><span class="line">hexo server -i 192.168.1.1</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">hexo server</span><br><span class="line"><span class="meta">#</span><span class="bash"> 可简写为：</span></span><br><span class="line">hexo s</span><br><span class="line"><span class="meta">#</span><span class="bash"> 后台运行：</span></span><br><span class="line">hexo s &amp;</span><br><span class="line"><span class="meta">#</span><span class="bash"> 可指定端口：</span></span><br><span class="line">hexo server -p 5000</span><br><span class="line"><span class="meta">#</span><span class="bash"> 亦可指定 ip：</span></span><br><span class="line">hexo server -i 192.168.1.1</span><br></pre></td></tr></table></figure>
 
 <p>要将服务传至 GitHub 或码云，需要先建立仓库。</p>
 <p>安装 <code>npm install hexo-deployer-git --save</code> 工具：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
 
 <p>修改配置文件中的 git 信息：</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repo: &lt;repository url&gt; #https://bitbucket.org/JohnSmith/johnsmith.bitbucket.io</span><br><span class="line">  branch: [branch]</span><br><span class="line">  message: [message]</span><br></pre></td></tr></table></figure>
@@ -420,12 +419,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/linux/nginx-intro/" rel="prev" title="nginx 介绍">
-      <i class="fa fa-chevron-left"></i> nginx 介绍
+    <a href="/notes/grokking-algorithms-tsp/" rel="prev" title="旅行商问题简述">
+      <i class="fa fa-chevron-left"></i> 旅行商问题简述
     </a></div>
       <div class="post-nav-item">
-    <a href="/notes/mysite-https/" rel="next" title="部署 HTTPS 网站">
-      部署 HTTPS 网站 <i class="fa fa-chevron-right"></i>
+    <a href="/notes/grokking-algorithms-quick-sort/" rel="next" title="快速排序">
+      快速排序 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -502,7 +501,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">236</span>
+          <span class="site-state-item-count">241</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -511,6 +510,12 @@
           
         <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
 </div>

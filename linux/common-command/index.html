@@ -31,8 +31,8 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://sliu.vip/linux/common-command/1132884-20180811155113844-356770043.png">
 <meta property="og:image" content="https://sliu.vip/linux/common-command/1132884-20181122101207846-1843670285.png">
-<meta property="article:published_time" content="2020-02-17T06:31:49.000Z">
-<meta property="article:modified_time" content="2020-03-02T15:55:22.000Z">
+<meta property="article:published_time" content="2020-03-13T05:53:10.810Z">
+<meta property="article:modified_time" content="2020-03-13T06:53:09.039Z">
 <meta property="article:author" content="刘硕">
 <meta property="article:tag" content="Python">
 <meta property="article:tag" content="全栈开发">
@@ -162,6 +162,11 @@
     <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
 
   </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
         <li class="menu-item menu-item-categories">
 
     <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
@@ -257,16 +262,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2020-02-17 14:31:49" itemprop="dateCreated datePublished" datetime="2020-02-17T14:31:49+08:00">2020-02-17</time>
+              <time title="创建时间：2020-03-13 13:53:10 / 修改时间：14:53:09" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:10+08:00">2020-03-13</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-03-02 23:55:22" itemprop="dateModified" datetime="2020-03-02T23:55:22+08:00">2020-03-02</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -300,21 +299,21 @@
 <p><a href="http://linux.51yip.com/" target="_blank" rel="noopener">http://linux.51yip.com/</a></p>
 <h3 id="alias-别名"><a href="#alias-别名" class="headerlink" title="alias 别名"></a>alias 别名</h3><p>alias 命令用来给一个命令加上一个昵称，当你以后需要经常输入一个很长的命令的时候，可以创建一个别名，会让操作变得简单许多。</p>
 <p>直接输入alias，查看当前系统中已经设置了的别名：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">alias</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alias</span><br></pre></td></tr></table></figure>
 
 <p>取消别名：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">unalias</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">unalias</span><br></pre></td></tr></table></figure>
 
 <p>创建别名：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">alias</span> rm=<span class="string">'rm -i'</span>    <span class="comment"># 这里 -i 的含义是删除文件时会有确认提示</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alias rm='rm -i'    # 这里 -i 的含义是删除文件时会有确认提示</span><br></pre></td></tr></table></figure>
 
 <p>案例</p>
 <ol>
 <li><p>当用户输入rm命令的时候，给他一个提示，”你这个傻蛋，求你别瞎用 rm 了！”</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">alias</span> rm=<span class="string">'echo 你这个傻蛋，别瞎用 rm 了！'</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alias rm='echo 你这个傻蛋，别瞎用 rm 了！'</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>例如每次都要ssh登录，命令太长</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ssh root@123.206.16.61</span><br><span class="line"><span class="built_in">alias</span>  ssh1=<span class="string">'ssh root@123.206.16.61'</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ssh root@123.206.16.61</span><br><span class="line">alias  ssh1='ssh root@123.206.16.61'</span><br></pre></td></tr></table></figure>
 
 </li>
 </ol>
@@ -332,42 +331,42 @@
 <h3 id="管道符"><a href="#管道符" class="headerlink" title="管道符 |"></a>管道符 <code>|</code></h3><p>管道符 <code>|</code> 用来将前一个命令输出的返回结果作为后一个命令的参数输入。</p>
 <ol>
 <li><p>可以常用来检测进程信息</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -ef|grep mysql</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -ef|grep mysql</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>检测端口情况</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -tunlp|grep 80</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netstat -tunlp|grep 80</span><br></pre></td></tr></table></figure>
 
 </li>
 </ol>
 <h3 id="netstat-网络状态"><a href="#netstat-网络状态" class="headerlink" title="netstat 网络状态"></a>netstat 网络状态</h3><p>netstat 命令用于显示 Linux 的网络端口情况。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#参数解释  -tunlp    显示tcp  upd 所有的socket连接信息</span></span><br><span class="line">netstat -tunlp</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">参数解释  -tunlp    显示tcp  upd 所有的socket连接信息</span></span><br><span class="line">netstat -tunlp</span><br></pre></td></tr></table></figure>
 <p>过滤出 nginx 是否存活的命令，查看 nginx 的 80 端口是否存在</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@chaogelinux tmp]<span class="comment"># netstat -tunlp  |  grep  'nginx'</span></span><br><span class="line">tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN      2041/nginx: master</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@chaogelinux tmp]# netstat -tunlp  |  grep  'nginx'</span><br><span class="line">tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN      2041/nginx: master</span><br></pre></td></tr></table></figure>
 
 <h3 id="ps-进程状态"><a href="#ps-进程状态" class="headerlink" title="ps 进程状态"></a>ps 进程状态</h3><p>ps 命令用于检测进程情况。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -ef    <span class="comment"># 列出 Linux 上所有的进程信息，以及进程 id 号等</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -ef    # 列出 Linux 上所有的进程信息，以及进程 id 号等</span><br></pre></td></tr></table></figure>
 
 <p>与 grep命令联用，过滤出出 vim 有关的进程：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@chaogelinux ~]<span class="comment"># ps -ef | grep vim</span></span><br><span class="line">root     28692 27546  0 10:07 pts/0    00:00:00 vim 你说爱我就要喵喵喵.txt</span><br><span class="line">root     28715 28654  0 10:08 pts/1    00:00:00 grep --color=auto vim</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@chaogelinux ~]# ps -ef | grep vim</span><br><span class="line">root     28692 27546  0 10:07 pts/0    00:00:00 vim 你说爱我就要喵喵喵.txt</span><br><span class="line">root     28715 28654  0 10:08 pts/1    00:00:00 grep --color=auto vim</span><br></pre></td></tr></table></figure>
 
 <h3 id="kill-根据-pid-杀进程"><a href="#kill-根据-pid-杀进程" class="headerlink" title="kill 根据 pid 杀进程"></a>kill 根据 pid 杀进程</h3><p>杀死进程的命令，基本语法为：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">kill</span>  进程id号</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kill  进程id号</span><br></pre></td></tr></table></figure>
 
 <p>基本用法：</p>
 <ol>
 <li><p>获取进程的 id 号：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -ef</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -ef</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>用 kill 命令杀死进程：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">kill</span> 进程id</span><br><span class="line"><span class="built_in">kill</span> -9 进程id    <span class="comment"># 强制杀死进程，-9 为强制性的信号参数</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kill 进程id</span><br><span class="line">kill -9 进程id    # 强制杀死进程，-9 为强制性的信号参数</span><br></pre></td></tr></table></figure>
 
 </li>
 </ol>
 <h3 id="pkill-根据进程名杀进程"><a href="#pkill-根据进程名杀进程" class="headerlink" title="pkill 根据进程名杀进程"></a>pkill 根据进程名杀进程</h3><p>若进程 id 不可知，或者明确知道进程名。可以通过 pkill 的命令，根据进程名杀进程：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pkill nginx</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pkill nginx</span><br></pre></td></tr></table></figure>
 
 <h3 id="grep-过滤"><a href="#grep-过滤" class="headerlink" title="grep 过滤"></a>grep 过滤</h3><p>grep 命令是 shell 三剑客之一，用于过滤字符串。其基本语法为：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep 参数 你要过滤的文件</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grep 参数 你要过滤的文件</span><br></pre></td></tr></table></figure>
 
 <p>它的常用参数有：</p>
 <ul>
@@ -376,53 +375,53 @@
 <li>v：反向选择</li>
 </ul>
 <p>过滤字符串信息：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@chaogelinux tmp]<span class="comment"># grep -i  'all'  settings.py</span></span><br><span class="line">ALLOW_HOSTS=[]</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@chaogelinux tmp]# grep -i  'all'  settings.py</span><br><span class="line">ALLOW_HOSTS=[]</span><br></pre></td></tr></table></figure>
 
 <p>过滤掉某字符串的行：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@chaogelinux tmp]<span class="comment"># grep -vi 'all'  settings.py</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@chaogelinux tmp]# grep -vi 'all'  settings.py</span><br></pre></td></tr></table></figure>
 
 <p>过滤掉空白行（支持正则）：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@chaogelinux tmp]<span class="comment"># grep  -v '^$'  settings.py</span></span><br><span class="line">qweqweqweqwe</span><br><span class="line"><span class="comment">#qweqweqweqwe</span></span><br><span class="line">ALLOW_HOSTS=[]</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@chaogelinux tmp]# grep  -v '^$'  settings.py</span><br><span class="line">qweqweqweqwe</span><br><span class="line"><span class="meta">#</span><span class="bash">qweqweqweqwe</span></span><br><span class="line">ALLOW_HOSTS=[]</span><br></pre></td></tr></table></figure>
 
 <p>过滤掉注释行：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@chaogelinux tmp]<span class="comment"># grep -v '^#'  settings.py</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@chaogelinux tmp]# grep -v '^#'  settings.py</span><br></pre></td></tr></table></figure>
 
 <p>过滤掉，空白行和注释行，可以用管道符，多次过滤：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1.先过滤掉空白行</span></span><br><span class="line"><span class="comment"># 2.再过滤掉注释行</span></span><br><span class="line">[root@chaogelinux tmp]<span class="comment"># grep  -v '^$'  settings.py |  grep -v '^#'</span></span><br><span class="line">qweqweqweqwe</span><br><span class="line">ALLOW_HOSTS=[]</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 1.先过滤掉空白行</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 2.再过滤掉注释行</span></span><br><span class="line">[root@chaogelinux tmp]# grep  -v '^$'  settings.py |  grep -v '^#'</span><br><span class="line">qweqweqweqwe</span><br><span class="line">ALLOW_HOSTS=[]</span><br></pre></td></tr></table></figure>
 
 <h3 id="head-和-tail"><a href="#head-和-tail" class="headerlink" title="head 和 tail"></a>head 和 tail</h3><p>head 命令用来显示文件开头一定行数的内容，默认看前 10 行；</p>
 <p>tail 命令用来显示文件末尾一定行数的内容，默认倒序看后 10 行。</p>
 <p>显示前 5 行：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">head -5 file.txt</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">head -5 file.txt</span><br></pre></td></tr></table></figure>
 
 <p>显示后 3 行：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tail -3 file.txt</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tail -3 file.txt</span><br></pre></td></tr></table></figure>
 
 <p>tail 命令通过使用参数 <code>-f</code> 可以实现实时监控，是 flush 刷新的意思：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tail -f  /var/<span class="built_in">log</span>/nginx/access.log</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tail -f  /var/log/nginx/access.log</span><br></pre></td></tr></table></figure>
 
 <h3 id="scp-安全复制"><a href="#scp-安全复制" class="headerlink" title="scp 安全复制"></a>scp 安全复制</h3><p>scp 命令用于在两台 Linux 服务器之间远程传输文件，其基本语法为：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp 待发送的文件 目标路径</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp 待发送的文件 目标路径</span><br></pre></td></tr></table></figure>
 
 <p>案例1：把本地的某文件，发送到另一台服务器的 <code>/tmp</code> 目录下（本地的局域网机器，是能发送给远程机器的，通过路由器出去）：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">yumac: ~ yuchao<span class="variable">$scp</span>   ./yasuo.txt  root@123.206.16.61:/tmp/  <span class="comment"># 发送普通的文件给远程服务器</span></span><br><span class="line">yasuo.txt                        100%   10     0.2KB/s   00:00</span><br><span class="line">yumac: ~ yuchao<span class="variable">$mkdir</span> -p lol/盖伦/大宝剑</span><br><span class="line">yumac: ~ yuchao<span class="variable">$scp</span>  -r  ./lol  root@123.206.16.61:/tmp/ <span class="comment"># -r参数递归发送整个文件夹下所有内容</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">yumac: ~ yuchao$scp   ./yasuo.txt  root@123.206.16.61:/tmp/  # 发送普通的文件给远程服务器</span><br><span class="line">yasuo.txt                        100%   10     0.2KB/s   00:00</span><br><span class="line">yumac: ~ yuchao$mkdir -p lol/盖伦/大宝剑</span><br><span class="line">yumac: ~ yuchao$scp  -r  ./lol  root@123.206.16.61:/tmp/ # -r参数递归发送整个文件夹下所有内容</span><br></pre></td></tr></table></figure>
 
 <p>案例2：把远程机器的东西，给拿到我本地来</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">yumac: lol yuchao<span class="variable">$scp</span> root@123.206.16.61:/tmp/好好学习奥力给.txt  ./</span><br><span class="line">好好学习奥力给.txt               100%  384     6.6KB/s   00:00</span><br><span class="line">yumac: lol yuchao<span class="variable">$ls</span></span><br><span class="line">盖伦				好好学习奥力给.txt</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">yumac: lol yuchao$scp root@123.206.16.61:/tmp/好好学习奥力给.txt  ./</span><br><span class="line">好好学习奥力给.txt               100%  384     6.6KB/s   00:00</span><br><span class="line">yumac: lol yuchao$ls</span><br><span class="line">盖伦				好好学习奥力给.txt</span><br></pre></td></tr></table></figure>
 
 <p>再举两个案例：</p>
 <p>准备 2 台 Linux 虚拟机，确保互相可以通信，它们的 IP 分别为 <code>192.168.178.181</code> 和 <code>192.168.178.253</code>。</p>
 <p>情况 1，我登录在 <code>192.168.178.181</code>，我要把 181 这台机器的资料，发给 253 的那台机器：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp ./test.txt root@192.168.178.253:/tmp/</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp ./test.txt root@192.168.178.253:/tmp/</span><br></pre></td></tr></table></figure>
 
 <p>情况 2，我还是登录在 181 的机器，我要拿到远程机器 253 的一个文件：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp root@192.168.178.253:/tmp/test.txt /tmp/</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp root@192.168.178.253:/tmp/test.txt /tmp/</span><br></pre></td></tr></table></figure>
 
-<h3 id="修改-Linux-语言为中文"><a href="#修改-Linux-语言为中文" class="headerlink" title="修改 Linux 语言为中文"></a>修改 Linux 语言为中文</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> LC_ALL=zh_CN.UTF-8</span><br></pre></td></tr></table></figure>
+<h3 id="修改-Linux-语言为中文"><a href="#修改-Linux-语言为中文" class="headerlink" title="修改 Linux 语言为中文"></a>修改 Linux 语言为中文</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export LC_ALL=zh_CN.UTF-8</span><br></pre></td></tr></table></figure>
 
 <h3 id="lrzsz-工具"><a href="#lrzsz-工具" class="headerlink" title="lrzsz 工具"></a>lrzsz 工具</h3><p>这个可以用于 Windows 和 Linux 之间互相传递文件，主要用于 Xshell 的文件拖拽功能。</p>
 <p>使用 lrzsz 工具之前，需要安装这个工具包：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install lrzsz -y</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install lrzsz -y</span><br></pre></td></tr></table></figure>
 
 <p>这个工具提供了两个命令：rz 和 sz。</p>
 <ul>
@@ -435,30 +434,30 @@
 <h3 id="du-文件夹大小"><a href="#du-文件夹大小" class="headerlink" title="du 文件夹大小"></a>du 文件夹大小</h3><p>统计文件，文件夹大小有两种方式：</p>
 <ul>
 <li><p>使用 ls 命令：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls -lh /tmp    <span class="comment"># -h 参数用来给文件大小加单位</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls -lh /tmp    # -h 参数用来给文件大小加单位</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>使用 du 命令：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">du -h  .  <span class="comment">#显示出当前文件夹下所有内容的大小</span></span><br><span class="line">du -sh  .  <span class="comment">#显示当前文件夹大小的合计  -s 显示合计  -h显示 kb MB GB的单位</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">du -h  .  #显示出当前文件夹下所有内容的大小</span><br><span class="line">du -sh  .  #显示当前文件夹大小的合计  -s 显示合计  -h显示 kb MB GB的单位</span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
 <h3 id="top-资源管理器"><a href="#top-资源管理器" class="headerlink" title="top 资源管理器"></a>top 资源管理器</h3><p>top 命令相当于 Linux 系统的任务管理器和资源管理器：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">top</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">top</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>输入命令 top 进入任务管理器</li>
 <li>按下 q 键退出 top 命令</li>
 </ul>
 <h3 id="uptime-运行时间"><a href="#uptime-运行时间" class="headerlink" title="uptime 运行时间"></a>uptime 运行时间</h3><p>uptime 用于查看系统运行时长：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uptime</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uptime</span><br></pre></td></tr></table></figure>
 
 <h3 id="free-内存占用"><a href="#free-内存占用" class="headerlink" title="free 内存占用"></a>free 内存占用</h3><p>free 命令用于显示内存的使用情况</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">free -m  <span class="comment">#以M单位显示内存情况</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">free -m  #以M单位显示内存情况</span><br></pre></td></tr></table></figure>
 
 <h3 id="chattr-和-lsattr-权限设置"><a href="#chattr-和-lsattr-权限设置" class="headerlink" title="chattr 和 lsattr 权限设置"></a>chattr 和 lsattr 权限设置</h3><p>这两条命令不常见，其应用场景可以参见 <a href="https://www.cnblogs.com/pyyu/p/10297623.html" target="_blank" rel="noopener">记录腾讯云中矿机病毒处理过程(重装系统了fu*k)</a>。</p>
 <p>chattr 是给文件设置特殊权限的命令；</p>
 <p>lsattr 是检查文件特殊权限的命令。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">chattr +i  file  <span class="comment">#给文件加上禁止删除的锁</span></span><br><span class="line">chattr -i fiel  <span class="comment">#去掉锁</span></span><br><span class="line">lsattr file <span class="comment">#显示文件的特殊权限</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">chattr +i  file  #给文件加上禁止删除的锁</span><br><span class="line">chattr -i fiel  #去掉锁</span><br><span class="line">lsattr file #显示文件的特殊权限</span><br></pre></td></tr></table></figure>
 
 <h3 id="ntpdate-时间同步"><a href="#ntpdate-时间同步" class="headerlink" title="ntpdate 时间同步"></a>ntpdate 时间同步</h3><p>用于同步 Linux 系统时间的命令。</p>
 <p>服务器的时间是非常重要的，会影响到程序的正常运行，尤其是一些定时任务。</p>
@@ -468,20 +467,20 @@
 <p>注：这是永久修改时间的命令。</p>
 <h3 id="wget-下载"><a href="#wget-下载" class="headerlink" title="wget 下载"></a>wget 下载</h3><p>在线获取一个 url 资源的命令，可以用作爬虫命令。</p>
 <p>在使用之前，需要单独安装 wget：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install wget -y</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install wget -y</span><br></pre></td></tr></table></figure>
 
 <p>使用：</p>
 <ul>
 <li><p>获取一个图片 url 资源</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://pythonav.com/media/teacher/wupeiqi.png</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https://pythonav.com/media/teacher/wupeiqi.png</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>支持俩递归爬取的参数，能获取网站静态资源</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget -r -p  www.luffycity.com  <span class="comment">#递归爬取路飞的静态资源，css js font等</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget -r -p  www.luffycity.com  #递归爬取路飞的静态资源，css js font等</span><br></pre></td></tr></table></figure>
 
 </li>
 </ul>
 <h3 id="curl-访问网址"><a href="#curl-访问网址" class="headerlink" title="curl 访问网址"></a>curl 访问网址</h3><p>curl 向指定地址发送 http 请求，并接收返回响应，基本用法为：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl https://www.baidu.com</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl https://www.baidu.com</span><br></pre></td></tr></table></figure>
 
 <h3 id="Linux-的用户管理"><a href="#Linux-的用户管理" class="headerlink" title="Linux 的用户管理"></a>Linux 的用户管理</h3><p>QQ 群一般有三个角色：群主、管理员和普通群成员。类似地，Linux 系统也有三种用户身份：root 用户、管理员用户和普通用户：</p>
 <ul>
@@ -497,20 +496,20 @@
 </ul>
 <p>Linux 下存放用户账户信息的文件是 <code>/etc/passwd</code></p>
 <h3 id="useradd-创建用户"><a href="#useradd-创建用户" class="headerlink" title="useradd 创建用户"></a>useradd 创建用户</h3><p>只有 root 有权限，创建普通用户，默认 uid 从 1000 开始递进。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">useradd sure</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">useradd sure</span><br></pre></td></tr></table></figure>
 
 <h3 id="userdel-删除用户"><a href="#userdel-删除用户" class="headerlink" title="userdel 删除用户"></a>userdel 删除用户</h3><p>使用 userdel 命令删除已经存在的用户：</p>
 <figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">userdel sure</span></span><br></pre></td></tr></table></figure>
 
 <h3 id="passwd-修改密码"><a href="#passwd-修改密码" class="headerlink" title="passwd 修改密码"></a>passwd 修改密码</h3><p>修改用户密码，只有 root 可以操作。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">passwd sure</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">passwd sure</span><br></pre></td></tr></table></figure>
 
 <h3 id="su-切换用户"><a href="#su-切换用户" class="headerlink" title="su 切换用户"></a>su 切换用户</h3><p>su 命令用于用户切换，root 切换普通用户不要密码</p>
 <p>普通用户之间切换需要密码</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">su - sure  <span class="comment"># 切换到sure用户，中间的减号代表完全的环境变量切换，一定要加上</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">su - sure  # 切换到sure用户，中间的减号代表完全的环境变量切换，一定要加上</span><br></pre></td></tr></table></figure>
 
 <h3 id="id-产看用户信息"><a href="#id-产看用户信息" class="headerlink" title="id 产看用户信息"></a>id 产看用户信息</h3><p>id 命令用于查看用户的 uid 等信息</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># id sure</span></span><br><span class="line">uid=1000(sure) gid=1000(sure) groups=1000(sure)</span><br><span class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># id root</span></span><br><span class="line">uid=0(root) gid=0(root) groups=0(root)</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost test]# id sure</span><br><span class="line">uid=1000(sure) gid=1000(sure) groups=1000(sure)</span><br><span class="line">[root@localhost test]# id root</span><br><span class="line">uid=0(root) gid=0(root) groups=0(root)</span><br></pre></td></tr></table></figure>
 
 <h3 id="sudo-命令"><a href="#sudo-命令" class="headerlink" title="sudo 命令"></a>sudo 命令</h3><p>当普通用户执行命令权限不够的时候，使用 sudo，强大自己的权限。</p>
 <p>比如要访问 <code>/root</code> 文件夹。但这个文件夹就像皇宫一样，不是所有人想进就能进去的。只有具有 root 权限的用户，比如 root 用户才有权限访问。来百姓无法进入皇宫，普通用户无法访问 <code>/root</code> 文件夹。</p>
@@ -518,20 +517,20 @@
 <p>要给普通用户赋予 sudo 命令权限，需在 root 下进行配置，步骤如下：</p>
 <ol>
 <li><p>打开 sudo 的配置文件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">visudo</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">visudo</span><br></pre></td></tr></table></figure>
 
 <p>也可以使用 vim 直接修改 <code>/etc/sudoers</code> 文件。使用 <code>visudo</code> 命令修改会有语法检测，更专业。</p>
 </li>
 <li><p>找到如下配置行，添加你允许使用sudo的用户名字</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## Allow root to run any commands anywhere</span></span><br><span class="line">root    ALL=(ALL)       ALL</span><br><span class="line">caixukun        ALL=(ALL)       ALL</span><br><span class="line">haohao        ALL=(ALL)       ALL</span><br><span class="line">laowang        ALL=(ALL)       ALL</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># Allow root to run any commands anywhere</span></span></span><br><span class="line">root    ALL=(ALL)       ALL</span><br><span class="line">caixukun        ALL=(ALL)       ALL</span><br><span class="line">haohao        ALL=(ALL)       ALL</span><br><span class="line">laowang        ALL=(ALL)       ALL</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>使用 sudo 命令，在你敲的命令前，加上 sudo 即可：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ls /root</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ls /root</span><br></pre></td></tr></table></figure>
 
 </li>
 </ol>
 <h3 id="Linux-的文件和目录权限"><a href="#Linux-的文件和目录权限" class="headerlink" title="Linux 的文件和目录权限"></a>Linux 的文件和目录权限</h3><p>创建一个 <code>happy.txt</code> 文件，并查看文件的详细信息：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># touch happy.txt</span></span><br><span class="line">[root@localhost <span class="built_in">test</span>]<span class="comment"># ls -l</span></span><br><span class="line">total 0</span><br><span class="line">-rw-r--r--. 1 root root 0 Feb  7 19:32 happy.txt</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost test]# touch happy.txt</span><br><span class="line">[root@localhost test]# ls -l</span><br><span class="line">total 0</span><br><span class="line">-rw-r--r--. 1 root root 0 Feb  7 19:32 happy.txt</span><br></pre></td></tr></table></figure>
 
 <p>我们看到，信息行的最前面，是一行奇怪的符号：<code>-rw-r--r--</code>。它的含义是：</p>
 <ul>
@@ -604,10 +603,10 @@
 <img src="/linux/common-command/1132884-20180811155113844-356770043.png" class="" title="1132884-20180811155113844-356770043">
 
 <h3 id="chmod-修改文件权限"><a href="#chmod-修改文件权限" class="headerlink" title="chmod 修改文件权限"></a>chmod 修改文件权限</h3><p>change mode，更改文件权限的命令</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod u+x file  <span class="comment"># 给user用户添加一个x可执行权限</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod u+x file  # 给user用户添加一个x可执行权限</span><br></pre></td></tr></table></figure>
 
 <p>用 sure 普通用户给文件的 other 添加一个w写的权限</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[sure@localhost ~]$ sudo chmod o+w happy.txt</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[sure@localhost ~]$ sudo chmod o+w happy.txt</span><br></pre></td></tr></table></figure>
 
 <p>r、w、x 权限可分别转化为数字 4、2、1：</p>
 <table>
@@ -661,7 +660,7 @@
 
 <p>换句话说，就是按照 rwx 顺序，若有该权限，则在对应位置写为 1，若无该权限，则写为零。最后得到一个三位二进制数，将其转为十进制数，即可得到权限的数字。</p>
 <p>然我们重新看一下前面的 happy.txt 文件的详细信息：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-rw-r--r--. 1 root root 0 Feb  7 19:32 happy.txt</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-rw-r--r--. 1 root root 0 Feb  7 19:32 happy.txt</span><br></pre></td></tr></table></figure>
 
 <p>现在我们要修改这个文件，只有属主可写，其他人都没有权限，用数字权限转化。</p>
 <ol>
@@ -670,7 +669,7 @@
 <li><p>属组和其他用户无权限，二进制权限为 000，转换为十进制也是 0；</p>
 </li>
 <li><p>因此，应该将文件权限修改为 200：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod  200   happy.txt   <span class="comment">#这个代表 user是 2 只写的，group和other都没有权限</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod  200   happy.txt   #这个代表 user是 2 只写的，group和other都没有权限</span><br></pre></td></tr></table></figure>
 
 </li>
 </ol>
@@ -683,12 +682,12 @@
 <li><p>其他用户只能写，二进制位 010，十进制位 2；</p>
 </li>
 <li><p>因此，文件权限应为 662：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod 662 happy.txt</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod 662 happy.txt</span><br></pre></td></tr></table></figure>
 
 </li>
 </ol>
 <p>同样地，已知用户权限的数字，可以倒过来推导用户权限。例如，请解读如下权限：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod 235 happy.txt</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod 235 happy.txt</span><br></pre></td></tr></table></figure>
 
 <ol>
 <li>属主的权限为 2，转换为二进制是 010，按照 rwx 的位置，可知属主只有可读权限；</li>
@@ -696,14 +695,14 @@
 <li>其他用户权限为 5，二进制为 101，可读可执行。</li>
 </ol>
 <h3 id="ln-软链接"><a href="#ln-软链接" class="headerlink" title="ln 软链接"></a>ln 软链接</h3><p>创建软链接的命令，类似于创建快捷方式，其用法为：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ln  -s  源文件绝对路径  快捷方式绝对路径</span><br><span class="line">ln -s  /s26linux/happy.txt  /tmp/hp.txt</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ln  -s  源文件绝对路径  快捷方式绝对路径</span><br><span class="line">ln -s  /s26linux/happy.txt  /tmp/hp.txt</span><br></pre></td></tr></table></figure>
 
 <h3 id="tar-压缩解压缩"><a href="#tar-压缩解压缩" class="headerlink" title="tar 压缩解压缩"></a>tar 压缩解压缩</h3><p>打包、压缩、解压缩的命令，压缩包的后缀名通常是 <code>.tar.gz</code> 或 <code>.tgz</code></p>
 <p>常用参数如下：</p>
 <figure class="highlight diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="deletion">-z  调用 gzip 压缩资源，节省磁盘空间</span></span><br><span class="line"><span class="deletion">-x  解压缩</span></span><br><span class="line"><span class="deletion">-v  显示过程</span></span><br><span class="line"><span class="deletion">-f  这个参数必须写在结尾，指定压缩文件名字</span></span><br><span class="line"><span class="deletion">-c  打包参数</span></span><br></pre></td></tr></table></figure>
 
 <p>例如，把 <code>/tmp</code> 下所有的内容，进行压缩打包，节省磁盘空间</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">tar  -zcvf  /opt/alltmp.tgz    ./*  <span class="comment"># 打包且压缩/tmp下所有内容，生成一个压缩文件，放到opt下</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 演示解压缩，把 /opt下alltmp.tgz 解压缩</span></span><br><span class="line">tar -zxvf   /opt/alltmp.tgz  ./</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">tar  -zcvf  /opt/alltmp.tgz    ./*  # 打包且压缩/tmp下所有内容，生成一个压缩文件，放到opt下</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 演示解压缩，把 /opt下alltmp.tgz 解压缩</span></span><br><span class="line">tar -zxvf   /opt/alltmp.tgz  ./</span><br></pre></td></tr></table></figure>
 
 <h3 id="unzip-压缩"><a href="#unzip-压缩" class="headerlink" title="unzip 压缩"></a>unzip 压缩</h3><p>unzip 命令用来解压缩 zip 格式的压缩文件：</p>
 <figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">unzip <span class="keyword">file</span>.<span class="keyword">zip</span></span><br></pre></td></tr></table></figure>
@@ -712,21 +711,21 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">unzip -O utf8 day016.zip</span><br></pre></td></tr></table></figure>
 
 <h3 id="查看系统发行版"><a href="#查看系统发行版" class="headerlink" title="查看系统发行版"></a>查看系统发行版</h3><p>Redhat 系 Linux 系统发行版查看方法：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/redhat-release</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/redhat-release</span><br></pre></td></tr></table></figure>
 
 <p>Linux 系统通用查看方法：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/os-release</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/os-release</span><br></pre></td></tr></table></figure>
 
 <h3 id="systemctl-软件启停管理"><a href="#systemctl-软件启停管理" class="headerlink" title="systemctl 软件启停管理"></a>systemctl 软件启停管理</h3><p>只要是通过 yum 安装的软件，都可以用 systemctl 系统服务管理命令，进行启停管理：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">systemctl start/stop/restart/status nginx  <span class="comment">#分别是 启动，停止，重启，查看状态</span></span><br><span class="line">systemctl start nginx</span><br><span class="line">systemctl stop nginx</span><br><span class="line"></span><br><span class="line">systemctl start/stop/restart redis</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">systemctl start/stop/restart/status nginx  #分别是 启动，停止，重启，查看状态</span><br><span class="line">systemctl start nginx</span><br><span class="line">systemctl stop nginx</span><br><span class="line"></span><br><span class="line">systemctl start/stop/restart redis</span><br></pre></td></tr></table></figure>
 
 <h3 id="crontab-定时任务"><a href="#crontab-定时任务" class="headerlink" title="crontab 定时任务"></a>crontab 定时任务</h3><p>老板给你下达一个任务：每周一的凌晨三点，启动一下 nginx。你当然可以在周一早上起个大早，在三点钟启动一下 nginx。不过我想你一定不愿意这样做。幸运的是，你可以设置一个定时任务来做这个事情。你可以设定一个定时任务，每周一的凌晨三点执行你需要的命令。</p>
 <p>CentOS 系统创建定时任务的命令是 crontab。</p>
 <p>在 <code>/etc</code> 目录下有一个 crontab 文件，这个就是系统任务调度的配置文件：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/crontab</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/crontab</span><br></pre></td></tr></table></figure>
 
 <p>我们可以看到里面的配置提示：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">SHELL=/bin/bash</span><br><span class="line">PATH=/sbin:/bin:/usr/sbin:/usr/bin</span><br><span class="line">MAILTO=root</span><br><span class="line"></span><br><span class="line"><span class="comment"># For details see man 4 crontabs</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Example of job definition:</span></span><br><span class="line"><span class="comment"># .---------------- minute (0 - 59)</span></span><br><span class="line"><span class="comment"># |  .------------- hour (0 - 23)</span></span><br><span class="line"><span class="comment"># |  |  .---------- day of month (1 - 31)</span></span><br><span class="line"><span class="comment"># |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...</span></span><br><span class="line"><span class="comment"># |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat</span></span><br><span class="line"><span class="comment"># |  |  |  |  |</span></span><br><span class="line"><span class="comment"># *  *  *  *  * user-name  command to be executed</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">SHELL=/bin/bash</span><br><span class="line">PATH=/sbin:/bin:/usr/sbin:/usr/bin</span><br><span class="line">MAILTO=root</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> For details see man 4 crontabs</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> Example of job definition:</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> .---------------- minute (0 - 59)</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> |  .------------- hour (0 - 23)</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> |  |  .---------- day of month (1 - 31)</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> |  |  |  |  |</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> *  *  *  *  * user-name  <span class="built_in">command</span> to be executed</span></span><br></pre></td></tr></table></figure>
 
 <p>最后一行为 crontab 的基本设置语法，即：</p>
 <figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">分 时  日  月  周     你要执行的命令绝对路径</span><br><span class="line">*  *   *   *   *     绝对路径的命令</span><br><span class="line">分钟(<span class="number">0</span><span class="number">-59</span>)　小时(<span class="number">0</span><span class="number">-23</span>)　日期(<span class="number">1</span><span class="number">-31</span>)　月份(<span class="number">1</span><span class="number">-12</span>)　星期(<span class="number">0</span><span class="number">-6</span>,<span class="number">0</span>代表星期天)　 命令</span><br></pre></td></tr></table></figure>
@@ -759,31 +758,31 @@
 <p>直接来我们通过一系列的练习题，深入了解 crontab 命令的编写规则：</p>
 <ol>
 <li><p>每分钟执行一次命令</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*  *  *  *  *   绝对路径的命令  <span class="comment">#每分钟执行命令</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*  *  *  *  *   绝对路径的命令  #每分钟执行命令</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>每小时的整点，执行命令</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0  *  *  *  *   绝对路径的命令  <span class="comment">#每小时的整点执行</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0  *  *  *  *   绝对路径的命令  #每小时的整点执行</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>每小时的 3、15 分钟执行命令</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">3,15  *  *  *  *    绝对路径的命令</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">3,15  *  *  *  *    绝对路径的命令</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>在上午 8-11 点的第 3 和第 15 分钟执行</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">3,15   8-11   *  *  *   绝对路径的命令</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">3,15   8-11   *  *  *   绝对路径的命令</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>每晚 6 点半执行命令</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">30  18  *  * *  <span class="built_in">command</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">30  18  *  * *  command</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>没周六、日的凌晨 1：30 执行命令</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">30  1   *  *  6,7  <span class="built_in">command</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">30  1   *  *  6,7  command</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>每周一到周五的凌晨 1 点，清空 <code>/tmp</code> 目录的所有文件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0 1  * *  1-5     /usr/bin/rm  -rf /tmp/*</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">0 1  * *  1-5     /usr/bin/rm  -rf /tmp/*</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>每晚的 21:30 重启 nginx</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">30  21  * *  *    /usr/bin/systemctl restart nginx</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">30  21  * *  *    /usr/bin/systemctl restart nginx</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>每月的 1、10、22 日的下午 4:45 重启 nginx</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">45  16  1,10,22   *  *    /usr/bin/systemctl restart nginx</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">45  16  1,10,22   *  *    /usr/bin/systemctl restart nginx</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>每个星期一的上午 8 点和 11 点的第 3 到 15 分钟执行命令</p>
 <figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">3</span><span class="number">-15</span>    <span class="number">8</span>,<span class="number">11</span>  *  *  <span class="number">1</span>   command</span><br></pre></td></tr></table></figure>
@@ -804,19 +803,19 @@
 <p>crontab 的使用步骤如下：</p>
 <ol>
 <li><p>输入命令，打开定时任务配置文件</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">crontab -e</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">crontab -e</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>写入 crontab 命令语句，注意命令尽量使用绝对路径，绝对路径可通过 which 命令获取</p>
 </li>
 <li><p>查看定时任务</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">crontab -l</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">crontab -l</span><br></pre></td></tr></table></figure>
 
 </li>
 </ol>
 <h3 id="防火墙关闭"><a href="#防火墙关闭" class="headerlink" title="防火墙关闭"></a>防火墙关闭</h3><p>防火墙是为了保护服务器安全，运维人员会编写防火墙语句，控制服务器的流量出入。</p>
 <p>新手学习直接关闭即可，影响实验。以后的防火墙也是由运维设置，会在不影响项目正常运行的前提下保障安全，而不是系统自带防火墙那样死板。</p>
 <p>关闭防火墙服务的语句有三个，按需任选其一即可：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">iptables -F  <span class="comment">#清空防火墙规则，重启恢复</span></span><br><span class="line">systemctl stop firewalld  <span class="comment">#关闭防火墙服务，重启自启</span></span><br><span class="line">systemctl <span class="built_in">disable</span> firewalld  <span class="comment">#禁用防火墙开机自启，重启不自启</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">iptables -F  #清空防火墙规则，重启恢复</span><br><span class="line">systemctl stop firewalld  #关闭防火墙服务，重启自启</span><br><span class="line">systemctl disable firewalld  #禁用防火墙开机自启，重启不自启</span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -832,12 +831,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/linux/centos-vmware/" rel="prev" title="虚拟机安装 CentOS">
-      <i class="fa fa-chevron-left"></i> 虚拟机安装 CentOS
+    <a href="/linux/nginx-log/" rel="prev" title="nginx 的访问日志功能">
+      <i class="fa fa-chevron-left"></i> nginx 的访问日志功能
     </a></div>
       <div class="post-nav-item">
-    <a href="/linux/crm-build/" rel="next" title="crm 项目部署">
-      crm 项目部署 <i class="fa fa-chevron-right"></i>
+    <a href="/linux/vmware-net-type/" rel="next" title="VMware 的网络连接类型">
+      VMware 的网络连接类型 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -914,7 +913,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">236</span>
+          <span class="site-state-item-count">241</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -923,6 +922,12 @@
           
         <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
 </div>

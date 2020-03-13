@@ -157,6 +157,11 @@
     <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
 
   </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
         <li class="menu-item menu-item-categories">
 
     <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
@@ -230,7 +235,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/bug-bible/vue-bug/TypeError/">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/dict/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -244,7 +249,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/bug-bible/vue-bug/TypeError/" class="post-title-link" itemprop="url">TypeError</a>
+            <a href="/python-basic/dict/" class="post-title-link" itemprop="url">字典</a>
         </h2>
 
         <div class="post-meta">
@@ -253,23 +258,17 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2020-02-17 14:26:57" itemprop="dateCreated datePublished" datetime="2020-02-17T14:26:57+08:00">2020-02-17</time>
+              <time title="创建时间：2020-03-13 13:53:10 / 修改时间：14:53:08" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:10+08:00">2020-03-13</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Bug-%E5%AE%9D%E5%85%B8/" itemprop="url" rel="index"><span itemprop="name">Bug 宝典</span></a>
+                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
                 </span>
             </span>
 
@@ -284,15 +283,140 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>Python Bug 宝典之 TypeError 错误</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/bug-bible/vue-bug/TypeError/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
+          <h3 id="字典初识"><a href="#字典初识" class="headerlink" title="字典初识"></a>字典初识</h3><p>我们来看下面的一个例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">name_lst = [<span class="string">"新力"</span>, <span class="string">"一帆"</span>, <span class="string">"海绵"</span>, <span class="string">"秀"</span>]</span><br><span class="line">id_lst = [<span class="number">18</span>, <span class="number">9</span>, <span class="number">25</span>, <span class="number">50</span>]</span><br></pre></td></tr></table></figure>
+
+<p>其中，列表 <code>name_lst</code> 中存储的是同学的名字，<code>id_lst</code> 中存储的是对应同学的学号。例如，<code>新力</code> 的学号是 <code>18</code>。</p>
+<p>如果我们要查找新力的学号，就要去另一个列表中找到其索引对应的学号值，例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">name_lst[<span class="number">0</span>]</span><br><span class="line">id_lst[<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+
+<p>这样的操作虽然也能满足我们的需求，但是显然有些繁琐。而且一旦任何一个列表中的索引发生了变化（比如进行了插入或者删除数据的操作），就要对另一个列表进行同样的改动，否则会造成混乱。</p>
+<p>如果我们使用字典来进行这一类操作，就可以避免这样的麻烦。</p>
+<p>字典也是 Python 中的基本数据类型之一。字典是 Python 中唯一一种包含键值对的数据类型。字典是一种键值对数据。</p>
+<p>字典在 Python 中的关键字是 <code>dict</code>。</p>
+<p>字典用来存储大量数据，数据量比列表存储的还要大。</p>
+<p>字典能够将数据和数据之间进行关联。</p>
+<p>字典的定义方法是这个样子的：<code>dic = {&#39;键&#39;: &#39;值&#39;}</code>，具体的例子就是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">"新力"</span>: [<span class="string">"开车"</span>, <span class="string">"唱"</span>, <span class="string">"跳"</span>], <span class="string">"一帆"</span>: <span class="number">9</span>, <span class="number">25</span>: <span class="string">"海绵"</span>, <span class="literal">True</span>: <span class="string">"秀"</span>, (<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>): <span class="string">"大圣"</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p>通过键可以准确地找到其对应的值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(dic[<span class="string">"新力"</span>])</span><br></pre></td></tr></table></figure>
+
+<p>在这里补充一个概念，<code>哈希</code>：</p>
+<ul>
+<li>可变数据类型不可哈希</li>
+<li>不可变数据类型可哈希</li>
+</ul>
+<p>目前我们学到的可变数据类型有：列表和字典；不可变数据类型有：整型、字符串、布尔值和元组。</p>
+<p>字典的键必须是不可变数据类型（也就是可哈希）且唯一（字典中的键只能存在一个）。如果字典中的键出现了重复，后面的键值对会覆盖前面的键值对。</p>
+<p>字典的值可以是任意的数据类型。</p>
+<p>字典本身也是一个可变数据类型：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;&#123;<span class="string">'a'</span>: <span class="number">1</span>&#125;: <span class="string">'alex'</span>&#125;</span><br><span class="line">print(dic)</span><br></pre></td></tr></table></figure>
+
+<p>运行上面的代码会报错，错误原因是字典是不可哈希的数据类型。也就是说，字典是可变的。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"C:/Users/Sure/PyProject/day05/01 exercise.py"</span>, line <span class="number">54</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    dic = &#123;&#123;<span class="string">'a'</span>: <span class="number">1</span>&#125;: <span class="string">'alex'</span>&#125;</span><br><span class="line">TypeError: unhashable type: <span class="string">'dict'</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="字典元素的增加"><a href="#字典元素的增加" class="headerlink" title="字典元素的增加"></a>字典元素的增加</h3><p>字典的增加操作可以通过 <code>dic[&quot;键&quot;] = &quot;值&quot;</code> 的方式实现：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">"key"</span>: <span class="number">1</span>&#125;</span><br><span class="line">dic[<span class="string">"alex"</span>] = <span class="number">89</span></span><br><span class="line">print(dic)</span><br></pre></td></tr></table></figure>
+
+<p>输出的内容为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="string">'key'</span>: <span class="number">1</span>, <span class="string">'alex'</span>: <span class="number">89</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这种通过赋值的方法增加变量的方法有些”暴力“，因为如果字典中原本存在相同的键，赋值操作将把原来的键对应的值替换为新值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key'</span>: <span class="number">1</span>, <span class="string">'alex'</span>: <span class="number">18</span>&#125;</span><br><span class="line">dic[<span class="string">"alex"</span>] = <span class="number">89</span></span><br><span class="line">print(dic)</span><br></pre></td></tr></table></figure>
+
+<p>输出的内容为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="string">'key'</span>: <span class="number">1</span>, <span class="string">'alex'</span>: <span class="number">89</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p>还有一种相对”温柔“的增加字典元素的方法，<code>.setdefault()</code>。通过这种方法，如果原字典中已经有了同样的键，返回值为改键对应的值，不会进行修改操作。如果原字典中不存在这样的值，将会增加新的键值对。值默认为 <code>None</code>，也可以自定义要添加的值。范围值为增加之后的键对应的新值。例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key'</span>: <span class="number">1</span>&#125;</span><br><span class="line">print(dic.setdefault(<span class="string">'key'</span>))</span><br><span class="line">print(dic.setdefault(<span class="string">'meet'</span>))</span><br><span class="line">print(dic.setdefault(<span class="string">'alex'</span>, <span class="number">89</span>))</span><br><span class="line">print(dic)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span></span><br><span class="line"><span class="literal">None</span></span><br><span class="line"><span class="number">89</span></span><br><span class="line">&#123;<span class="string">'key'</span>: <span class="number">1</span>, <span class="string">'meet'</span>: <span class="literal">None</span>, <span class="string">'alex'</span>: <span class="number">89</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p>对于 <code>.setdefault()</code> 的返回值，可以这样记忆：最终字典的键对应的值是什么，就返回什么。</p>
+<img src="/python-basic/dict/%E5%AD%97%E5%85%B8setdefault%E6%96%B9%E6%B3%95.png" class="" title="字典setdefault方法">
+
+<p><code>.setdefault()</code> 方法是通过两个步骤进行的：</p>
+<ol>
+<li>先通过减去字典中查找，如果键存在，返回对应的值，不会继续执行第二步；如果键不存在，返回将要赋给该键的值，默认为 <code>None</code>，去执行第二步。</li>
+<li>将键和值添加到字典中</li>
+</ol>
+<h3 id="字典的删除"><a href="#字典的删除" class="headerlink" title="字典的删除"></a>字典的删除</h3><p>字典的删除主要有 <code>.clear()</code>、<code>.pop()</code>、<code>.popitem()</code> 和 <code>del</code> 四种方法。</p>
+<p>需要注意的是，字典没有 <code>.remove()</code> 方法。</p>
+<p><code>.clear()</code> 方法用来清空字典，使用该方法后，会得到一个空字典：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key'</span>: <span class="number">1</span>, <span class="string">'dsb'</span>: <span class="string">'alex'</span>&#125;</span><br><span class="line">dic.clear()    <span class="comment"># 字典是可变数据类型，可以直接用方法来修改，不必重新赋值</span></span><br><span class="line">print(dic)</span><br><span class="line"></span><br><span class="line">输出的结果为：&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>.pop()</code> 方法需要输入想要删除的键作为参数，返回的是被删除的键对应的值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key'</span>: <span class="number">1</span>, <span class="string">'dsb'</span>: <span class="string">'alex'</span>&#125;</span><br><span class="line">print(dic.pop(<span class="string">'key'</span>))</span><br></pre></td></tr></table></figure>
+
+<p><code>.popitem()</code> 是随机删除。但是在 Python 3 和最新版本的 Python 2.7 中，默认删除字典的最后一组键值对，返回值为删除掉的键值对元组（注意，是元组，而不是像 <code>.pop()</code> 一样放回的是值）：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key'</span>: <span class="number">1</span>, <span class="string">'dsb'</span>: <span class="string">'alex'</span>&#125;</span><br><span class="line">print(dic.popitem())</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(<span class="string">'dsb'</span>, <span class="string">'alex'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>与列表不同的是，字典中没有 <code>remove</code> 方法。</p>
+<p>字典中 <code>del</code> 方法的用法和列表十分相似，如果不指定要删除的键，将会删除整个字典：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key'</span>: <span class="number">1</span>, <span class="string">'dsb'</span>: <span class="string">'alex'</span>&#125;</span><br><span class="line"><span class="keyword">del</span> dic</span><br><span class="line">print(dic)</span><br></pre></td></tr></table></figure>
+
+<p>代码运行后报错，因为dic已经被完全删除了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"C:/Users/Sure/PyProject/day05/01 exercise.py"</span>, line <span class="number">80</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    print(dic)</span><br><span class="line">NameError: name <span class="string">'dic'</span> <span class="keyword">is</span> <span class="keyword">not</span> defined</span><br></pre></td></tr></table></figure>
+
+<p>我们也可以通过指定键的方法，删除特定的键值对：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key'</span>: <span class="number">1</span>, <span class="string">'dsb'</span>: <span class="string">'alex'</span>&#125;</span><br><span class="line"><span class="keyword">del</span> dic[<span class="string">'dsb'</span>]</span><br><span class="line">print(dic)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="string">'key'</span>: <span class="number">1</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="字典的修改"><a href="#字典的修改" class="headerlink" title="字典的修改"></a>字典的修改</h3><p>字典的修改有两种形式，第一种是用暴力增加的方法 <code>dic[&#39;键&#39;] = &#39;值&#39;</code> 对已经存在的键进行修改；第二种是通过 <code>.update()</code> 方法来合并两个字典。</p>
+<p>使用 <code>dic[&#39;键&#39;] = &#39;值&#39;</code> 进行修改，当字典中存在指定的键时，该键对应的值将会被替换为新的值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">"key"</span>:<span class="number">1</span>,<span class="string">"dsb"</span>:<span class="string">"alex"</span>&#125;</span><br><span class="line">dic[<span class="string">"dsb"</span>] = <span class="string">"Alex"</span>  <span class="comment"># 修改</span></span><br><span class="line">dic[<span class="string">"ss"</span>] = <span class="string">"Alex"</span>   <span class="comment"># 增加</span></span><br><span class="line">print(dic)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="string">'key'</span>: <span class="number">1</span>, <span class="string">'dsb'</span>: <span class="string">'Alex'</span>, <span class="string">'ss'</span>: <span class="string">'Alex'</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>.update()</code> 方法可以将两个字典合并。<code>update</code> 中输入的字典的级别要高于前面的字典。也就是说，如果新输入的键已经在就字典中存在，该键对应的新值将对替换旧值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key'</span>: <span class="number">1</span>, <span class="string">'dsb'</span>:<span class="string">'alex'</span>&#125;</span><br><span class="line">dic.update(&#123;<span class="string">'key'</span>: <span class="number">2</span>, <span class="string">'meet'</span>: <span class="number">23</span>&#125;)</span><br><span class="line">print(dic)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="string">'key'</span>: <span class="number">2</span>, <span class="string">'dsb'</span>: <span class="string">'alex'</span>, <span class="string">'meet'</span>: <span class="number">23</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="字典的查找"><a href="#字典的查找" class="headerlink" title="字典的查找"></a>字典的查找</h3><p>字典可以直接通过键来查找值，不过这种查找方式相对“暴力”：当键存在时，返回对应的值；当键不存在时，程序会报错：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key'</span>: <span class="number">1</span>, <span class="string">'dsb'</span>: <span class="string">'alex'</span>&#125;</span><br><span class="line">print(dic[<span class="string">'dsb'</span>])	<span class="comment"># 返回'dsb'</span></span><br><span class="line">print(dic[<span class="string">'alex'</span>])	<span class="comment"># 程序报错</span></span><br></pre></td></tr></table></figure>
+
+<p>因为这种直接查找的方法当键不存在时会报错，有时我们需要使用 <code>.get()</code> 方法：当键存在时，返回键对应的值；当键不存在时，返回 None：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key'</span>: <span class="number">1</span>, <span class="string">'dsb'</span>: <span class="string">'alex'</span>&#125;</span><br><span class="line">print(dic[<span class="string">'dsb'</span>])	<span class="comment"># 返回'dsb'</span></span><br><span class="line">print(dic[<span class="string">'alex'</span>])	<span class="comment"># 返回None</span></span><br></pre></td></tr></table></figure>
+
+<p>我们甚至可以改变键不存在时的返回值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(dic.get(<span class="string">"alex"</span>, <span class="string">"没有找到啊"</span>))</span><br></pre></td></tr></table></figure>
+
+<p>我们也可以通过 <code>.keys()</code>、<code>.values()</code> 和 <code>.items()</code> 方法获取字典全部的键、值和键值对。这三个方法的返回值都是一种 <code>高仿列表</code>，可以迭代但不支持索引。我们可以通过list函数将返回的高仿列表转化为普通列表：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key'</span>: <span class="number">1</span>, <span class="string">'dsb'</span>: <span class="string">'alex'</span>&#125;</span><br><span class="line">print(dic.keys())</span><br><span class="line">print(dic.values())</span><br><span class="line">print(dic.items())</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> dic.keys():</span><br><span class="line">    print(i)</span><br><span class="line">print(list(dic.values()))</span><br></pre></td></tr></table></figure>
+
+<p>也可以使用 for 循环迭代字典，将会遍历字典的键：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key'</span>: <span class="number">1</span>, <span class="string">'dsb'</span>: <span class="string">'alex'</span>&#125;</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> dic:</span><br><span class="line">    print(i)</span><br></pre></td></tr></table></figure>
+
+<h3 id="字典的嵌套"><a href="#字典的嵌套" class="headerlink" title="字典的嵌套"></a>字典的嵌套</h3><p>有下面这样一个字典：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">house = &#123;</span><br><span class="line">    <span class="number">101</span>: &#123;<span class="number">1</span>: &#123;<span class="string">"皮裤男"</span>: &#123;<span class="string">"某女"</span>: [<span class="string">"小钢炮"</span>], <span class="string">"国际章"</span>: [<span class="string">"熊大"</span>, <span class="string">"熊二"</span>]&#125;,</span><br><span class="line">            <span class="number">2</span>: &#123;<span class="string">"林俊杰"</span>: [<span class="string">"磨牙"</span>]&#125;&#125;&#125;,</span><br><span class="line">    <span class="number">102</span>: &#123;<span class="number">1</span>: &#123;<span class="string">"皮裤女"</span>: &#123;<span class="string">"林宥嘉"</span>: [<span class="string">"说谎"</span>, <span class="string">"你是我的眼"</span>]&#125;&#125;,</span><br><span class="line">         <span class="number">2</span>: &#123;<span class="string">"王菲"</span>: [<span class="string">"天后"</span>, <span class="string">"传奇"</span>, <span class="string">"红豆"</span>, <span class="string">"笑忘书"</span>]&#125;&#125;,</span><br><span class="line">    <span class="number">103</span>: &#123;<span class="number">1</span>: &#123;<span class="string">"韦小宝"</span>: &#123;<span class="string">"阿珂"</span>: <span class="string">"刺客"</span>, <span class="string">"建宁"</span>: <span class="string">"公主"</span>, <span class="string">"双儿"</span>: <span class="string">"丫鬟"</span>, <span class="string">"教主老婆"</span>: <span class="string">"龙儿"</span>&#125;&#125;,</span><br><span class="line">         <span class="number">2</span>: &#123;<span class="string">"张无忌"</span>: &#123;<span class="string">"灭绝师太"</span>: <span class="string">"倚天剑"</span>, <span class="string">"金毛狮王"</span>: <span class="string">"屠龙刀"</span>, <span class="string">"张三丰"</span>: <span class="string">"太极拳"</span>&#125;&#125;&#125;,</span><br><span class="line">    <span class="number">104</span>: &#123;<span class="number">1</span>: &#123;<span class="string">"西游记"</span>: &#123;<span class="string">"大圣"</span>: <span class="string">"金箍撸撸棒"</span>, <span class="string">"唐僧"</span>: <span class="string">"叨逼叨"</span>, <span class="string">"八戒"</span>: <span class="string">"高老庄主任"</span>&#125;&#125;&#125;,</span><br><span class="line">    <span class="number">105</span>: &#123;<span class="number">1</span>: &#123;<span class="string">"水浒传"</span>: &#123;<span class="string">"武松"</span>: <span class="string">"打老虎"</span>, <span class="string">"鲁智笙"</span>: <span class="string">"拔树"</span>, <span class="string">"林冲"</span>: <span class="string">"教头"</span>, <span class="string">"宋江"</span>: <span class="string">"老大"</span>&#125;&#125;,</span><br><span class="line">         <span class="number">2</span>: &#123;<span class="string">"官场"</span>: &#123;<span class="string">"高俅"</span>: <span class="string">"足球"</span>&#125;&#125;&#125;,</span><br><span class="line">    <span class="number">106</span>: &#123;<span class="number">1</span>: &#123;<span class="string">"老男孩"</span>: &#123;<span class="string">"alex"</span>: <span class="string">"dsb"</span>, <span class="string">"wusir"</span>: <span class="string">"污"</span>, <span class="string">"宝元"</span>: <span class="string">"大卡车"</span>, <span class="string">"江毅"</span>: <span class="string">"兽"</span>&#125;&#125;&#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>要想找到里面的 <code>&quot;倚天剑&quot;</code> 的 <code>剑</code> 字和 <code>&quot;熊大&quot;</code> 的 <code>熊</code> 字，我们可以这样找到：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">print(house[<span class="number">103</span>][<span class="number">2</span>][<span class="string">'张无忌'</span>][<span class="string">'灭绝师太'</span>][<span class="number">2</span>])</span><br><span class="line">print(house[<span class="number">101</span>][<span class="number">1</span>][<span class="string">'皮裤男'</span>][<span class="string">'国际章'</span>][<span class="number">0</span>][<span class="number">0</span>])</span><br></pre></td></tr></table></figure>
+
+<p>从上面的例子中，我们就可以发现，字典相较于列表是很有优势的：</p>
+<ol>
+<li>字典查找内容更方便</li>
+<li>字典查找速度更快</li>
+</ol>
+<p>字典还可以简化流程控制的过程。</p>
+<p>举个例子，如果我们需要设计这样一个程序，用户输入编号，程序自动返回该编号对应的菜品。如果我们用 if 条件句来实现，将会非常繁琐：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    choose = int(input(<span class="string">"请输入数字（1-12）："</span>))</span><br><span class="line">    <span class="keyword">if</span> choose == <span class="number">1</span>:</span><br><span class="line">        print(<span class="string">'饺子'</span>)</span><br><span class="line">    <span class="keyword">elif</span> choose == <span class="number">2</span>:</span><br><span class="line">        print(<span class="string">'粥'</span>)</span><br><span class="line">    <span class="keyword">elif</span> choose == <span class="number">3</span>:</span><br><span class="line">        print(<span class="string">'面条'</span>)</span><br><span class="line">    <span class="keyword">elif</span> choose == <span class="number">4</span>:</span><br><span class="line">        print(<span class="string">'肉'</span>)</span><br><span class="line">    <span class="keyword">elif</span> choose == <span class="number">5</span>:</span><br><span class="line">        print(<span class="string">'土'</span>)</span><br><span class="line">    <span class="keyword">elif</span> choose == <span class="number">6</span>:</span><br><span class="line">        print(<span class="string">'东南风'</span>)</span><br><span class="line">    <span class="keyword">elif</span> choose == <span class="number">7</span>:</span><br><span class="line">        print(<span class="string">'切糕'</span>)</span><br><span class="line">    <span class="keyword">elif</span> choose == <span class="number">8</span>:</span><br><span class="line">        print(<span class="string">'烤全羊'</span>)</span><br><span class="line">    <span class="keyword">elif</span> choose == <span class="number">9</span>:</span><br><span class="line">        print(<span class="string">'烤骆驼'</span>)</span><br><span class="line">    <span class="keyword">elif</span> choose == <span class="number">10</span>:</span><br><span class="line">        print(<span class="string">'锅包肉'</span>)</span><br><span class="line">    <span class="keyword">elif</span> choose == <span class="number">11</span>:</span><br><span class="line">        print(<span class="string">'杀猪菜'</span>)</span><br><span class="line">    <span class="keyword">elif</span> choose == <span class="number">12</span>:</span><br><span class="line">        print(<span class="string">'乱炖'</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        print(<span class="string">'输入错误，请重新输入！'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>如果我们使用字典的方法，只需要这样即可：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">"1"</span>: <span class="string">"饺子"</span>,</span><br><span class="line">       <span class="string">"2"</span>: <span class="string">"粥"</span>,</span><br><span class="line">       <span class="string">"3"</span>: <span class="string">"面条"</span>,</span><br><span class="line">       <span class="string">"4"</span>: <span class="string">"肉"</span>,</span><br><span class="line">       <span class="string">"5"</span>: <span class="string">"土"</span>,</span><br><span class="line">       <span class="string">"6"</span>: <span class="string">"东南风"</span>,</span><br><span class="line">       <span class="string">"7"</span>: <span class="string">"切糕"</span>,</span><br><span class="line">       <span class="string">"8"</span>: <span class="string">"烤全羊"</span>,</span><br><span class="line">       <span class="string">"9"</span>: <span class="string">"烤骆驼"</span>,</span><br><span class="line">       <span class="string">"10"</span>: <span class="string">"锅包肉"</span>,</span><br><span class="line">       <span class="string">"11"</span>: <span class="string">"杀猪菜"</span>,</span><br><span class="line">       <span class="string">"12"</span>: <span class="string">"乱炖"</span></span><br><span class="line">       &#125;</span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    choose = input(<span class="string">"请输入数字（1-12）："</span>)</span><br><span class="line">    <span class="keyword">if</span> choose <span class="keyword">in</span> dic:</span><br><span class="line">        print(dic[choose])</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        print(<span class="string">'输入错误，请重新输入！'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>我们看到，使用字典之后，代码节省了不少，而且少了很多重复代码。以后如果需要增加或者删改列表，只需要在字典中进行操作即可，不需要对程序进行改动，后期维护也更为便利。</p>
+
       
     </div>
 
@@ -311,7 +435,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/bug-bible/linux-bug/yum/">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/false/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -325,7 +449,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/bug-bible/linux-bug/yum/" class="post-title-link" itemprop="url">yum</a>
+            <a href="/python-basic/false/" class="post-title-link" itemprop="url">Python 中表示 False 的方法</a>
         </h2>
 
         <div class="post-meta">
@@ -334,23 +458,17 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2020-02-17 14:26:56" itemprop="dateCreated datePublished" datetime="2020-02-17T14:26:56+08:00">2020-02-17</time>
+              <time title="创建时间：2020-03-13 13:53:10 / 修改时间：14:53:08" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:10+08:00">2020-03-13</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Bug-%E5%AE%9D%E5%85%B8/" itemprop="url" rel="index"><span itemprop="name">Bug 宝典</span></a>
+                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
                 </span>
             </span>
 
@@ -365,334 +483,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>Linux Bug 宝典之 yum 错误</p>
+          <p>Python 中，所有表示“空”的数据都代表 False。换句话说，Python 中的数据类型有布尔属性</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/bug-bible/linux-bug/yum/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/bug-bible/linux-bug/nginx/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="刘硕">
-      <meta itemprop="description" content="不成为自己讨厌的人">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="刘硕的技术查阅手册">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/bug-bible/linux-bug/nginx/" class="post-title-link" itemprop="url">nginx</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-02-17 14:26:55" itemprop="dateCreated datePublished" datetime="2020-02-17T14:26:55+08:00">2020-02-17</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Bug-%E5%AE%9D%E5%85%B8/" itemprop="url" rel="index"><span itemprop="name">Bug 宝典</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Linux Bug 宝典之 nginx 错误</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/bug-bible/linux-bug/nginx/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/bug-bible/linux-bug/touch/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="刘硕">
-      <meta itemprop="description" content="不成为自己讨厌的人">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="刘硕的技术查阅手册">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/bug-bible/linux-bug/touch/" class="post-title-link" itemprop="url">touch</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-02-17 14:26:55" itemprop="dateCreated datePublished" datetime="2020-02-17T14:26:55+08:00">2020-02-17</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Bug-%E5%AE%9D%E5%85%B8/" itemprop="url" rel="index"><span itemprop="name">Bug 宝典</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Linux Bug 宝典之 touch 错误</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/bug-bible/linux-bug/touch/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/bug-bible/linux-bug/mkdir/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="刘硕">
-      <meta itemprop="description" content="不成为自己讨厌的人">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="刘硕的技术查阅手册">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/bug-bible/linux-bug/mkdir/" class="post-title-link" itemprop="url">mkdir</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-02-17 14:26:53" itemprop="dateCreated datePublished" datetime="2020-02-17T14:26:53+08:00">2020-02-17</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Bug-%E5%AE%9D%E5%85%B8/" itemprop="url" rel="index"><span itemprop="name">Bug 宝典</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Linux Bug 宝典之 mkdir 错误</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/bug-bible/linux-bug/mkdir/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/bug-bible/linux-bug/bash/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="刘硕">
-      <meta itemprop="description" content="不成为自己讨厌的人">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="刘硕的技术查阅手册">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/bug-bible/linux-bug/bash/" class="post-title-link" itemprop="url">bash</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-02-17 14:26:51" itemprop="dateCreated datePublished" datetime="2020-02-17T14:26:51+08:00">2020-02-17</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Bug-%E5%AE%9D%E5%85%B8/" itemprop="url" rel="index"><span itemprop="name">Bug 宝典</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Linux Bug 宝典之 bash 错误</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/bug-bible/linux-bug/bash/">
+              <a class="btn" href="/python-basic/false/">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -739,16 +533,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2020-02-17 00:11:17" itemprop="dateCreated datePublished" datetime="2020-02-17T00:11:17+08:00">2020-02-17</time>
+              <time title="创建时间：2020-03-13 13:53:09 / 修改时间：14:53:08" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:09+08:00">2020-03-13</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-03-09 01:18:34" itemprop="dateModified" datetime="2020-03-09T01:18:34+08:00">2020-03-09</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -797,7 +585,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/logging/">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/python-installation/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -811,7 +599,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/python-basic/logging/" class="post-title-link" itemprop="url">logging 模块和日志</a>
+            <a href="/python-basic/python-installation/" class="post-title-link" itemprop="url">Python 的版本选择与安装细节</a>
         </h2>
 
         <div class="post-meta">
@@ -820,16 +608,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2020-02-17 00:09:46" itemprop="dateCreated datePublished" datetime="2020-02-17T00:09:46+08:00">2020-02-17</time>
+              <time title="创建时间：2020-03-13 13:53:09 / 修改时间：14:53:08" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:09+08:00">2020-03-13</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -851,10 +633,265 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>Python 基础之 logging 模块的用法。主要分三块内容：基础版日志、进阶版日志和类封装的日志。代码已经写好，使用时按照注释复制粘贴，按需修改即可。</p>
+          <h3 id="Python-版本选择"><a href="#Python-版本选择" class="headerlink" title="Python 版本选择"></a>Python 版本选择</h3><p>因程序开发者未必及时更新 Python 程序，安装新版本 Python 可能会遇到兼容性问题，故而不建议安装最新版本的 Python。</p>
+<ul>
+<li>Win 10 安装 Python 3.6.8（<a href="https://www.python.org/ftp/python/3.6.8/python-3.6.8-amd64.exe" target="_blank" rel="noopener">官方下载链接</a>）</li>
+<li>Win 7 &amp; Win 8 安装 Python 3.5.0（<a href="https://www.python.org/ftp/python/3.5.0/python-3.5.0-amd64.exe" target="_blank" rel="noopener">官方下载链接</a>）</li>
+<li>在 Win10 以下版本的 Windows 操作系统中安装新版本的 Python 需要安装额外的系统补丁</li>
+<li>360 可解决 Win 7 不能顺利安装高版本（3.6.8 及以后）Python 的问题</li>
+</ul>
+<p>下载前确定电脑操作系统的位数，64 位操作系统安装 64 位的 Python 程序，32 位操作系统安装 32 位的 Python 程序。</p>
+<h3 id="Python-安装细节"><a href="#Python-安装细节" class="headerlink" title="Python 安装细节"></a>Python 安装细节</h3><p>双击下载好的安装包，出现 Python 的安装程序。注意勾选 <code>Add Python 3.6 to PATH</code> 的复选框，这个意思是把 Python 的安装路径加入到 <code>环境变量</code> 中。然后点击 <code>Customize installation</code>。</p>
+<img src="/python-basic/python-installation/py_setup_01.png" class="" title="py_setup_01">
+
+<p>这里一切按照默认即可，直接点击 <code>Next</code>。</p>
+<img src="/python-basic/python-installation/py_setup_02.png" class="" title="py_setup_02">
+
+<p>勾选最上面的 <code>Install for all users</code> 复选框，建议把安装路径设置为 <code>C:\Python36</code>。短路径名能方便以后操作。然后点击 <code>Install</code> 开始安装。</p>
+<img src="/python-basic/python-installation/py_setup_03.png" class="" title="py_setup_03">
+
+<p>当最后出现这个界面的时候，恭喜你，安装成功了。</p>
+<img src="/python-basic/python-installation/py_setup_04.png" class="" title="py_setup_04">
+
+<h3 id="验证是否安装成功"><a href="#验证是否安装成功" class="headerlink" title="验证是否安装成功"></a>验证是否安装成功</h3><p><code>Win + R</code> 打开 <code>运行</code>，输入 <code>cmd</code>，点击 <code>确定</code>。</p>
+<img src="/python-basic/python-installation/py_setup_05.png" class="" title="py_setup_05">
+
+<p>在命令行中输入 <code>python</code>，如果安装成功，界面会是这个样子的。</p>
+<img src="/python-basic/python-installation/py_setup_06.png" class="" title="py_setup_06">
+
+<p>输入第一行代码 <code>print (&quot;hello world!&quot;)</code>，按下 <code>回车</code> 键。</p>
+<img src="/python-basic/python-installation/py_setup_07.png" class="" title="py_setup_07">
+
+<p>就完成了我们的第一个 Python 命令。输入 <code>exit()</code>，退出 Python。</p>
+<h3 id="在命令行中用-Python-运行-py-文件"><a href="#在命令行中用-Python-运行-py-文件" class="headerlink" title="在命令行中用 Python 运行 .py 文件"></a>在命令行中用 Python 运行 <code>.py</code> 文件</h3><p>新建一个文本文档，命名为 <code>今天作业.txt</code>。</p>
+<img src="/python-basic/python-installation/py_setup_08.png" class="" title="py_setup_08">
+
+<p>用 <code>记事本</code> 打开文件，输入 <code>print(&quot;刘硕 &quot; * 100)</code>，保存然后关闭。</p>
+<img src="/python-basic/python-installation/py_setup_09.png" class="" title="py_setup_09">
+
+<p>将文件的后缀名改为 <code>py</code>。</p>
+<img src="/python-basic/python-installation/py_setup_10.png" class="" title="py_setup_10">
+
+<p>在命令行中输入<code>python C:\Users\Sure\Desktop\今天作业.py</code>。其中，<code>C:\Users\Sure\Desktop</code> 是文件的路径名。敲下 <code>回车</code> 键，就可以发现代码顺利运行啦。</p>
+<img src="/python-basic/python-installation/py_setup_11.png" class="" title="py_setup_11">
+
+<h3 id="配置环境变量"><a href="#配置环境变量" class="headerlink" title="配置环境变量"></a>配置环境变量</h3><p>如果在上一步骤，输入 <code>python C:\Users\Sure\Desktop\今天作业.py</code> 命令后，出现了 <code>&#39;python&#39; 不是内部或外部命令，也不是可运行的程序或批处理文件。</code> 的错误，意味着没有将 Python 的安装路径放在 <code>环境变量</code> 中。导致这个错误的原因很可能是在安装的第一步，忘记了勾选 <code>Add Python 3.6 to PATH</code> 前面的复选框。</p>
+<img src="/python-basic/python-installation/py_setup_12.png" class="" title="py_setup_12">
+
+<p>可以通过在 Python 前面加入 python 安装路径的方法顺利运行 <code>.py</code> 文件，但是这种方法比较麻烦且不实用。</p>
+<img src="/python-basic/python-installation/py_setup_13.png" class="" title="py_setup_13">
+
+<p>这时，就需要我们把Python的安装路径添加到<code>环境变量</code>中。</p>
+<p>配置环境变量的方法参见： <a href="/python-basic/environment-variable">环境变量的配置</a> </p>
+<p>重启命令行，输入<code>python C:\Users\Sure\Desktop\今天作业.py</code>，<code>py</code>文件顺利运行。</p>
+<img src="/python-basic/python-installation/py_setup_19.png" class="" title="py_setup_19">
+
+<h3 id="后缀名显示方法"><a href="#后缀名显示方法" class="headerlink" title="后缀名显示方法"></a>后缀名显示方法</h3><p>如果文件后缀名默认没有显示，可以用这个方法查看后缀名： <a href="/python-basic/show-suffix">后缀名显示方法</a></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/closure/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/python-basic/closure/" class="post-title-link" itemprop="url">闭包</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-03-13 13:53:09 / 修改时间：14:53:08" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:09+08:00">2020-03-13</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>在编程时，我们会处理到很多数据。但是对于一些数据，我们只想使用，不想修改。我们可以使用 <code>闭包</code> 来防止不经意间的数据修改。</p>
+<p>闭包的作用主要有两个：</p>
+<ol>
+<li>保护数据安全</li>
+<li>保护数据干净性</li>
+</ol>
+<p>满足下面两个条件的函数就是一个实用的闭包：</p>
+<ol>
+<li>在嵌套函数内，使用非全局变量（且不使用本层变量）</li>
+<li>将嵌套函数本身返回</li>
+</ol>
+<p>我们可以用<code>.__closure__</code>方法来查看一个函数是否是一个闭包。当返回值为None时，说明该函数不是闭包，当返回值中有变量的内存地址时，说明该函数是一个闭包。</p>
+<p>例如，下面的函数就是一个闭包：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">()</span>:</span></span><br><span class="line">    a = <span class="number">10</span>    <span class="comment"># 自由变量</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">foo</span><span class="params">()</span>:</span></span><br><span class="line">        print(a)</span><br><span class="line">    <span class="keyword">return</span> foo</span><br><span class="line">f = func()</span><br><span class="line">print(f.__closure__)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(&lt;cell at <span class="number">0x000001F7D6277648</span>: int object at <span class="number">0x00000000669D8190</span>&gt;,)</span><br></pre></td></tr></table></figure>
+
+<p>方法中的 <code>closure</code> 就是 <code>闭包</code> 的意思。返回的 <code>cell</code> 是一个 <code>单元格</code> 对象，用来储存闭包中需要使用到的变量。</p>
+<p>当函数执行完成后（也就是 <code>fun()</code> 这个步骤），函数体会被销毁。但是闭包 <code>foo</code> 被返回给了 <code>f</code>，还会被用到，所以照常存在。而闭包中需要使用的变量 <code>a</code>，此时已经不在函数 <code>func</code> 中，因为 <code>func</code> 本身已经不复存在。变量 <code>a</code> 在函数销毁后，升级为 <code>自由变量</code>。</p>
+<p>闭包是怎么做到保护数据的作用的呢？</p>
+<p>比如我们现在有这样一个需求：使用一个函数，每天输入当天营业额，打印出这几天的平均营业额。</p>
+<p>如果我们把营业额的数据储存在列表中，放到全局，可以这样实现功能：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">lst = []</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">ave_turnover</span><span class="params">(turnover_today)</span>:</span></span><br><span class="line">    lst.append(turnover_today)</span><br><span class="line">    ave = sum(lst) / len(lst)</span><br><span class="line">    print(ave)</span><br><span class="line">ave_turnover(<span class="number">12000</span>)</span><br><span class="line">ave_turnover(<span class="number">15000</span>)</span><br><span class="line">ave_turnover(<span class="number">14000</span>)</span><br><span class="line">ave_turnover(<span class="number">12000</span>)</span><br><span class="line">ave_turnover(<span class="number">25000</span>)</span><br><span class="line">ave_turnover(<span class="number">21000</span>)</span><br><span class="line">ave_turnover(<span class="number">9000</span>)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">12000.0</span></span><br><span class="line"><span class="number">13500.0</span></span><br><span class="line"><span class="number">13666.666666666666</span></span><br><span class="line"><span class="number">13250.0</span></span><br><span class="line"><span class="number">15600.0</span></span><br><span class="line"><span class="number">16500.0</span></span><br><span class="line"><span class="number">15428.57142857143</span></span><br></pre></td></tr></table></figure>
+
+<p>如果有一天，我们不小心在全局对 <code>lst</code> 列表做了修改：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">lst = []</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">ave_turnover</span><span class="params">(turnover_today)</span>:</span></span><br><span class="line">    lst.append(turnover_today)</span><br><span class="line">    ave = sum(lst) / len(lst)</span><br><span class="line">    print(ave)</span><br><span class="line">ave_turnover(<span class="number">12000</span>)</span><br><span class="line">ave_turnover(<span class="number">15000</span>)</span><br><span class="line">lst[<span class="number">1</span>] = <span class="number">10</span></span><br><span class="line">ave_turnover(<span class="number">14000</span>)</span><br><span class="line">ave_turnover(<span class="number">12000</span>)</span><br><span class="line">ave_turnover(<span class="number">25000</span>)</span><br><span class="line">ave_turnover(<span class="number">21000</span>)</span><br><span class="line">ave_turnover(<span class="number">9000</span>)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">12000.0</span></span><br><span class="line"><span class="number">13500.0</span></span><br><span class="line"><span class="number">8670.0</span></span><br><span class="line"><span class="number">9502.5</span></span><br><span class="line"><span class="number">12602.0</span></span><br><span class="line"><span class="number">14001.666666666666</span></span><br><span class="line"><span class="number">13287.142857142857</span></span><br></pre></td></tr></table></figure>
+
+<p>这就导致了数据的改变，使得第三天之后的数据全都不准确。</p>
+<p>如果我们把重要的数据 <code>lst</code> 封装到闭包中保护起来，就不会有这种烦恼了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">ave_turnover</span><span class="params">()</span>:</span></span><br><span class="line">    lst = []</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span><span class="params">(turnover_today)</span>:</span></span><br><span class="line">        lst.append(turnover_today)</span><br><span class="line">        ave = sum(lst) / len(lst)</span><br><span class="line">        print(ave)</span><br><span class="line">    <span class="keyword">return</span> inner</span><br><span class="line">f = ave_turnover()</span><br><span class="line">f(<span class="number">12000</span>)</span><br><span class="line">f(<span class="number">15000</span>)</span><br><span class="line">lst = [<span class="number">10</span>]</span><br><span class="line">f(<span class="number">14000</span>)</span><br><span class="line">f(<span class="number">12000</span>)</span><br><span class="line">f(<span class="number">25000</span>)</span><br><span class="line">f(<span class="number">21000</span>)</span><br><span class="line">f(<span class="number">9000</span>)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">12000.0</span></span><br><span class="line"><span class="number">13500.0</span></span><br><span class="line"><span class="number">13666.666666666666</span></span><br><span class="line"><span class="number">13250.0</span></span><br><span class="line"><span class="number">15600.0</span></span><br><span class="line"><span class="number">16500.0</span></span><br><span class="line"><span class="number">15428.57142857143</span></span><br></pre></td></tr></table></figure>
+
+<p>对于闭包，除了 <code>.__closure__</code> 方法之外，还有可以用来查看自由变量的 <code>.__code__.co_freevars</code> 方法，和可以用来查看局部变量的 <code>.__code__.co_varnames</code> 方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">ave_turnover</span><span class="params">()</span>:</span></span><br><span class="line">    lst = []</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span><span class="params">(turnover_today)</span>:</span></span><br><span class="line">        lst.append(turnover_today)</span><br><span class="line">        ave = sum(lst) / len(lst)</span><br><span class="line">        print(ave)</span><br><span class="line">    <span class="keyword">return</span> inner</span><br><span class="line">f = ave_turnover()</span><br><span class="line">print(f.__closure__)             <span class="comment"># 判定是否是一个闭包</span></span><br><span class="line">print(f.__code__.co_freevars)    <span class="comment"># 查看自由变量</span></span><br><span class="line">print(f.__code__.co_varnames)    <span class="comment"># 查看局部变量</span></span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(&lt;cell at <span class="number">0x0000027A31A27648</span>: list object at <span class="number">0x0000027A31AD8C08</span>&gt;,)</span><br><span class="line">(<span class="string">'lst'</span>,)</span><br><span class="line">(<span class="string">'turnover_today'</span>, <span class="string">'ave'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>没有将嵌套的函数返回的函数也可以是一个闭包，但是这个闭包没有办法被使用：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">()</span>:</span></span><br><span class="line">    a = <span class="number">10</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">foo</span><span class="params">()</span>:</span></span><br><span class="line">        print(a)</span><br><span class="line">    print(foo.__closure__)</span><br><span class="line">func()</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(&lt;cell at <span class="number">0x000001BE85EA7648</span>: int object at <span class="number">0x00000000669D8190</span>&gt;,)</span><br></pre></td></tr></table></figure>
+
+<p>闭包也可以通过外层函数加两个括号的方法来调用：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">()</span>:</span></span><br><span class="line">    a = <span class="number">10</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">foo</span><span class="params">()</span>:</span></span><br><span class="line">        print(a)</span><br><span class="line">    <span class="keyword">return</span> foo</span><br><span class="line">func()()</span><br></pre></td></tr></table></figure>
+
+<p>外层函数的参数也是局部变量，所以内层函数使用外层参数的形式也可以构成闭包：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">wrapper</span><span class="params">(a, b)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">inner</span><span class="params">()</span>:</span></span><br><span class="line">        print(a)</span><br><span class="line">        print(b)</span><br><span class="line">    <span class="keyword">return</span> inner</span><br><span class="line">a = <span class="number">11</span></span><br><span class="line">b = <span class="number">12</span></span><br><span class="line">ret = wrapper(a, b)</span><br><span class="line">print(ret.__closure__)</span><br><span class="line">print(ret.__code__.co_freevars)</span><br><span class="line">print(ret.__code__.co_varnames)</span><br><span class="line">ret()</span><br></pre></td></tr></table></figure>
+
+<p>返回的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(&lt;cell at <span class="number">0x0000021A67AFB648</span>: int object at <span class="number">0x00000000702D81B0</span>&gt;, &lt;cell at <span class="number">0x0000021A67AFB9A8</span>: int object at <span class="number">0x00000000702D81D0</span>&gt;)</span><br><span class="line">(<span class="string">'a'</span>, <span class="string">'b'</span>)</span><br><span class="line">()</span><br><span class="line"><span class="number">11</span></span><br><span class="line"><span class="number">12</span></span><br></pre></td></tr></table></figure>
+
+<p>闭包的应用场景主要有两个：</p>
+<ol>
+<li>装饰器</li>
+<li>防止数据被误改动</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/format/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/python-basic/format/" class="post-title-link" itemprop="url">字符串的格式化</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-03-13 13:53:09 / 修改时间：14:53:08" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:09+08:00">2020-03-13</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>字符串格式化的几个方法，用来动态生成字符串。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/python-basic/logging/">
+              <a class="btn" href="/python-basic/format/">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -878,7 +915,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/bug-bible/python-bug/ValueError/">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/f-strings/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -892,7 +929,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/bug-bible/python-bug/ValueError/" class="post-title-link" itemprop="url">ValueError</a>
+            <a href="/python-basic/f-strings/" class="post-title-link" itemprop="url">`f-strings` 详解</a>
         </h2>
 
         <div class="post-meta">
@@ -901,23 +938,17 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2020-02-16 17:27:55" itemprop="dateCreated datePublished" datetime="2020-02-16T17:27:55+08:00">2020-02-16</time>
+              <time title="创建时间：2020-03-13 13:53:09 / 修改时间：14:53:08" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:09+08:00">2020-03-13</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Bug-%E5%AE%9D%E5%85%B8/" itemprop="url" rel="index"><span itemprop="name">Bug 宝典</span></a>
+                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
                 </span>
             </span>
 
@@ -932,15 +963,49 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>Python Bug 宝典之 ValueError 错误，主要是变量值的错误</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/bug-bible/python-bug/ValueError/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
+          <p><code>f-strings</code> 在 <a href="/python-basic/format">字符串格式化</a> 的那一部分已经有所讨论。其实当时已经讨论得差不多了，今天只是稍微地有一点点补充。主要还是复习。</p>
+<p><code>f-strings</code> 的基本结构是这样的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">name = <span class="string">'宝元'</span></span><br><span class="line">age = <span class="number">18</span></span><br><span class="line">sex = <span class="string">'男'</span></span><br><span class="line">msg1 = F<span class="string">'姓名：&#123;name&#125;，性别：&#123;age&#125;，年龄：&#123;sex&#125;'</span>  <span class="comment"># 大写字母也可以</span></span><br><span class="line">msg = <span class="string">f'姓名：<span class="subst">&#123;name&#125;</span>，性别：<span class="subst">&#123;age&#125;</span>，年龄：<span class="subst">&#123;sex&#125;</span>'</span>   <span class="comment"># 建议小写</span></span><br><span class="line">print(msg)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">姓名：宝元，性别：<span class="number">18</span>，年龄：男</span><br></pre></td></tr></table></figure>
+
+<p><code>f-strings</code> 就是在字符串的引号前面加上一个字母 <code>f</code>。字母大小写都可以，但是推荐使用小写。<code>{}</code> 中除了可以使用变量外，还可以放入函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(a,b)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> a + b</span><br><span class="line">msg = <span class="string">f"运行结果：<span class="subst">&#123;func(<span class="number">1</span>,<span class="number">2</span>)&#125;</span>"</span></span><br><span class="line">print(msg)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">运行结果：<span class="number">3</span></span><br></pre></td></tr></table></figure>
+
+<p>甚至可以在 <code>{}</code> 中放入 <code>input</code> 函数，让用户输入：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">f"姓名：<span class="subst">&#123;input(<span class="string">'请输入姓名：'</span>)&#125;</span> 年龄：<span class="subst">&#123;input(<span class="string">'请输入年龄：'</span>)&#125;</span> 性别：<span class="subst">&#123;input(<span class="string">'请输入性别：'</span>)&#125;</span>"</span>)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">请输入姓名：alex</span><br><span class="line">请输入年龄：<span class="number">18</span></span><br><span class="line">请输入性别：男</span><br><span class="line">姓名：alex 年龄：<span class="number">18</span> 性别：男</span><br></pre></td></tr></table></figure>
+
+<p>除了字符串，{} 中也可以放入列表和字典：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">32</span>, <span class="number">34</span>, <span class="number">45</span>, <span class="number">5</span>]</span><br><span class="line">msg = <span class="string">f"运行结果：<span class="subst">&#123;lst[<span class="number">0</span>:<span class="number">3</span>]&#125;</span>"</span></span><br><span class="line">print(msg)</span><br><span class="line"></span><br><span class="line">dic = &#123;<span class="string">"key"</span>: <span class="number">1</span>, <span class="string">"key1"</span>: <span class="number">22</span>&#125;</span><br><span class="line">msg = <span class="string">f"运行结果：<span class="subst">&#123;dic[<span class="string">'key1'</span>]&#125;</span>"</span></span><br><span class="line">print(msg)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">运行结果：[<span class="number">1</span>, <span class="number">2</span>, <span class="number">32</span>]</span><br><span class="line">运行结果：<span class="number">22</span></span><br></pre></td></tr></table></figure>
+
+<p><code>f-string</code> 可以写成多行的形式，但依然打印成一行：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">msg = <span class="string">f"窗前明月<span class="subst">&#123;<span class="string">'光'</span>&#125;</span>，"</span> \</span><br><span class="line">      <span class="string">f"玻璃好上<span class="subst">&#123;<span class="string">'霜'</span>&#125;</span>。"</span> \</span><br><span class="line">      <span class="string">f"要不及时<span class="subst">&#123;<span class="string">'擦'</span>&#125;</span>，"</span> \</span><br><span class="line">      <span class="string">f"一会就得<span class="subst">&#123;<span class="string">'脏'</span>&#125;</span>。"</span></span><br><span class="line">print(msg)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">窗前明月光，玻璃好上霜。要不及时擦，一会就得脏。</span><br></pre></td></tr></table></figure>
+
+<p>要想打印多行字符串，还是要使用三对引号：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">msg = <span class="string">f"""</span></span><br><span class="line"><span class="string">窗前明月<span class="subst">&#123;<span class="string">'光'</span>&#125;</span>,</span></span><br><span class="line"><span class="string">玻璃好上<span class="subst">&#123;<span class="string">'霜'</span>&#125;</span>.</span></span><br><span class="line"><span class="string">要不及时<span class="subst">&#123;<span class="string">'擦'</span>&#125;</span>,</span></span><br><span class="line"><span class="string">一会就得<span class="subst">&#123;<span class="string">'脏'</span>&#125;</span>.</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line">print(msg)</span><br></pre></td></tr></table></figure>
+
+<p>通过使用三元运算，配合 f-strings，我们可以进一步节省代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">10</span></span><br><span class="line">b = <span class="number">20</span></span><br><span class="line">msg = <span class="string">f"<span class="subst">&#123;a <span class="keyword">if</span> a &lt; b <span class="keyword">else</span> b&#125;</span>"</span></span><br><span class="line">print(msg)</span><br></pre></td></tr></table></figure>
+
+<p>同时使用两个括号表示一个可以打印的大括号：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">msg = <span class="string">f"&#123;&#123;'alex': 'wusir'&#125;&#125;"</span></span><br><span class="line">print(msg)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="string">'alex'</span>: <span class="string">'wusir'</span>&#125;</span><br></pre></td></tr></table></figure>
+
       
     </div>
 
@@ -959,7 +1024,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/bug-bible/python-bug/TypeError/">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/function-name-space/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -973,7 +1038,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/bug-bible/python-bug/TypeError/" class="post-title-link" itemprop="url">TypeError</a>
+            <a href="/python-basic/function-name-space/" class="post-title-link" itemprop="url">函数的名称空间</a>
         </h2>
 
         <div class="post-meta">
@@ -982,23 +1047,17 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2020-02-16 17:23:32" itemprop="dateCreated datePublished" datetime="2020-02-16T17:23:32+08:00">2020-02-16</time>
+              <time title="创建时间：2020-03-13 13:53:09 / 修改时间：14:53:08" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:09+08:00">2020-03-13</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Bug-%E5%AE%9D%E5%85%B8/" itemprop="url" rel="index"><span itemprop="name">Bug 宝典</span></a>
+                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
                 </span>
             </span>
 
@@ -1013,15 +1072,290 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>Python Bug 宝典之 TypeError 错误</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/bug-bible/python-bug/TypeError/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
+          <p>函数的名称空间一共有三种：</p>
+<ol>
+<li>内置空间，用来存放 Python 自带的一些函数，Python 程序运行时会首先加载</li>
+<li>全局空间，当前 py 文件顶格编写的代码开辟的空间</li>
+<li>局部空间，函数开辟的空间</li>
+</ol>
+<p>程序的加载顺序是：内置空间 &gt; 全局空间 &gt; 局部空间</p>
+<p>程序的取值顺序是：局部空间 &gt; 全局空间 &gt; 内置空间</p>
+<p>程序取值顺序示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">10</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">()</span>:</span></span><br><span class="line">    a = <span class="number">5</span></span><br><span class="line">    print(a)</span><br><span class="line">func()</span><br><span class="line"></span><br><span class="line">输出的结果为： <span class="number">5</span></span><br></pre></td></tr></table></figure>
+
+<p>变量取值时会优先查看局部空间，找到变量 a，值为 5，打印了出来。</p>
+<p>函数的作用域有两个：</p>
+<ol>
+<li>全局作用域：内置空间 + 全局空间，使用 <code>globals()</code> 方法查看全局作用域</li>
+<li>局部作用域：局部空间，使用 <code>locals()</code> 方法查看当前作用域（全局和局部作用域都可以查看，建议用此方法查看局部作用域）</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">10</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">()</span>:</span></span><br><span class="line">    b = <span class="number">5</span></span><br><span class="line">    print(globals())</span><br><span class="line">    print(locals())</span><br><span class="line"></span><br><span class="line">func()</span><br><span class="line">print(globals())</span><br><span class="line">print(locals())</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
         
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/var-const-com/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/python-basic/var-const-com/" class="post-title-link" itemprop="url">变量、常量和注释</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-03-13 13:53:09 / 修改时间：14:53:08" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:09+08:00">2020-03-13</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><p>先介绍一个 <code>print</code> 函数，用来打印（输出）数据。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(<span class="number">111</span>)</span><br><span class="line"><span class="number">111</span></span><br></pre></td></tr></table></figure>
+
+<p>变量的官方定义：将程序中运行的中间值，临时存储起来，以便再次使用。</p>
+<p>通俗来讲，变量就是给数据起一个昵称，方便调用。</p>
+<p>下面的是一个典型的赋值变量的语句：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">name = <span class="string">"alex"</span></span><br></pre></td></tr></table></figure>
+
+<p>其中，<code>alex</code> 是赋值给变量的值，也就是数据；<code>=</code> 代表的是赋值操作；<code>name</code> 是变量名。通过 <code>print(name)</code> 操作来使用定义的变量名：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>name = <span class="string">"alex"</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(name)</span><br><span class="line">alex</span><br></pre></td></tr></table></figure>
+
+<p>变量名（其他 Python 中的标识符如函数名、类名、模块名等也要遵循这个规则）命名规范：</p>
+<ol>
+<li>变量名只能由数字、字母和下划线组成</li>
+<li>不能以数字开头</li>
+<li>禁止使用python中的关键字</li>
+<li>变量名要具有可描述性</li>
+<li>变量名要区分大小写</li>
+<li>不能使用中文和拼音</li>
+<li>推荐写法：<ul>
+<li>驼峰体</li>
+<li>下划线（官方推荐）</li>
+</ul>
+</li>
+</ol>
+<p>以数字为开头命名变量会报错：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="number">1</span>a = <span class="string">'alex'</span></span><br><span class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span></span><br><span class="line">    <span class="number">1</span>a = <span class="string">'alex'</span></span><br><span class="line">     ^</span><br><span class="line">SyntaxError: invalid syntax</span><br></pre></td></tr></table></figure>
+
+<p>驼峰体和下划线命名变量示例，很显然下划线的命名法更直观些：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">AlexOfOldboy = <span class="number">89</span>	<span class="comment"># 这是驼峰体</span></span><br><span class="line">alex_of_oldboy = <span class="number">89</span>	<span class="comment"># 这是下划线</span></span><br></pre></td></tr></table></figure>
+
+<p>Python 中的变量名是区分大小写的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>name = <span class="string">'alex'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>Name = <span class="string">'leo'</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(name)</span><br><span class="line">alex</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(Name)</span><br><span class="line">leo</span><br></pre></td></tr></table></figure>
+
+<p>Python 中的关键字：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'False'</span>, <span class="string">'None'</span>, <span class="string">'True'</span>, <span class="string">'and'</span>, <span class="string">'as'</span>, <span class="string">'assert'</span>, <span class="string">'break'</span>, <span class="string">'class'</span>, <span class="string">'continue'</span>, <span class="string">'def'</span>, <span class="string">'del'</span>, <span class="string">'elif'</span>, <span class="string">'else'</span>, <span class="string">'except'</span>, <span class="string">'finally'</span>, <span class="string">'for'</span>, <span class="string">'from'</span>, <span class="string">'global'</span>, <span class="string">'if'</span>, <span class="string">'import'</span>, <span class="string">'in'</span>, <span class="string">'is'</span>, <span class="string">'lambda'</span>, <span class="string">'nonlocal'</span>, <span class="string">'not'</span>, <span class="string">'or'</span>,<span class="string">'pass'</span>, <span class="string">'raise'</span>, <span class="string">'return'</span>, <span class="string">'try'</span>, <span class="string">'while'</span>, <span class="string">'with'</span>, <span class="string">'yield'</span>]</span><br></pre></td></tr></table></figure>
+
+<p><code>print</code> 可以打印多个内容，以逗号分隔：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>age1 = <span class="number">19</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(age, age1)</span><br><span class="line"><span class="number">18</span> <span class="number">19</span></span><br></pre></td></tr></table></figure>
+
+<p>请看下面一段赋值操作：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">age = <span class="number">18</span></span><br><span class="line">age1 = age</span><br><span class="line">age2 = age1</span><br><span class="line">age = <span class="number">20</span></span><br><span class="line">age1 = <span class="number">19</span></span><br><span class="line">print(age, age1, age2)</span><br></pre></td></tr></table></figure>
+
+<p>最终打印出来的结果是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">20</span> <span class="number">19</span> <span class="number">18</span></span><br></pre></td></tr></table></figure>
+
+<p>具体的赋值操作如下图所示：</p>
+<img src="/python-basic/var-const-com/QQ%E5%9B%BE%E7%89%8720190905213207.png" class="" title="QQ图片20190905213207">
+
+<p>第一步，在内存中开辟一块内存，把 <code>18</code> 储存在内存中。然后变量名 <code>age</code> 指向 <code>18</code> 对应的内存地址。第二步和第三步，<code>age1</code> 和 <code>age2</code> 也分别指向 <code>18</code> 的内存地址。第四步，变量名 <code>age</code> 指向 <code>20</code> 对应的内存地址，同时不再指向 <code>18</code>。第五步，变量名 <code>age1</code> 指向 <code>19</code> 对应的内存地址，同时不再指向 <code>18</code>。最终的结果是，<code>age2</code> 指向 <code>18</code>，<code>age1</code> 指向 <code>19</code>，<code>age</code> 指向 <code>20</code>。</p>
+<h3 id="常量"><a href="#常量" class="headerlink" title="常量"></a>常量</h3><p>在 Python 中，没有严格意义的常量。大家约定俗成的是，变量名大写的变量就被视为常量，在程序执行过程中一般不会被轻易修改。例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ID = <span class="number">110120130140150</span></span><br><span class="line">ID = <span class="string">"123123213"</span>    <span class="comment"># 不建议在程序执行过程中随意修改</span></span><br></pre></td></tr></table></figure>
+
+<p>变量与常量的应用场景：</p>
+<ul>
+<li>变量用于我们后期开发使用</li>
+<li>常量用于配置文件中</li>
+</ul>
+<h3 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h3><p>注释的作用是给一些晦涩难懂的代码进行标注或解释。被注释的代码不会被执行。</p>
+<p>Python 中的注释分为两种：</p>
+<ul>
+<li>单行注释（当行注释）：用 <code>#</code> 开头表示</li>
+<li>多行注释：用三对 <code>“ ”</code> 或 <code>‘ ’</code> 包裹，可以换行</li>
+</ul>
+<p>具体示例为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 这个是单行注释的示例</span></span><br><span class="line"><span class="comment"># 换行之后要在开头加一个#</span></span><br><span class="line"></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">窗前明月光,</span></span><br><span class="line"><span class="string">玻璃好上霜.</span></span><br><span class="line"><span class="string">要不及时擦,</span></span><br><span class="line"><span class="string">整不好就脏.</span></span><br><span class="line"><span class="string">"""</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/operator/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/python-basic/operator/" class="post-title-link" itemprop="url">运算符</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-03-13 13:53:09 / 修改时间：14:53:08" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:09+08:00">2020-03-13</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="比较运算符"><a href="#比较运算符" class="headerlink" title="比较运算符"></a>比较运算符</h3><p>比较运算符主要有六个：</p>
+<ol>
+<li><code>&gt;</code>：大于</li>
+<li><code>&lt;</code>：小于</li>
+<li><code>&gt;=</code>：大于等于</li>
+<li><code>&lt;=</code>：小于等于</li>
+<li><code>==</code>：等于</li>
+<li><code>!=</code>：不等于</li>
+</ol>
+<p>比较运算返回的值为 <code>True</code> 或 <code>False</code>。</p>
+<h3 id="算术运算符"><a href="#算术运算符" class="headerlink" title="算术运算符"></a>算术运算符</h3><p>Python中的算术运算符有七个：</p>
+<ol>
+<li><code>+</code>：加和</li>
+<li><code>-</code>：相减</li>
+<li><code>*</code>：相乘</li>
+<li><code>/</code>：相除</li>
+<li><code>//</code>：整除 | 地板除（向下取整）</li>
+<li><code>**</code>：幂运算</li>
+<li><code>%</code>：取余（模）</li>
+</ol>
+<p>算术运算主要用于数字的计算。字符串也可以用 <code>+</code> 和 <code>*</code> 进行拼接。</p>
+<h3 id="赋值运算符"><a href="#赋值运算符" class="headerlink" title="赋值运算符"></a>赋值运算符</h3><p>赋值运算符为 <code>=</code>。在 Python 中，为了输入简便，还从其中算术运算符中衍生出了七种赋值运算符：<code>+=</code>，<code>-=</code>， <code>*=</code>， <code>/=</code>， <code>//=</code>， <code>**=</code>， <code>%=</code>。它们的用法和含义如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">10</span></span><br><span class="line">b = <span class="number">2</span></span><br><span class="line">b += <span class="number">1</span>	<span class="comment"># b = b + 1</span></span><br><span class="line">a -= <span class="number">1</span>  <span class="comment"># a = a - 1</span></span><br><span class="line">a *= <span class="number">2</span>  <span class="comment"># a = a * 2</span></span><br><span class="line">a /= <span class="number">2</span>  <span class="comment"># a = a / 2</span></span><br><span class="line">a //= <span class="number">2</span> <span class="comment"># a = a // 2</span></span><br><span class="line">a **= <span class="number">2</span> <span class="comment"># a = a ** 2</span></span><br><span class="line">a %= <span class="number">2</span>  <span class="comment"># a = a % 2</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="逻辑运算符"><a href="#逻辑运算符" class="headerlink" title="逻辑运算符"></a>逻辑运算符</h3><p>逻辑运算符有三个：与（<code>and</code>，并且）、或（<code>or</code>）、非（<code>not</code>，不是）。</p>
+<p>逻辑运算的优先级是 <code>() &gt; not &gt; and &gt; or</code>，查找顺序为从左向右。例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">3</span>&gt;<span class="number">2</span> <span class="keyword">and</span> <span class="number">4</span>&gt;<span class="number">2</span> <span class="keyword">or</span> <span class="literal">True</span> <span class="keyword">and</span> <span class="keyword">not</span> <span class="literal">False</span> <span class="keyword">and</span> <span class="literal">True</span></span><br><span class="line"><span class="comment"># 先运算比较</span></span><br><span class="line"><span class="literal">True</span> <span class="keyword">and</span> <span class="literal">True</span> <span class="keyword">or</span> <span class="literal">True</span> <span class="keyword">and</span> <span class="keyword">not</span> <span class="literal">False</span> <span class="keyword">and</span> <span class="literal">True</span></span><br><span class="line"><span class="comment"># 再运算not</span></span><br><span class="line"><span class="literal">True</span> <span class="keyword">and</span> <span class="literal">True</span> <span class="keyword">or</span> <span class="literal">True</span> <span class="keyword">and</span> <span class="literal">True</span> <span class="keyword">and</span> <span class="literal">True</span></span><br><span class="line"><span class="comment"># 运算and</span></span><br><span class="line"><span class="literal">True</span> <span class="keyword">or</span> <span class="literal">True</span></span><br><span class="line"><span class="comment"># 最后运算or</span></span><br><span class="line"><span class="literal">True</span></span><br></pre></td></tr></table></figure>
+
+<p>当数字之间进行逻辑运算时，有这样一套规则：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">and</span> 数字进行逻辑运算时：</span><br><span class="line">    两边都不为 <span class="number">0</span> 和 <span class="literal">False</span> 时，选择 <span class="keyword">and</span> 后边的内容</span><br><span class="line">    两边都为假时，选择 <span class="keyword">and</span> 前的内容</span><br><span class="line">    一真一假选择假</span><br><span class="line"></span><br><span class="line"><span class="keyword">or</span> 数字进行逻辑运算时：</span><br><span class="line">    两边都不为 <span class="number">0</span> 和 <span class="literal">False</span> 时，选择 <span class="keyword">or</span> 前边的内容</span><br><span class="line">    两边都为假时，选择 <span class="keyword">or</span> 后边的内容</span><br><span class="line">    一真一假选择真</span><br></pre></td></tr></table></figure>
+
+<p>官方给出的运算规则是这个样子的：</p>
+<table>
+<thead>
+<tr>
+<th align="right">操作</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="right">x or y</td>
+<td>如果 x 为假，选择 y，否则选择 x</td>
+</tr>
+<tr>
+<td align="right">x and y</td>
+<td>如果 x 为假，选择 x，否则选择 y</td>
+</tr>
+<tr>
+<td align="right">not x</td>
+<td>如果 x 为假，返回 True，否则返回 False</td>
+</tr>
+</tbody></table>
+<p>可以通过下面的示例来找到这些规律：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="number">1</span> <span class="keyword">and</span> <span class="number">3</span>)</span><br><span class="line">print(<span class="number">0</span> <span class="keyword">and</span> <span class="number">8</span>)</span><br><span class="line">print(<span class="number">9</span> <span class="keyword">and</span> <span class="number">4</span>)</span><br><span class="line">print(<span class="literal">False</span> <span class="keyword">and</span> <span class="number">5</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="成员运算符"><a href="#成员运算符" class="headerlink" title="成员运算符"></a>成员运算符</h3><p>在 Python 中，成员运算符有两个：</p>
+<ul>
+<li>a in b：用于判断 a 是否在 b 中</li>
+<li>a not in b：用于判断 a 是否不在 b 中</li>
+</ul>
+<p>具体使用示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">name = <span class="string">"alex"</span></span><br><span class="line">msg = input(<span class="string">"&gt;&gt;&gt;"</span>)</span><br><span class="line"><span class="keyword">if</span> name <span class="keyword">in</span> msg:</span><br><span class="line">    print(<span class="number">111</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    print(<span class="number">222</span>)</span><br></pre></td></tr></table></figure>
+
+<p>输出结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt;&gt;alexad</span><br><span class="line"><span class="number">111</span></span><br><span class="line">&gt;&gt;&gt;alecxaa</span><br><span class="line"><span class="number">222</span></span><br></pre></td></tr></table></figure>
+
       
     </div>
 
@@ -1040,7 +1374,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/13/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><span class="page-number current">14</span><a class="page-number" href="/page/15/">15</a><span class="space">&hellip;</span><a class="page-number" href="/page/24/">24</a><a class="extend next" rel="next" href="/page/15/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/13/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/13/">13</a><span class="page-number current">14</span><a class="page-number" href="/page/15/">15</a><span class="space">&hellip;</span><a class="page-number" href="/page/25/">25</a><a class="extend next" rel="next" href="/page/15/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1108,7 +1442,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">236</span>
+          <span class="site-state-item-count">241</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1117,6 +1451,12 @@
           
         <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
 </div>

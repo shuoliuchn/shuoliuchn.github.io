@@ -29,8 +29,8 @@
 <meta property="og:site_name" content="刘硕的技术查阅手册">
 <meta property="og:description" content="CentOS 中编译按钻过 Python 3。种经典的源代码编译安装程序的模式。CentOS 自带的 Python 版本为 Python 2，不符合我们的需求，我们从官网下载到需要的安装包，经过解压、指定路径、编译安装等几个步骤，完成安装。最后，还要把 Python 的运行文件放到环境变量种。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-02-17T10:32:17.000Z">
-<meta property="article:modified_time" content="2020-02-29T02:34:02.063Z">
+<meta property="article:published_time" content="2020-03-13T05:53:10.893Z">
+<meta property="article:modified_time" content="2020-03-13T06:53:09.079Z">
 <meta property="article:author" content="刘硕">
 <meta property="article:tag" content="Python">
 <meta property="article:tag" content="全栈开发">
@@ -159,6 +159,11 @@
     <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
 
   </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
         <li class="menu-item menu-item-categories">
 
     <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
@@ -254,16 +259,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2020-02-17 18:32:17" itemprop="dateCreated datePublished" datetime="2020-02-17T18:32:17+08:00">2020-02-17</time>
+              <time title="创建时间：2020-03-13 13:53:10 / 修改时间：14:53:09" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:10+08:00">2020-03-13</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-29 10:34:02" itemprop="dateModified" datetime="2020-02-29T10:34:02+08:00">2020-02-29</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -304,12 +303,12 @@
 <p>在 Linux 系统下的编译安装过程，同在 Windows 下安装 Python 的道理是一致的。</p>
 <ol>
 <li><p>下载 Linux 版本的 Python 3 安装包（3.6.8 为 Python 版本，可按需选择）：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget  https://www.python.org/ftp/python/3.6.8/Python-3.6.8.tgz</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget  https://www.python.org/ftp/python/3.6.8/Python-3.6.8.tgz</span><br></pre></td></tr></table></figure>
 
 <p>若下载速度较慢，可以尝试着在 Windows 下使用迅雷等工具下载，然后通过 lrzsz 或 Xftp 等工具将安装包传到 Linux 系统中。</p>
 </li>
 <li><p>解压缩源代码，准备编译安装：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar  -zxvf  Python-3.6.8.tgz</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar  -zxvf  Python-3.6.8.tgz</span><br></pre></td></tr></table></figure>
 
 <p>参数解释：</p>
 <ul>
@@ -320,7 +319,7 @@
 </ul>
 </li>
 <li><p>在编译之前，需要提前安装好 Python 3 依赖的环境：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install gcc patch libffi-devel python-devel  zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel -y</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install gcc patch libffi-devel python-devel  zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel -y</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>进入 Python 3 源码目录，可以使用 pwd 命令确认，指定 Python 3 的安装路径：</p>
 <figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">cd</span> Python-3.6.8</span><br><span class="line"><span class="string">./configure</span> <span class="params">--prefix=/opt/python36/</span></span><br></pre></td></tr></table></figure>
@@ -328,50 +327,50 @@
 <p>这里是指定 Python 3 的安装路径  ，<code>--prefix</code> 参数是指定安装到哪里，以及检查 Python 编译所需的依赖关系是否正常。</p>
 </li>
 <li><p>指定安装路径完毕后，开始编译安装，就可以了，make 是编译，make install 是编译安装：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make &amp;&amp; make install    <span class="comment"># 只有 make 编译成功了才会继续 make install 安装 Python 3</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make &amp;&amp; make install    # 只有 make 编译成功了才会继续 make install 安装 Python 3</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>编译安装结束后，配置 PATH 环境变量才能更方便的使用。</p>
 <p>要用就添加 Python 3 的安装目录到 PATH 环境变量中，需要设置 <code>/ect/profile</code> 文件：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/profile    <span class="comment"># 打开全局环境变量配置文件</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/profile    # 打开全局环境变量配置文件</span><br></pre></td></tr></table></figure>
 
 <p>在文件的最底部写入如下内容（注意 PATH 路径是有前后加载顺序的，写的位置可能会影响虚拟环境）：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PATH=<span class="string">"<span class="variable">$PATH</span>:/opt/python36/bin"</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PATH="$PATH:/opt/python36/bin"</span><br></pre></td></tr></table></figure>
 
 <p>其中 <code>/opt/python36/</code> 是第 4 步设置的 Python 安装位置。</p>
 <p>写好之后保存退出，然后重新登陆 ssh 终端，加载变量，此时检查变量是否正确：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="variable">$PATH</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo $PATH</span><br></pre></td></tr></table></figure>
 
 <p>若变量中出现了 <code>/opt/python36/bin</code>，说明环境变量添加成功。</p>
 </li>
 <li><p>验证 Python 3 和 pip 3 是否正常：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">which</span> python3</span><br><span class="line"><span class="built_in">which</span> pip3</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">which python3</span><br><span class="line">which pip3</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>升级 pip 3 版本的命令：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install -i https://pypi.douban.com/simple --upgrade pip</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install -i https://pypi.douban.com/simple --upgrade pip</span><br></pre></td></tr></table></figure>
 
 </li>
 </ol>
 <h3 id="署简单-django-项目"><a href="#署简单-django-项目" class="headerlink" title="署简单 django 项目"></a>署简单 django 项目</h3><p>案例，创建 django 项目，运行一个 hello 页面，显示”来玩呀老弟，来学linux”。</p>
 <ol>
 <li><p>先安装 django 模块（使用豆瓣源）：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install -i https://pypi.douban.com/simple django==1.11.9</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install -i https://pypi.douban.com/simple django==1.11.9</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>创建 django 项目 dj：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">django-admin startproject dj</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">django-admin startproject dj</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>进入 dj 项目，创建应用 app01：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> dj</span><br><span class="line"></span><br><span class="line">django-admin startapp app01</span><br><span class="line">    <span class="comment"># 或</span></span><br><span class="line">python3 manage.py startapp app01</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cd dj</span><br><span class="line"></span><br><span class="line">django-admin startapp app01</span><br><span class="line">    # 或</span><br><span class="line">python3 manage.py startapp app01</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>编写 MTV：</p>
 <ul>
 <li><p>编辑 url 路由：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim dj/urls.py</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim dj/urls.py</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>在其中写入路由：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> app01 <span class="keyword">import</span> views</span><br><span class="line">urlpatterns = [</span><br><span class="line">    url(<span class="string">r'^admin/'</span>, admin.site.urls),</span><br><span class="line">    url(<span class="string">r'^hello/'</span>,views.hello),</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>编辑 view 视图函数：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim app01/views.py</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim app01/views.py</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>在其中写入函数：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.shortcuts <span class="keyword">import</span> HttpResponse</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello</span><span class="params">(requests)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> HttpResponse(<span class="string">"辛苦26期的帅哥美女们听课了，准备下课吃饭"</span>)</span><br></pre></td></tr></table></figure>
@@ -379,13 +378,13 @@
 </ul>
 </li>
 <li><p>修改 django 的配置文件，<code>settings.py</code>：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim settings.py</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim settings.py</span><br></pre></td></tr></table></figure>
 
 <p>找到 ALLOWED_HOSTS，将其修改为：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ALLOWED_HOSTS = [<span class="string">"*"</span>]</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>启动 django 服务，将其绑定在 0.0.0.0 上：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 manage.py runserver  0.0.0.0:8888</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 manage.py runserver  0.0.0.0:8888</span><br></pre></td></tr></table></figure>
 </li>
 <li><p>若无法访问服务，可尝试关闭防火墙：</p>
 <figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">iptables -F</span></span><br></pre></td></tr></table></figure>
@@ -406,12 +405,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/linux/nginx-virtual-server/" rel="prev" title="nginx 的虚拟主机">
-      <i class="fa fa-chevron-left"></i> nginx 的虚拟主机
+    <a href="/linux/software-installation/" rel="prev" title="Linux 软件安装流程 - nginx 的安装">
+      <i class="fa fa-chevron-left"></i> Linux 软件安装流程 - nginx 的安装
     </a></div>
       <div class="post-nav-item">
-    <a href="/linux/python-requirements/" rel="next" title="导出导入 Python 依赖">
-      导出导入 Python 依赖 <i class="fa fa-chevron-right"></i>
+    <a href="/linux/pip-source/" rel="next" title="pip 更换为国内源">
+      pip 更换为国内源 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -488,7 +487,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">236</span>
+          <span class="site-state-item-count">241</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -497,6 +496,12 @@
           
         <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
 </div>

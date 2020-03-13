@@ -29,8 +29,8 @@
 <meta property="og:site_name" content="刘硕的技术查阅手册">
 <meta property="og:description" content="Linux Bug 宝典之 nginx 错误">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-02-17T06:26:55.000Z">
-<meta property="article:modified_time" content="2020-02-29T02:34:01.874Z">
+<meta property="article:published_time" content="2020-03-13T05:53:10.244Z">
+<meta property="article:modified_time" content="2020-03-13T06:53:08.737Z">
 <meta property="article:author" content="刘硕">
 <meta property="article:tag" content="Python">
 <meta property="article:tag" content="全栈开发">
@@ -159,6 +159,11 @@
     <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
 
   </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
         <li class="menu-item menu-item-categories">
 
     <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
@@ -254,16 +259,10 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2020-02-17 14:26:55" itemprop="dateCreated datePublished" datetime="2020-02-17T14:26:55+08:00">2020-02-17</time>
+              <time title="创建时间：2020-03-13 13:53:10 / 修改时间：14:53:08" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:10+08:00">2020-03-13</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-02-29 10:34:01" itemprop="dateModified" datetime="2020-02-29T10:34:01+08:00">2020-02-29</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -294,16 +293,16 @@
 
       
         <h2 id="“server”-directive-is-not-allowed-here"><a href="#“server”-directive-is-not-allowed-here" class="headerlink" title="“server” directive is not allowed here"></a>“server” directive is not allowed here</h2><h3 id="错误1-1"><a href="#错误1-1" class="headerlink" title="错误1.1"></a>错误1.1</h3><p>报错信息：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nginx: [emerg] <span class="string">"server"</span> directive is not allowed here <span class="keyword">in</span> /opt/nginx23/conf/nginx.conf:101</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nginx: [emerg] "server" directive is not allowed here in /opt/nginx23/conf/nginx.conf:101</span><br></pre></td></tr></table></figure>
 
 <p>错误代码：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen       80;</span><br><span class="line">    server_name  www.s26linuxav.com;</span><br><span class="line">    location / &#123;</span><br><span class="line">        root   /tmp/py/html/linuxav;</span><br><span class="line">        index  index.html index.htm;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen       80;</span><br><span class="line">    server_name  www.s26linuxav.com;</span><br><span class="line">    location / &#123;</span><br><span class="line">        root   /tmp/py/html/linuxav;</span><br><span class="line">        index  index.html index.htm;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>错误原因：</p>
 <p>此代码位于 nginx 的配置文件 <code>/opt/nginx23/conf/nginx.conf</code> 中，server 的大括号没有封闭。</p>
 <p>解决方法：</p>
 <p>加上回括号</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen       80;</span><br><span class="line">    server_name  www.s26linuxav.com;</span><br><span class="line">    location / &#123;</span><br><span class="line">        root   /tmp/py/html/linuxav;</span><br><span class="line">        index  index.html index.htm;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen       80;</span><br><span class="line">    server_name  www.s26linuxav.com;</span><br><span class="line">    location / &#123;</span><br><span class="line">        root   /tmp/py/html/linuxav;</span><br><span class="line">        index  index.html index.htm;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -319,12 +318,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/bug-bible/linux-bug/touch/" rel="prev" title="touch">
-      <i class="fa fa-chevron-left"></i> touch
+    <a href="/python-advanced/polymorphism/" rel="prev" title="多态">
+      <i class="fa fa-chevron-left"></i> 多态
     </a></div>
       <div class="post-nav-item">
-    <a href="/bug-bible/linux-bug/yum/" rel="next" title="yum">
-      yum <i class="fa fa-chevron-right"></i>
+    <a href="/bug-bible/linux-bug/mkdir/" rel="next" title="mkdir">
+      mkdir <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -401,7 +400,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">236</span>
+          <span class="site-state-item-count">241</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -410,6 +409,12 @@
           
         <span class="site-state-item-count">11</span>
         <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
 </div>
