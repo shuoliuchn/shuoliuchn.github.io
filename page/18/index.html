@@ -230,6 +230,216 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/basic-data-type/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/python-basic/basic-data-type/" class="post-title-link" itemprop="url">基础数据类型补充与总结</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-03-13 13:53:09 / 修改时间：14:53:08" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:09+08:00">2020-03-13</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="整型"><a href="#整型" class="headerlink" title="整型"></a>整型</h3><p><code>.bit_length</code> 方法用来计算整型数字转换为二进制所占的位数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">10</span></span><br><span class="line">print(a.bit_length())</span><br><span class="line"></span><br><span class="line">输出的结果为： <span class="number">4</span></span><br></pre></td></tr></table></figure>
+
+<p>这个方法的意思是，10 转换为二进制数是 1010，一共会占 4 位。</p>
+<h3 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h3><h4 id="capitalize-方法"><a href="#capitalize-方法" class="headerlink" title=".capitalize() 方法"></a><code>.capitalize()</code> 方法</h4><p><code>.capitalize()</code> 方法用来将字符串的首字母大写：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">'alEX wusir'</span></span><br><span class="line">s1 = s.capitalize()</span><br><span class="line">print(s1)</span><br><span class="line"></span><br><span class="line">输出的结果为：Alex wusir</span><br></pre></td></tr></table></figure>
+
+<h4 id="title-方法"><a href="#title-方法" class="headerlink" title=".title() 方法"></a><code>.title()</code> 方法</h4><p><code>.title()</code> 方法能将字符串每个单词的首字母大写，区分首字母的方式有空格、符号和数字等：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">'alEX wUsir-meET3san'</span></span><br><span class="line">s1 = s.title()</span><br><span class="line">print(s1)</span><br><span class="line"></span><br><span class="line">输出的结果为：Alex Wusir-Meet3San</span><br></pre></td></tr></table></figure>
+
+<h4 id="index-和-find-方法"><a href="#index-和-find-方法" class="headerlink" title=".index() 和 .find() 方法"></a><code>.index()</code> 和 <code>.find()</code> 方法</h4><p><code>.index()</code> 方法用来通过元素查找索引，查找不到时会报错：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">'alex wusir'</span></span><br><span class="line">print(s.index(<span class="string">'e'</span>))</span><br><span class="line">print(s.index(<span class="string">'wu'</span>))</span><br></pre></td></tr></table></figure>
+
+<p><code>.find()</code> 方法同样用来通过元素查找索引，与 <code>.index()</code> 方法不同的是，<code>.find()</code> 方法查找不到时会返回 -1，而不会报错：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">'alex wusir'</span></span><br><span class="line">print(s.find(<span class="string">'b'</span>))</span><br><span class="line">print(s.find(<span class="string">'le'</span>))</span><br></pre></td></tr></table></figure>
+
+<p>如果字符串中有多个要查找的元素片段，<code>.index()</code> 和 <code>.find()</code> 方法都只会找第一个元素的索引：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="string">'abcabc'</span></span><br><span class="line">print(a.index(<span class="string">'a'</span>))</span><br><span class="line">print(a.find(<span class="string">'a'</span>))</span><br></pre></td></tr></table></figure>
+
+<h4 id="center-方法"><a href="#center-方法" class="headerlink" title=".center() 方法"></a><code>.center()</code> 方法</h4><p><code>.center()</code> 方法用来进行居中操作，会在字符串两端插入等量的空格，使得字符串总长度等于输入的参数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">'alex wusir'</span></span><br><span class="line">print(s.center(<span class="number">20</span>))</span><br></pre></td></tr></table></figure>
+
+<p>也可以指定两端填充的内容：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">print(s.center(<span class="number">20</span>, <span class="string">'-'</span>))</span><br><span class="line"></span><br><span class="line">输出的结果为：-----alex wusir-----</span><br></pre></td></tr></table></figure>
+
+<h4 id="format-方法"><a href="#format-方法" class="headerlink" title=".format() 方法"></a><code>.format()</code> 方法</h4><p><code>.format()</code> 方法是另外一种字符串格式化的方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">'alex&#123;&#125;wu&#123;&#125;si&#123;&#125;r'</span></span><br><span class="line">s1 = s.format(<span class="string">'你好'</span>, <span class="string">'我好'</span>, <span class="string">'大家好'</span>)</span><br><span class="line">print(s1)</span><br><span class="line"></span><br><span class="line">输出的结果为：alex你好wu我好si大家好r</span><br></pre></td></tr></table></figure>
+
+<p><code>.format()</code> 方法除了向上面这种按照位置格式化之外，还可以按照索引格式化：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">'alex&#123;0&#125;wu&#123;2&#125;si&#123;1&#125;r'</span></span><br><span class="line">s1 = s.format(<span class="string">'你好'</span>, <span class="string">'我好'</span>, <span class="string">'大家好'</span>)</span><br><span class="line">print(s1)</span><br><span class="line"></span><br><span class="line">输出的结果为：alex你好wu大家好si我好r</span><br></pre></td></tr></table></figure>
+
+<p><code>.format()</code> 方法还可以按照关键字进行格式化：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">'alex&#123;a&#125;wu&#123;c&#125;si&#123;b&#125;r'</span></span><br><span class="line">s1 = s.format(b = <span class="string">'你好'</span>, a = <span class="string">'我好'</span>, c = <span class="string">'大家好'</span>)</span><br><span class="line">print(s1)</span><br><span class="line"></span><br><span class="line">输出的结果为：alex我好wu大家好si你好r</span><br></pre></td></tr></table></figure>
+
+<h4 id="swapcase-方法"><a href="#swapcase-方法" class="headerlink" title=".swapcase() 方法"></a><code>.swapcase()</code> 方法</h4><p><code>.swapcase()</code> 方法可以反转字符串中字母的大小写：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">'alEx'</span></span><br><span class="line">s1 = s.swapcase()</span><br><span class="line">print(s1)</span><br><span class="line"></span><br><span class="line">输出的结果为：ALeX</span><br></pre></td></tr></table></figure>
+
+<p>这里插入一个 PyCharm 的使用技巧：<code>ctrl + shift + r</code> 打开替换窗口。</p>
+<h3 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h3><h4 id="reverse-方法"><a href="#reverse-方法" class="headerlink" title=".reverse() 方法"></a><code>.reverse()</code> 方法</h4><p>对列表进行反转操作，我们可以通过切片的方式进行：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]</span><br><span class="line">print(lst[::<span class="number">-1</span>])</span><br></pre></td></tr></table></figure>
+
+<p>这种方法并没有对原来的列表进行修改，而是创建了一个新列表。如果我们想对原来的列表进行改动，可以将切片后的结果赋值给 lst。也可以使用 <code>.reverse()</code> 的方法，对列表本身进行原地的反转操作：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]</span><br><span class="line">lst.reverse()</span><br><span class="line">print(lst)</span><br><span class="line"></span><br><span class="line">输出的内容为：[<span class="number">6</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+
+<h4 id="sort-方法"><a href="#sort-方法" class="headerlink" title=".sort() 方法"></a><code>.sort()</code> 方法</h4><p>列表的 <code>.sort()</code> 方法可以将混乱的列表排序，默认是按照升序排序：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="number">2</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">5</span>]</span><br><span class="line">lst.sort()</span><br><span class="line">print(lst)</span><br><span class="line"></span><br><span class="line">输出的结果为：[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]</span><br></pre></td></tr></table></figure>
+
+<p>我们可以混合使用 reverse 方法将升序的列表反转，达到降序的目的。也可以通过将 <code>.sort()</code> 方法中的参数 reverse 设置为 True，来让列表进行降序排序：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="number">2</span>, <span class="number">1</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">5</span>]</span><br><span class="line">lst.sort(reverse=<span class="literal">True</span>)</span><br><span class="line">print(lst)</span><br><span class="line"></span><br><span class="line">输出的结果为：[<span class="number">6</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>, <span class="number">2</span>, <span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+
+<h4 id="index-方法"><a href="#index-方法" class="headerlink" title=".index() 方法"></a><code>.index()</code> 方法</h4><p><code>.index()</code> 方法通过元素名来查找该元素在列表中的索引：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">6</span>,<span class="number">5</span>]</span><br><span class="line">print(lst.index(<span class="number">4</span>))</span><br><span class="line"></span><br><span class="line">输出的结果为： <span class="number">3</span></span><br></pre></td></tr></table></figure>
+
+<p>需要注意的是，如果需要查询的元素在列表中不止一个，<code>.index()</code> 方法只会返回从左面数第一个元素的索引值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">lst = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">4</span>,<span class="number">6</span>,<span class="number">5</span>]</span><br><span class="line">print(lst.index(<span class="number">4</span>))</span><br><span class="line"></span><br><span class="line">输出的结果仍然是： <span class="number">3</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="列表的加法和乘法"><a href="#列表的加法和乘法" class="headerlink" title="列表的加法和乘法"></a>列表的加法和乘法</h4><p>跟字符串类似，列表也可以进行加法和乘法的操作：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">lst1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, [<span class="number">4</span>]]</span><br><span class="line">lst2 = [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]</span><br><span class="line">print(lst1 + lst2)</span><br><span class="line">print(lst2 * <span class="number">3</span>)</span><br><span class="line"></span><br><span class="line">输出的结果为：</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, [<span class="number">4</span>], <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]</span><br><span class="line">[<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]</span><br></pre></td></tr></table></figure>
+
+<p>需要注意的是，列表的加法和乘法都是新开一个空间存储结果，而不是对原列表进行操作。但是加法和乘法的结果所使用的元素仍然是原列表中的。相应的操作与浅拷贝就很类似了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">lst1 = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, [<span class="number">4</span>]]</span><br><span class="line">lst2 = [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]</span><br><span class="line">l_sum = lst1 + lst2</span><br><span class="line">l_sum[<span class="number">3</span>].append(<span class="number">9</span>)</span><br><span class="line">print(lst1, lst2, l_sum)</span><br><span class="line">l_multi = lst1 * <span class="number">2</span></span><br><span class="line">l_multi[<span class="number">3</span>].append(<span class="number">8</span>)</span><br><span class="line">print(lst1, lst2, l_multi)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, [<span class="number">4</span>, <span class="number">9</span>]] [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>] [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, [<span class="number">4</span>, <span class="number">9</span>], <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]</span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, [<span class="number">4</span>, <span class="number">9</span>, <span class="number">8</span>]] [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>] [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, [<span class="number">4</span>, <span class="number">9</span>, <span class="number">8</span>], <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, [<span class="number">4</span>, <span class="number">9</span>, <span class="number">8</span>]]</span><br></pre></td></tr></table></figure>
+
+<h3 id="元组"><a href="#元组" class="headerlink" title="元组"></a>元组</h3><p>元组需要补充的内容不是很多，只是需要掌握下面这三种小括号的含义即可：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tu = (<span class="number">10</span>)    <span class="comment"># int，括号中只有一个元素且没有任何逗号，那就表示该元素本身。此时，括号可以看成一个运算符。</span></span><br><span class="line">tu = (<span class="number">10</span>,)    <span class="comment"># tuple，括号中虽然只有一个元素，但是元素后面有一个逗号，表示这是一个元组。</span></span><br><span class="line">tu = ()    <span class="comment"># tuple，这时空元组的表示方法，括号中什么都没有。</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="字典"><a href="#字典" class="headerlink" title="字典"></a>字典</h3><h4 id="fromkeys-方法"><a href="#fromkeys-方法" class="headerlink" title=".fromkeys() 方法"></a><code>.fromkeys()</code> 方法</h4><p><code>.fromkeys()</code> 方法用来批量创建键值对，此方法需要两个参数，参数 1 是一个可迭代对象，将会迭代添加到字典中成为键，参数 2 是这些键共用的值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;<span class="string">'key'</span>: <span class="number">1</span>, <span class="string">'key1'</span>: <span class="number">2</span>&#125;</span><br><span class="line">dic1 = dic.fromkeys(<span class="string">'abc'</span>, <span class="number">12</span>)</span><br><span class="line">print(dic,dic1)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="string">'key'</span>: <span class="number">1</span>, <span class="string">'key1'</span>: <span class="number">2</span>&#125; &#123;<span class="string">'a'</span>: <span class="number">12</span>, <span class="string">'b'</span>: <span class="number">12</span>, <span class="string">'c'</span>: <span class="number">12</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里需要注意的是，<code>.fromkeys()</code> 方法并不是修改字典的方法，而是会创建一个新字典并返回。</p>
+<p>另外一个需要注意的是，如果参数 2 是可变数据，所有的值会共用这个数据：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">l = []</span><br><span class="line">dic = dict().fromkeys(<span class="string">'abc'</span>, l)</span><br><span class="line">l.append(<span class="number">2</span>)</span><br><span class="line">print(l, dic)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">2</span>] &#123;<span class="string">'a'</span>: [<span class="number">2</span>], <span class="string">'b'</span>: [<span class="number">2</span>], <span class="string">'c'</span>: [<span class="number">2</span>]&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="类型转换"><a href="#类型转换" class="headerlink" title="类型转换"></a>类型转换</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">tuple(list)</span><br><span class="line">list(tuple)</span><br><span class="line"></span><br><span class="line">set(list)</span><br><span class="line">list(set)</span><br><span class="line"></span><br><span class="line">set(tuple)</span><br><span class="line">tuple(set)</span><br><span class="line"></span><br><span class="line">int(str)  <span class="comment"># 字符串中必须全部都是阿拉伯数字</span></span><br><span class="line">str(int)</span><br><span class="line"></span><br><span class="line">s1 = <span class="string">""</span>.join(<span class="string">'列表'</span>,<span class="string">'元组'</span>)    <span class="comment"># 将列表转换成字符串   ****</span></span><br><span class="line">s.split(<span class="string">":"</span>)              <span class="comment"># 将字符串转化成列表   ****</span></span><br><span class="line"></span><br><span class="line">str(dict)</span><br><span class="line">str(list)</span><br><span class="line">str(tuple)</span><br><span class="line">str(int)</span><br><span class="line">str(set)</span><br><span class="line">str(bool)</span><br></pre></td></tr></table></figure>
+
+<h3 id="基础数据类型总结"><a href="#基础数据类型总结" class="headerlink" title="基础数据类型总结"></a>基础数据类型总结</h3><table>
+<thead>
+<tr>
+<th align="center">数据类型</th>
+<th align="center">有序无序</th>
+<th align="center">是否可变</th>
+<th align="center">可否迭代</th>
+<th align="center">查看方式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">int</td>
+<td align="center">有序</td>
+<td align="center">不可变</td>
+<td align="center">不可迭代</td>
+<td align="center">直接查看</td>
+</tr>
+<tr>
+<td align="center">bool</td>
+<td align="center">-</td>
+<td align="center">不可变</td>
+<td align="center">不可迭代</td>
+<td align="center">直接查看</td>
+</tr>
+<tr>
+<td align="center">str</td>
+<td align="center">有序</td>
+<td align="center">不可变</td>
+<td align="center">可迭代</td>
+<td align="center">通过索引查看</td>
+</tr>
+<tr>
+<td align="center">tuple</td>
+<td align="center">有序</td>
+<td align="center">不可变</td>
+<td align="center">可迭代</td>
+<td align="center">通过索引查看</td>
+</tr>
+<tr>
+<td align="center">list</td>
+<td align="center">有序</td>
+<td align="center">可变</td>
+<td align="center">可迭代</td>
+<td align="center">通过索引查看</td>
+</tr>
+<tr>
+<td align="center">dict</td>
+<td align="center">无序</td>
+<td align="center">可变</td>
+<td align="center">可迭代</td>
+<td align="center">通过键查看</td>
+</tr>
+<tr>
+<td align="center">set</td>
+<td align="center">无序</td>
+<td align="center">可变</td>
+<td align="center">可迭代</td>
+<td align="center">for循环查看</td>
+</tr>
+</tbody></table>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/os-sys/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1445,81 +1655,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/translation/Typora-Markdown/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="刘硕">
-      <meta itemprop="description" content="不成为自己讨厌的人">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="刘硕的技术查阅手册">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/translation/Typora-Markdown/" class="post-title-link" itemprop="url">Typora 官方 Markdown 教程翻译</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-03-13 13:53:09 / 修改时间：14:53:08" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:09+08:00">2020-03-13</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91/" itemprop="url" rel="index"><span itemprop="name">官方文档翻译</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Typora 是一款非常好用的跨平台 markdown 编辑工具。美中不足是官方的使用文档是纯英文。我花了三个下午的时间，终于翻译好这篇文档，仅供参考吧。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/translation/Typora-Markdown/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1592,7 +1727,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">243</span>
+          <span class="site-state-item-count">244</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
