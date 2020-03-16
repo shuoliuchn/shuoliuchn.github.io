@@ -19,7 +19,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"appID":"PXY1Z6GHKT","apiKey":"eb82f2e78e3053f26aa408e9caa96d93","indexName":"blog","hits":{"per_page":10},"labels":{"input_placeholder":"要查点什么(✿◡‿◡)","hits_empty":"没有找到任何关于 ${query} 的结果╥﹏╥...","hits_stats":"搜索到 ${hits} 条记录，用时 ${time} ms o(*￣▽￣*)ブ"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"appID":"PXY1Z6GHKT","apiKey":"eb82f2e78e3053f26aa408e9caa96d93","indexName":"blog","hits":{"per_page":10},"labels":{"input_placeholder":"要查点什么(✿◡‿◡)","hits_empty":"没有找到任何关于 ${query} 的结果╥﹏╥...","hits_stats":"搜索到 ${hits} 条记录，用时 ${time} ms o(*￣▽￣*)ブ"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="不成为自己讨厌的人">
@@ -215,6 +215,7 @@
     <span>0%</span>
   </div>
   <div class="reading-progress-bar"></div>
+  <a role="button" class="book-mark-link book-mark-link-fixed"></a>
 
 
     <main class="main">
@@ -253,10 +254,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-03-13 13:53:09 / 修改时间：14:53:08" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:09+08:00">2020-03-13</time>
+              <time title="创建时间：2020-03-13 13:53:09" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:09+08:00">2020-03-13</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-16 18:54:32" itemprop="dateModified" datetime="2020-03-16T18:54:32+08:00">2020-03-16</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -278,7 +285,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>列表是一个数据容器，将各种数据打包起来，方便我们使用</p>
+          <p>列表，也是 Python 中的基本数据类型之一。列表是一个数据容器，将各种数据打包起来，方便我们使用</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/python-basic/list/">
@@ -328,10 +335,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-03-13 13:53:09 / 修改时间：14:53:08" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:09+08:00">2020-03-13</time>
+              <time title="创建时间：2020-03-13 13:53:09" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:09+08:00">2020-03-13</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-16 18:54:32" itemprop="dateModified" datetime="2020-03-16T18:54:32+08:00">2020-03-16</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -353,91 +366,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>你好！ 这是你第一次使用 <strong>Markdown编辑器</strong> 所展示的欢迎页。如果你想学习如何使用Markdown编辑器, 可以仔细阅读这篇文章，了解一下Markdown的基本语法知识。</p>
-<h2 id="新的改变"><a href="#新的改变" class="headerlink" title="新的改变"></a>新的改变</h2><p>我们对Markdown编辑器进行了一些功能拓展与语法支持，除了标准的Markdown编辑器功能，我们增加了如下几点新功能，帮助你用它写博客：</p>
-<ol>
-<li><strong>全新的界面设计</strong> ，将会带来全新的写作体验；</li>
-<li>在创作中心设置你喜爱的代码高亮样式，Markdown <strong>将代码片显示选择的高亮样式</strong> 进行展示；</li>
-<li>增加了 <strong>图片拖拽</strong> 功能，你可以将本地的图片直接拖拽到编辑区域直接展示；</li>
-<li>全新的 <strong>KaTeX数学公式</strong> 语法；</li>
-<li>增加了支持<strong>甘特图的mermaid语法<a href="[mermaid语法说明](https://mermaidjs.github.io/)">^1</a></strong> 功能；</li>
-<li>增加了 <strong>多屏幕编辑</strong> Markdown文章功能；</li>
-<li>增加了 <strong>焦点写作模式、预览模式、简洁写作模式、左右区域同步滚轮设置</strong> 等功能，功能按钮位于编辑区域与预览区域中间；</li>
-<li>增加了 <strong>检查列表</strong> 功能。</li>
-</ol>
-<h2 id="功能快捷键"><a href="#功能快捷键" class="headerlink" title="功能快捷键"></a>功能快捷键</h2><p>撤销：<kbd>Ctrl/Command</kbd> + <kbd>Z</kbd><br>重做：<kbd>Ctrl/Command</kbd> + <kbd>Y</kbd><br>加粗：<kbd>Ctrl/Command</kbd> + <kbd>B</kbd><br>斜体：<kbd>Ctrl/Command</kbd> + <kbd>I</kbd><br>标题：<kbd>Ctrl/Command</kbd> + <kbd>Shift</kbd> + <kbd>H</kbd><br>无序列表：<kbd>Ctrl/Command</kbd> + <kbd>Shift</kbd> + <kbd>U</kbd><br>有序列表：<kbd>Ctrl/Command</kbd> + <kbd>Shift</kbd> + <kbd>O</kbd><br>检查列表：<kbd>Ctrl/Command</kbd> + <kbd>Shift</kbd> + <kbd>C</kbd><br>插入代码：<kbd>Ctrl/Command</kbd> + <kbd>Shift</kbd> + <kbd>K</kbd><br>插入链接：<kbd>Ctrl/Command</kbd> + <kbd>Shift</kbd> + <kbd>L</kbd><br>插入图片：<kbd>Ctrl/Command</kbd> + <kbd>Shift</kbd> + <kbd>G</kbd><br>查找：<kbd>Ctrl/Command</kbd> + <kbd>F</kbd><br>替换：<kbd>Ctrl/Command</kbd> + <kbd>G</kbd></p>
-<h2 id="合理的创建标题，有助于目录的生成"><a href="#合理的创建标题，有助于目录的生成" class="headerlink" title="合理的创建标题，有助于目录的生成"></a>合理的创建标题，有助于目录的生成</h2><p>直接输入1次<kbd>#</kbd>，并按下<kbd>space</kbd>后，将生成1级标题。<br>输入2次<kbd>#</kbd>，并按下<kbd>space</kbd>后，将生成2级标题。<br>以此类推，我们支持6级标题。有助于使用<code>TOC</code>语法后生成一个完美的目录。</p>
-<h2 id="如何改变文本的样式"><a href="#如何改变文本的样式" class="headerlink" title="如何改变文本的样式"></a>如何改变文本的样式</h2><p><em>强调文本</em> <em>强调文本</em></p>
-<p><strong>加粗文本</strong> <strong>加粗文本</strong></p>
-<p>==标记文本==</p>
-<p><del>删除文本</del></p>
-<blockquote>
-<p>引用文本</p>
-</blockquote>
-<p>H<del>2</del>O is是液体。</p>
-<p>2^10^ 运算结果是 1024.</p>
-<h2 id="插入链接与图片"><a href="#插入链接与图片" class="headerlink" title="插入链接与图片"></a>插入链接与图片</h2><p>链接: <a href="https://mp.csdn.net" target="_blank" rel="noopener">link</a>.</p>
-<p>图片: <img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9hdmF0YXIuY3Nkbi5uZXQvNy83L0IvMV9yYWxmX2h4MTYzY29tLmpwZw" alt="Alt"></p>
-<p>带尺寸的图片: ![Alt](<a href="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9hdmF0YXIuY3Nkbi5uZXQvNy83L0IvMV9yYWxmX2h4MTYzY29tLmpwZw" target="_blank" rel="noopener">https://imgconvert.csdnimg.cn/aHR0cHM6Ly9hdmF0YXIuY3Nkbi5uZXQvNy83L0IvMV9yYWxmX2h4MTYzY29tLmpwZw</a> =30x30)</p>
-<p>居中的图片: <img src="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9hdmF0YXIuY3Nkbi5uZXQvNy83L0IvMV9yYWxmX2h4MTYzY29tLmpwZw#pic_center" alt="Alt"></p>
-<p>居中并且带尺寸的图片: ![Alt](<a href="https://imgconvert.csdnimg.cn/aHR0cHM6Ly9hdmF0YXIuY3Nkbi5uZXQvNy83L0IvMV9yYWxmX2h4MTYzY29tLmpwZw#pic_center" target="_blank" rel="noopener">https://imgconvert.csdnimg.cn/aHR0cHM6Ly9hdmF0YXIuY3Nkbi5uZXQvNy83L0IvMV9yYWxmX2h4MTYzY29tLmpwZw#pic_center</a> =30x30)</p>
-<p>当然，我们为了让用户更加便捷，我们增加了图片拖拽功能。</p>
-<h2 id="如何插入一段漂亮的代码片"><a href="#如何插入一段漂亮的代码片" class="headerlink" title="如何插入一段漂亮的代码片"></a>如何插入一段漂亮的代码片</h2><p>去<a href="https://mp.csdn.net/configure" target="_blank" rel="noopener">博客设置</a>页面，选择一款你喜欢的代码片高亮样式，下面展示同样高亮的 <code>代码片</code>.</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// An highlighted block</span></span><br><span class="line"><span class="keyword">var</span> foo = <span class="string">'bar'</span>;</span><br></pre></td></tr></table></figure>
-
-
-<h2 id="生成一个适合你的列表"><a href="#生成一个适合你的列表" class="headerlink" title="生成一个适合你的列表"></a>生成一个适合你的列表</h2><ul>
-<li>项目<ul>
-<li>项目<ul>
-<li>项目</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<ol>
-<li>项目1</li>
-<li>项目2</li>
-<li>项目3</li>
-</ol>
-<ul>
-<li><input disabled="" type="checkbox"> 计划任务</li>
-<li><input checked="" disabled="" type="checkbox"> 完成任务</li>
-</ul>
-<h2 id="创建一个表格"><a href="#创建一个表格" class="headerlink" title="创建一个表格"></a>创建一个表格</h2><p>一个简单的表格是这么创建的：<br>| 项目 | Value |<br>| —- | —– |<br>| 电脑 | $1600 |<br>| 手机 | $12   |<br>| 导管 | $1    |</p>
-<h3 id="设定内容居中、居左、居右"><a href="#设定内容居中、居左、居右" class="headerlink" title="设定内容居中、居左、居右"></a>设定内容居中、居左、居右</h3><p>使用<code>:---------:</code>居中<br>使用<code>:----------</code>居左<br>使用<code>----------:</code>居右<br>|     第一列     |         第二列 | 第三列         |<br>| :————: | ————-: | :————- |<br>| 第一列文本居中 | 第二列文本居右 | 第三列文本居左 |</p>
-<h3 id="SmartyPants"><a href="#SmartyPants" class="headerlink" title="SmartyPants"></a>SmartyPants</h3><p>SmartyPants将ASCII标点字符转换为“智能”印刷标点HTML实体。例如：<br>|    TYPE   |ASCII                          |HTML<br>|—————-|——————————-|—————————–|<br>|Single backticks|<code>&#39;Isn&#39;t this fun?&#39;</code>            |’Isn’t this fun?’            |<br>|Quotes          |<code>&quot;Isn&#39;t this fun?&quot;</code>            |”Isn’t this fun?”            |<br>|Dashes          |<code>-- is en-dash, --- is em-dash</code>|– is en-dash, — is em-dash|</p>
-<h2 id="创建一个自定义列表"><a href="#创建一个自定义列表" class="headerlink" title="创建一个自定义列表"></a>创建一个自定义列表</h2><dl><dt>Markdown</dt><dd>Text-to-HTML conversion tool</dd></dl><dl><dt>Authors<br>:  John</dt><dd>Luke</dd></dl><h2 id="如何创建一个注脚"><a href="#如何创建一个注脚" class="headerlink" title="如何创建一个注脚"></a>如何创建一个注脚</h2><p>一个具有注脚的文本。<a href="注脚的解释">^2</a></p>
-<h2 id="注释也是必不可少的"><a href="#注释也是必不可少的" class="headerlink" title="注释也是必不可少的"></a>注释也是必不可少的</h2><p>Markdown将文本转换为 HTML。</p>
-<p>*[HTML]:   超文本标记语言</p>
-<h2 id="KaTeX数学公式"><a href="#KaTeX数学公式" class="headerlink" title="KaTeX数学公式"></a>KaTeX数学公式</h2><p>您可以使用渲染LaTeX数学表达式 <a href="https://khan.github.io/KaTeX/" target="_blank" rel="noopener">KaTeX</a>:</p>
-<p>Gamma公式展示 $\Gamma(n) = (n-1)!\quad\forall<br>n\in\mathbb N$ 是通过欧拉积分</p>
-<p>$$<br>\Gamma(z) = \int_0^\infty t^{z-1}e^{-t}dt,.<br>$$</p>
-<blockquote>
-<p>你可以找到更多关于的信息 <strong>LaTeX</strong> 数学表达式<a href="http://meta.math.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference" target="_blank" rel="noopener">here</a>.</p>
-</blockquote>
-<h2 id="新的甘特图功能，丰富你的文章"><a href="#新的甘特图功能，丰富你的文章" class="headerlink" title="新的甘特图功能，丰富你的文章"></a>新的甘特图功能，丰富你的文章</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">gantt</span><br><span class="line">        dateFormat  YYYY-MM-DD</span><br><span class="line">        title Adding GANTT diagram functionality to mermaid</span><br><span class="line">        section 现有任务</span><br><span class="line">        已完成               :done,    des1, 2014-01-06,2014-01-08</span><br><span class="line">        进行中               :active,  des2, 2014-01-09, 3d</span><br><span class="line">        计划一               :         des3, after des2, 5d</span><br><span class="line">        计划二               :         des4, after des3, 5d</span><br></pre></td></tr></table></figure>
-<ul>
-<li>关于 <strong>甘特图</strong> 语法，参考 <a href="https://mermaidjs.github.io/" target="_blank" rel="noopener">这儿</a>,</li>
-</ul>
-<h2 id="UML-图表"><a href="#UML-图表" class="headerlink" title="UML 图表"></a>UML 图表</h2><p>可以使用UML图表进行渲染。 <a href="https://mermaidjs.github.io/" target="_blank" rel="noopener">Mermaid</a>. 例如下面产生的一个序列图：:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">sequenceDiagram</span><br><span class="line">张三 -&gt;&gt; 李四: 你好！李四, 最近怎么样?</span><br><span class="line">李四--&gt;&gt;王五: 你最近怎么样，王五？</span><br><span class="line">李四--x 张三: 我很好，谢谢!</span><br><span class="line">李四-x 王五: 我很好，谢谢!</span><br><span class="line">Note right of 王五: 李四想了很长时间, 文字太长了&lt;br&#x2F;&gt;不适合放在一行.</span><br><span class="line"></span><br><span class="line">李四--&gt;&gt;张三: 打量着王五...</span><br><span class="line">张三-&gt;&gt;王五: 很好... 王五, 你怎么样?</span><br></pre></td></tr></table></figure>
-
-<p>这将产生一个流程图。:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">A[长方形] -- 链接 --&gt; B((圆))</span><br><span class="line">A --&gt; C(圆角长方形)</span><br><span class="line">B --&gt; D&#123;菱形&#125;</span><br><span class="line">C --&gt; D</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>关于 <strong>Mermaid</strong> 语法，参考 <a href="https://mermaidjs.github.io/" target="_blank" rel="noopener">这儿</a>,</li>
-</ul>
-<h2 id="FLowchart流程图"><a href="#FLowchart流程图" class="headerlink" title="FLowchart流程图"></a>FLowchart流程图</h2><p>我们依旧会支持flowchart的流程图：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">flowchat</span><br><span class="line">st&#x3D;&gt;start: 开始</span><br><span class="line">e&#x3D;&gt;end: 结束</span><br><span class="line">op&#x3D;&gt;operation: 我的操作</span><br><span class="line">cond&#x3D;&gt;condition: 确认？</span><br><span class="line"></span><br><span class="line">st-&gt;op-&gt;cond</span><br><span class="line">cond(yes)-&gt;e</span><br><span class="line">cond(no)-&gt;op</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>关于 <strong>Flowchart流程图</strong> 语法，参考 <a href="http://adrai.github.io/flowchart.js/" target="_blank" rel="noopener">这儿</a>.</li>
-</ul>
-<h2 id="导出与导入"><a href="#导出与导入" class="headerlink" title="导出与导入"></a>导出与导入</h2><h3 id="导出"><a href="#导出" class="headerlink" title="导出"></a>导出</h3><p>如果你想尝试使用此编辑器, 你可以在此篇文章任意编辑。当你完成了一篇文章的写作, 在上方工具栏找到 <strong>文章导出</strong> ，生成一个.md文件或者.html文件进行本地保存。</p>
-<h3 id="导入"><a href="#导入" class="headerlink" title="导入"></a>导入</h3><p>如果你想加载一篇你写过的.md文件，在上方工具栏可以选择导入功能进行对应扩展名的文件导入，<br>继续你的创作。</p>
-
+          <p>CSDN 官方 markdown 教程</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/python-basic/CSDN-Markdown-manual/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -479,10 +416,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-03-13 13:53:09 / 修改时间：14:53:08" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:09+08:00">2020-03-13</time>
+              <time title="创建时间：2020-03-13 13:53:09" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:09+08:00">2020-03-13</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-16 18:54:32" itemprop="dateModified" datetime="2020-03-16T18:54:32+08:00">2020-03-16</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -504,7 +447,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>人理解函数，神理解递归</p>
+          <p>人理解函数，神理解递归。递归的精华是一递一归。所谓递，就是不断嵌套函数；所谓归，就是逐个将值返回。递而不归，就会越嵌套越深，直至突破内存极限而出错。</p>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/python-basic/recursion/">
@@ -554,10 +497,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-03-13 13:53:09 / 修改时间：14:53:08" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:09+08:00">2020-03-13</time>
+              <time title="创建时间：2020-03-13 13:53:09" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:09+08:00">2020-03-13</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-16 18:54:32" itemprop="dateModified" datetime="2020-03-16T18:54:32+08:00">2020-03-16</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -579,33 +528,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>Windows 系统中的可执行程序一般以 <code>exe</code> 做后缀。</p>
-<p>把 exe 文件所在的文件夹放在系统环境变量的 path 变量中，就可以使用终端直接输入程序名执行该程序了。</p>
-<p>例如，如果没有将 Python 所在目录放到环境变量中，在终端直接输入 python 命令就会提示 <code>‘python’ 不是内部或外部命令，也不是可运行的程序</code>：</p>
-<img src="/python-basic/environment-variable/py_setup_12.png" class="" title="py_setup_12">
-
-<p>要解决这个问题，可以将 Python 的安装目录放到环境变量中。</p>
-<p>右键 <code>此电脑</code> （也可能叫 <code>我的电脑</code>、<code>计算机</code>、<code>此电脑</code> 等等）图标，点击 <code>属性</code>。点击左侧的<code>高级系统设置</code>。</p>
-<img src="/python-basic/environment-variable/py_setup_14.png" class="" title="py_setup_14">
-
-<p>也可以使用小娜或者其他工具搜索 <code>高级系统设置</code>，直接打开。</p>
-<img src="/python-basic/environment-variable/1579578151110.png" class="" width="1579578151110">
-
-<p>选择 <code>环境变量</code></p>
-<img src="/python-basic/environment-variable/py_setup_15.png" class="" title="py_setup_15">
-
-<p>在 <code>系统环境变量</code> 中找到 <code>Path</code> 变量，点击 <code>编辑</code>。</p>
-<img src="/python-basic/environment-variable/py_setup_16.png" class="" title="py_setup_16">
-
-<p>点击 <code>新建</code>。</p>
-<img src="/python-basic/environment-variable/py_setup_17.png" class="" title="py_setup_17">
-
-<p>将 Python 的安装路径插入到 <code>环境变量</code> 中，点击 <code>确定</code>，退出编辑界面。</p>
-<img src="/python-basic/environment-variable/py_setup_18.png" class="" title="py_setup_18">
-
-<p>然后就可以在终端中直接使用 python 命令运行 Python 代码了。</p>
-<img src="/python-basic/environment-variable/1579587121571.png" class="" width="1579587121571">
-
+          <p>Windows 系统中的可执行程序一般以 exe 做后缀。把 exe 文件所在的文件夹放在系统环境变量的 path 变量中，就可以使用终端直接输入程序名执行该程序了。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/python-basic/environment-variable/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -647,10 +578,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-03-13 13:53:09 / 修改时间：14:53:08" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:09+08:00">2020-03-13</time>
+              <time title="创建时间：2020-03-13 13:53:09" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:09+08:00">2020-03-13</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-16 18:54:32" itemprop="dateModified" datetime="2020-03-16T18:54:32+08:00">2020-03-16</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -672,41 +609,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>常见编码集：</p>
-<ol>
-<li>ascii：<ul>
-<li>不支持中文</li>
-<li>一个字符占用 8 位</li>
-</ul>
-</li>
-<li>gbk（包含 ascii）国标码：<ul>
-<li>一个英文字符占用 8 位（1 字节）</li>
-<li>一个中文字符占用 16 位（2 字节）</li>
-</ul>
-</li>
-<li>Unicode：<ul>
-<li>英文：4 个字节，32 位</li>
-<li>中文：4 个字节，32 位</li>
-</ul>
-</li>
-<li>utf-8（最流行的编码集）：<ul>
-<li>英文：1 个字节，8 位</li>
-<li>欧洲：2 个字节，16 位</li>
-<li>亚洲：3 个字节，24 位</li>
-</ul>
-</li>
-</ol>
-<p>单位转换：</p>
-<ul>
-<li>1 字节 = 8 位</li>
-<li>1 Byte = 8 bits</li>
-<li>1024 bytes = 1 KB</li>
-<li>1024 KB = 1 MB</li>
-<li>1024 MB = 1 GB</li>
-<li>1024 GB = 1 TB    # 够用了</li>
-<li>1024 TB = 1 PB</li>
-</ul>
-
+          <p>浅显认识一下编码的知识</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/python-basic/code/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -748,10 +659,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-03-13 13:53:09 / 修改时间：14:53:08" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:09+08:00">2020-03-13</time>
+              <time title="创建时间：2020-03-13 13:53:09" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:09+08:00">2020-03-13</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-16 18:54:32" itemprop="dateModified" datetime="2020-03-16T18:54:32+08:00">2020-03-16</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -774,56 +691,14 @@
 
       
           <p>本文仅讨论一些码云和 git 的初级用法，仅供初学者参考。</p>
-<p>码云官网：<a href="https://gitee.com/" target="_blank" rel="noopener">https://gitee.com/</a></p>
-<img src="/python-basic/gitee-daily/gitee_01.png" class="" title="gitee_01">
-
-<h3 id="码云注册"><a href="#码云注册" class="headerlink" title="码云注册"></a>码云注册</h3><p>点击右上角“注册”按钮，开始注册一个码云账号，建议使用邮箱注册账号。</p>
-<img src="/python-basic/gitee-daily/gitee_02.png" class="" title="gitee_02">
-
-<p>新建一个库，“是否开源”处选择“公开”</p>
-<img src="/python-basic/gitee-daily/gitee_03.png" class="" title="gitee_03">
-
-<p>将默认勾选的“使用 Readme 文件初始化这个仓库”前面的复选框取消勾选</p>
-<img src="/python-basic/gitee-daily/gitee_04.png" class="" title="gitee_04">
-
-<p>在 git 官网 <a href="https://git-scm.com/" target="_blank" rel="noopener">https://git-scm.com/</a> 下载 git，安装到电脑上。</p>
-<h3 id="码云的日常使用"><a href="#码云的日常使用" class="headerlink" title="码云的日常使用"></a>码云的日常使用</h3><p>第一步，在想要进行版本控制的文件夹中点击右键，点击“Git Bash Here”，在 git 窗口中输入 <code>git init</code>，然后按下 <code>回车</code> 键。git 初始化将自动运行。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Sure@LAPTOP-ISFBFO7G MINGW64 ~/Desktop/try</span><br><span class="line">$ git init</span><br><span class="line">Initialized empty Git repository <span class="keyword">in</span> C:/Users/Sure/Desktop/try/.git/</span><br></pre></td></tr></table></figure>
-
-<p>初始化操作会在当前文件夹中新建一个 <code>.git</code> 文件夹，里面装的是 git 的配置文件。</p>
-<img src="/python-basic/gitee-daily/gitee_05.png" class="" title="gitee_05">
-
-<p>第二步，输入 <code>git add .</code>，按下 <code>回车</code> 键，匹配此文件夹下的所有增删改信息。其中，可以把 <code>.</code> 替换为特定的文件，对指定文件的更改信息进行更新。</p>
-<p>第三步，输入 <code>git commit -m &quot;first attempt&quot;</code>，提交本次增删改，并在 -m 后给提交以备注信息。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">Sure@LAPTOP-ISFBFO7G MINGW64 ~/Desktop/try (master)</span><br><span class="line">$ git commit -m <span class="string">"first attempt"</span></span><br><span class="line">[master (root-commit) 3e41efc] first attempt</span><br><span class="line"> 45 files changed, 609 insertions(+)</span><br><span class="line"> create mode 100644 d2/media/Git_01.png</span><br><span class="line"> create mode 100644 d2/media/Git_02.png</span><br><span class="line"> create mode 100644 da/Markdown Reference.md</span><br><span class="line"> create mode 100644 da/media/pc_setup_01.png</span><br><span class="line"> create mode 100644 da/media/pc_setup_02.png</span><br><span class="line"> create mode 100644 da/media/pc_setup_03.png</span><br><span class="line"> create mode 100644 da/media/pc_setup_04.png</span><br><span class="line"> create mode 100644 da/media/pc_setup_05.png</span><br><span class="line"> create mode 100644 da/media/pc_setup_06.png</span><br><span class="line"> create mode 100644 da/media/pc_setup_07.png</span><br><span class="line"> create mode 100644 da/media/pc_setup_08.png</span><br><span class="line"> create mode 100644 da/media/pc_setup_09.png</span><br><span class="line"> create mode 100644 da/media/pc_setup_10.png</span><br><span class="line"> create mode 100644 da/media/pc_setup_11.png</span><br><span class="line"> create mode 100644 da/media/pc_setup_12.png</span><br><span class="line"> create mode 100644 da/media/pc_setup_13.png</span><br><span class="line"> create mode 100644 da/media/pc_setup_14.png</span><br><span class="line"> create mode 100644 da/media/pc_setup_15.png</span><br><span class="line"> create mode 100644 da/media/pc_setup_16.png</span><br><span class="line"> create mode 100644 da/media/pc_setup_17.png</span><br><span class="line"> create mode 100644 da/media/pc_setup_18.png</span><br><span class="line"> create mode 100644 da/media/py_setup_01.png</span><br><span class="line"> create mode 100644 da/media/py_setup_02.png</span><br><span class="line"> create mode 100644 da/media/py_setup_03.png</span><br><span class="line"> create mode 100644 da/media/py_setup_04.png</span><br><span class="line"> create mode 100644 da/media/py_setup_05.png</span><br><span class="line"> create mode 100644 da/media/py_setup_06.png</span><br><span class="line"> create mode 100644 da/media/py_setup_07.png</span><br><span class="line"> create mode 100644 da/media/py_setup_08.png</span><br><span class="line"> create mode 100644 da/media/py_setup_09.png</span><br><span class="line"> create mode 100644 da/media/py_setup_10.png</span><br><span class="line"> create mode 100644 da/media/py_setup_11.png</span><br><span class="line"> create mode 100644 da/media/py_setup_12.png</span><br><span class="line"> create mode 100644 da/media/py_setup_13.png</span><br><span class="line"> create mode 100644 da/media/py_setup_14.png</span><br><span class="line"> create mode 100644 da/media/py_setup_15.png</span><br><span class="line"> create mode 100644 da/media/py_setup_16.png</span><br><span class="line"> create mode 100644 da/media/py_setup_17.png</span><br><span class="line"> create mode 100644 da/media/py_setup_18.png</span><br><span class="line"> create mode 100644 da/media/py_setup_19.png</span><br><span class="line"> create mode 100644 da/media/py_setup_20.png</span><br><span class="line"> create mode 100644 da/media/py_setup_21.png</span><br><span class="line"> create mode 100644 da/media/py_setup_22.png</span><br><span class="line"> create mode 100644 da/test.py</span><br><span class="line"> create mode 100644 <span class="string">"da/\351\242\204\347\247\221day01_\347\254\224\350\256\260.md"</span></span><br></pre></td></tr></table></figure>
-
-<p>第四步，输入 <code>git remote add origin https://gitee.com/oldboy-python-full-stack-26/19083026021.git</code>，将本地文件夹和码云的仓库建立连接，绑定新的本地仓库至远程仓库。其中，<code>https://gitee.com/oldboy-python-full-stack-26/19083026021.git</code> 是码云仓库的地址。</p>
-<p>第五步，输入 <code>git push origin master</code>，把修改推送至云端仓库。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Sure@LAPTOP-ISFBFO7G MINGW64 ~/Desktop/try (master)</span><br><span class="line">$ git push origin master</span><br><span class="line">To https://gitee.com/oldboy-python-full-stack-26/19083026021.git</span><br><span class="line">! [rejected]        master -&gt; master (fetch first)</span><br><span class="line">error: failed to push some refs to <span class="string">'https://gitee.com/oldboy-python-full-stack-26/19083026021.git'</span></span><br><span class="line">hint: Updates were rejected because the remote contains work that you <span class="keyword">do</span></span><br><span class="line">hint: not have locally. This is usually caused by another repository pushing</span><br><span class="line">hint: to the same ref. You may want to first integrate the remote changes</span><br><span class="line">hint: (e.g., <span class="string">'git pull ...'</span>) before pushing again.</span><br><span class="line">hint: See the <span class="string">'Note about fast-forwards'</span> <span class="keyword">in</span> <span class="string">'git push --help'</span> <span class="keyword">for</span> details.</span><br></pre></td></tr></table></figure>
-
-<p>因为云端仓库有内容，需要先把云端的内容拉到本地，才能把本地的修改推至云端。</p>
-<p>第六步，输入 <code>git pull origin master</code>，因为发现推送失败，需要解决冲突，先把代码拉下来 。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Sure@LAPTOP-ISFBFO7G MINGW64 ~/Desktop/try (master)</span><br><span class="line">$ git pull origin master</span><br><span class="line">warning: no common commits</span><br><span class="line">remote: Enumerating objects: 113, <span class="keyword">done</span>.</span><br><span class="line">remote: Counting objects: 100% (113/113), <span class="keyword">done</span>.</span><br><span class="line">remote: Compressing objects: 100% (107/107), <span class="keyword">done</span>.</span><br><span class="line">remote: Total 113 (delta 23), reused 0 (delta 0)</span><br><span class="line">Receiving objects: 100% (113/113), 5.64 MiB | 1.83 MiB/s, <span class="keyword">done</span>.</span><br><span class="line">Resolving deltas: 100% (23/23), <span class="keyword">done</span>.</span><br><span class="line">From https://gitee.com/oldboy-python-full-stack-26/19083026021</span><br><span class="line">    * branch            master     -&gt; FETCH_HEAD</span><br><span class="line">    * [new branch]      master     -&gt; origin/master</span><br><span class="line">fatal: refusing to merge unrelated histories</span><br></pre></td></tr></table></figure>
-
-<p>还是没有成功。失败的原因是不能融合没有关联的历史修改。</p>
-<p>第七步，输入 <code>git pull origin master --allow-unrelated-histories</code>，用更高级的代码，允许无关联的历史修改进行融合，把代码拉下来。</p>
-<p>弹出的是 Vim 打开的空白文件，输入 <code>:</code>，然后输入 <code>wq</code>，按下 <code>回车</code> 键退出编辑即可。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br></pre></td><td class="code"><pre><span class="line">Sure@LAPTOP-ISFBFO7G MINGW64 ~/Desktop/try (master)</span><br><span class="line">$ git pull origin master --allow-unrelated-histories</span><br><span class="line">From https://gitee.com/oldboy-python-full-stack-26/19083026021</span><br><span class="line"> * branch            master     -&gt; FETCH_HEAD</span><br><span class="line">Merge made by the <span class="string">'recursive'</span> strategy.</span><br><span class="line"> .idea/PyProject.iml                                |  11 +</span><br><span class="line"> .idea/inspectionProfiles/profiles_settings.xml     |   6 +</span><br><span class="line"> .idea/misc.xml                                     |   7 +</span><br><span class="line"> .idea/modules.xml                                  |   8 +</span><br><span class="line"> .idea/vcs.xml                                      |   6 +</span><br><span class="line"> .idea/workspace.xml                                |  98 +++++</span><br><span class="line"> day01/Markdown Reference.md                        | 406 +++++++++++++++++++++</span><br><span class="line"> day01/gh-md-toc.exe                                | Bin 0 -&gt; 6391808 bytes</span><br><span class="line"> day01/gh.exe                                       | Bin 0 -&gt; 6400000 bytes</span><br><span class="line"> day01/media/pc_setup_01.png                        | Bin 0 -&gt; 69626 bytes</span><br><span class="line"> day01/media/pc_setup_02.png                        | Bin 0 -&gt; 67690 bytes</span><br><span class="line"> day01/media/pc_setup_03.png                        | Bin 0 -&gt; 46178 bytes</span><br><span class="line"> day01/media/pc_setup_04.png                        | Bin 0 -&gt; 34293 bytes</span><br><span class="line"> day01/media/pc_setup_05.png                        | Bin 0 -&gt; 33099 bytes</span><br><span class="line"> day01/media/pc_setup_06.png                        | Bin 0 -&gt; 33854 bytes</span><br><span class="line"> day01/media/pc_setup_07.png                        | Bin 0 -&gt; 38762 bytes</span><br><span class="line"> day01/media/pc_setup_08.png                        | Bin 0 -&gt; 14240 bytes</span><br><span class="line"> day01/media/pc_setup_09.png                        | Bin 0 -&gt; 216577 bytes</span><br><span class="line"> day01/media/pc_setup_10.png                        | Bin 0 -&gt; 43529 bytes</span><br><span class="line"> day01/media/pc_setup_11.png                        | Bin 0 -&gt; 51163 bytes</span><br><span class="line"> day01/media/pc_setup_12.png                        | Bin 0 -&gt; 75482 bytes</span><br><span class="line"> day01/media/pc_setup_13.png                        | Bin 0 -&gt; 38615 bytes</span><br><span class="line"> day01/media/pc_setup_14.png                        | Bin 0 -&gt; 76688 bytes</span><br><span class="line"> day01/media/pc_setup_15.png                        | Bin 0 -&gt; 139743 bytes</span><br><span class="line"> day01/media/pc_setup_16.png                        | Bin 0 -&gt; 9092 bytes</span><br><span class="line"> day01/media/pc_setup_17.png                        | Bin 0 -&gt; 120995 bytes</span><br><span class="line"> day01/media/pc_setup_18.png                        | Bin 0 -&gt; 86085 bytes</span><br><span class="line"> day01/media/py_setup_01.png                        | Bin 0 -&gt; 209410 bytes</span><br><span class="line"> day01/media/py_setup_02.png                        | Bin 0 -&gt; 199153 bytes</span><br><span class="line"> day01/media/py_setup_03.png                        | Bin 0 -&gt; 212513 bytes</span><br><span class="line"> day01/media/py_setup_04.png                        | Bin 0 -&gt; 178987 bytes</span><br><span class="line"> day01/media/py_setup_05.png                        | Bin 0 -&gt; 19117 bytes</span><br><span class="line"> day01/media/py_setup_06.png                        | Bin 0 -&gt; 35736 bytes</span><br><span class="line"> day01/media/py_setup_07.png                        | Bin 0 -&gt; 38355 bytes</span><br><span class="line"> day01/media/py_setup_08.png                        | Bin 0 -&gt; 4303 bytes</span><br><span class="line"> day01/media/py_setup_09.png                        | Bin 0 -&gt; 18328 bytes</span><br><span class="line"> day01/media/py_setup_10.png                        | Bin 0 -&gt; 6736 bytes</span><br><span class="line"> day01/media/py_setup_11.png                        | Bin 0 -&gt; 54323 bytes</span><br><span class="line"> day01/media/py_setup_12.png                        | Bin 0 -&gt; 44906 bytes</span><br><span class="line"> day01/media/py_setup_13.png                        | Bin 0 -&gt; 58768 bytes</span><br><span class="line"> day01/media/py_setup_14.png                        | Bin 0 -&gt; 100797 bytes</span><br><span class="line"> day01/media/py_setup_15.png                        | Bin 0 -&gt; 38831 bytes</span><br><span class="line"> day01/media/py_setup_16.png                        | Bin 0 -&gt; 56690 bytes</span><br><span class="line"> day01/media/py_setup_17.png                        | Bin 0 -&gt; 58158 bytes</span><br><span class="line"> day01/media/py_setup_18.png                        | Bin 0 -&gt; 59996 bytes</span><br><span class="line"> day01/media/py_setup_19.png                        | Bin 0 -&gt; 36564 bytes</span><br><span class="line"> day01/media/py_setup_20.png                        | Bin 0 -&gt; 194578 bytes</span><br><span class="line"> day01/media/py_setup_21.png                        | Bin 0 -&gt; 183047 bytes</span><br><span class="line"> day01/media/py_setup_22.png                        | Bin 0 -&gt; 67268 bytes</span><br><span class="line"> day01/test.py                                      |   1 +</span><br><span class="line"> ...4\347\247\221day01_\347\254\224\350\256\260.md<span class="string">" | 204 +++++++++++</span></span><br><span class="line"><span class="string"> day02/media/Git_01.png                             | Bin 0 -&gt; 94007 bytes</span></span><br><span class="line"><span class="string"> day02/media/Git_02.png                             | Bin 0 -&gt; 407678 bytes</span></span><br><span class="line"><span class="string"> 53 files changed, 747 insertions(+)</span></span><br><span class="line"><span class="string"> create mode 100644 .idea/PyProject.iml</span></span><br><span class="line"><span class="string"> create mode 100644 .idea/inspectionProfiles/profiles_settings.xml</span></span><br><span class="line"><span class="string"> create mode 100644 .idea/misc.xml</span></span><br><span class="line"><span class="string"> create mode 100644 .idea/modules.xml</span></span><br><span class="line"><span class="string"> create mode 100644 .idea/vcs.xml</span></span><br><span class="line"><span class="string"> create mode 100644 .idea/workspace.xml</span></span><br><span class="line"><span class="string"> create mode 100644 day01/Markdown Reference.md</span></span><br><span class="line"><span class="string"> create mode 100644 day01/gh-md-toc.exe</span></span><br><span class="line"><span class="string"> create mode 100644 day01/gh.exe</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/pc_setup_01.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/pc_setup_02.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/pc_setup_03.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/pc_setup_04.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/pc_setup_05.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/pc_setup_06.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/pc_setup_07.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/pc_setup_08.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/pc_setup_09.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/pc_setup_10.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/pc_setup_11.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/pc_setup_12.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/pc_setup_13.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/pc_setup_14.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/pc_setup_15.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/pc_setup_16.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/pc_setup_17.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/pc_setup_18.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/py_setup_01.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/py_setup_02.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/py_setup_03.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/py_setup_04.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/py_setup_05.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/py_setup_06.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/py_setup_07.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/py_setup_08.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/py_setup_09.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/py_setup_10.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/py_setup_11.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/py_setup_12.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/py_setup_13.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/py_setup_14.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/py_setup_15.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/py_setup_16.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/py_setup_17.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/py_setup_18.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/py_setup_19.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/py_setup_20.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/py_setup_21.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/media/py_setup_22.png</span></span><br><span class="line"><span class="string"> create mode 100644 day01/test.py</span></span><br><span class="line"><span class="string"> create mode 100644 "</span>day01/\351\242\204\347\247\221day01_\347\254\224\350\256\260.md<span class="string">"</span></span><br><span class="line"><span class="string"> create mode 100644 day02/media/Git_01.png</span></span><br><span class="line"><span class="string"> create mode 100644 day02/media/Git_02.png</span></span><br></pre></td></tr></table></figure>
-
-<p>第八步，重复第五步，输入 <code>git push origin master</code>，代码成功上传至云端。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Sure@LAPTOP-ISFBFO7G MINGW64 ~/Desktop/try (master)</span><br><span class="line">$ git push origin master</span><br><span class="line">Enumerating objects: 8, <span class="keyword">done</span>.</span><br><span class="line">Counting objects: 100% (8/8), <span class="keyword">done</span>.</span><br><span class="line">Delta compression using up to 4 threads</span><br><span class="line">Compressing objects: 100% (7/7), <span class="keyword">done</span>.</span><br><span class="line">Writing objects: 100% (7/7), 10.03 KiB | 3.34 MiB/s, <span class="keyword">done</span>.</span><br><span class="line">Total 7 (delta 1), reused 0 (delta 0)</span><br><span class="line">remote: Powered By Gitee.com</span><br><span class="line">To https://gitee.com/oldboy-python-full-stack-26/19083026021.git</span><br><span class="line">91e455d..24b44b2  master -&gt; master</span><br></pre></td></tr></table></figure>
-
-<p>其中，第一部和第四步仅在第一次配置的时候需要用到，第六步和第七步是因为第五步出错才采取的应对步骤，第八步与第五步是完全相同的操作。在平时日常使用中，主要使用<strong>第二步、第三步和第五步</strong>这三个步骤。</p>
-<h3 id="git-基本操作总结"><a href="#git-基本操作总结" class="headerlink" title="git 基本操作总结"></a>git 基本操作总结</h3><ol>
-<li><code>git init</code>，初始化</li>
-<li><code>git add .</code>，将代码的增删改拍快照</li>
-<li><code>git commit -m &#39;note&#39;</code>，将代码变更提交</li>
-<li><code>git remote add origin https://gitee.com/oldboy-python-full-stack-26/19083026021.git</code>，将本地仓库与码云仓库建立连接。其中，<code>https://gitee.com/oldboy-python-full-stack-26/19083026021.git</code> 是码云仓库的地址</li>
-<li><code>git pull origin master</code>，将码云的更改内容应用到本地仓库</li>
-<li><code>git pull origin master --allow-unrelated-histories</code>，允许合并无关联的历史变更</li>
-<li><code>git push origin master</code>，将本地的代码变更应用到码云仓库</li>
-</ol>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/python-basic/gitee-daily/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -865,10 +740,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-03-13 13:53:09 / 修改时间：14:53:08" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:09+08:00">2020-03-13</time>
+              <time title="创建时间：2020-03-13 13:53:09" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:09+08:00">2020-03-13</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-16 18:54:32" itemprop="dateModified" datetime="2020-03-16T18:54:32+08:00">2020-03-16</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -891,68 +772,14 @@
 
       
           <p>流程控制语句，也就是条件语句，通过选择判断，决定下一步的操作内容。例如：如果是男的，就来看我。</p>
-<p>流程控制语句的关键字是 <code>if</code>，是 <code>如果</code> 的意思。流程控制语句使用冒号 <code>:</code> 表示语句结束。</p>
-<p>Python 中使用缩进体现代码间的从属关系。一般使用四个空格或一个 <code>Tab</code> 键代表一次缩进。需要注意的是，编程时，不要混合使用 <code>Tab</code> 键和空格，否则一旦报错，很难找到问题的所在。PEP 8 规则建议使用四个空格表示缩进。PEP 8 规则是 Python 官方建议的代码风格指南。若想进一步了解这个规则可以参见我翻译的 <a href="/python-basic/..\translation\PEP8">PEP 8 – Python代码格式规则</a>。</p>
-<p>知识点补充：在 Python 中，<code>=</code> 表示的是 <code>赋值</code> <strong>操作</strong>，会将等号右边的值赋值给等号左边的变量。而 <code>==</code> 表示的是<strong>判断</strong>两边的值是否相等，也就是 <code>等于</code> 的意思。</p>
-<h3 id="单-if"><a href="#单-if" class="headerlink" title="单 if"></a>单 if</h3><p>单 <code>if</code> 流程控制语句的伪代码格式为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">如果 条件:</span><br><span class="line">缩进 结果</span><br></pre></td></tr></table></figure>
-
-<p>具体示例如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sex = <span class="string">"男"</span></span><br><span class="line"><span class="keyword">if</span> sex == <span class="string">"男"</span>:</span><br><span class="line">    print(<span class="string">"就来看我"</span>)</span><br><span class="line">print(sex)</span><br></pre></td></tr></table></figure>
-
-<p>输出的结果为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">就来看我</span><br><span class="line">男</span><br></pre></td></tr></table></figure>
-
-<h3 id="if-else-二选一"><a href="#if-else-二选一" class="headerlink" title="if else 二选一"></a>if else 二选一</h3><p><code>if else</code> 二选一流程控制语句的伪代码格式为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">如果 条件:</span><br><span class="line">缩进 结果</span><br><span class="line">否则:</span><br><span class="line">缩进 结果</span><br></pre></td></tr></table></figure>
-
-<p>具体示例如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="number">111</span>)</span><br><span class="line"><span class="keyword">if</span> <span class="number">3</span> &gt; <span class="number">2</span>:</span><br><span class="line">    print(<span class="number">11</span>)</span><br><span class="line">    print(<span class="number">22</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    print(<span class="number">333</span>)</span><br><span class="line">print(<span class="number">444</span>)</span><br></pre></td></tr></table></figure>
-
-<p>打印出的结果为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">111</span></span><br><span class="line"><span class="number">11</span></span><br><span class="line"><span class="number">22</span></span><br><span class="line"><span class="number">444</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="if-elif-elif-多选一或零"><a href="#if-elif-elif-多选一或零" class="headerlink" title="if elif elif 多选一或零"></a>if elif elif 多选一或零</h3><p>对于 <code>if elif elif</code> 多选一或零流程控制语句而言，只要其中任何一个条件成立，将执行其从属语句中的代码，而其他的语句将不被执行。其伪代码格式为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">如果 条件:</span><br><span class="line">缩进 结果</span><br><span class="line">再如果 条件:</span><br><span class="line">缩进 结果</span><br><span class="line">再如果 条件:</span><br><span class="line">缩进 结果</span><br><span class="line">再如果 条件:</span><br><span class="line">缩进 结果</span><br></pre></td></tr></table></figure>
-
-<p>具体示例如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="number">3</span>&gt;<span class="number">5</span>:</span><br><span class="line">    print(<span class="number">1</span>)</span><br><span class="line"><span class="keyword">elif</span> <span class="number">3</span>&gt;<span class="number">7</span>:</span><br><span class="line">    print(<span class="number">2</span>)</span><br><span class="line"><span class="keyword">elif</span> <span class="number">5</span>&gt;<span class="number">2</span>:</span><br><span class="line">    print(<span class="number">4</span>)</span><br><span class="line"><span class="keyword">elif</span> <span class="number">3</span>&gt;<span class="number">1</span>:</span><br><span class="line">    print(<span class="number">5</span>)</span><br></pre></td></tr></table></figure>
-
-<p>输出结果为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">4</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="if-elif-elif-else-多选一"><a href="#if-elif-elif-else-多选一" class="headerlink" title="if elif elif else 多选一"></a>if elif elif else 多选一</h3><p><code>if elif elif else</code> 多选一流程控制语句的伪代码格式为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">如果 条件:</span><br><span class="line">缩进 结果</span><br><span class="line">再如果 条件:</span><br><span class="line">缩进 结果</span><br><span class="line">再如果 条件:</span><br><span class="line">缩进 结果</span><br><span class="line">否则:</span><br><span class="line">缩进 结果</span><br></pre></td></tr></table></figure>
-
-<p>具体示例如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="number">3</span>&gt;<span class="number">12</span>:</span><br><span class="line">   print(<span class="number">1</span>)</span><br><span class="line"><span class="keyword">elif</span> <span class="number">3</span>&gt;<span class="number">11</span>:</span><br><span class="line">    print(<span class="number">2</span>)</span><br><span class="line"><span class="keyword">elif</span> <span class="number">4</span>&gt;<span class="number">12</span>:</span><br><span class="line">    print(<span class="number">3</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    print(<span class="number">5</span>)</span><br></pre></td></tr></table></figure>
-
-<p>输出的结果为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">5</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="if-嵌套"><a href="#if-嵌套" class="headerlink" title="if 嵌套:"></a>if 嵌套:</h3><p><code>if</code> 嵌套流程控制语句的伪代码格式为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">如果 条件:</span><br><span class="line">缩进 如果 条件:</span><br><span class="line">     缩进 结果</span><br></pre></td></tr></table></figure>
-
-<p>具体示例如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">sex = <span class="string">"男"</span></span><br><span class="line">age = <span class="number">48</span></span><br><span class="line"><span class="keyword">if</span> sex == <span class="string">"女"</span>:</span><br><span class="line">    <span class="keyword">if</span> age == <span class="number">18</span>:</span><br><span class="line">        print(<span class="string">"进来坐坐"</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        print(<span class="string">"隔壁找三哥"</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    print(<span class="string">"去对门找alex"</span>)</span><br></pre></td></tr></table></figure>
-
-<p>输出结果为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">去对门找alex</span><br></pre></td></tr></table></figure>
-
-<h3 id="if-if-if-多选多"><a href="#if-if-if-多选多" class="headerlink" title="if if if  多选多"></a>if if if  多选多</h3><p><code>if if if</code> 多选多流程控制语句的伪代码格式为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">如果 条件:</span><br><span class="line">缩进 结果</span><br><span class="line">如果 条件:</span><br><span class="line">缩进 结果</span><br><span class="line">如果 条件:</span><br><span class="line">缩进 结果</span><br></pre></td></tr></table></figure>
-
-<p>具体示例如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="number">43</span> &gt; <span class="number">1</span>:</span><br><span class="line">    print(<span class="number">11</span>)</span><br><span class="line"><span class="keyword">if</span> <span class="number">43</span> &gt; <span class="number">2</span>:</span><br><span class="line">    print(<span class="number">11</span>)</span><br><span class="line"><span class="keyword">if</span> <span class="number">43</span> &gt; <span class="number">3</span>:</span><br><span class="line">    print(<span class="number">11</span>)</span><br></pre></td></tr></table></figure>
-
-<p>输出的结果为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">11</span></span><br><span class="line"><span class="number">11</span></span><br><span class="line"><span class="number">11</span></span><br></pre></td></tr></table></figure>
-
-<p>补充内容：<code>and</code> 是 <code>和</code> 的意思。只有当 <code>and</code> 两端的值都为 <code>真</code> 时，会返回 <code>True</code>，否则都会返回 <code>False</code>：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">user = input(<span class="string">"username:"</span>)</span><br><span class="line">pwd = input(<span class="string">"password:"</span>)</span><br><span class="line"><span class="comment"># and 是和</span></span><br><span class="line"><span class="keyword">if</span> user == <span class="string">"alex"</span> <span class="keyword">and</span> pwd == <span class="string">"alex123"</span>:</span><br><span class="line">    print(<span class="number">111</span>)</span><br></pre></td></tr></table></figure>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/python-basic/flow-control/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -994,10 +821,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-03-13 13:53:09 / 修改时间：14:53:08" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:09+08:00">2020-03-13</time>
+              <time title="创建时间：2020-03-13 13:53:09" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:09+08:00">2020-03-13</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-16 18:54:32" itemprop="dateModified" datetime="2020-03-16T18:54:32+08:00">2020-03-16</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -1019,176 +852,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="re-模块概述"><a href="#re-模块概述" class="headerlink" title="re 模块概述"></a>re 模块概述</h3><p>re，也就是正则表达式，用来从字符串中获取我们想要的内容：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line">a = <span class="string">'alex,meet,eva_j'</span></span><br><span class="line">print(re.findall(<span class="string">'e'</span>, a))    <span class="comment"># findall放来的两个参数为：参数1用来传入要查找的内容，参数2用来传入原来的字符串</span></span><br></pre></td></tr></table></figure>
-
-<p>输出的结果为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'e'</span>, <span class="string">'e'</span>, <span class="string">'e'</span>, <span class="string">'e'</span>]</span><br></pre></td></tr></table></figure>
-
-<h3 id="元字符"><a href="#元字符" class="headerlink" title="元字符"></a>元字符</h3><p>正则表达式的当然不仅仅能查找这种简单地字符。正则表达式真正的强大之处在于它无所不包的匹配规则。这一套匹配规则对于所有语言来说都是通用的，通过一个个元字符组合而成：</p>
-<table>
-<thead>
-<tr>
-<th align="center">元字符</th>
-<th align="center">匹配内容</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">\w</td>
-<td align="center">匹配字母（包括中文）、数字或下划线</td>
-</tr>
-<tr>
-<td align="center">\W</td>
-<td align="center">匹配除字母（包括中文）、数字或下划线以外的字符</td>
-</tr>
-<tr>
-<td align="center">\s</td>
-<td align="center">匹配任意空白字符</td>
-</tr>
-<tr>
-<td align="center">\S</td>
-<td align="center">匹配任意非空白字符</td>
-</tr>
-<tr>
-<td align="center">\d</td>
-<td align="center">匹配任意数字</td>
-</tr>
-<tr>
-<td align="center">\D</td>
-<td align="center">匹配任意非数字字符</td>
-</tr>
-<tr>
-<td align="center">\A或^</td>
-<td align="center">从字符串的开头匹配</td>
-</tr>
-<tr>
-<td align="center">\Z或&amp;</td>
-<td align="center">从字符串的结尾匹配</td>
-</tr>
-<tr>
-<td align="center">.</td>
-<td align="center">匹配任意字符，除了换行符。当 re.DOTALL 标记被指定时，则可以匹配包括换行符的任意字符</td>
-</tr>
-<tr>
-<td align="center">[0-9a-zA-Z]</td>
-<td align="center">用于匹配特定范围的数字和字母，中间不能有空格和逗号</td>
-</tr>
-<tr>
-<td align="center">*</td>
-<td align="center">匹配 0 个或多个左边的字符，贪婪匹配（匹配尽可能长的内容）</td>
-</tr>
-<tr>
-<td align="center">+</td>
-<td align="center">匹配 1 个或多个左边的字符，贪婪匹配</td>
-</tr>
-<tr>
-<td align="center">?</td>
-<td align="center">匹配 0 个或 1 个左边的字符，非贪婪匹配。也可以用来将 * 和 + 转换为非贪婪匹配模式</td>
-</tr>
-<tr>
-<td align="center">{n}</td>
-<td align="center">精准匹配 n 个前面的字符</td>
-</tr>
-<tr>
-<td align="center">{n, m}</td>
-<td align="center">匹配 n 到 m 个前面的字符片段，贪婪匹配</td>
-</tr>
-<tr>
-<td align="center">a|b</td>
-<td align="center">a 或者 b，优先匹配 a</td>
-</tr>
-<tr>
-<td align="center">()</td>
-<td align="center">匹配括号内的表达式，也表示一个组</td>
-</tr>
-</tbody></table>
-<p>正则表达式的使用方法为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="string">'alex1, 哈啰，123,meet!@'</span></span><br><span class="line">print(re.findall(<span class="string">'\w'</span>, s))    <span class="comment"># 匹配数字字母（包括中文）字符串</span></span><br><span class="line">print(re.findall(<span class="string">'\W'</span>, s))</span><br><span class="line">输出的结果为：</span><br><span class="line">[<span class="string">'a'</span>, <span class="string">'l'</span>, <span class="string">'e'</span>, <span class="string">'x'</span>, <span class="string">'1'</span>, <span class="string">'哈'</span>, <span class="string">'啰'</span>, <span class="string">'1'</span>, <span class="string">'2'</span>, <span class="string">'3'</span>, <span class="string">'m'</span>, <span class="string">'e'</span>, <span class="string">'e'</span>, <span class="string">'t'</span>]</span><br><span class="line">[<span class="string">','</span>, <span class="string">' '</span>, <span class="string">'，'</span>, <span class="string">','</span>, <span class="string">'!'</span>, <span class="string">'@'</span>]</span><br><span class="line"></span><br><span class="line">s1 = <span class="string">'alex w \n, dal\t,sdjfl'</span></span><br><span class="line">print(re.findall(<span class="string">'\s'</span>, s1))    <span class="comment"># 匹配空白字符</span></span><br><span class="line">print(re.findall(<span class="string">'\S'</span>, s1))    <span class="comment"># 匹配非空白字符</span></span><br><span class="line">输出的结果为：</span><br><span class="line">[<span class="string">' '</span>, <span class="string">' '</span>, <span class="string">'\n'</span>, <span class="string">' '</span>, <span class="string">'\t'</span>]</span><br><span class="line">[<span class="string">'a'</span>, <span class="string">'l'</span>, <span class="string">'e'</span>, <span class="string">'x'</span>, <span class="string">'w'</span>, <span class="string">','</span>, <span class="string">'d'</span>, <span class="string">'a'</span>, <span class="string">'l'</span>, <span class="string">','</span>, <span class="string">'s'</span>, <span class="string">'d'</span>, <span class="string">'j'</span>, <span class="string">'f'</span>, <span class="string">'l'</span>]</span><br><span class="line"></span><br><span class="line">s2 = <span class="string">'a1b2c3'</span></span><br><span class="line">print(re.findall(<span class="string">'\d'</span>, s2))    <span class="comment"># 匹配所有数字</span></span><br><span class="line">print(re.findall(<span class="string">'\D'</span>, s2))    <span class="comment"># 匹配所有非数字</span></span><br><span class="line">输出的结果为：</span><br><span class="line">[<span class="string">'1'</span>, <span class="string">'2'</span>, <span class="string">'3'</span>]</span><br><span class="line">[<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>]</span><br><span class="line"></span><br><span class="line">s3 = <span class="string">'alex'</span></span><br><span class="line">print(re.findall(<span class="string">'\Aa'</span>, s3))    <span class="comment"># 从开头匹配</span></span><br><span class="line">print(re.findall(<span class="string">'^a'</span>, s3))</span><br><span class="line">print(re.findall(<span class="string">'x\Z'</span>, s3))    <span class="comment"># 从结尾匹配</span></span><br><span class="line">print(re.findall(<span class="string">'x$'</span>, s3))</span><br><span class="line">输出的结果为：</span><br><span class="line">[<span class="string">'a'</span>]</span><br><span class="line">[<span class="string">'a'</span>]</span><br><span class="line">[<span class="string">'x'</span>]</span><br><span class="line">[<span class="string">'x'</span>]</span><br><span class="line"></span><br><span class="line">s4 = <span class="string">'abc a12\n3!@\t#中文_'</span></span><br><span class="line">print(re.findall(<span class="string">'.'</span>, s4))    <span class="comment"># 匹配任意字符（换行符除外）</span></span><br><span class="line">print(re.findall(<span class="string">'\n'</span>, s4))</span><br><span class="line">print(re.findall(<span class="string">'.'</span>, s4, re.DOTALL))    <span class="comment"># 匹配包括换行符之内的任意字符</span></span><br><span class="line">输出的结果为：</span><br><span class="line">[<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>, <span class="string">' '</span>, <span class="string">'a'</span>, <span class="string">'1'</span>, <span class="string">'2'</span>, <span class="string">'3'</span>, <span class="string">'!'</span>, <span class="string">'@'</span>, <span class="string">'\t'</span>, <span class="string">'#'</span>, <span class="string">'中'</span>, <span class="string">'文'</span>, <span class="string">'_'</span>]</span><br><span class="line">[<span class="string">'\n'</span>]</span><br><span class="line">[<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>, <span class="string">' '</span>, <span class="string">'a'</span>, <span class="string">'1'</span>, <span class="string">'2'</span>, <span class="string">'\n'</span>, <span class="string">'3'</span>, <span class="string">'!'</span>, <span class="string">'@'</span>, <span class="string">'\t'</span>, <span class="string">'#'</span>, <span class="string">'中'</span>, <span class="string">'文'</span>, <span class="string">'_'</span>]</span><br><span class="line"></span><br><span class="line">s5 = <span class="string">'al ex()123!@'</span></span><br><span class="line">print(re.findall(<span class="string">'[0-9]'</span>, s5))    <span class="comment"># 匹配范围内的数字</span></span><br><span class="line">print(re.findall(<span class="string">'[0-9a-zA-Z]'</span>, s5))    <span class="comment"># 匹配范围内的数字和字母</span></span><br><span class="line">输出的结果为：</span><br><span class="line">[<span class="string">'1'</span>, <span class="string">'2'</span>, <span class="string">'3'</span>]</span><br><span class="line">[<span class="string">'a'</span>, <span class="string">'l'</span>, <span class="string">'e'</span>, <span class="string">'x'</span>, <span class="string">'1'</span>, <span class="string">'2'</span>, <span class="string">'3'</span>]</span><br><span class="line"></span><br><span class="line">s6 = <span class="string">'a.l e!x123'</span></span><br><span class="line">print(re.findall(<span class="string">'[.]'</span>, s6))    <span class="comment"># 查找特定的字符“.”</span></span><br><span class="line">print(re.findall(<span class="string">'.'</span>, s6))    <span class="comment"># 查找任意字符</span></span><br><span class="line">print(re.findall(<span class="string">'[^.]'</span>, s6))    <span class="comment"># 查找除了“.”之外的所有字符</span></span><br><span class="line">输出的结果为：</span><br><span class="line">[<span class="string">'.'</span>]</span><br><span class="line">[<span class="string">'a'</span>, <span class="string">'.'</span>, <span class="string">'l'</span>, <span class="string">' '</span>, <span class="string">'e'</span>, <span class="string">'!'</span>, <span class="string">'x'</span>, <span class="string">'1'</span>, <span class="string">'2'</span>, <span class="string">'3'</span>]</span><br><span class="line">[<span class="string">'a'</span>, <span class="string">'l'</span>, <span class="string">' '</span>, <span class="string">'e'</span>, <span class="string">'!'</span>, <span class="string">'x'</span>, <span class="string">'1'</span>, <span class="string">'2'</span>, <span class="string">'3'</span>]</span><br><span class="line"></span><br><span class="line">s7 = <span class="string">'alex-meet-leeek'</span></span><br><span class="line">print(re.findall(<span class="string">'e*'</span>, s7))    <span class="comment"># 查找0个或多个字符e，贪婪匹配</span></span><br><span class="line">print(re.findall(<span class="string">'e+'</span>, s7))    <span class="comment"># 匹配1个或多个字符e，贪婪匹配</span></span><br><span class="line">print(re.findall(<span class="string">'e?'</span>, s7))    <span class="comment"># 匹配0个或1个字符e，非贪婪匹配</span></span><br><span class="line">print(re.findall(<span class="string">'e&#123;2&#125;'</span>, s7))   <span class="comment"># 匹配刚好2个字符e</span></span><br><span class="line">print(re.findall(<span class="string">'e&#123;1,2&#125;'</span>, s7))    <span class="comment"># 匹配1到2个字符2，贪婪匹配，打括号里面不能有空格</span></span><br><span class="line">输出的结果为：</span><br><span class="line">[<span class="string">''</span>, <span class="string">''</span>, <span class="string">'e'</span>, <span class="string">''</span>, <span class="string">''</span>, <span class="string">''</span>, <span class="string">'ee'</span>, <span class="string">''</span>, <span class="string">''</span>, <span class="string">''</span>, <span class="string">'eee'</span>, <span class="string">''</span>, <span class="string">''</span>]</span><br><span class="line">[<span class="string">'e'</span>, <span class="string">'ee'</span>, <span class="string">'eee'</span>]</span><br><span class="line">[<span class="string">''</span>, <span class="string">''</span>, <span class="string">'e'</span>, <span class="string">''</span>, <span class="string">''</span>, <span class="string">''</span>, <span class="string">'e'</span>, <span class="string">'e'</span>, <span class="string">''</span>, <span class="string">''</span>, <span class="string">''</span>, <span class="string">'e'</span>, <span class="string">'e'</span>, <span class="string">'e'</span>, <span class="string">''</span>, <span class="string">''</span>]</span><br><span class="line">[<span class="string">'ee'</span>, <span class="string">'ee'</span>]</span><br><span class="line">[<span class="string">'e'</span>, <span class="string">'ee'</span>, <span class="string">'ee'</span>, <span class="string">'e'</span>]</span><br><span class="line"></span><br><span class="line">s8 = <span class="string">'alex-meet-leeek'</span></span><br><span class="line">print(re.findall(<span class="string">'a|e'</span>, s8))   <span class="comment"># 查找a或e，优先查找a</span></span><br><span class="line">输出的结果为：[<span class="string">'a'</span>, <span class="string">'e'</span>, <span class="string">'e'</span>, <span class="string">'e'</span>, <span class="string">'e'</span>, <span class="string">'e'</span>, <span class="string">'e'</span>]</span><br><span class="line"></span><br><span class="line">s9 = <span class="string">'alex-meeet-leeek'</span></span><br><span class="line">print(re.findall(<span class="string">'e(e)e'</span>, s9))    <span class="comment"># 分组，对于findall方法只返回括号内的字符，对于search方法则返回整个表达式结构</span></span><br><span class="line">print(re.search(<span class="string">'e(e)e'</span>, s9).group())</span><br><span class="line">print(re.findall(<span class="string">'m(ee)e'</span>, s9))</span><br><span class="line">print(re.findall(<span class="string">'m(?:ee)e'</span>, s9))    <span class="comment"># 分组，返回整个正则表达式结构</span></span><br><span class="line">输出的结果为：</span><br><span class="line">[<span class="string">'e'</span>, <span class="string">'e'</span>]</span><br><span class="line">eee</span><br><span class="line">[<span class="string">'ee'</span>]</span><br><span class="line">[<span class="string">'meee'</span>]</span><br></pre></td></tr></table></figure>
-
-<h3 id="正则匹配练习"><a href="#正则匹配练习" class="headerlink" title="正则匹配练习"></a>正则匹配练习</h3><p>接下来，我们就通过一些练习题，更加深入理解正则表达式的用法。</p>
-<ol>
-<li><p>有如下字符串：<code>&#39;alex_sb ale123_sb wu12sir_sb wusir_sb ritian_sb 的 alex wusir &#39;</code>，找到其中所有带 <code>_sb</code> 的内容。要求，输出结果中也要包含 <code>_sb</code>。</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line">s = <span class="string">'alex_sb ale123_sb wu12sir_sb wusir_sb ritian_sb 的 alex wusir '</span></span><br><span class="line">print(re.findall(<span class="string">'\w[(?:.+?)]_sb'</span>, s))    <span class="comment"># 第二个?用来让+变成非贪婪匹配</span></span><br><span class="line">print(re.findall(<span class="string">'\w[a-z0-9]+_sb'</span>, s))</span><br><span class="line">print(re.findall(<span class="string">'(\w.+?_sb) '</span>, s))</span><br></pre></td></tr></table></figure>
-
-<p> 输出结果全都为：</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'alex_sb'</span>, <span class="string">'ale123_sb'</span>, <span class="string">'wu12sir_sb'</span>, <span class="string">'wusir_sb'</span>, <span class="string">'ritian_sb'</span>]</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>有字符串 <code>&quot;1-2*(60+(-40.35/5)-(-4*3))&quot;</code>，</p>
-<ol>
-<li><p>请找出字符串中的所有整数</p>
-</li>
-<li><p>请找出字符串中的所有数字（包含小数）</p>
-</li>
-<li><p>请找出所有的数字（正数、负数和小数）</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line">s = <span class="string">"1-2*(60+(-40.35/5)-(-4*3))"</span></span><br><span class="line">print(re.findall(<span class="string">'\d+'</span>, s))</span><br><span class="line">print(re.findall(<span class="string">'\d+\.?\d*'</span>, s))</span><br><span class="line">print(re.findall(<span class="string">'-?\d+\.?\d*'</span>, s))</span><br></pre></td></tr></table></figure>
-
-<p>输出的结果为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'1'</span>, <span class="string">'2'</span>, <span class="string">'60'</span>, <span class="string">'40'</span>, <span class="string">'35'</span>, <span class="string">'5'</span>, <span class="string">'4'</span>, <span class="string">'3'</span>]</span><br><span class="line">[<span class="string">'1'</span>, <span class="string">'2'</span>, <span class="string">'60'</span>, <span class="string">'40.35'</span>, <span class="string">'5'</span>, <span class="string">'4'</span>, <span class="string">'3'</span>]</span><br><span class="line">[<span class="string">'1'</span>, <span class="string">'-2'</span>, <span class="string">'60'</span>, <span class="string">'-40.35'</span>, <span class="string">'5'</span>, <span class="string">'-4'</span>, <span class="string">'3'</span>]</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-</li>
-<li><p>请找出字符串 <code>&quot;http://blog.csdn.net/make164492212@163.com/article/details/51656638&quot;</code> 中的邮箱。</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line">s = <span class="string">"http://blog.csdn.net/make164492212@163.com/article/details/51656638"</span></span><br><span class="line">print(re.findall(<span class="string">'\w+@\w+\.\w+'</span>, s))</span><br></pre></td></tr></table></figure>
-<p> 输出的结果为：</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'make164492212@163.com'</span>]</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>请找出下列字符串中的</p>
-<ol>
-<li><p>所有形如 <code>1995-04-27</code> 的时间</p>
-</li>
-<li><p>形如 <code>1980-04-27:1980-04-27</code> 的时间</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line">s = <span class="string">'''</span></span><br><span class="line"><span class="string">时间就是1995-04-27,2005-04-27</span></span><br><span class="line"><span class="string">1999-04-27 老男孩教育创始人</span></span><br><span class="line"><span class="string">老男孩老师 alex 1980-04-27:1980-04-27</span></span><br><span class="line"><span class="string">2018-12-08</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line">print(re.findall(<span class="string">'\d&#123;4&#125;-\d&#123;2&#125;-\d&#123;2&#125;'</span>, s))</span><br><span class="line">print(re.findall(<span class="string">'(\S+:\S+)'</span>))</span><br></pre></td></tr></table></figure>
-
-<p>输出的结果为：</p>
-</li>
-</ol>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'1995-04-27'</span>, <span class="string">'2005-04-27'</span>, <span class="string">'1999-04-27'</span>, <span class="string">'1980-04-27'</span>, <span class="string">'1980-04-27'</span>, <span class="string">'2018-12-08'</span>]</span><br><span class="line">[<span class="string">'1980-04-27:1980-04-27'</span>]</span><br></pre></td></tr></table></figure>
-
-
-
-</li>
-</ol>
-<ol start="5">
-<li><p>匹配字符串 <code>&quot;1231,11,2,1,-1,12.34545,abc,ssed&quot;</code> 中的浮点数</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line">s = <span class="string">"1231,11,2,1,-1,12.34545,abc,ssed"</span></span><br><span class="line">print(re.findall(<span class="string">'\d+\.\d+'</span>, s))</span><br></pre></td></tr></table></figure>
-
-<p> 输出的结果为：</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'12.34545'</span>]</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>匹配字符串 <code>&quot;1231231,324233,123,1123,2435,1234,2546,23451324,3546354,13241234&quot;</code> 中可能的 QQ 号（5 - 11 位）。</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line">s = <span class="string">"1231231,324233,123,1123,2435,1234,2546,23451324,3546354,13241234"</span></span><br><span class="line">print(re.findall(<span class="string">'\d&#123;5,11&#125;'</span>, s))</span><br></pre></td></tr></table></figure>
-
-<p> 输出的结果为：</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'1231231'</span>, <span class="string">'324233'</span>, <span class="string">'23451324'</span>, <span class="string">'3546354'</span>, <span class="string">'13241234'</span>]</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>有下面一个长数据，请找出其中a标签中href后的网址（如 <code>http://www.cnblogs.com/guobaoyuan/articles/7087629.html</code>）。</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line">msg = <span class="string">'''</span></span><br><span class="line"><span class="string">&lt;div id="cnblogs_post_body" class="blogpost-body"&gt;&lt;h3&gt;&lt;span style="font-family: 楷体;"&gt;python基础篇&lt;/span&gt;&lt;/h3&gt;</span></span><br><span class="line"><span class="string">&lt;p&gt;&lt;span style="font-family: 楷体;"&gt;&amp;nbsp; &amp;nbsp;&lt;strong&gt;&lt;a href="http://www.cnblogs.com/guobaoyuan/p/6847032.html" target="_blank"&gt;python 基础知识&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;</span></span><br><span class="line"><span class="string">&lt;p&gt;&lt;span style="font-family: 楷体;"&gt;&lt;strong&gt;&amp;nbsp; &amp;nbsp;&lt;a href="http://www.cnblogs.com/guobaoyuan/p/6627631.html" target="_blank"&gt;python 初始python&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;</span></span><br><span class="line"><span class="string">&lt;p&gt;&lt;span style="font-family: 楷体;"&gt;&lt;strong&gt;&amp;nbsp; &amp;nbsp;&lt;strong&gt;&lt;a href="http://www.cnblogs.com/guobaoyuan/articles/7087609.html" target="_blank"&gt;python 字符编码&lt;/a&gt;&lt;/strong&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;</span></span><br><span class="line"><span class="string">&lt;p&gt;&lt;span style="font-family: 楷体;"&gt;&lt;strong&gt;&lt;strong&gt;&amp;nbsp; &amp;nbsp;&lt;a href="http://www.cnblogs.com/guobaoyuan/articles/6752157.html" target="_blank"&gt;python 类型及变量&lt;/a&gt;&lt;/strong&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;</span></span><br><span class="line"><span class="string">&lt;p&gt;&lt;span style="font-family: 楷体;"&gt;&lt;strong&gt;&amp;nbsp; &amp;nbsp;&lt;a href="http://www.cnblogs.com/guobaoyuan/p/6847663.html" target="_blank"&gt;python 字符串详解&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;</span></span><br><span class="line"><span class="string">&lt;p&gt;&lt;span style="font-family: 楷体;"&gt;&amp;nbsp; &amp;nbsp;&lt;strong&gt;&lt;a href="http://www.cnblogs.com/guobaoyuan/p/6850347.html" target="_blank"&gt;python 列表详解&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;</span></span><br><span class="line"><span class="string">&lt;p&gt;&lt;span style="font-family: 楷体;"&gt;&lt;strong&gt;&amp;nbsp; &amp;nbsp;&lt;a href="http://www.cnblogs.com/guobaoyuan/p/6850496.html" target="_blank"&gt;python 数字元祖&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;</span></span><br><span class="line"><span class="string">&lt;p&gt;&lt;span style="font-family: 楷体;"&gt;&amp;nbsp; &amp;nbsp;&lt;strong&gt;&lt;a href="http://www.cnblogs.com/guobaoyuan/p/6851820.html" target="_blank"&gt;python 字典详解&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;</span></span><br><span class="line"><span class="string">&lt;p&gt;&lt;span style="font-family: 楷体;"&gt;&lt;strong&gt;&amp;nbsp; &amp;nbsp;&lt;strong&gt; &lt;a href="http://www.cnblogs.com/guobaoyuan/p/6852131.html" target="_blank"&gt;python 集合详解&lt;/a&gt;&lt;/strong&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;</span></span><br><span class="line"><span class="string">&lt;p&gt;&lt;span style="font-family: 楷体;"&gt;&lt;strong&gt;&amp;nbsp; &amp;nbsp;&lt;a href="http://www.cnblogs.com/guobaoyuan/articles/7087614.html" target="_blank"&gt;python 数据类型&lt;/a&gt;&amp;nbsp;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;</span></span><br><span class="line"><span class="string">&lt;p&gt;&lt;span style="font-family: 楷体;"&gt;&lt;strong&gt;&amp;nbsp; &amp;nbsp;&lt;a href="http://www.cnblogs.com/guobaoyuan/p/6752169.html" target="_blank"&gt;python文件操作&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;</span></span><br><span class="line"><span class="string">&lt;p&gt;&lt;span style="font-family: 楷体;"&gt;&lt;strong&gt;&amp;nbsp; &amp;nbsp;&lt;a href="http://www.cnblogs.com/guobaoyuan/p/8149209.html" target="_blank"&gt;python 闭包&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;</span></span><br><span class="line"><span class="string">&lt;p&gt;&lt;span style="font-family: 楷体;"&gt;&lt;strong&gt;&amp;nbsp; &amp;nbsp;&lt;a href="http://www.cnblogs.com/guobaoyuan/articles/6705714.html" target="_blank"&gt;python 函数详解&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;</span></span><br><span class="line"><span class="string">&lt;p&gt;&lt;span style="font-family: 楷体;"&gt;&lt;strong&gt;&amp;nbsp; &amp;nbsp;&lt;a href="http://www.cnblogs.com/guobaoyuan/articles/7087616.html" target="_blank"&gt;python 函数、装饰器、内置函数&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;</span></span><br><span class="line"><span class="string">&lt;p&gt;&lt;span style="font-family: 楷体;"&gt;&lt;strong&gt;&amp;nbsp; &amp;nbsp;&lt;a href="http://www.cnblogs.com/guobaoyuan/articles/7087629.html" target="_blank"&gt;python 迭代器 生成器&lt;/a&gt;&amp;nbsp;&amp;nbsp;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;</span></span><br><span class="line"><span class="string">&lt;p&gt;&lt;span style="font-family: 楷体;"&gt;&lt;strong&gt;&amp;nbsp; &amp;nbsp;&lt;a href="http://www.cnblogs.com/guobaoyuan/articles/6757215.html" target="_blank"&gt;python匿名函数、内置函数&lt;/a&gt;&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;</span></span><br><span class="line"><span class="string">&lt;/div&gt;</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line">print(re.findall(<span class="string">'href="(.+?)"'</span>))</span><br></pre></td></tr></table></figure>
-
-<p> 输出的结果为：</p>
- <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'http://www.cnblogs.com/guobaoyuan/p/6847032.html'</span>, <span class="string">'http://www.cnblogs.com/guobaoyuan/p/6627631.html'</span>, <span class="string">'http://www.cnblogs.com/guobaoyuan/articles/7087609.html'</span>, <span class="string">'http://www.cnblogs.com/guobaoyuan/articles/6752157.html'</span>, <span class="string">'http://www.cnblogs.com/guobaoyuan/p/6847663.html'</span>, <span class="string">'http://www.cnblogs.com/guobaoyuan/p/6850347.html'</span>, <span class="string">'http://www.cnblogs.com/guobaoyuan/p/6850496.html'</span>, <span class="string">'http://www.cnblogs.com/guobaoyuan/p/6851820.html'</span>, <span class="string">'http://www.cnblogs.com/guobaoyuan/p/6852131.html'</span>, <span class="string">'http://www.cnblogs.com/guobaoyuan/articles/7087614.html'</span>, <span class="string">'http://www.cnblogs.com/guobaoyuan/p/6752169.html'</span>, <span class="string">'http://www.cnblogs.com/guobaoyuan/p/8149209.html'</span>, <span class="string">'http://www.cnblogs.com/guobaoyuan/articles/6705714.html'</span>, <span class="string">'http://www.cnblogs.com/guobaoyuan/articles/7087616.html'</span>, <span class="string">'http://www.cnblogs.com/guobaoyuan/articles/7087629.html'</span>, <span class="string">'http://www.cnblogs.com/guobaoyuan/articles/6757215.html'</span>]</span><br></pre></td></tr></table></figure>
-
-</li>
-</ol>
-<h3 id="正则表达式常用方法"><a href="#正则表达式常用方法" class="headerlink" title="正则表达式常用方法"></a>正则表达式常用方法</h3><p>除了 findall 外，正则表达式的常用方法还有 search，match 等：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line">s = <span class="string">'alexmeet'</span></span><br><span class="line">print(re.findall(<span class="string">'e'</span>, s))</span><br><span class="line">print(re.search(<span class="string">'e'</span>, s))    <span class="comment"># 从字符串任意位置进行匹配，查找到一个就停止，返回的是match对象，如果找不到则返回None</span></span><br><span class="line">print(re.search(<span class="string">'e'</span>, s).group())    <span class="comment"># 将match对象转换为字符串</span></span><br><span class="line">print(re.match(<span class="string">'e'</span>, s))    <span class="comment"># 从字符串的开头位置进行匹配，查找到返回match对象，查找不到返回None</span></span><br><span class="line">print(re.match(<span class="string">'a'</span>, s).group())</span><br></pre></td></tr></table></figure>
-
-<p>输出的结果为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'e'</span>, <span class="string">'e'</span>, <span class="string">'e'</span>]</span><br><span class="line">&lt;_sre.SRE_Match object; span=(<span class="number">2</span>, <span class="number">3</span>), match=<span class="string">'e'</span>&gt;</span><br><span class="line">e</span><br><span class="line"><span class="literal">None</span></span><br><span class="line">a</span><br></pre></td></tr></table></figure>
-
-<p>search 方法和 match 方法的比较：</p>
-<ul>
-<li>search 方法从字符串任意位置进行匹配，查找到一个就停止</li>
-<li>match 方法从字符串开始位置进行匹配，找不到返回 None</li>
-</ul>
-<p>除了上面的几个方法，re 中还有一些不常用但也很有用的方法：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> re</span><br><span class="line">s1 = <span class="string">'alex wusir,日天，太白;女神;肖锋：吴超'</span></span><br><span class="line">print(re.split(<span class="string">'[ :;,：；，]'</span>, s1))    <span class="comment"># split分割</span></span><br><span class="line">输出的结果为：</span><br><span class="line">[<span class="string">'alex'</span>, <span class="string">'wusir'</span>, <span class="string">'日天'</span>, <span class="string">'太白'</span>, <span class="string">'女神'</span>, <span class="string">'肖锋'</span>, <span class="string">'吴超'</span>]</span><br><span class="line"></span><br><span class="line">s2 = <span class="string">'barry是最好的讲师，barry就是一个普通老师，请不要将barry当男神对待。'</span></span><br><span class="line">print(re.sub(<span class="string">'barry'</span>, <span class="string">'meet'</span>, s2))    <span class="comment"># sub替换</span></span><br><span class="line">输出的结果为：</span><br><span class="line">meet是最好的讲师，meet就是一个普通老师，请不要将meet当男神对待。</span><br><span class="line"></span><br><span class="line">obj = re.compile(<span class="string">'\d&#123;2&#125;'</span>)    <span class="comment"># compile 定义匹配规则</span></span><br><span class="line">print(obj.findall(<span class="string">'alex12345'</span>))</span><br><span class="line">输出的结果为：</span><br><span class="line">[<span class="string">'12'</span>, <span class="string">'34'</span>]</span><br><span class="line"></span><br><span class="line">it = re.finditer(<span class="string">'e'</span>, <span class="string">'meet,alex'</span>)    <span class="comment"># 返回一个迭代器</span></span><br><span class="line">print(it)</span><br><span class="line">print(next(it))</span><br><span class="line">print(next(it).group())</span><br><span class="line">输出的结果为：</span><br><span class="line">&lt;callable_iterator object at <span class="number">0x0000021E54F2AC50</span>&gt;</span><br><span class="line">&lt;_sre.SRE_Match object; span=(<span class="number">1</span>, <span class="number">2</span>), match=<span class="string">'e'</span>&gt;</span><br><span class="line">e</span><br><span class="line"></span><br><span class="line">s = <span class="string">'&lt;h1&gt;hello&lt;/h1&gt;'</span></span><br><span class="line">ret = re.search(<span class="string">'&lt;(?P&lt;h&gt;\w+)&gt;(?P&lt;h1&gt;\w+)&lt;(?P&lt;h2&gt;/\w+)&gt;'</span>)    <span class="comment"># 给分组取别名</span></span><br><span class="line">print(ret.group(<span class="string">'h'</span>))</span><br><span class="line">print(ret.group(<span class="string">'h1'</span>))</span><br><span class="line">print(ret.group(<span class="string">'h2'</span>))</span><br><span class="line">返回的结果为：</span><br><span class="line">h1</span><br><span class="line">hello</span><br><span class="line">/h1</span><br></pre></td></tr></table></figure>
-
-<p>面试题：</p>
-<ol>
-<li>什么是贪婪匹配和非贪婪匹配？</li>
-<li>search 和 match 的区别？</li>
-</ol>
-
+          <p>re，也就是正则表达式，用来从字符串中获取我们想要的符合一定规则的内容。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/python-basic/re/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1230,10 +902,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-03-13 13:53:09 / 修改时间：14:53:08" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:09+08:00">2020-03-13</time>
+              <time title="创建时间：2020-03-13 13:53:09" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:09+08:00">2020-03-13</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-16 18:54:31" itemprop="dateModified" datetime="2020-03-16T18:54:31+08:00">2020-03-16</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -1255,67 +933,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <table>
-<thead>
-<tr>
-<th>Python 2</th>
-<th>Python 3</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>源码不统一</td>
-<td>源码统一</td>
-</tr>
-<tr>
-<td>有重复代码</td>
-<td>没有重复代码</td>
-</tr>
-<tr>
-<td>整型的除法：整型</td>
-<td>整型的除法：浮点型</td>
-</tr>
-<tr>
-<td>print不加括号也可以</td>
-<td>print()</td>
-</tr>
-<tr>
-<td>input() 输入什么类型，就是什么类型；<br />raw_input() 获取到的全都是字符串</td>
-<td>input() 获取到的全都是字符串</td>
-</tr>
-<tr>
-<td>整型包括int（整型）和 long（长整型）</td>
-<td>只有 int（整型）</td>
-</tr>
-<tr>
-<td>整数达到一定长度后，结尾会有L标记</td>
-<td>整数不论多长，结尾都不会有L标记</td>
-</tr>
-<tr>
-<td>range(1, 5) 打印出来为列表 [1, 2, 3, 4]</td>
-<td>range(1, 5) 打印出来为 range(1, 5)</td>
-</tr>
-<tr>
-<td>创建和使用迭代器时，只能使用内置函数 <code>iter()</code> 和 <code>next()</code>，迭代器中没有 <code>.__iter__()</code> 和 <code>.__next__()</code> 方法</td>
-<td>创建和使用迭代器时，既可以使用内置函数 <code>iter()</code> 和 <code>next()</code>，也可以使用迭代器中的 <code>.__iter__()</code> 和 <code>.__next__()</code> 方法。</td>
-</tr>
-<tr>
-<td>reduce 函数可以直接使用</td>
-<td>需要通过 <code>from functools import reduce</code> 来导入 reduce 函数</td>
-</tr>
-<tr>
-<td>使用 import 方法导入包，包中没有 <code>__init__.py</code> 文件时，会报错</td>
-<td>使用 import 方法导入包，包中没有 <code>__init__.py</code> 文件时，不会报错，但也不能被使用</td>
-</tr>
-<tr>
-<td>创建类时，如果不使用继承，默认为经典类；继承自 <code>object</code> 类的为新式类。</td>
-<td>继不继承都是使用新式类的继承方式</td>
-</tr>
-<tr>
-<td>经典类的继承顺序为深度优先，先左后右</td>
-<td>新式类的继承顺序是按照 <a href="/python-basic/..\translation\python-MRO">C3 线性化算法</a> 得到的 mro 列表</td>
-</tr>
-</tbody></table>
-
+          <p>Python 2 和 Python 3 很多语法都是不一样的，代码是不兼容的。这列介绍一些 Python 2 和 Python 3 的区别。当然它们之间的区别不限于此。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/python-basic/Python2-Python3/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1357,10 +983,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-03-13 13:53:09 / 修改时间：14:53:08" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:09+08:00">2020-03-13</time>
+              <time title="创建时间：2020-03-13 13:53:09" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:09+08:00">2020-03-13</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-16 18:54:31" itemprop="dateModified" datetime="2020-03-16T18:54:31+08:00">2020-03-16</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -1382,32 +1014,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>思维导图的作用主要是理清思路，用的时候顺藤摸瓜，能够随时联想到需要用到的知识点。</p>
-<p>此外，也能更快索引。查阅笔记资料时，更加得心应手，效率高。</p>
-<h3 id="推荐平台"><a href="#推荐平台" class="headerlink" title="推荐平台"></a>推荐平台</h3><ul>
-<li><a href="https://www.processon.com/" target="_blank" rel="noopener">ProcessOn</a><ul>
-<li>在线编辑，随处任何一台电脑都可以操作</li>
-<li>分享方便，任何人不许额外安装任何程序即可查看</li>
-<li>随时自动保存，文件在云端，几乎不会因意外原因丢失数据</li>
-<li>免费</li>
-</ul>
-</li>
-<li><a href="https://www.xmind.cn/" target="_blank" rel="noopener">XMind</a><ul>
-<li>专注制作思维导图，设计很好看，很精致</li>
-<li>断网时可以使用，且不受网速限制</li>
-<li>可以付费升级专业版，免费版功能能应付大部分日常使用</li>
-</ul>
-</li>
-</ul>
-<h3 id="核心三个按键"><a href="#核心三个按键" class="headerlink" title="核心三个按键"></a>核心三个按键</h3><ol>
-<li>空格（输入内容）</li>
-<li>回车（生成同级节点）</li>
-<li>Tab（生成次级节点）</li>
-</ol>
-<h3 id="制作技巧"><a href="#制作技巧" class="headerlink" title="制作技巧"></a>制作技巧</h3><ul>
-<li>按照树形结构，从粗到细有序进行</li>
-</ul>
-
+          <p>思维导图的作用主要是理清思路，用的时候顺藤摸瓜，能够随时联想到需要用到的知识点。此外，也能更快索引。查阅笔记资料时，更加得心应手，效率高。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/python-basic/mind-map/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1507,7 +1122,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-count">41</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -1609,6 +1224,8 @@
 
 
 <script src="/js/next-boot.js"></script>
+
+<script src="/js/bookmark.js"></script>
 
 
 
