@@ -22,38 +22,22 @@
     var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":true,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"appID":"PXY1Z6GHKT","apiKey":"eb82f2e78e3053f26aa408e9caa96d93","indexName":"blog","hits":{"per_page":10},"labels":{"input_placeholder":"要查点什么(✿◡‿◡)","hits_empty":"没有找到任何关于 ${query} 的结果╥﹏╥...","hits_stats":"搜索到 ${hits} 条记录，用时 ${time} ms o(*￣▽￣*)ブ"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="显示当前文章的标题和内容当用户点击指定文章时，需要显示当前文章的标题和内容 Write.vue，组件代码： 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777">
+  <meta name="description" content="荏苒资讯项目文章编辑器的开发。使用的编辑器是 mavon editor。用两个主要的功能：文章的自动保存和图片的上传。文章自动保存涉及到前端 ajax 分流。图片上传至后端服务器，使用链接查看，用到的是 FasdFDS 技术。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="荏苒资讯的文章编辑器开发">
 <meta property="og:url" content="https://sliu.vip/project/renran-editor/index.html">
 <meta property="og:site_name" content="刘硕的技术查阅手册">
-<meta property="og:description" content="显示当前文章的标题和内容当用户点击指定文章时，需要显示当前文章的标题和内容 Write.vue，组件代码： 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061626364656667686970717273747576777">
+<meta property="og:description" content="荏苒资讯项目文章编辑器的开发。使用的编辑器是 mavon editor。用两个主要的功能：文章的自动保存和图片的上传。文章自动保存涉及到前端 ajax 分流。图片上传至后端服务器，使用链接查看，用到的是 FasdFDS 技术。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-03-17T16:54:29.742Z">
-<meta property="article:modified_time" content="2020-03-17T16:54:31.757Z">
+<meta property="article:modified_time" content="2020-03-17T17:03:54.925Z">
 <meta property="article:author" content="刘硕">
 <meta property="article:tag" content="Python">
-<meta property="article:tag" content="全栈开发">
-<meta property="article:tag" content="并发编程">
-<meta property="article:tag" content="网络编程">
-<meta property="article:tag" content="爬虫">
-<meta property="article:tag" content="数据库">
-<meta property="article:tag" content="自动化测试">
-<meta property="article:tag" content="Web开发">
-<meta property="article:tag" content="HTML">
-<meta property="article:tag" content="CSS">
-<meta property="article:tag" content="JavaScript">
-<meta property="article:tag" content="jQuery">
-<meta property="article:tag" content="Bootstrap">
-<meta property="article:tag" content="测试自动化">
-<meta property="article:tag" content="Selenium">
-<meta property="article:tag" content="postman">
-<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="Django">
+<meta property="article:tag" content="Django REST framework">
+<meta property="article:tag" content="实践项目">
+<meta property="article:tag" content="荏苒资讯">
 <meta property="article:tag" content="Vue">
-<meta property="article:tag" content="drf">
-<meta property="article:tag" content="django">
-<meta property="article:tag" content="文档翻译">
-<meta property="article:tag" content="PEP8">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="https://sliu.vip/project/renran-editor/">
@@ -257,7 +241,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-03-18 00:54:29 / 修改时间：00:54:31" itemprop="dateCreated datePublished" datetime="2020-03-18T00:54:29+08:00">2020-03-18</time>
+              <time title="创建时间：2020-03-18 00:54:29 / 修改时间：01:03:54" itemprop="dateCreated datePublished" datetime="2020-03-18T00:54:29+08:00">2020-03-18</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -277,6 +261,7 @@
               <span class="post-meta-item-text">阅读次数：</span>
               <span id="busuanzi_value_page_pv"></span>
             </span>
+            <div class="post-description">荏苒资讯项目文章编辑器的开发。使用的编辑器是 mavon editor。用两个主要的功能：文章的自动保存和图片的上传。文章自动保存涉及到前端 ajax 分流。图片上传至后端服务器，使用链接查看，用到的是 FasdFDS 技术。</div>
 
         </div>
       </header>
@@ -333,6 +318,14 @@
     
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"># Python</a>
+              <a href="/tags/Django/" rel="tag"># Django</a>
+              <a href="/tags/Django-REST-framework/" rel="tag"># Django REST framework</a>
+              <a href="/tags/%E5%AE%9E%E8%B7%B5%E9%A1%B9%E7%9B%AE/" rel="tag"># 实践项目</a>
+              <a href="/tags/%E8%8D%8F%E8%8B%92%E8%B5%84%E8%AE%AF/" rel="tag"># 荏苒资讯</a>
+              <a href="/tags/Vue/" rel="tag"># Vue</a>
+          </div>
 
         
 
