@@ -30,7 +30,7 @@
 <meta property="og:description" content="Django REST framework 官方文档翻译之教程 5：关系 Relationships 和超链接 API Hyperlinked APIs。通过链接，增强字段间的练习。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-03-14T17:14:47.662Z">
-<meta property="article:modified_time" content="2020-03-14T17:20:50.040Z">
+<meta property="article:modified_time" content="2020-03-19T17:42:39.704Z">
 <meta property="article:author" content="刘硕">
 <meta property="article:tag" content="Python">
 <meta property="article:tag" content="Django">
@@ -236,10 +236,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-03-15 01:14:47 / 修改时间：01:20:50" itemprop="dateCreated datePublished" datetime="2020-03-15T01:14:47+08:00">2020-03-15</time>
+              <time title="创建时间：2020-03-15 01:14:47" itemprop="dateCreated datePublished" datetime="2020-03-15T01:14:47+08:00">2020-03-15</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-20 01:42:39" itemprop="dateModified" datetime="2020-03-20T01:42:39+08:00">2020-03-20</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -270,7 +276,8 @@
 
       
         <p>目前我们 API 中的关系通过使用主键来表示。在这部分教程中，我们将通过使用关系的超链接提高我们 API 的关联性和易查找性。</p>
-<h2 id="Creating-an-endpoint-for-the-root-of-our-API"><a href="#Creating-an-endpoint-for-the-root-of-our-API" class="headerlink" title="Creating an endpoint for the root of our API"></a><a href="https://www.django-rest-framework.org/tutorial/5-relationships-and-hyperlinked-apis/#creating-an-endpoint-for-the-root-of-our-api" target="_blank" rel="noopener">Creating an endpoint for the root of our API</a></h2><p>Right now we have endpoints for ‘snippets’ and ‘users’, but we don’t have a single entry point to our API. To create one, we’ll use a regular function-based view and the <code>@api_view</code> decorator we introduced earlier. In your <code>snippets/views.py</code> add:</p>
+<h2 id="给我们的-API-的根-root-创建一个端点-endpoint"><a href="#给我们的-API-的根-root-创建一个端点-endpoint" class="headerlink" title="给我们的 API 的根 root 创建一个端点 endpoint"></a>给我们的 API 的根 root 创建一个端点 endpoint</h2><p>现在，我们已经有了 “snippets” 和 “users” 的端点，但我们还没有给我们的 API 设置任何一个入口点。</p>
+<p>Right now we have endpoints for ‘snippets’ and ‘users’, but we don’t have a single entry point to our API. To create one, we’ll use a regular function-based view and the <code>@api_view</code> decorator we introduced earlier. In your <code>snippets/views.py</code> add:</p>
 <figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> rest_framework.decorators <span class="keyword">import</span> api_view</span><br><span class="line"><span class="keyword">from</span> rest_framework.response <span class="keyword">import</span> Response</span><br><span class="line"><span class="keyword">from</span> rest_framework.<span class="keyword">reverse</span> <span class="keyword">import</span> <span class="keyword">reverse</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">@api_view([<span class="string">'GET'</span>])</span><br><span class="line">def api_root(request, <span class="keyword">format</span>=<span class="keyword">None</span>):</span><br><span class="line">    <span class="keyword">return</span> Response(&#123;</span><br><span class="line">        <span class="string">'users'</span>: reverse(<span class="string">'user-list'</span>, request=request, <span class="keyword">format</span>=<span class="keyword">format</span>),</span><br><span class="line">        <span class="string">'snippets'</span>: reverse(<span class="string">'snippet-list'</span>, request=request, <span class="keyword">format</span>=<span class="keyword">format</span>)</span><br><span class="line">    &#125;)</span><br></pre></td></tr></table></figure>
 
 <p>Two things should be noticed here. First, we’re using REST framework’s <code>reverse</code> function in order to return fully-qualified URLs; second, URL patterns are identified by convenience names that we will declare later on in our <code>snippets/urls.py</code>.</p>
@@ -414,7 +421,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Creating-an-endpoint-for-the-root-of-our-API"><span class="nav-number">1.</span> <span class="nav-text">Creating an endpoint for the root of our API</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Creating-an-endpoint-for-the-highlighted-snippets"><span class="nav-number">2.</span> <span class="nav-text">Creating an endpoint for the highlighted snippets</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hyperlinking-our-API"><span class="nav-number">3.</span> <span class="nav-text">Hyperlinking our API</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Making-sure-our-URL-patterns-are-named"><span class="nav-number">4.</span> <span class="nav-text">Making sure our URL patterns are named</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Adding-pagination"><span class="nav-number">5.</span> <span class="nav-text">Adding pagination</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Browsing-the-API"><span class="nav-number">6.</span> <span class="nav-text">Browsing the API</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#给我们的-API-的根-root-创建一个端点-endpoint"><span class="nav-number">1.</span> <span class="nav-text">给我们的 API 的根 root 创建一个端点 endpoint</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Creating-an-endpoint-for-the-highlighted-snippets"><span class="nav-number">2.</span> <span class="nav-text">Creating an endpoint for the highlighted snippets</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hyperlinking-our-API"><span class="nav-number">3.</span> <span class="nav-text">Hyperlinking our API</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Making-sure-our-URL-patterns-are-named"><span class="nav-number">4.</span> <span class="nav-text">Making sure our URL patterns are named</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Adding-pagination"><span class="nav-number">5.</span> <span class="nav-text">Adding pagination</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Browsing-the-API"><span class="nav-number">6.</span> <span class="nav-text">Browsing the API</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -430,7 +437,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">245</span>
+          <span class="site-state-item-count">247</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

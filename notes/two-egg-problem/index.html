@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="Tu5vqPaUb8svfkPx5eetJFD84ciQCcWVXNatdsWtj9Q">
+  <meta name="baidu-site-verification" content="baidu_verify_FBq9PG4BBb">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"appID":"PXY1Z6GHKT","apiKey":"eb82f2e78e3053f26aa408e9caa96d93","indexName":"blog","hits":{"per_page":10},"labels":{"input_placeholder":"要查点什么(✿◡‿◡)","hits_empty":"没有找到任何关于 ${query} 的结果╥﹏╥...","hits_stats":"搜索到 ${hits} 条记录，用时 ${time} ms o(*￣▽￣*)ブ"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="手里有 2 个鸡蛋，另外有 100 层楼。有一未知的临界楼层，鸡蛋从临界楼层以下扔下去，一定不会碎；从临界楼层以上丢下去，一定会碎。没有摔碎的鸡蛋可以反复使用，碎了的鸡蛋就不能再往下扔了。问，在最糟糕的情况下，至少需要多少次能够找到临界楼层？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="双蛋问题的 Python 递归解决">
+<meta property="og:url" content="https://sliu.vip/notes/two-egg-problem/index.html">
+<meta property="og:site_name" content="刘硕的技术查阅手册">
+<meta property="og:description" content="手里有 2 个鸡蛋，另外有 100 层楼。有一未知的临界楼层，鸡蛋从临界楼层以下扔下去，一定不会碎；从临界楼层以上丢下去，一定会碎。没有摔碎的鸡蛋可以反复使用，碎了的鸡蛋就不能再往下扔了。问，在最糟糕的情况下，至少需要多少次能够找到临界楼层？">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sliu.vip/notes/two-egg-problem/1584601879911.png">
+<meta property="og:image" content="https://sliu.vip/notes/two-egg-problem/twoeggsolution.png">
+<meta property="article:published_time" content="2020-03-19T17:42:37.885Z">
+<meta property="article:modified_time" content="2020-03-19T17:44:07.910Z">
+<meta property="article:author" content="刘硕">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="实践笔记">
+<meta property="article:tag" content="算法">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sliu.vip/notes/two-egg-problem/1584601879911.png">
+
+<link rel="canonical" href="https://sliu.vip/notes/two-egg-problem/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>双蛋问题的 Python 递归解决 | 刘硕的技术查阅手册</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f14f123935d6183fdd06f8f1c4bc378f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="刘硕的技术查阅手册" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">刘硕的技术查阅手册</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">Python 全栈开发学习笔记</h1>
+      
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-toc">
+
+    <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+  
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/notes/two-egg-problem/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          双蛋问题的 Python 递归解决
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-03-20 01:42:37 / 修改时间：01:44:07" itemprop="dateCreated datePublished" datetime="2020-03-20T01:42:37+08:00">2020-03-20</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B5%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习实践笔记</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <div class="post-description">手里有 2 个鸡蛋，另外有 100 层楼。有一未知的临界楼层，鸡蛋从临界楼层以下扔下去，一定不会碎；从临界楼层以上丢下去，一定会碎。没有摔碎的鸡蛋可以反复使用，碎了的鸡蛋就不能再往下扔了。问，在最糟糕的情况下，至少需要多少次能够找到临界楼层？</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>今天看了 <a href="https://www.bilibili.com/video/av96214853" target="_blank" rel="noopener">李永乐老师关于双蛋问题的讲解视频</a>，受用很大。本着好记性不如烂笔头的精神，把这个问题记录在此。</p>
+<p>据传某大厂有这样一个面试题：手里有 2 个鸡蛋，另外有 100 层楼。有一未知的临界楼层，鸡蛋从临界楼层以下扔下去，一定不会碎；从临界楼层以上丢下去，一定会碎。没有摔碎的鸡蛋可以反复使用，碎了的鸡蛋就不能再往下扔了。问，在最糟糕的情况下，至少需要多少次能够找到临界楼层？</p>
+<p>吐槽一句，这个鸡蛋可能比较特殊，因为普通鸡蛋别说 100 层楼，从桌子上掉下去基本就碎了。不过问题本身是很有价值的，我们可以把鸡蛋改成玻璃球之类的，低楼层摔不碎，高楼层受不了就成了。</p>
+<p>另外，要想读懂本文，恐怕需要一点递归和算法基础，否则不一定能看懂。这不是因为我水平高，写的东西高深莫测。而是因为我的水平太低，道行太浅，目前还没办法做到深入浅出，十分抱歉。</p>
+<p>好了，闲话不多扯，来谈谈解决问题的思路。</p>
+<h3 id="二分查找解决无限多鸡蛋的情况"><a href="#二分查找解决无限多鸡蛋的情况" class="headerlink" title="二分查找解决无限多鸡蛋的情况"></a>二分查找解决无限多鸡蛋的情况</h3><p>直接看问题，似乎没什么思路。我们不妨稍微简化一下问题。比如，如果我们有无数多个鸡蛋，最坏的情况下至少需要几个鸡蛋能找到临界楼层？</p>
+<p>这就很简单了，使用二分法即可。先从 50 层试，如果鸡蛋碎了，说明临界楼层在下面，就去 25 层再试；如果鸡蛋没碎，说明临界楼层在上面，到 75 层去试。以此类推，每次排除一半的可能，很快就能找到答案。</p>
+<p>二分法需要的次数的公式是 $log_2(100)$ 向下取整再加 1，计算结果应该是 7。</p>
+<h3 id="递归法解决双蛋问题"><a href="#递归法解决双蛋问题" class="headerlink" title="递归法解决双蛋问题"></a>递归法解决双蛋问题</h3><p>不过二分查找似乎并没有对我们解决问题有什么特别好的启发，我们只好另辟蹊径。我们可不可以通过 <a href="/notes/grokking-algorithms-dc">分而治之</a> 的思想来解决这个问题呢？</p>
+<p>首先，基线条件很好确定：</p>
+<ol>
+<li>在有 2 个鸡蛋的情况下，如果只有一层楼，只需要试一次；如果有两层楼，只需要试两次；如果没有楼，那就干脆不用试了（看似是废话，但是是很重要的边界条件）。</li>
+<li>如果只有 1 个鸡蛋，只能老老实实从下往上尝试，也就是在最坏的情况下，有几层楼就要试几次。</li>
+</ol>
+<p>接下来，我们就要思考递归条件了。如何能将问题简化。</p>
+<p>令在有 2 个鸡蛋时，最坏的情况下，N 层楼所需要尝试的最少次数为 $T_N$。</p>
+<p>假设总共有 N 层楼，我们在第 K 层楼进行一次尝试。那么此时，就会分成两种情况：</p>
+<ol>
+<li>鸡蛋在 K 层碎掉了，也就说明临界楼层在 K 层以下。但是此时，我们只剩下 1 个鸡蛋，最坏的情况下还要检测 $K - 1$ 次才能找到临界楼层</li>
+<li>鸡蛋在 K 层没有碎，临界楼层在 K 层以上。此时我们还是有 2 个鸡蛋，还剩下 $N-K$ 层楼需要检测，那么最坏的情况下，还需要检测 $T_{N-K}$ 次。很显然 $N-K$ 要比 N 少，我们顺利实现对问题的简化。</li>
+</ol>
+<p>最坏的情况显然是  $K - 1$ 和 $T_{N-K}$ 两个数的最大的那一个再加上 1，因为我们先试了一次。这个最大的数，就是 $T_N$。</p>
+<p>不过这里面有一个 K 是不能确定的。为了找到合适的 K，我们需要把 K 从 1 到 N 的情况全部计算出来，找到使得 $T_N$ 最小的情况即可。</p>
+<p>用代码来解决这个问题就是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">two_egg</span><span class="params">(n: int)</span> -&gt; int:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    双蛋问题的递归求解</span></span><br><span class="line"><span class="string">    :param n: 楼层数</span></span><br><span class="line"><span class="string">    :return: 最坏情况下，找到临界楼层所需最少尝试次数</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">if</span> n == <span class="number">0</span>:    <span class="comment"># 没有楼就不需要试</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    <span class="keyword">elif</span> n == <span class="number">1</span>:   <span class="comment"># 有一层楼，试一次</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    result_list = []</span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> range(<span class="number">1</span>, n + <span class="number">1</span>):    <span class="comment"># 在每一层都试一下</span></span><br><span class="line">        result_list.append(max(k - <span class="number">1</span>, two_egg(n - k)) + <span class="number">1</span>)    <span class="comment"># 把每一层的情况都记录下来</span></span><br><span class="line">    <span class="keyword">return</span> min(result_list)    <span class="comment"># 最好的结果就是我们想要的</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 用 1 到 11 的数字测试，不用 100 是因为电脑性能不够，测到 11 是因为 10 和 11 的结果不同</span></span><br><span class="line"><span class="keyword">for</span> f <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">12</span>):</span><br><span class="line">    print(<span class="string">f'<span class="subst">&#123;f&#125;</span> -------&gt; <span class="subst">&#123;two_egg(f)&#125;</span>'</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="递归法解决普遍双蛋问题"><a href="#递归法解决普遍双蛋问题" class="headerlink" title="递归法解决普遍双蛋问题"></a>递归法解决普遍双蛋问题</h3><p>用二分查找，可以解决鸡蛋数目不限的情况，递归查找可以解决只有 2 个鸡蛋的情况。现在，我们把问题进一步扩展：如果我们有 M 个鸡蛋，N 层楼，在最坏的情况下，至少需要测试多少次能够找到临界楼层？</p>
+<p>基线条件根上面的差不多一样：</p>
+<ol>
+<li>不管有多少个鸡蛋，如果只有一层楼，只需要试一次；如果没有楼，那就干脆不用试了。</li>
+<li>如果只有 1 个鸡蛋，只能老老实实从下往上尝试，也就是在最坏的情况下，有几层楼就要试几次。</li>
+</ol>
+<p>递归条件其实也很类似，只是因为鸡蛋数目的引入，会稍微复杂一丁丁点点。</p>
+<p>令在有 M 个鸡蛋时，最坏的情况下，N 层楼所需要尝试的最少次数为 $T_{M,\space N}$。</p>
+<p>依旧假设总共有 N 层楼，我们在第 K 层楼进行一次尝试。那么此时，还是会分成两种情况：</p>
+<ol>
+<li>鸡蛋在 K 层碎掉了，也就说明临界楼层在 K 层以下。但是此时，我们只剩下 $M-1$ 个鸡蛋，最坏的情况下还要检测 $T_{M-1,\space K - 1}$ 次才能找到临界楼层</li>
+<li>鸡蛋在 K 层没有碎，临界楼层在 K 层以上。此时我们还是有 M 个鸡蛋，还剩下 $N-K$ 层楼需要检测，那么最坏的情况下，还需要检测 $T_{M,\space N-K}$ 次</li>
+</ol>
+<p>上面的两种情况，要么简化了鸡蛋数量，要么简化了楼层数量，最终都可以通过递归来找到答案。最终的结果需要是 $T_{M-1,\space N}$ 和 $T_{M,\space N-K}$ 这两个数中最大的那一个加上 1，因为我们最开始的时候在 K 层测试了一下。</p>
+<p>同样地，我们需要遍历测试当 K 为 1 到 N 时的各种情况，取其中所需步骤最少的，就是我们要的结果。</p>
+<p>用代码表示就是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">two_egg_general</span><span class="params">(m: int, n: int)</span> -&gt; int:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">    普遍双蛋问题的解决</span></span><br><span class="line"><span class="string">    :param m: 鸡蛋数量</span></span><br><span class="line"><span class="string">    :param n: 楼层总层数</span></span><br><span class="line"><span class="string">    :return: 最糟糕的情况下，找到临界楼层所需最少尝试数目</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">if</span> n == <span class="number">0</span>:    <span class="comment"># 如果没有楼，不需要试</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    <span class="keyword">elif</span> n == <span class="number">1</span>:    <span class="comment"># 只有 1 层楼，试一次就足够</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">if</span> m == <span class="number">1</span>:    <span class="comment"># 只有 1 个蛋，有几层楼就要使几次</span></span><br><span class="line">        <span class="keyword">return</span> n</span><br><span class="line">    result_list = []</span><br><span class="line">    <span class="keyword">for</span> k <span class="keyword">in</span> range(<span class="number">1</span>, n + <span class="number">1</span>):</span><br><span class="line">        result_list.append(max(two_egg_general(m - <span class="number">1</span>, k - <span class="number">1</span>), two_egg_general(m, n - k)) + <span class="number">1</span>)</span><br><span class="line">    <span class="keyword">return</span> min(result_list)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">12</span>):</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">12</span>):</span><br><span class="line">        print(<span class="string">f'(<span class="subst">&#123;i&#125;</span>, <span class="subst">&#123;j&#125;</span>) --&gt; <span class="subst">&#123;two_egg_general(i, j)&#125;</span>'</span>, end=<span class="string">' | '</span>)</span><br><span class="line">    print()</span><br></pre></td></tr></table></figure>
+
+<p>测试结果如下：</p>
+<img src="/notes/two-egg-problem/1584601879911.png" class="" width="1584601879911">
+
+<p>附上双蛋问题的参照表，都是吻合的。只不过我是以楼层数为横轴，鸡蛋数为纵轴了而已。</p>
+<img src="/notes/two-egg-problem/twoeggsolution.png" class="" title="twoeggsolution">
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"># Python</a>
+              <a href="/tags/%E5%AE%9E%E8%B7%B5%E7%AC%94%E8%AE%B0/" rel="tag"># 实践笔记</a>
+              <a href="/tags/%E7%AE%97%E6%B3%95/" rel="tag"># 算法</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/project/renran-editor/" rel="prev" title="荏苒资讯的文章编辑器开发">
+      <i class="fa fa-chevron-left"></i> 荏苒资讯的文章编辑器开发
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/project/renran-special/" rel="next" title="荏苒资讯专题部分开发">
+      荏苒资讯专题部分开发 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#二分查找解决无限多鸡蛋的情况"><span class="nav-number">1.</span> <span class="nav-text">二分查找解决无限多鸡蛋的情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#递归法解决双蛋问题"><span class="nav-number">2.</span> <span class="nav-text">递归法解决双蛋问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#递归法解决普遍双蛋问题"><span class="nav-number">3.</span> <span class="nav-text">递归法解决普遍双蛋问题</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="刘硕"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">刘硕</p>
+  <div class="site-description" itemprop="description">不成为自己讨厌的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">247</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:liushuo432@outlook.com" title="E-Mail → mailto:liushuo432@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/2436055290" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;2436055290" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://wpa.qq.com/msgrd?v=3&uin=1696146913&site=qq&menu=yes" title="QQ → http:&#x2F;&#x2F;wpa.qq.com&#x2F;msgrd?v&#x3D;3&amp;uin&#x3D;1696146913&amp;site&#x3D;qq&amp;menu&#x3D;yes" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-fw fa-rss"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备20001451号 </a>
+      <img src="/images/beian_icon.png" style="display: inline-block;"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=21142102000063" rel="noopener" target="_blank">辽公网安备 21142102000063号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘硕</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.2" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="/js/love.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/Epsilon2.1.model.json"},"display":{"superSample":2,"width":200,"height":400,"position":"left","hOffset":-30,"vOffset":-40},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>
