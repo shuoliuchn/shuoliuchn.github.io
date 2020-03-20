@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="Tu5vqPaUb8svfkPx5eetJFD84ciQCcWVXNatdsWtj9Q">
+  <meta name="baidu-site-verification" content="baidu_verify_FBq9PG4BBb">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"appID":"PXY1Z6GHKT","apiKey":"eb82f2e78e3053f26aa408e9caa96d93","indexName":"blog","hits":{"per_page":10},"labels":{"input_placeholder":"要查点什么(✿◡‿◡)","hits_empty":"没有找到任何关于 ${query} 的结果╥﹏╥...","hits_stats":"搜索到 ${hits} 条记录，用时 ${time} ms o(*￣▽￣*)ブ"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="requests 模块的基本用法，UA 检测和 UA 伪装，爬取动态页面的方法，和爬取分页内容的方法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="requests 模块应对 UA 检测和爬取动态网页">
+<meta property="og:url" content="https://sliu.vip/crawler/requests-dynamic/index.html">
+<meta property="og:site_name" content="刘硕的技术查阅手册">
+<meta property="og:description" content="requests 模块的基本用法，UA 检测和 UA 伪装，爬取动态页面的方法，和爬取分页内容的方法。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sliu.vip/crawler/requests-dynamic/1584711107006.png">
+<meta property="og:image" content="https://sliu.vip/crawler/requests-dynamic/1584711463094.png">
+<meta property="og:image" content="https://sliu.vip/crawler/requests-dynamic/1584712198649.png">
+<meta property="og:image" content="https://sliu.vip/crawler/requests-dynamic/1584712713346.png">
+<meta property="og:image" content="https://sliu.vip/crawler/requests-dynamic/1584717824783.png">
+<meta property="og:image" content="https://sliu.vip/crawler/requests-dynamic/1584721106308.png">
+<meta property="og:image" content="https://sliu.vip/crawler/requests-dynamic/1584721169450.png">
+<meta property="og:image" content="https://sliu.vip/crawler/requests-dynamic/browsercapturetoollocal.png">
+<meta property="og:image" content="https://sliu.vip/crawler/requests-dynamic/browsercapturetoolglobal.png">
+<meta property="article:published_time" content="2020-03-20T17:21:36.408Z">
+<meta property="article:modified_time" content="2020-03-20T17:27:00.852Z">
+<meta property="article:author" content="刘硕">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="Anaconda">
+<meta property="article:tag" content="爬虫">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sliu.vip/crawler/requests-dynamic/1584711107006.png">
+
+<link rel="canonical" href="https://sliu.vip/crawler/requests-dynamic/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>requests 模块应对 UA 检测和爬取动态网页 | 刘硕的技术查阅手册</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f14f123935d6183fdd06f8f1c4bc378f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="刘硕的技术查阅手册" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">刘硕的技术查阅手册</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">Python 全栈开发学习笔记</h1>
+      
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-toc">
+
+    <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+  
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/crawler/requests-dynamic/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          requests 模块应对 UA 检测和爬取动态网页
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-03-21 01:21:36 / 修改时间：01:27:00" itemprop="dateCreated datePublished" datetime="2020-03-21T01:21:36+08:00">2020-03-21</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%88%AC%E8%99%AB/" itemprop="url" rel="index"><span itemprop="name">爬虫</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <div class="post-description">requests 模块的基本用法，UA 检测和 UA 伪装，爬取动态页面的方法，和爬取分页内容的方法。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="requests-模块初步使用"><a href="#requests-模块初步使用" class="headerlink" title="requests 模块初步使用"></a>requests 模块初步使用</h3><p>requests 是爬虫中一个基于网络请求的模块，安装方式：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install requests</span><br></pre></td></tr></table></figure>
+
+<p>不过如果你是用的是 Anaconda 环境，就不需要安装了，Anaconda 默认继承了 requests 模块。</p>
+<p>requests 模块作用是模拟浏览器发起请求。</p>
+<p>使用 requests 模块获取响应数据的代码编写流程：</p>
+<ol>
+<li><p>指定 url</p>
+</li>
+<li><p>发起请求</p>
+</li>
+<li><p>获取响应数据（爬取到的页面源码数据）</p>
+</li>
+<li><p>持久化存储</p>
+</li>
+</ol>
+<p>实例：爬取搜狗首页的页面源码数据</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="comment"># 1 指定url</span></span><br><span class="line">url = <span class="string">'https://www.sogou.com/'</span></span><br><span class="line"><span class="comment"># 2 发起请求get方法的返回值为响应对象</span></span><br><span class="line">response = requests.get(url=url)</span><br><span class="line"><span class="comment"># 3 获取响应数据</span></span><br><span class="line"><span class="comment">#.text：返回的是字符串形式的响应数据</span></span><br><span class="line">page_text = response.text</span><br><span class="line"><span class="comment"># 4 持久化存储</span></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'./sougou.html'</span>, <span class="string">'w'</span>, encoding=<span class="string">'utf-8'</span>) <span class="keyword">as</span> fp:</span><br><span class="line">    fp.write(page_text)</span><br></pre></td></tr></table></figure>
+
+<p>运行代码后，会在当前目录下新生成一个 <code>sougo.html</code> 文件。用浏览器打开后如下图所示，只有普通文本，样式都不见了。不过这没关系，因为爬虫往往只在意数据，不计较样式。</p>
+<img src="/crawler/requests-dynamic/1584711107006.png" class="" width="1584711107006">
+
+<h3 id="参数动态化、UA-检测和-UA-伪装"><a href="#参数动态化、UA-检测和-UA-伪装" class="headerlink" title="参数动态化、UA 检测和 UA 伪装"></a>参数动态化、UA 检测和 UA 伪装</h3><p>光拿到搜狗的首页是没有用的——这里什么都没有。如果我们想要拿到指定文本的搜索数据，该怎么办呢？</p>
+<p>首先，要了解搜狗等搜索引擎的机制。一般情况下，搜索引擎的搜索请求都是 GET 请求。搜索的关键字放在路径中的查询字符串种传进去。搜狗也是如此。</p>
+<p>比如，要搜索 jay，只需在浏览器中输入 <code>https://www.sogou.com/web?query=jay</code> 即可：</p>
+<img src="/crawler/requests-dynamic/1584711463094.png" class="" width="1584711463094">
+
+<p>要搜索的内容是什么，就把路径中的 jay 改成什么就好了。</p>
+<p>现在，让我们来实现一个简易网页采集器，基于搜狗针对指定不同的关键字将其对应的页面数据进行爬取。</p>
+<p>这个需求，就是实现<strong>参数动态化</strong>。</p>
+<p>如果请求的url携带参数，且我们想要将携带的参数进行动态化操作那么我们必须：</p>
+<ol>
+<li><p>将携带的动态参数以键值对的形式封装到一个字典中</p>
+</li>
+<li><p>将该字典作用到 get 方法的 params 参数中即可</p>
+</li>
+<li><p>需要将原始携带参数的 url 中将携带的参数删除</p>
+</li>
+</ol>
+<p>写成代码就是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">keyword = input(<span class="string">'enter a keyword:'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 携带了请求参数的url，如果想要爬取不同关键字对应的页面，我们需要将url携带的参数进行动态化</span></span><br><span class="line"><span class="comment"># 实现参数动态化：</span></span><br><span class="line">params = &#123;</span><br><span class="line">    <span class="string">'query'</span>: keyword</span><br><span class="line">&#125;</span><br><span class="line">url = <span class="string">'https://www.sogou.com/web'</span></span><br><span class="line"><span class="comment">#params参数（字典）：保存请求时url携带的参数</span></span><br><span class="line">response = requests.get(url=url, params=params)</span><br><span class="line"></span><br><span class="line">page_text = response.text</span><br><span class="line">fileName = keyWord + <span class="string">'.html'</span></span><br><span class="line"><span class="keyword">with</span> open(fileName, <span class="string">'w'</span>, encoding=<span class="string">'utf-8'</span>) <span class="keyword">as</span> fp:</span><br><span class="line">    fp.write(page_text)</span><br><span class="line">print(fileName, <span class="string">'爬取完毕！！！'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>比如输入 jay，打开新生成的文件，它长这个样子：</p>
+<img src="/crawler/requests-dynamic/1584712198649.png" class="" width="1584712198649">
+
+<p>我们发现上面建议的采集器代码会产生两个问题：</p>
+<ol>
+<li>页面乱码了</li>
+<li>页面中的数据明显太少了，我们丢失了数据</li>
+</ol>
+<p>首先，让我们解决乱码问题。这很容易，只需要加一行代码，使用一个 encoding 命令即可实现：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">keyword = input(<span class="string">'enter a keyword: '</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 携带了请求参数的url，如果想要爬取不同关键字对应的页面，我们需要将url携带的参数进行动态化</span></span><br><span class="line"><span class="comment"># 实现参数动态化：</span></span><br><span class="line">params = &#123;</span><br><span class="line">    <span class="string">'query'</span>: keyword</span><br><span class="line">&#125;</span><br><span class="line">url = <span class="string">'https://www.sogou.com/web'</span></span><br><span class="line"><span class="comment"># params参数（字典）：保存请求时url携带的参数</span></span><br><span class="line">response = requests.get(url=url, params=params)</span><br><span class="line"><span class="comment"># 修改响应数据的编码格式</span></span><br><span class="line"><span class="comment"># encoding返回的是响应数据的原始的编码格式，如果给其赋值则表示修改了响应数据的编码格式</span></span><br><span class="line">response.encoding = <span class="string">'utf-8'</span></span><br><span class="line">page_text = response.text</span><br><span class="line">fileName = keyWord + <span class="string">'.html'</span></span><br><span class="line"><span class="keyword">with</span> open(fileName, <span class="string">'w'</span>, encoding=<span class="string">'utf-8'</span>) <span class="keyword">as</span> fp:</span><br><span class="line">    fp.write(page_text)</span><br><span class="line">print(fileName, <span class="string">'爬取完毕！！！'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>从结果来看，乱码问题是解决了。而且我们从中也了解到，数据量变少的原因：我们被搜狗的反爬策略限制了。</p>
+<img src="/crawler/requests-dynamic/1584712713346.png" class="" width="1584712713346">
+
+
+
+<p>处理乱码后，页面显示 <code>异常访问请求</code> 导致请求数据的缺失。这是因为网站后台已经检测出该次请求不是通过浏览器发起的请求而是通过爬虫程序发起的请求（不是通过浏览器发起的请求都是异常请求）。</p>
+<p>网站的后台主要是通过查看请求的请求头中的 user-agent 判定请求是不是通过浏览器发起的。</p>
+<p>什么是 User-Agent</p>
+<ul>
+<li>请求载体的身份标识，告诉服务器，使用的是什么工具（浏览器种类，操作系统类型，手机还是电脑，等）</li>
+<li>请求载体有且只有两种：<ul>
+<li>浏览器<ul>
+<li>浏览器的身份标识是统一固定，身份标识可以从抓包工具中获取。</li>
+</ul>
+</li>
+<li>爬虫程序<ul>
+<li>身份标识各自不同</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>这里就涉及到我们的第二种反爬机制，UA 检测：网站后台会检测请求对应的 User-Agent，以判定当前请求是否为异常请求。</p>
+<p>UA 检测对应的反反爬策略是 UA 伪装：我们使用一个浏览器的 User-Agent，而不是爬虫的，去访问网页。</p>
+<p>伪装流程：</p>
+<ul>
+<li>使用抓包工具捕获到某一个基于浏览器请求的 User-Agent 的值，将其伪装作用到一个字典中，将该字典作用到请求方法（get，post）的 headers 参数中即可。</li>
+<li>因为 UA 检测机制很多网站都会有，所以一般我们写爬虫代码的时候，都会加上 User-Agent 请求头，有备无患</li>
+</ul>
+<p>使用代码表示就是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">keyword = input(<span class="string">'enter a keyword:'</span>)</span><br><span class="line">headers = &#123;</span><br><span class="line">    <span class="string">'User-Agent'</span>:<span class="string">'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36'</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># 携带了请求参数的url，如果想要爬取不同关键字对应的页面，我们需要将url携带的参数进行动态化</span></span><br><span class="line"><span class="comment"># 实现参数动态化：</span></span><br><span class="line">params = &#123;</span><br><span class="line">    <span class="string">'query'</span>:keyword</span><br><span class="line">&#125;</span><br><span class="line">url = <span class="string">'https://www.sogou.com/web'</span></span><br><span class="line"><span class="comment"># params参数（字典）：保存请求时url携带的参数</span></span><br><span class="line"><span class="comment"># 实现了UA伪装</span></span><br><span class="line">response = requests.get(url=url, params=params, headers=headers)</span><br><span class="line"><span class="comment"># 修改响应数据的编码格式</span></span><br><span class="line"><span class="comment"># encoding返回的是响应数据的原始的编码格式，如果给其赋值则表示修改了响应数据的编码格式</span></span><br><span class="line">response.encoding = <span class="string">'utf-8'</span></span><br><span class="line">page_text = response.text</span><br><span class="line">fileName = keyWord + <span class="string">'.html'</span></span><br><span class="line"><span class="keyword">with</span> open(fileName, <span class="string">'w'</span>, encoding=<span class="string">'utf-8'</span>) <span class="keyword">as</span> fp:</span><br><span class="line">    fp.write(page_text)</span><br><span class="line">print(fileName, <span class="string">'爬取完毕！！！'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>这样，我们就成功拿到搜索页面：</p>
+<img src="/crawler/requests-dynamic/1584717824783.png" class="" width="1584717824783">
+
+<h3 id="爬取动态页面"><a href="#爬取动态页面" class="headerlink" title="爬取动态页面"></a>爬取动态页面</h3><p>现在我们要爬取豆瓣电影中的电影详情数据</p>
+<p>url 地址：<a href="https://movie.douban.com/typerank?type_name=%E5%8A%A8%E4%BD%9C&amp;type=5&amp;interval_id=100:90&amp;action=" target="_blank" rel="noopener">https://movie.douban.com/typerank?type_name=%E5%8A%A8%E4%BD%9C&amp;type=5&amp;interval_id=100:90&amp;action=</a></p>
+<p>我们想要页面中的电影信息：</p>
+<img src="/crawler/requests-dynamic/1584721106308.png" class="" width="1584721106308">
+
+<p>如果我们还像之前那样，直接爬取这个网址，把代码写成这样：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">url = <span class="string">'https://movie.douban.com/typerank?type_name=%E5%8A%A8%E4%BD%9C&amp;type=5&amp;interval_id=100:90&amp;action='</span></span><br><span class="line">headers = &#123;</span><br><span class="line">    <span class="string">'User-Agent'</span>: <span class="string">'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36'</span></span><br><span class="line">&#125;</span><br><span class="line">response = requests.get(url=url, headers=headers)</span><br><span class="line">page_text = response.text</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'movie.html'</span>, <span class="string">'w'</span>, encoding=<span class="string">'utf-8'</span>) <span class="keyword">as</span> fp:</span><br><span class="line">    fp.write(page_text)</span><br></pre></td></tr></table></figure>
+
+<p>执行完上面的代码，我们再打开生成的 <code>movie.html</code> 文件，却发现，里面并没有我们想要的电影详情信息：</p>
+<img src="/crawler/requests-dynamic/1584721169450.png" class="" width="1584721169450">
+
+<p>这是因为这个网页的数据是<strong>动态加载</strong>的。</p>
+<p>什么是动态加载的数据？</p>
+<ul>
+<li>我们通过 requests 模块进行数据爬取无法每次都实现可见即可得。</li>
+<li>有些数据是通过非浏览器地址栏中的 url 请求到的数据，而是通过其他请求方式（比如 ajax）请求到的数据。对于这些通过其他请求请求到的数据就是动态加载的数据。</li>
+</ul>
+<p>那么该如何检测网页中是否存在动态加载数据呢？</p>
+<p>我们当然可以想上面那样，先直接爬取页面看看，如果不能爬取到我们想要的数据，则说明网页很可能是动态加载的。</p>
+<p>但是这个办法住农家有点蠢，我们更常用的检测网页是否是动态加载的方式是使用浏览器的<strong>抓包工具</strong>进行检测。</p>
+<p>首先，基于抓包工具进行局部搜索。在当前网页中打开抓包工具，捕获到地址栏的url对应的数据包，在该数据包的response选项卡搜索我们想要爬取的数据，如果搜索到了结果则表示数据不是动态加载的，否则表示数据为动态加载的。</p>
+<img src="/crawler/requests-dynamic/browsercapturetoollocal.png" class="" title="browsercapturetoollocal">
+
+<p>如果已经确定数据为动态加载，我们该如何捕获到动态加载的数据？</p>
+<p>这就要基于抓包工具进行全局搜索。</p>
+<p>定位到动态加载数据对应的数据包，从该数据包中就可以提取出</p>
+<ul>
+<li>请求的 url</li>
+<li>请求方式</li>
+<li>请求携带的参数</li>
+<li>看到响应数据</li>
+</ul>
+<img src="/crawler/requests-dynamic/browsercapturetoolglobal.png" class="" title="browsercapturetoolglobal">
+
+<p>我们找到这个网址的动态请求的链接和各种请求参数，并且知道了请求的方法是 get。有了这些参数，我们就可以实现我们的数据请求：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">url = <span class="string">'https://movie.douban.com/j/chart/top_list?type=5&amp;interval_id=100%3A90&amp;action=&amp;start=0&amp;limit=20'</span></span><br><span class="line">headers = &#123;</span><br><span class="line">    <span class="string">'User-Agent'</span>: <span class="string">'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36'</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># 注意data的键值都写成字符串形式，没有值的话，就写成空字符串</span></span><br><span class="line">data = &#123;</span><br><span class="line">    <span class="string">'type'</span>: <span class="string">'5'</span>,</span><br><span class="line">    <span class="string">'interval_id'</span>: <span class="string">'100:90'</span>,</span><br><span class="line">    <span class="string">'action'</span>: <span class="string">''</span>,</span><br><span class="line">    <span class="string">'start'</span>: <span class="string">'0'</span>,</span><br><span class="line">    <span class="string">'limit'</span>: <span class="string">'20'</span>,</span><br><span class="line">&#125;</span><br><span class="line">response = requests.get(url=url, headers=headers, data=data)</span><br><span class="line"><span class="comment"># .json()将获取的字符串形式的json数据序列化成字典或者列表对象</span></span><br><span class="line">data_list = response.json()</span><br><span class="line"><span class="comment">#解析出电影的名称+评分</span></span><br><span class="line"><span class="keyword">for</span> movie <span class="keyword">in</span> data_list:</span><br><span class="line">    title = movie[<span class="string">'title'</span>]</span><br><span class="line">    score = movie[<span class="string">'score'</span>]</span><br><span class="line">    print(title, score)</span><br></pre></td></tr></table></figure>
+
+<p>可以通过修改 data 中的 start 和 limit 等数据，获取不同范围不同数目的结果。</p>
+<p>基于抓包工具进行全局搜索不一定可以每次都能定位到动态加载数据对应的数据包，因为有可能动态加载的数据是经过加密的密文数据。这种情况我们后面会有所提及。</p>
+<h3 id="分页数据的爬取"><a href="#分页数据的爬取" class="headerlink" title="分页数据的爬取"></a>分页数据的爬取</h3><p>需求：爬取肯德基的餐厅位置数据</p>
+<p>url：<a href="http://www.kfc.com.cn/kfccda/storelist/index.aspx" target="_blank" rel="noopener">http://www.kfc.com.cn/kfccda/storelist/index.aspx</a></p>
+<p>分析：</p>
+<ol>
+<li><p>在录入关键字的文本框中录入关键字按下搜索按钮，发起的是一个 ajax 请求。当前页面刷新出来的位置信息一定是通过 ajax 请求请求到的数据</p>
+</li>
+<li><p>基于抓包工具定位到该 ajax 请求的数据包，从该数据包中捕获到：</p>
+<ul>
+<li>请求的 url</li>
+<li>请求方式</li>
+<li>请求携带的参数</li>
+<li>看到响应数据</li>
+</ul>
+</li>
+</ol>
+<p>首先，我们先爬取第一的内容，注意这次的请求方法是 post，而不是 get 了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 爬取第一页的数据</span></span><br><span class="line">url = <span class="string">'http://www.kfc.com.cn/kfccda/ashx/GetStoreList.ashx?op=keyword'</span></span><br><span class="line">headers = &#123;</span><br><span class="line">    <span class="string">'User-Agent'</span>: <span class="string">'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36'</span></span><br><span class="line">&#125;</span><br><span class="line">data = &#123;</span><br><span class="line">    <span class="string">'cname'</span>: <span class="string">''</span>,</span><br><span class="line">    <span class="string">'pid'</span>: <span class="string">''</span>,</span><br><span class="line">    <span class="string">'keyword'</span>: <span class="string">'北京'</span>,</span><br><span class="line">    <span class="string">'pageIndex'</span>: <span class="string">'1'</span>,</span><br><span class="line">    <span class="string">'pageSize'</span>: <span class="string">'10'</span>,</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># data参数是post方法中处理参数动态化的参数</span></span><br><span class="line">response = requests.post(url=url, headers=headers, data=data)</span><br><span class="line">data_list = response.json()</span><br><span class="line"><span class="keyword">for</span> store <span class="keyword">in</span> data_list[<span class="string">'Table1'</span>]:</span><br><span class="line">    store_name = store[<span class="string">'storeName'</span>]</span><br><span class="line">    store_addr = store[<span class="string">'addressDetail'</span>]</span><br><span class="line">    print(store_name, store_addr)</span><br></pre></td></tr></table></figure>
+
+<p>很显然，要爬取其他页码的数据，我们只需要讲 pageIndex 的参数修改成需要的页码即可：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">url = <span class="string">'http://www.kfc.com.cn/kfccda/ashx/GetStoreList.ashx?op=keyword'</span></span><br><span class="line">headers = &#123;</span><br><span class="line">    <span class="string">'User-Agent'</span>: <span class="string">'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36'</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span> page <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">11</span>):</span><br><span class="line">    data = &#123;</span><br><span class="line">        <span class="string">'cname'</span>: <span class="string">''</span>,</span><br><span class="line">        <span class="string">'pid'</span>: <span class="string">''</span>,</span><br><span class="line">        <span class="string">'keyword'</span>: <span class="string">'北京'</span>,</span><br><span class="line">        <span class="string">'pageIndex'</span>: <span class="string">f'<span class="subst">&#123;page&#125;</span>'</span>,</span><br><span class="line">        <span class="string">'pageSize'</span>: <span class="string">'10'</span>,</span><br><span class="line">    &#125;</span><br><span class="line">    response = requests.post(url=url, headers=headers, data=data)</span><br><span class="line">    data_list = response.json()</span><br><span class="line">    <span class="keyword">for</span> store <span class="keyword">in</span> data_list[<span class="string">'Table1'</span>]:</span><br><span class="line">        store_name = store[<span class="string">'storeName'</span>]</span><br><span class="line">        store_addr = store[<span class="string">'addressDetail'</span>]</span><br><span class="line">        print(store_name, store_addr)</span><br></pre></td></tr></table></figure>
+
+<h3 id="练习题"><a href="#练习题" class="headerlink" title="练习题"></a>练习题</h3><p>任务：爬取药监总局中的企业详情数据</p>
+<p>url：<a href="http://125.35.6.84:81/xk/" target="_blank" rel="noopener">http://125.35.6.84:81/xk/</a></p>
+<p>需求：</p>
+<ul>
+<li>将首页中每一家企业的详情数据进行爬取。<ul>
+<li>每一家企业详情页对应的数据</li>
+</ul>
+</li>
+<li>将前5页企业的数据爬取即可。</li>
+</ul>
+<p>难点：</p>
+<ul>
+<li>用不到数据解析</li>
+<li>所有的数据都是动态加载出来</li>
+</ul>
+<p>提示：先试着将一家企业的详情页的详情数据爬取出来，然后再去爬取多家企业的数据。</p>
+<p>完成代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">headers = &#123;</span><br><span class="line">    <span class="string">'User-Agent'</span>: <span class="string">'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36'</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># 爬取前五页，每一家企业的详情</span></span><br><span class="line"><span class="keyword">for</span> page <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">6</span>):</span><br><span class="line">    url = <span class="string">'http://125.35.6.84:81/xk/itownet/portalAction.do?method=getXkzsList'</span></span><br><span class="line">    data = &#123;</span><br><span class="line">        <span class="string">'on'</span>: <span class="literal">True</span>,</span><br><span class="line">        <span class="string">'page'</span>: <span class="string">f'<span class="subst">&#123;page&#125;</span>'</span>,</span><br><span class="line">        <span class="string">'pageSize'</span>: <span class="string">'15'</span>,</span><br><span class="line">        <span class="string">'productName'</span>: <span class="string">''</span>,</span><br><span class="line">        <span class="string">'conditionType'</span>: <span class="string">'1'</span>,</span><br><span class="line">        <span class="string">'applyname'</span>: <span class="string">''</span>,</span><br><span class="line">    &#125;</span><br><span class="line">    response = requests.post(url=url, headers=headers, data=data)</span><br><span class="line">    response_data = response.json()</span><br><span class="line">    <span class="keyword">for</span> enterprise <span class="keyword">in</span> response_data.get(<span class="string">'list'</span>):</span><br><span class="line">        url = <span class="string">'http://125.35.6.84:81/xk/itownet/portalAction.do?method=getXkzsById'</span></span><br><span class="line">        data = &#123;</span><br><span class="line">            <span class="string">'id'</span>: enterprise.get(<span class="string">'ID'</span>)</span><br><span class="line">        &#125;</span><br><span class="line">        enterprise_response = requests.post(url=url, headers=headers, data=data)</span><br><span class="line">        enterprise_response_data = enterprise_response.json()</span><br><span class="line">        print(enterprise_response_data)</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"># Python</a>
+              <a href="/tags/Anaconda/" rel="tag"># Anaconda</a>
+              <a href="/tags/%E7%88%AC%E8%99%AB/" rel="tag"># 爬虫</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/crawler/crawler-intro/" rel="prev" title="爬虫概述">
+      <i class="fa fa-chevron-left"></i> 爬虫概述
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/crawler/anti-crawling/" rel="next" title="常见的反爬机制以及相应的反反爬策略">
+      常见的反爬机制以及相应的反反爬策略 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#requests-模块初步使用"><span class="nav-number">1.</span> <span class="nav-text">requests 模块初步使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参数动态化、UA-检测和-UA-伪装"><span class="nav-number">2.</span> <span class="nav-text">参数动态化、UA 检测和 UA 伪装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#爬取动态页面"><span class="nav-number">3.</span> <span class="nav-text">爬取动态页面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分页数据的爬取"><span class="nav-number">4.</span> <span class="nav-text">分页数据的爬取</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#练习题"><span class="nav-number">5.</span> <span class="nav-text">练习题</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="刘硕"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">刘硕</p>
+  <div class="site-description" itemprop="description">不成为自己讨厌的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">251</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:liushuo432@outlook.com" title="E-Mail → mailto:liushuo432@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/2436055290" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;2436055290" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://wpa.qq.com/msgrd?v=3&uin=1696146913&site=qq&menu=yes" title="QQ → http:&#x2F;&#x2F;wpa.qq.com&#x2F;msgrd?v&#x3D;3&amp;uin&#x3D;1696146913&amp;site&#x3D;qq&amp;menu&#x3D;yes" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-fw fa-rss"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备20001451号 </a>
+      <img src="/images/beian_icon.png" style="display: inline-block;"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=21142102000063" rel="noopener" target="_blank">辽公网安备 21142102000063号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘硕</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.2" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="/js/love.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/Epsilon2.1.model.json"},"display":{"superSample":2,"width":200,"height":400,"position":"left","hOffset":-30,"vOffset":-40},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>

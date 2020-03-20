@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="Tu5vqPaUb8svfkPx5eetJFD84ciQCcWVXNatdsWtj9Q">
+  <meta name="baidu-site-verification" content="baidu_verify_FBq9PG4BBb">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"appID":"PXY1Z6GHKT","apiKey":"eb82f2e78e3053f26aa408e9caa96d93","indexName":"blog","hits":{"per_page":10},"labels":{"input_placeholder":"要查点什么(✿◡‿◡)","hits_empty":"没有找到任何关于 ${query} 的结果╥﹏╥...","hits_stats":"搜索到 ${hits} 条记录，用时 ${time} ms o(*￣▽￣*)ブ"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Anaconda是一个基于数据分析和机器学习的集成环境（给我们集成好了数据分析和机器学习对应的各种环境和模块）。当然，我们也可以用它来完成网络爬虫的各种任务。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Anaconda 开发环境的搭建和 Jupyter 的基本使用">
+<meta property="og:url" content="https://sliu.vip/crawler/anaconda-jupyter/index.html">
+<meta property="og:site_name" content="刘硕的技术查阅手册">
+<meta property="og:description" content="Anaconda是一个基于数据分析和机器学习的集成环境（给我们集成好了数据分析和机器学习对应的各种环境和模块）。当然，我们也可以用它来完成网络爬虫的各种任务。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sliu.vip/crawler/anaconda-jupyter/1584684641232.png">
+<meta property="og:image" content="https://sliu.vip/crawler/anaconda-jupyter/1584684883655.png">
+<meta property="og:image" content="https://sliu.vip/crawler/anaconda-jupyter/clip_image008.jpg">
+<meta property="og:image" content="https://sliu.vip/crawler/anaconda-jupyter/clip_image010.jpg">
+<meta property="og:image" content="https://sliu.vip/crawler/anaconda-jupyter/clip_image012.jpg">
+<meta property="og:image" content="https://sliu.vip/crawler/anaconda-jupyter/1584685795937.png">
+<meta property="og:image" content="https://sliu.vip/crawler/anaconda-jupyter/1584696917558.png">
+<meta property="og:image" content="https://sliu.vip/crawler/anaconda-jupyter/1584698918412.png">
+<meta property="og:image" content="https://sliu.vip/crawler/anaconda-jupyter/1584699099412.png">
+<meta property="og:image" content="https://sliu.vip/crawler/anaconda-jupyter/1584700043968.png">
+<meta property="og:image" content="https://sliu.vip/crawler/anaconda-jupyter/1584700951389.png">
+<meta property="article:published_time" content="2020-03-20T17:21:36.397Z">
+<meta property="article:modified_time" content="2020-03-20T17:27:00.846Z">
+<meta property="article:author" content="刘硕">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="Anaconda">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sliu.vip/crawler/anaconda-jupyter/1584684641232.png">
+
+<link rel="canonical" href="https://sliu.vip/crawler/anaconda-jupyter/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>Anaconda 开发环境的搭建和 Jupyter 的基本使用 | 刘硕的技术查阅手册</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f14f123935d6183fdd06f8f1c4bc378f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="刘硕的技术查阅手册" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">刘硕的技术查阅手册</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">Python 全栈开发学习笔记</h1>
+      
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-toc">
+
+    <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+  
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/crawler/anaconda-jupyter/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          Anaconda 开发环境的搭建和 Jupyter 的基本使用
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-03-21 01:21:36 / 修改时间：01:27:00" itemprop="dateCreated datePublished" datetime="2020-03-21T01:21:36+08:00">2020-03-21</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%88%AC%E8%99%AB/" itemprop="url" rel="index"><span itemprop="name">爬虫</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+            <div class="post-description">Anaconda是一个基于数据分析和机器学习的集成环境（给我们集成好了数据分析和机器学习对应的各种环境和模块）。当然，我们也可以用它来完成网络爬虫的各种任务。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="Anaconda-和-Jupyter-的简要介绍"><a href="#Anaconda-和-Jupyter-的简要介绍" class="headerlink" title="Anaconda 和 Jupyter 的简要介绍"></a>Anaconda 和 Jupyter 的简要介绍</h2><p>Anaconda是一个基于数据分析和机器学习的集成环境（给我们集成好了数据分析和机器学习对应的各种环境和模块）。当然，我们也可以用它来完成网络爬虫的各种任务。</p>
+<p>Anaconda官方文档：<a href="https://docs.anaconda.com/anaconda/navigator/" target="_blank" rel="noopener">https://docs.anaconda.com/anaconda/navigator/</a></p>
+<p>文档是纯英文，暂时没有精力翻译这个了哈。</p>
+<p>Anaconda 这个集成环境提供了一个十分好用的基于浏览器可视化的编码工具，就是 Jupyter。也就是说，安装了 Anacanda，就默认以及安装好了 Jupyter，不许额外安装。</p>
+<h2 id="Anaconda-的安装"><a href="#Anaconda-的安装" class="headerlink" title="Anaconda 的安装"></a>Anaconda 的安装</h2><p>首先，在 <a href="https://www.anaconda.com/distribution/" target="_blank" rel="noopener">Anaconda 官网</a> 下载所需版本的 Anaconda 安装包。</p>
+<img src="/crawler/anaconda-jupyter/1584684641232.png" class="" width="1584684641232">
+
+<p>由于 Anaconda 的服务器在国外，访问和下载速度可能会比较慢，我们可以使用 <a href="https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/" target="_blank" rel="noopener">清华大学开源软件镜像站</a> 来下载 Anaconda 安装包，这样速度会快很多。</p>
+<img src="/crawler/anaconda-jupyter/1584684883655.png" class="" width="1584684883655">
+
+<p>下载好以后，运行安装包 exe 文件，一直按照默认的选项，点击下一步安装即可。其中有几个小点说明一下。</p>
+<p>首先是安装路径。大家都是程序员，道理都懂，开发软件的安装路径中<strong>不要出现中文、空格和特殊符号</strong>！可以用驼峰体，顶多用个下划线，别的符号一定不要用！比如 <code>Program Files(x86)</code> 这种就不要用了。一般情况，可以直接安装到磁盘根目录下。</p>
+<img src="/crawler/anaconda-jupyter/clip_image008.jpg" class="" title="clip_image008">
+
+<p> 然后时选择环境变量这块。官方不推荐直接加入到环境变量中。添加环境变量会让我们启动 Jupter 更方便，但也没什么必要。按需勾选吧。</p>
+<img src="/crawler/anaconda-jupyter/clip_image010.jpg" class="" title="clip_image010">
+
+<p>最后点击 install 开始安装，可能过程需要时间，耐心等待。</p>
+<img src="/crawler/anaconda-jupyter/clip_image012.jpg" class="" title="clip_image012">
+
+<p>测试安装是否成功：</p>
+<ul>
+<li><p>打开终端：jupyter notebook 按下回车。如果成功打开 jupyter，说明安装成功，且环境变量也配置成功了。</p>
+</li>
+<li><p>如果没有配置环境变量也没关系，在你的所有程序中（点击 Windows 键），找寻有没有一个叫做 anaconda 的文件夹，点击该文件件如果文件夹下方出现了一个叫做 navigator 程序也表示安装成功。只不过环境变量没有配置好。</p>
+<img src="/crawler/anaconda-jupyter/1584685795937.png" class="" width="1584685795937">
+
+</li>
+</ul>
+<h2 id="Jupyter-的基本使用"><a href="#Jupyter-的基本使用" class="headerlink" title="Jupyter 的基本使用"></a>Jupyter 的基本使用</h2><h3 id="打开-Jupyter"><a href="#打开-Jupyter" class="headerlink" title="打开 Jupyter"></a>打开 Jupyter</h3><p> 首先当然要打开 Jupyter。启动 Jupyter 有两种方式：</p>
+<ul>
+<li><p>方式 1：如果已经配置好环境变量，直接在终端中输入 jupyter notebook 按下回车即可</p>
+</li>
+<li><p>方式 2：如果没有配置环境变量（配置好环境变量也可以如此操作），打开 navigator，点击左上角的 home 选项，点击 jupyter notebook 图标下的 lauch 启动</p>
+</li>
+<li><p>方式 3（推荐）：在 Anaconda navigator 的 Environments 标签下打开终端。这样会打开一个 Anaconda 虚拟环境的终端，在这个终端中输入 jupyter notebook 即可启动 Jupyter。</p>
+
+
+</li>
+</ul>
+<p>在终端中录入 jupyter notebook 指令后，表示我们在本机中启动了一个服务。然后会自动打开你的默认浏览器。在启动前，可以先 cd 到项目目录的根目录下，Jupyter 会默认以此目录为根目录打开文件。终端对应的目录就是浏览器打开的 Jupyter 文件管理页面中的根目录。</p>
+<h3 id="new-新建"><a href="#new-新建" class="headerlink" title="new 新建"></a>new 新建</h3><p>在 Jupter 文件管理页面的右上角，有一个 new 按钮，用来新建文件或文件夹。</p>
+<img src="/crawler/anaconda-jupyter/1584696917558.png" class="" width="1584696917558">
+
+<p>我们可以新建四种项目：</p>
+<ul>
+<li>Python 3，新建一个 Jupyter 的源文件，这是我们要学习的重点，接下来会具体讨论它的用法</li>
+<li>Text File，普通文本文件，可以使用任何后缀名。创建的文件只能编辑，不能执行，不是很常用</li>
+<li>Folder，新建文件夹，跟普通文件夹一样</li>
+<li>Terminal，新建一个浏览器打开集成了 Anaconda 环境的终端，也不很常用</li>
+</ul>
+<h3 id="Jupyter-Python-3-源文件的基本使用（重点）"><a href="#Jupyter-Python-3-源文件的基本使用（重点）" class="headerlink" title="Jupyter Python 3 源文件的基本使用（重点）"></a>Jupyter Python 3 源文件的基本使用（重点）</h3><h4 id="cell-初识"><a href="#cell-初识" class="headerlink" title="cell 初识"></a>cell 初识</h4><p>在 Jupyter 中使用 new 创建一个新的 Python 3 文件。我们发现，这跟我们平时使用 PyCharm 创建的 py 文件不同：</p>
+<ul>
+<li>文件后缀名是 ipynb，而非 py，意思是 ipython notebook</li>
+<li>文档由一个个小单元格组成，称作 cell。cell 就是一行可编辑框</li>
+</ul>
+<img src="/crawler/anaconda-jupyter/1584698918412.png" class="" width="1584698918412">
+
+<p>cell 用来根据不同的模式进行代码和笔记的编写。编写好的代码和笔记可以直接在当前文件中运行，查看到运行结果。</p>
+<h4 id="cell-的模式"><a href="#cell-的模式" class="headerlink" title="cell 的模式"></a>cell 的模式</h4><p>在菜单栏可以选择 cell 的模式：</p>
+<img src="/crawler/anaconda-jupyter/1584699099412.png" class="" width="1584699099412">
+
+<p>我们看到，可以选择的 cell 模式有 4 种：Code、Markdown、Eaw NBConvert 和 Heading。我们主要使用前两种模式，即 Code 和 Markdown，接下来详细介绍一下。</p>
+<h5 id="Code-模式"><a href="#Code-模式" class="headerlink" title="Code 模式"></a>Code 模式</h5><p>Code 模型下的 cell 可以编写 Python 代码。代码可以是一行，也可以是多行。其特点为：</p>
+<ul>
+<li>每个 cell 独立运行，cell 的执行顺序无所谓，但是 cell 中的代码一定是自上而下执行的</li>
+<li>只要在一个 cell 中定义好了相关的变量/函数/类（相关的定义），当该 cell 执行后，则定义的内容就会被加载到当前源文件的缓存中。那么在任意其他的 cell 中就都可以直接使用之前定义好的加载到缓存中的变量/函数/类</li>
+</ul>
+<p>从下面途中的例子可以看出，cell 执行的顺序未必从上至下。后执行的 cell 可以使用前面 cell 产生的数据。</p>
+<img src="/crawler/anaconda-jupyter/1584700043968.png" class="" width="1584700043968">
+
+<h5 id="Markdown-模式"><a href="#Markdown-模式" class="headerlink" title="Markdown 模式"></a>Markdown 模式</h5><p>cell 的 Markdown 模式用于编写笔记。可以使用 markdown 集成好的指令指定文字的样式，也可以使用 html 标签指定文字的样式。</p>
+<p>就是普通的 markdown 语法写笔记，没啥好说的。</p>
+<h4 id="常用快捷键"><a href="#常用快捷键" class="headerlink" title="常用快捷键"></a>常用快捷键</h4><ul>
+<li>插入 cell：a（从当前 cell 上方插入），b（从当前 cell 下方插入）</li>
+<li>删除 cell：x</li>
+<li>执行 cell：shift + enter</li>
+<li>切换 cell 的模式：m（切换至 Markdown 模式），y（切换至 Code 模式）</li>
+<li>cell 执行后，在 cell 的左侧双击就可以切换回 cell 的可编辑模式</li>
+<li>收起执行结果：在执行结果左侧双击即可</li>
+<li>打开帮助文档：shift + tab</li>
+<li>自动补全：tab</li>
+<li>撤销：z</li>
+</ul>
+<h4 id="导出文件"><a href="#导出文件" class="headerlink" title="导出文件"></a>导出文件</h4><p>Jupyter 文件有导出为 markdown 的功能，但是因为会产生格式错误，所以部意见这样导出。更恰当的方式是写好之后将其导出为 HTML 文件：<code>File -&gt; Download as -&gt; HTML</code></p>
+<img src="/crawler/anaconda-jupyter/1584700951389.png" class="" width="1584700951389">
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"># Python</a>
+              <a href="/tags/Anaconda/" rel="tag"># Anaconda</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/project/renran-special/" rel="prev" title="荏苒资讯专题部分开发">
+      <i class="fa fa-chevron-left"></i> 荏苒资讯专题部分开发
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/crawler/crawler-intro/" rel="next" title="爬虫概述">
+      爬虫概述 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Anaconda-和-Jupyter-的简要介绍"><span class="nav-number">1.</span> <span class="nav-text">Anaconda 和 Jupyter 的简要介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Anaconda-的安装"><span class="nav-number">2.</span> <span class="nav-text">Anaconda 的安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Jupyter-的基本使用"><span class="nav-number">3.</span> <span class="nav-text">Jupyter 的基本使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#打开-Jupyter"><span class="nav-number">3.1.</span> <span class="nav-text">打开 Jupyter</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#new-新建"><span class="nav-number">3.2.</span> <span class="nav-text">new 新建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Jupyter-Python-3-源文件的基本使用（重点）"><span class="nav-number">3.3.</span> <span class="nav-text">Jupyter Python 3 源文件的基本使用（重点）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#cell-初识"><span class="nav-number">3.3.1.</span> <span class="nav-text">cell 初识</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#cell-的模式"><span class="nav-number">3.3.2.</span> <span class="nav-text">cell 的模式</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Code-模式"><span class="nav-number">3.3.2.1.</span> <span class="nav-text">Code 模式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#Markdown-模式"><span class="nav-number">3.3.2.2.</span> <span class="nav-text">Markdown 模式</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#常用快捷键"><span class="nav-number">3.3.3.</span> <span class="nav-text">常用快捷键</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#导出文件"><span class="nav-number">3.3.4.</span> <span class="nav-text">导出文件</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="刘硕"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">刘硕</p>
+  <div class="site-description" itemprop="description">不成为自己讨厌的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">251</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:liushuo432@outlook.com" title="E-Mail → mailto:liushuo432@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/2436055290" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;2436055290" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://wpa.qq.com/msgrd?v=3&uin=1696146913&site=qq&menu=yes" title="QQ → http:&#x2F;&#x2F;wpa.qq.com&#x2F;msgrd?v&#x3D;3&amp;uin&#x3D;1696146913&amp;site&#x3D;qq&amp;menu&#x3D;yes" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-fw fa-rss"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备20001451号 </a>
+      <img src="/images/beian_icon.png" style="display: inline-block;"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=21142102000063" rel="noopener" target="_blank">辽公网安备 21142102000063号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘硕</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.2" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  <script type="text/javascript" src="/js/love.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/Epsilon2.1.model.json"},"display":{"superSample":2,"width":200,"height":400,"position":"left","hOffset":-30,"vOffset":-40},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>
