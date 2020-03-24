@@ -30,7 +30,7 @@
 <meta property="og:description" content="数据解析，就是把我们所需要的数据从完整的网页中解析出来。数据解析主要用来实现聚焦爬虫。我们知道，网页中显示的数据都是储存在 HTML 的标签或者标签的属性中。所以我们往往也是基于 HTML 的标签对数据进行解析提取。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-03-23T17:27:18.137Z">
-<meta property="article:modified_time" content="2020-03-24T03:14:32.132Z">
+<meta property="article:modified_time" content="2020-03-24T17:01:16.634Z">
 <meta property="article:author" content="刘硕">
 <meta property="article:tag" content="Python">
 <meta property="article:tag" content="Anaconda">
@@ -235,10 +235,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-03-24 01:27:18 / 修改时间：11:14:32" itemprop="dateCreated datePublished" datetime="2020-03-24T01:27:18+08:00">2020-03-24</time>
+              <time title="创建时间：2020-03-24 01:27:18" itemprop="dateCreated datePublished" datetime="2020-03-24T01:27:18+08:00">2020-03-24</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-25 01:01:16" itemprop="dateModified" datetime="2020-03-25T01:01:16+08:00">2020-03-25</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -455,6 +461,12 @@
 <p>作业 2 参考：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</span><br><span class="line">headers = &#123;</span><br><span class="line">    <span class="string">'User-Agent'</span>: <span class="string">'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36'</span></span><br><span class="line">&#125;</span><br><span class="line">file_dir = <span class="string">'ZhanzhangCV'</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(file_dir):</span><br><span class="line">    os.mkdir(file_dir)</span><br><span class="line">main_url = <span class="string">'http://sc.chinaz.com/jianli/free.html'</span></span><br><span class="line">response = requests.get(url=main_url, headers=headers)</span><br><span class="line">response.encoding = <span class="string">'utf-8'</span></span><br><span class="line">page_text = response.text</span><br><span class="line">soup = BeautifulSoup(page_text, <span class="string">'lxml'</span>)</span><br><span class="line">a_list = soup.select(<span class="string">'#container p &gt; a'</span>)</span><br><span class="line"><span class="keyword">for</span> a <span class="keyword">in</span> a_list:</span><br><span class="line">    detail_url = a[<span class="string">'href'</span>]</span><br><span class="line">    title = a.text</span><br><span class="line">    detail_response = requests.get(url=detail_url, headers=headers)</span><br><span class="line">    detail_response.encoding = <span class="string">'utf-8'</span></span><br><span class="line">    detail_soup = BeautifulSoup(detail_response.text, <span class="string">'lxml'</span>)</span><br><span class="line">    file_url = detail_soup.select(<span class="string">'.downlist li a'</span>)[<span class="number">0</span>][<span class="string">'href'</span>]</span><br><span class="line">    file_name = os.path.join(file_dir, title + <span class="string">'.rar'</span>)</span><br><span class="line">    file_data = requests.get(url=file_url, headers=headers).content</span><br><span class="line">    <span class="keyword">with</span> open(file_name, <span class="string">'wb'</span>) <span class="keyword">as</span> fp:</span><br><span class="line">        fp.write(file_data)</span><br><span class="line">    print(title, <span class="string">'下载完毕！'</span>)</span><br></pre></td></tr></table></figure>
 
+<h3 id="图片懒加载"><a href="#图片懒加载" class="headerlink" title="图片懒加载"></a>图片懒加载</h3><p>图片懒加载常见于一些图片比较多的网站。懒加载的目的不单单是为了反爬，它可以减少用户打开网页所需要的时间，提高用户体验。不过这也确实给我们爬虫造成一些困扰。</p>
+<p>图片懒加载的解决的解决要灵活处理，根据网页实现懒加载方式的不同，会有不同的处理方式。</p>
+<p>比如站长素材的缩略图，通过将 img 标签的 src 属性先命名为 src2。等图片出现到浏览器视野中的时候，src2 会被更名回 src，从而实现图片的懒加载。</p>
+<p>但是对于 requests 请求来说，并不会有图片出现在浏览器视野中，所以图片的 src 属性全都为 src2。此时如果还用 src 属性查找图片链接，是找不到的，应该使用 src 2 来查找。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> etree</span><br><span class="line">headers = &#123;</span><br><span class="line">    <span class="string">'User-Agent'</span>: <span class="string">'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36'</span></span><br><span class="line">&#125;</span><br><span class="line">img_dir = <span class="string">'ZhanzhangGirls'</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(img_dir):</span><br><span class="line">    os.mkdir(img_dir)</span><br><span class="line">url = <span class="string">'http://sc.chinaz.com/tag_tupian/YaZhouMeiNv.html'</span></span><br><span class="line">response = requests.get(url=url, headers=headers)</span><br><span class="line">response.encoding = <span class="string">'utf-8'</span></span><br><span class="line">data_text = response.text</span><br><span class="line">tree = etree.HTML(data_text)</span><br><span class="line">img_list = tree.xpath(<span class="string">'//div[@id="container"]//img'</span>)</span><br><span class="line"><span class="keyword">for</span> img <span class="keyword">in</span> img_list:</span><br><span class="line">    title = os.path.join(img_dir, img.xpath(<span class="string">'./@alt'</span>)[<span class="number">0</span>] + <span class="string">'.jpg'</span>)</span><br><span class="line">    <span class="comment"># 去掉链接中的 _s 即可获得高清图片</span></span><br><span class="line">    img_url = img.xpath(<span class="string">'./@src2'</span>)[<span class="number">0</span>][:<span class="number">-6</span>] + <span class="string">'.jpg'</span></span><br><span class="line">    img_data = requests.get(url=img_url, headers=headers).content</span><br><span class="line">    <span class="keyword">with</span> open(title, <span class="string">'wb'</span>) <span class="keyword">as</span> fp:</span><br><span class="line">        fp.write(img_data)</span><br><span class="line">    print(title, <span class="string">'下载完成！'</span>)</span><br></pre></td></tr></table></figure>
+
     </div>
 
     
@@ -541,7 +553,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#数据解析初识"><span class="nav-number">1.</span> <span class="nav-text">数据解析初识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#爬取图片的两种方式"><span class="nav-number">2.</span> <span class="nav-text">爬取图片的两种方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正则解析"><span class="nav-number">3.</span> <span class="nav-text">正则解析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bs4-解析"><span class="nav-number">4.</span> <span class="nav-text">bs4 解析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#xpath-解析"><span class="nav-number">5.</span> <span class="nav-text">xpath 解析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bs4-和-xpath-综合讨论"><span class="nav-number">6.</span> <span class="nav-text">bs4 和 xpath 综合讨论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#作业，爬取站长素材高清图片和简历模板"><span class="nav-number">7.</span> <span class="nav-text">作业，爬取站长素材高清图片和简历模板</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#数据解析初识"><span class="nav-number">1.</span> <span class="nav-text">数据解析初识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#爬取图片的两种方式"><span class="nav-number">2.</span> <span class="nav-text">爬取图片的两种方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正则解析"><span class="nav-number">3.</span> <span class="nav-text">正则解析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bs4-解析"><span class="nav-number">4.</span> <span class="nav-text">bs4 解析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#xpath-解析"><span class="nav-number">5.</span> <span class="nav-text">xpath 解析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bs4-和-xpath-综合讨论"><span class="nav-number">6.</span> <span class="nav-text">bs4 和 xpath 综合讨论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#作业，爬取站长素材高清图片和简历模板"><span class="nav-number">7.</span> <span class="nav-text">作业，爬取站长素材高清图片和简历模板</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#图片懒加载"><span class="nav-number">7.1.</span> <span class="nav-text">图片懒加载</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -557,14 +569,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">264</span>
+          <span class="site-state-item-count">269</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">

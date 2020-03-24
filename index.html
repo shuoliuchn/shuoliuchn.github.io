@@ -230,6 +230,795 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/git/gitignore/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/git/gitignore/" class="post-title-link" itemprop="url">Git 忽略文件 .gitignore</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-03-25 01:01:15 / 修改时间：01:01:16" itemprop="dateCreated datePublished" datetime="2020-03-25T01:01:15+08:00">2020-03-25</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Git/" itemprop="url" rel="index"><span itemprop="name">Git</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/git/gitignore/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/git/gitignore/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>我们让 git 管理文件的时候，可以设置一些让 git 忽略的文件或者文件夹。通过一个叫做 <code>.gitignore</code> 的文件，告诉 git 那些文件或文件夹不需要它帮我们进行版本控制。</p>
+<p>首先在我们的 git 本地仓库中创建一个这样名为 <code>.gitignore</code> 的文件，文件中写上一下内容，看例子：</p>
+<img src="/git/gitignore/988061-20191021214018525-1304216785.png" class="" title="988061-20191021214018525-1304216785">
+
+<p>添加让 git 忽略的文件：</p>
+ <img src="/git/gitignore/988061-20191021214208096-1607947450.png" class="" title="988061-20191021214208096-1607947450">
+
+<p>还可以添加 <code>.gitignore</code> 自己，通过 <code>*.txt</code> 能够将所有的 <code>.txt</code> 结尾的文件全部让 git 忽略掉：</p>
+<img src="/git/gitignore/988061-20191021214350577-1737908723.png" class="" title="988061-20191021214350577-1737908723">
+
+<p>举个会用到 gitignore 的例子：当我们使用 python 语言的 django 框架来进行代码开发的时候，这个框架会自动生成一个 sqlite 数据库文件在项目中。其实这样项目将来在我们提交代码的时候，往往是不需要提交的。所以就可以将它设置为忽略。</p>
+<p>gitignore 文件中还有下面的一些写法：</p>
+<img src="/git/gitignore/988061-20191021214808282-865588680.png" class="" title="988061-20191021214808282-865588680">
+
+<p>其实我们在写项目的时候，不管你用什么开发语言，其实都会有一些你关注不到的，但是自动生成的，还不需要提交的一些文件。GitHub 给我们提供了一个各种开发语言的一个可忽略的文件汇总，只需要将对应语言的文件中的内容拷贝到我们的 gitignore 文件中，然后根据实际情况稍作修改就可以了。看下图，在 GitHub 中搜索 gitingore。</p>
+<img src="/git/gitignore/988061-20191021215306160-425949188.png" class="" title="988061-20191021215306160-425949188">
+
+<img src="/git/gitignore/988061-20191021215322410-907483550.png" class="" title="988061-20191021215322410-907483550">
+
+<p>然后看到下面的内容： 地址：<a href="https://github.com/github/gitignore" target="_blank" rel="noopener">https://github.com/github/gitignore</a></p>
+<img src="/git/gitignore/988061-20191021215423644-413772398.png" class="" title="988061-20191021215423644-413772398">
+
+<p>然后： </p>
+<img src="/git/gitignore/988061-20191021215529428-298271214.png" class="" title="988061-20191021215529428-298271214">
+
+<p>注意，在公司进行开发的时候，一定要加上 gitignore，不然容易将一些敏感的信息提交到远程，不安全。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/git/issues-wiki/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/git/issues-wiki/" class="post-title-link" itemprop="url">GitHub 做任务管理相关 Issues 和 Wiki</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-03-25 01:01:15 / 修改时间：01:01:16" itemprop="dateCreated datePublished" datetime="2020-03-25T01:01:15+08:00">2020-03-25</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Git/" itemprop="url" rel="index"><span itemprop="name">Git</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/git/issues-wiki/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/git/issues-wiki/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="issues"><a href="#issues" class="headerlink" title="issues"></a>issues</h3><p>issues 就是问题，在项目使用过程中遇到了什么操作上的问题，或者发现了什么 bug，可以通过提交 issues 向作者反映。具体做法很简单，点点点就行了：</p>
+<img src="/git/issues-wiki/988061-20191021220110493-1914835709.png" class="" title="988061-20191021220110493-1914835709">
+
+<p>然后看下图：</p>
+<img src="/git/issues-wiki/988061-20191021220602556-953724024.png" class="" title="988061-20191021220602556-953724024">
+
+<p>还可以看下图，给问题打个标签，你是提的bug啊还是文档啊还是什么的。</p>
+<img src="/git/issues-wiki/988061-20191021220443250-1317892656.png" class="" title="988061-20191021220443250-1317892656">
+
+<p>还可以做bug管理，比如你提的这个问题是个bug，你可以选择bug类型，然后指派给别人进行处理。</p>
+<img src="/git/issues-wiki/988061-20191021220745609-1007905329.png" class="" title="988061-20191021220745609-1007905329">
+
+<p>然后我们再点击上面这个issues选项，会看到下面的页面：</p>
+<img src="/git/issues-wiki/988061-20191021220844009-235439269.png" class="" title="988061-20191021220844009-235439269">
+
+<h3 id="2-wiki"><a href="#2-wiki" class="headerlink" title="2.wiki"></a>2.wiki</h3><p>项目介绍，百科，其实写一个项目，都需要写wiki，来做项目的整体描述和说明，其他人来参与项目的时候，先看wiki。</p>
+<img src="/git/issues-wiki/988061-20191021220941653-266480100.png" class="" title="988061-20191021220941653-266480100">
+
+<p>然后看到下面的页面：</p>
+<img src="/git/issues-wiki/988061-20191021221109607-451028730.png" class="" title="988061-20191021221109607-451028730">
+
+<p>到这里，我们的git就学完了，谢谢大家！</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/database/database-basic/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/database/database-basic/" class="post-title-link" itemprop="url">数据库的基本概念和 Windows 下安装 MySQL</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-03-25 01:01:14 / 修改时间：01:01:16" itemprop="dateCreated datePublished" datetime="2020-03-25T01:01:14+08:00">2020-03-25</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/database/database-basic/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/database/database-basic/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="数据库的概念"><a href="#数据库的概念" class="headerlink" title="数据库的概念"></a>数据库的概念</h3><p>我们从前都是把数据存放到文件当中。但是对于真正的生产环境而言，文件存储有其先天的不足。</p>
+<p>比如，很多情况下，我们的客户端和服务器都不止一个。而如果把数据只以文件的形式存储到一个服务器上，另一台服务器可能不能及时接收到相应。对于用户信息之类的重要数据而言，这将是不可接受的。而且我们往往一台计算机只进行一种任务。这样的话，即便有一台计算机出了问题，其他计算机依然可以继续正常工作，整个系统的容灾性会很好。</p>
+<p>于是，很多情况下，我们会把储存数据的任务交给独特的计算机，也就是数据库。</p>
+<img src="/database/database-basic/databaserelationshipsingle.png" class="" title="databaserelationshipsingle">
+
+<p>当然，一台数据库也可能不能满足我们对多任务处理和数据安全的要求，我们还会使用多台计算机协调备份数据。</p>
+<img src="/database/database-basic/databaserelationshipmultiple.png" class="" title="databaserelationshipmultiple">
+
+<p>数据库之间实时要进行通信，一旦某一个数据库中的数据发生了改变，另一个数据库也要及时备份。</p>
+<p>我们其实可以按照从前学过的 socket 网络编程和文件操作的只是来实现数据库的操作。但是，如果要保证能够完美地支持高并发，支持多台计算机完美协调，将会是一个极其困难繁琐的工作。</p>
+<p>好在有很多很厉害的程序员已经帮我们写好了这类处理存储数据的工具，我们可以直接拿来用。这就是我们要学期的数据库管理系统。</p>
+<p><strong>数据库是一个存储数据的工具</strong>。</p>
+<p>数据库帮我们解决了很多问题：</p>
+<ul>
+<li>安全认证</li>
+<li>并发问题，多个程序都请求同一个数据库获取数据</li>
+<li>优化：缓存 cache，分析</li>
+<li>容灾：数据库搭建集群</li>
+</ul>
+<p>这里解释一下数据库对我们存储数据的优化。当数据量很大的时候，我们先想要从中获取想要的数据可能会比较麻烦。而有些数据，我们又需要经常地反复地获取。如果每次数据库都从硬盘中重新查找，将会耗费很多时间。于是，很多数据库都对这种情况做出了优化。当我们使用完一条数据之后，这条数据会储存到一个暂存区cache中。当我们下次还想获取同样的数据时，不会去硬盘中查找，而是先去缓存cache中查找。如果能够找到，那就直接使用。这样一来，对于一些经常使用的数据，会节省很多查找的时间，从而提高程序的运行效率。</p>
+<h3 id="数据库的基本术语"><a href="#数据库的基本术语" class="headerlink" title="数据库的基本术语"></a>数据库的基本术语</h3><p>数据库经过这么多年的发展，已经相当成熟。程序员间对数据库中的一些概念有了一套约定俗成的称谓，也就是数据库的基本术语。我们需要了解这些数据，以便日后能够跟人更好地交流学习。</p>
+<p>数据库管理系统（DBMS，database management system）：</p>
+<ul>
+<li>管理着一个大的文件系统</li>
+<li>包括文件夹（数据库）和文件（表）</li>
+</ul>
+<p>数据库（DB，database）：就是文件夹</p>
+<p>表（table）：文件</p>
+<p>一条数据：文件中的每一行数据</p>
+<p>数据：data</p>
+<p>数据库管理员（DBA）：database administrator</p>
+<p>需要指明的是，我们口头上常说的数据库，并不单单指文件夹。我们说的数据库，可能指文件夹，也可能指数据库管理系统，还可能指整个数据库的软硬件体系。具体指代哪一个，要因地制宜，不可钻牛角尖。</p>
+<h3 id="数据库的分类"><a href="#数据库的分类" class="headerlink" title="数据库的分类"></a>数据库的分类</h3><p>数据库根据其数据间的逻辑，可分为关系型数据库和非关系型数据库两类，其代表性的数据库分别有：</p>
+<ul>
+<li>关系型数据库：MySQL，Oracle，SQL server，SQLite</li>
+<li>非关系型数据库：Redis，MongoDB，HBase，MemCache</li>
+</ul>
+<h3 id="MySQL-的安装"><a href="#MySQL-的安装" class="headerlink" title="MySQL 的安装"></a>MySQL 的安装</h3><p>我们要学习的数据库是 MySQL。选择这个数据库的原因是，它发展的时间较久，总体而言比较成熟。而且它开源免费，深受互联网公司欢迎。基本上，我们国家的互联网公司，使用的关系型数据库，90% 以上都是 MySQL。</p>
+<p>最新的 MySQL 版本是 8.0 版本。但是一般而言，新版本的软件不确定性很多。比如兼容性和稳定性都不很确定。大多数时候，我们都会选择一个从前的稳定版本来使用。于是，我们安装的不是最新的 MySQL 8.0 版本，而是 5.6 版本。</p>
+<p>之所以也不使用 5.7 版本，是因为 5.7 版本在初始化时会默认生成一个密码，如果没有记住又没来得及修改很麻烦，所以不推荐使用。</p>
+<p>我们下载 MySQL 只能来自两个途径，<a href="www.mysql.com">MySQL官方网站</a> 和公司给我们提供的 MySQL。其他途径下载的 MySQL 有可能会存在安全隐患，极度不推荐使用。数据是极其重要的，万不可以马虎。</p>
+<p>首先，我们在浏览器中输入 <code>www.mysql.com</code> 进入 <a href="www.mysql.com">MySQL官方网站</a>。点击主页上的 <code>DOWNLOADS</code> 标签，进入 <a href="https://www.mysql.com/downloads/" target="_blank" rel="noopener">MySQL的下载页</a>，<code>https://www.mysql.com/downloads/</code>。</p>
+
+
+<p>在下载页中，找到 MySQL 社区版下载的入口，<code>MySQL Community (GPL) Downloads »</code>，进入到 <a href="https://dev.mysql.com/downloads/" target="_blank" rel="noopener">社区版下载页</a>，<code>https://dev.mysql.com/downloads/</code>。</p>
+
+
+<p>找到需要下载在哪种平台使用的 MySQL。我用的是 Windows 系统，所以选择 <code>MySQL Installer for Windows</code>。进入到 <a href="https://dev.mysql.com/downloads/installer/" target="_blank" rel="noopener">最新版本MySQL的下载页面</a>，<code>https://dev.mysql.com/downloads/installer/</code>。如果是 macOS 或 Linux 系统，也可以按自己的需要下载不同的版本。</p>
+
+
+<p>这个页面是最新的 8.0 版本的下载页面。按我们刚刚所说，我们要下载的是 5.6 版本。点击右上角的 <code>Looking for previous GA versions?</code>，进入到版本选择界面。</p>
+
+
+<p>在下拉框中选择我们要下载的 5.6.45 版本。</p>
+<p>这个方法虽然也能找到 5.6 版本 MySQL 的安装包，但只能找到 32 位版本。如果想要下载 64 位版本的安装包，可以去 <a href="https://dev.mysql.com/downloads/mysql/5.6.html#downloads" target="_blank" rel="noopener">5.6版本专门的下载界面</a>，<code>https://dev.mysql.com/downloads/mysql/5.6.html#downloads</code>。</p>
+
+
+<p>下载好了之后，将压缩包解压到文件夹中。最好把它解压到根目录中。</p>
+<p>需要注意的是，安装路径要尽量避免出现中文。而且不可以有 <code>\n \t</code> 之类有特殊含义的字母。</p>
+<p>使用 PyCharm 创建一个名为 <code>my.ini</code> 的文件，并在文件中写入下面的内容（千万不要用记事本打开，现在不要，以后也不要）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[mysql]</span><br><span class="line"><span class="comment"># 设置mysql客户端默认字符集</span></span><br><span class="line">default-character-set=utf8</span><br><span class="line">[mysqld]</span><br><span class="line"><span class="comment">#设置3306端口</span></span><br><span class="line">port = 3306</span><br><span class="line"><span class="comment"># 设置mysql的安装目录</span></span><br><span class="line">basedir=C:\mysql-5.6.46-winx64</span><br><span class="line"><span class="comment"># 设置mysql数据库的数据的存放目录</span></span><br><span class="line">datadir=C:\mysql-5.6.46-winx64\data</span><br><span class="line"><span class="comment"># 允许最大连接数</span></span><br><span class="line">max_connections=200</span><br><span class="line"><span class="comment"># 服务端使用的字符集默认为8比特编码的latin1字符集</span></span><br><span class="line">character-set-server=utf8</span><br><span class="line"><span class="comment"># 创建新表时将使用的默认存储引擎</span></span><br><span class="line">default-storage-engine=INNODB</span><br></pre></td></tr></table></figure>
+
+<p>如果你是复制粘贴过去的，首先要检查每一行后面是否有空格。如果有，一定要删除干净。<strong>每一行后面都不可以有任何空格</strong>，否则可能会出现莫名其妙的错误。</p>
+<p>然后，将 <code>basedir</code> 和 <code>datadir</code> 两个修改成你刚刚解压的 MySQL 文件所处的路径。</p>
+<p>修改完成后，保存并关闭。然后把这个 <code>my.ini</code> 文件放到刚刚解压的 MySQL 根目录中。</p>
+
+
+<p>数据会存放在 data 文件夹中，而命令的执行程序则被放在 bin 文件夹中。</p>
+
+
+<p>我们需要把 bin 所在的目录放到环境变量中，这样才能顺利使用 MySQL 的各种命令。</p>
+
+
+<p>以<strong>管理员身份</strong>运行终端 cmd，在终端中输入下面两条命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysqld install</span><br><span class="line">net start mysql</span><br></pre></td></tr></table></figure>
+
+<p>如果提示安装成功，则说明一切安装顺利。</p>
+
+
+
+
+<p>如果输入第一条命令时，提示说 mysqld 不是系统命令，说明没有成功将 bin 目录添加到环境变量中，需要检查一下环境变量。</p>
+<p>另外一个需要注意的是一定要以管理员身份运行 cmd。具体方法是，在搜索框（比如小娜）中，搜索 cmd，然后右键出现的 cmd，选择以管理员身份运行即可。</p>
+
+
+<p>还有一点，不可以双击打开 <code>my.ini</code> 文件。因为 Windows 使用的是 gbk 编码，而我们需要它使用 utf-8 编码。但是，如果我们双击打开文件，有可能会改变文件的编码方式，从而导致错误。如果需要编辑，可以使用 PyCharm 或者 notepad++ 之类的能够指定编码的编辑器。</p>
+<p>我们刚刚输入了两条命令，其含义为：</p>
+<ol>
+<li><code>mysqld install</code>，在命令行中启动 <code>mysqld.exe</code> 文件，传入了一个参数 install</li>
+<li><code>net start mysql</code>，告诉操作系统启动已经安装好的 MySQL 服务</li>
+</ol>
+
+
+<p>MySQL 的服务默认开机自启，只要我们不关闭，就会一直在后台运行。如果我们想要关闭这个服务，可以使用与开启服务类似的命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">net stop mysql</span><br></pre></td></tr></table></figure>
+
+<p>只有安装 MySQL 和开启关闭 MySQL 服务时需要使用管理员身份运行 cmd，其他操作都可以在普通的 cmd 中运行。</p>
+<p>另外，我们还需要区分 MySQL 的服务端和客户端：当我们执行 <code>mysql.exe</code> 文件时，实际上执行的是客户端。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/crawler/requests-advanced/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/crawler/requests-advanced/" class="post-title-link" itemprop="url">requests 高级用法之获取 Cookie、使用代理和识别验证码</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-03-25 01:01:14 / 修改时间：01:01:16" itemprop="dateCreated datePublished" datetime="2020-03-25T01:01:14+08:00">2020-03-25</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%88%AC%E8%99%AB/" itemprop="url" rel="index"><span itemprop="name">爬虫</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/crawler/requests-advanced/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/crawler/requests-advanced/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="获取-Cookie"><a href="#获取-Cookie" class="headerlink" title="获取 Cookie"></a>获取 Cookie</h3><p>Cookie 是存储在客户端浏览器中的一组键值对。</p>
+<p>web 中 Cookie 的典型应用为免密登录。</p>
+<p>Cookie 和爬虫之间也有千丝万缕的关联：</p>
+<ul>
+<li>有时候，对一张页面进行请求的时候，如果请求的过程中不携带 Cookie 的话，那么我们是无法请求到正确的页面数据。因此 Cookie 是爬虫中一个非常典型且常见的反爬机制。</li>
+</ul>
+<p>接下来，我们看一个需要用到 Cookie 的爬虫案例。</p>
+<p>需求：爬取雪球网中的咨询信息。</p>
+<p>网址 url：<a href="https://xueqiu.com/" target="_blank" rel="noopener">https://xueqiu.com/</a></p>
+<p>分析：</p>
+<ol>
+<li>判定爬取的咨询数据是否为动态加载的<ul>
+<li>相关的更多咨询数据是动态加载的，滚轮滑动到底部的时候会动态加载出更多咨询数据。</li>
+</ul>
+</li>
+<li>定位到 ajax 请求的数据包，提取出请求的 url，响应数据为 json 形式的咨询数据</li>
+</ol>
+<p>尝试使用常规方法抓取数据：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">headers = &#123;</span><br><span class="line">    <span class="string">'User-Agent'</span>: <span class="string">'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36'</span></span><br><span class="line">&#125;</span><br><span class="line">url = <span class="string">'https://xueqiu.com/v4/statuses/public_timeline_by_category.json?since_id=-1&amp;max_id=20369485&amp;count=15&amp;category=-1'</span></span><br><span class="line">response = requests.get(url=url, headers=headers)</span><br><span class="line">print(response.json())</span><br></pre></td></tr></table></figure>
+
+<p>数据拿到了吗？拿到了。但是为什么不开心？因为拿到的数据是这么一串玩意儿：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="string">'error_description'</span>: <span class="string">'遇到错误，请刷新页面或者重新登录帐号后再试'</span>, <span class="string">'error_uri'</span>: <span class="string">'/v4/statuses/public_timeline_by_category.json'</span>, <span class="string">'error_data'</span>: <span class="literal">None</span>, <span class="string">'error_code'</span>: <span class="string">'400016'</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p>数据没写错，但是却没拿到正确的响应。我们没有请求到我们想要的数据</p>
+<p>原因：我们没有严格意义上模拟浏览器发请求，比如没有携带 Cookie。</p>
+<p>处理：可以将浏览器发请求携带的请求头，全部粘贴在 headers 字典中，将 headers 作用到 requests 的请求操作中即可。</p>
+<p>Cookie 有两种处理方式</p>
+<p>方式1：手动处理</p>
+<ul>
+<li>将抓包工具中的cookie粘贴在headers中</li>
+<li>弊端：cookie如果过了有效时长则该方式失效。</li>
+</ul>
+<p>方式2：自动处理</p>
+<ul>
+<li><p>基于Session对象实现自动处理。</p>
+<ol>
+<li><p>获取一个 session 对象：<code>requests.Session()</code> 返回一个 session 对象。</p>
+</li>
+<li><p>使用 session 对象可以像 requests 一样调用get和post发起指定的请求。只不过如果在使用 session 对象发请求的过程中产生了 cookie，cookie 会被自动存储到该 session 对象中。在下次再次使用 session 对象发起请求时，该次请求就是携带cookie进行的请求发送。</p>
+</li>
+</ol>
+</li>
+</ul>
+<p>问：在爬虫中使用 session 的时候，session 对象至少会被使用几次？</p>
+<p>答：两次。第一次使用 session 是为了将 cookie 捕获且存储到 session 对象中。下次的时候就是携带 cookie 进行的请求发送。</p>
+<p>一般情况下，直接访问首页就可以获得浏览器返回的 Cookie。使用 Cookie 即可进行下一步的操作。</p>
+<p>上面雪球网的例子，我们就可以修改成这样：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">headers = &#123;</span><br><span class="line">    <span class="string">'User-Agent'</span>: <span class="string">'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36'</span></span><br><span class="line">&#125;</span><br><span class="line">session = requests.Session()    <span class="comment"># 创建sesion对象</span></span><br><span class="line"><span class="comment"># 第一次使用session捕获且存储cookie，猜测对雪球网的首页发起的请求可能会产生cookie</span></span><br><span class="line">session.get(url=<span class="string">'https://xueqiu.com/'</span>, headers=headers)    <span class="comment"># 捕获并存储cookie</span></span><br><span class="line">url = <span class="string">'https://xueqiu.com/v4/statuses/public_timeline_by_category.json?since_id=-1&amp;max_id=20369485&amp;count=15&amp;category=-1'</span></span><br><span class="line">response = session.get(url=url, headers=headers)    <span class="comment"># 携带cookie发起的请求</span></span><br><span class="line">print(response.json())</span><br></pre></td></tr></table></figure>
+
+<p>顺利拿到想要的数据。</p>
+<h3 id="代理操作"><a href="#代理操作" class="headerlink" title="代理操作"></a>代理操作</h3><p>在爬虫中，所谓的代理指的就是代理服务器。代理服务器的作用是用来转发请求和响应。</p>
+<p>在爬虫中为什么会需要使用代理服务器？</p>
+<ul>
+<li>如果我们的爬虫在短时间内对服务器发起了高频的请求，那么服务器一旦检测到这样的一个异常的行为请求，就有可能将该请求对应设备的 ip 禁掉，这样这台 client 设备就无法对服务器端再次进行请求发送（ip被禁掉了）。</li>
+<li>如果 ip 被禁，我们可以使用代理服务器进行请求转发，破解 ip 被禁的反爬机制。因为使用代理后，服务器端接受到的请求对应的 ip 地址就是代理服务器而不是我们真正的客户端的。</li>
+</ul>
+<p>代理服务器分为不同的匿名度：</p>
+<ul>
+<li>透明代理：如果使用了该形式的代理，服务器端知道你使用了代理机制也知道你的真实 ip。</li>
+<li>匿名代理：知道你使用代理，但是不知道你的真实 ip</li>
+<li>高匿代理：不知道你使用了代理也不知道你的真实 ip</li>
+</ul>
+<p>代理的类型</p>
+<ul>
+<li>https：代理只能转发 https 协议的请求</li>
+<li>http：转发 http 的请求</li>
+</ul>
+<p>常用的代理服务器</p>
+<ul>
+<li>快代理</li>
+<li>西刺代理</li>
+<li>goubanjia</li>
+<li>代理精灵（推荐）：<a href="http://http.zhiliandaili.cn/" target="_blank" rel="noopener">http://http.zhiliandaili.cn/</a>)</li>
+</ul>
+<p>接下来，我们先通过高频次的爬取西刺代理的网页，让其封禁我们的 IP（尽管如此，也不要写死循环，温柔一点。我们的目的是让他把我们禁掉，而不是把人家搞崩）。然后通过 IP 代理的方式，继续爬取。</p>
+<p>我们使用的代理时代理精灵，网站上面有给。买一个最低配的 3 元套餐，用作练习测试。</p>
+<p>点击 API 提取，选择我们刚刚支付的套餐，然后选择要生产的数量，还有协议格式之类的。最后点击 <code>生成 API 链接</code> 即可。</p>
+<img src="/crawler/requests-advanced/1585046743550.png" class="" width="1585046743550">
+
+<p>首先使用生成好的链接封装一个代理池：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 刚刚生成的API链接</span></span><br><span class="line">proxy_url = <span class="string">'http://ip.11jsq.com/index.php/api/entry?method=proxyServer.generate_api_url&amp;packid=1&amp;fa=0&amp;fetch_key=&amp;groupid=0&amp;qty=10&amp;time=1&amp;pro=&amp;city=&amp;port=1&amp;format=html&amp;ss=5&amp;css=&amp;dt=1&amp;specialTxt=3&amp;specialJson=&amp;usertype=15'</span></span><br><span class="line">page_text = requests.get(url=proxy_url, headers=headers).text</span><br><span class="line">tree = etree.HTML(page_text)</span><br><span class="line">http_proxy = [&#123;<span class="string">'https'</span>: ip&#125; <span class="keyword">for</span> ip <span class="keyword">in</span> tree.xpath(<span class="string">'//body//text()'</span>)]    <span class="comment"># 代理池</span></span><br></pre></td></tr></table></figure>
+
+<p>接下来，对西祠代理发起一个高频的请求，让其将我本机 ip 禁掉。将下面的代码多执行几次，直到报错。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">url = <span class="string">'https://www.xicidaili.com/nn/%s'</span></span><br><span class="line">ip_list = []</span><br><span class="line"><span class="keyword">for</span> page <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">11</span>):</span><br><span class="line">    new_url = url % page</span><br><span class="line">    page_text = requests.get(url=new_url, headers=headers).text</span><br><span class="line">    tree = etree.HTML(page_text)</span><br><span class="line">    <span class="comment"># 在xpath表达式中不可以出现tbody标签</span></span><br><span class="line">    tr_list = tree.xpath(<span class="string">'//table[@id="ip_list"]//tr'</span>)[<span class="number">1</span>:]</span><br><span class="line">    <span class="keyword">for</span> tr <span class="keyword">in</span> tr_list:</span><br><span class="line">        ip = tr.xpath(<span class="string">'./td[2]/text()'</span>)</span><br><span class="line">        ip_list.append(ip)</span><br><span class="line">len(ip_list)</span><br></pre></td></tr></table></figure>
+
+<p>然后浏览器访问 <code>https://www.xicidaili.com</code>，访问不到，说明 IP 已经被禁掉。</p>
+<img src="/crawler/requests-advanced/1585048117175.png" class="" width="1585048117175">
+
+<p> 然后，使用代理，尝试继续访问：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 生成代理池，注意代理的API地址要及时更新</span></span><br><span class="line">proxy_url = <span class="string">'http://t.11jsq.com/index.php/api/entry?method=proxyServer.generate_api_url&amp;packid=1&amp;fa=0&amp;fetch_key=&amp;groupid=0&amp;qty=53&amp;time=1&amp;pro=&amp;city=&amp;port=1&amp;format=html&amp;ss=5&amp;css=&amp;dt=1&amp;specialTxt=3&amp;specialJson=&amp;usertype=15'</span></span><br><span class="line">page_text = requests.get(url=proxy_url, headers=headers).text</span><br><span class="line">tree = etree.HTML(page_text)    <span class="comment"># 代理池</span></span><br><span class="line">http_proxy = [&#123;<span class="string">'https'</span>: ip&#125; <span class="keyword">for</span> ip <span class="keyword">in</span> tree.xpath(<span class="string">'//body//text()'</span>)]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 代码不需要大改动，只需要在requests请求中加上代理即可</span></span><br><span class="line">url = <span class="string">'https://www.xicidaili.com/nn/%s'</span></span><br><span class="line">ip_list = []</span><br><span class="line"><span class="keyword">for</span> page <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">11</span>):</span><br><span class="line">    new_url = url % page</span><br><span class="line">    <span class="comment"># 让当次的请求使用代理机制，就可以更换请求的ip地址</span></span><br><span class="line">    page_text = requests.get(url=new_url, headers=headers, proxies=random.choice(http_proxy)).text</span><br><span class="line">    tree = etree.HTML(page_text)</span><br><span class="line">    <span class="comment"># 在xpath表达式中不可以出现tbody标签</span></span><br><span class="line">    tr_list = tree.xpath(<span class="string">'//table[@id="ip_list"]//tr'</span>)[<span class="number">1</span>:]</span><br><span class="line">    <span class="keyword">for</span> tr <span class="keyword">in</span> tr_list:</span><br><span class="line">        ip = tr.xpath(<span class="string">'./td[2]/text()'</span>)</span><br><span class="line">        ip_list.append(ip)</span><br><span class="line">    print(len(ip_list))</span><br></pre></td></tr></table></figure>
+
+<p>就又可以爬取到数据了</p>
+<h3 id="验证码的识别"><a href="#验证码的识别" class="headerlink" title="验证码的识别"></a>验证码的识别</h3><p>我们往往通过基于线上的打码平台识别验证码，而不是自己用机器学习写一个。虽然能够实现功能，但是自己写的毕竟没有大的数据量支撑，且不是一朝一夕能搞定的。</p>
+<p>常用的打码平台有：</p>
+<ul>
+<li><p>1.超级鹰（使用）：</p>
+<p><a href="http://www.chaojiying.com/about.html" target="_blank" rel="noopener">http://www.chaojiying.com/about.html</a></p>
+<ul>
+<li>注册（用户中心的身份）</li>
+<li>登录（用户中心的身份）<ol>
+<li>查询余额，请充值</li>
+<li>创建一个软件ID（例如：899370）</li>
+<li>下载示例代码</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><p>2.云打码</p>
+</li>
+<li><p>3.打码兔</p>
+</li>
+</ul>
+<p>超级鹰打码平台 SDK 整理封装成一个函数，传入验证码地址和图片的验证码类型数字，即可得到验证码识别结果。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment"># coding:utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> hashlib <span class="keyword">import</span> md5</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Chaojiying_Client</span><span class="params">(object)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, username, password, soft_id)</span>:</span></span><br><span class="line">        self.username = username</span><br><span class="line">        password =  password.encode(<span class="string">'utf8'</span>)</span><br><span class="line">        self.password = md5(password).hexdigest()</span><br><span class="line">        self.soft_id = soft_id</span><br><span class="line">        self.base_params = &#123;</span><br><span class="line">            <span class="string">'user'</span>: self.username,</span><br><span class="line">            <span class="string">'pass2'</span>: self.password,</span><br><span class="line">            <span class="string">'softid'</span>: self.soft_id,</span><br><span class="line">        &#125;</span><br><span class="line">        self.headers = &#123;</span><br><span class="line">            <span class="string">'Connection'</span>: <span class="string">'Keep-Alive'</span>,</span><br><span class="line">            <span class="string">'User-Agent'</span>: <span class="string">'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0)'</span>,</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">PostPic</span><span class="params">(self, im, codetype)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        im: 图片字节</span></span><br><span class="line"><span class="string">        codetype: 题目类型 参考 http://www.chaojiying.com/price.html</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        params = &#123;</span><br><span class="line">            <span class="string">'codetype'</span>: codetype,</span><br><span class="line">        &#125;</span><br><span class="line">        params.update(self.base_params)</span><br><span class="line">        files = &#123;<span class="string">'userfile'</span>: (<span class="string">'ccc.jpg'</span>, im)&#125;</span><br><span class="line">        r = requests.post(<span class="string">'http://upload.chaojiying.net/Upload/Processing.php'</span>, data=params, files=files, headers=self.headers)</span><br><span class="line">        <span class="keyword">return</span> r.json()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">ReportError</span><span class="params">(self, im_id)</span>:</span></span><br><span class="line">        <span class="string">"""</span></span><br><span class="line"><span class="string">        im_id:报错题目的图片ID</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        params = &#123;</span><br><span class="line">            <span class="string">'id'</span>: im_id,</span><br><span class="line">        &#125;</span><br><span class="line">        params.update(self.base_params)</span><br><span class="line">        r = requests.post(<span class="string">'http://upload.chaojiying.net/Upload/ReportError.php'</span>, data=params, headers=self.headers)</span><br><span class="line">        <span class="keyword">return</span> r.json()</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_img_code</span><span class="params">(img_path, img_type)</span>:</span></span><br><span class="line">    chaojiying = Chaojiying_Client(<span class="string">'liushuo'</span>, <span class="string">'liushuo'</span>, <span class="string">'904154'</span>)    <span class="comment"># 用户中心&gt;&gt;软件ID 找到或生成软件ID</span></span><br><span class="line">    im = open(img_path, <span class="string">'rb'</span>).read()</span><br><span class="line">    <span class="keyword">return</span> chaojiying.PostPic(im, img_type)[<span class="string">'pic_str'</span>]    <span class="comment"># 验证码类型  官方网站&gt;&gt;价格体系</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">print(get_img_code(<span class="string">'a.jpg'</span>, <span class="number">1902</span>))</span><br></pre></td></tr></table></figure>
+
+<h3 id="模拟登录"><a href="#模拟登录" class="headerlink" title="模拟登录"></a>模拟登录</h3><p>有些网站的信息，是需要我们登录之后，才能拿到的。要想爬取这些网站的内容，我们首先要进行模拟登录。</p>
+<p>模拟登录的流程：</p>
+<ol>
+<li>对点击登录按钮对应的请求进行发送（post 请求）</li>
+<li>处理请求参数：<ul>
+<li>用户名</li>
+<li>密码</li>
+<li>验证码</li>
+<li>其他的防伪参数</li>
+</ul>
+</li>
+</ol>
+<p>需求：登录古诗文网，获取登陆成功后的页面</p>
+<p>登陆页面 url：<a href="https://so.gushiwen.org/user/login.aspx?from=http://so.gushiwen.org/user/collect.aspx" target="_blank" rel="noopener">https://so.gushiwen.org/user/login.aspx?from=http://so.gushiwen.org/user/collect.aspx</a></p>
+<p>首先，我们猜测，需要输入用户名密码和验证码信息即可登录：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 识别验证码</span></span><br><span class="line">url = <span class="string">'https://so.gushiwen.org/user/login.aspx?from=http://so.gushiwen.org/user/collect.aspx'</span></span><br><span class="line"><span class="comment"># 解析验证码图片的地址</span></span><br><span class="line">page_text = requests.get(url=url, headers=headers).text</span><br><span class="line">tree = etree.HTML(page_text)</span><br><span class="line">img_code_url = <span class="string">'https://so.gushiwen.org'</span> + tree.xpath(<span class="string">'//img[@id="imgCode"]/@src'</span>)[<span class="number">0</span>]</span><br><span class="line">img_data = requests.get(url=img_code_url, headers=headers).content</span><br><span class="line"><span class="comment"># 将验证码图片保存到本地</span></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'b.jpg'</span>, <span class="string">'wb'</span>) <span class="keyword">as</span> fp:</span><br><span class="line">    fp.write(img_data)</span><br><span class="line"><span class="comment"># 识别验证码</span></span><br><span class="line">code = get_img_code(<span class="string">'b.jpg'</span>, <span class="number">1902</span>)</span><br><span class="line">print(code)</span><br><span class="line">login_url = <span class="string">'https://so.gushiwen.org/user/login.aspx?from=http://so.gushiwen.org/user/collect.aspx'</span></span><br><span class="line">data = &#123;</span><br><span class="line">    <span class="string">'__VIEWSTATE'</span>: <span class="string">'zLcWU1Ihz+ZP28Jlu5xMxY8NMnEHb6jYi3hkBbQemydBVHdU8VMEyRw7jL0QOdTEnWM6aGEQMYQiKLb0fccd11U/MqxMMEpMBNI6pF8mr9Xzi0ARS/O3rvKz+vM='</span>,</span><br><span class="line">    <span class="string">'__VIEWSTATEGENERATOR'</span>: <span class="string">'C93BE1AE'</span>,</span><br><span class="line">    <span class="string">'from'</span>: <span class="string">'http://so.gushiwen.org/user/collect.aspx'</span>,</span><br><span class="line">    <span class="string">'email'</span>: <span class="string">'liushuo432@outlook.com'</span>,</span><br><span class="line">    <span class="string">'pwd'</span>: <span class="string">'liushuo'</span>,</span><br><span class="line">    <span class="string">'code'</span>: code,    <span class="comment"># 动态变化</span></span><br><span class="line">    <span class="string">'denglu'</span>: <span class="string">'登录'</span>,</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment"># 对点击登录按钮发起请求：获取了登录成功后对应的页面源码数据</span></span><br><span class="line">page_text = requests.post(url=login_url, headers=headers, data=data).text</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'gushiwen.html'</span>, <span class="string">'w'</span>, encoding=<span class="string">'utf-8'</span>) <span class="keyword">as</span> fp:</span><br><span class="line">    fp.write(page_text)</span><br></pre></td></tr></table></figure>
+
+<p>打开生成的 <code>gushiwen.html</code> 文件，并没有成功登录。</p>
+<p>对比我们的请求和浏览器发送的请求，可以获得这样两个信息：</p>
+<ol>
+<li>浏览器的请求有携带 Cookie，或许是因为我们没有携带 Cookie 信息，从而导致登录失败</li>
+<li>从打印出来的验证码数据来看，验证码识别是正确的，所以不可能是验证码的问题</li>
+</ol>
+<p>所以接下来我们尝试携带 Cookie 进行模拟登录：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 携带 Cookie 模拟登录</span></span><br><span class="line">session = requests.Session()</span><br><span class="line">url = <span class="string">'https://so.gushiwen.org/user/login.aspx?from=http://so.gushiwen.org/user/collect.aspx'</span></span><br><span class="line">page_text = session.get(url=url, headers=headers).text</span><br><span class="line">tree = etree.HTML(page_text)</span><br><span class="line">img_code_url = <span class="string">'https://so.gushiwen.org'</span> + tree.xpath(<span class="string">'//img[@id="imgCode"]/@src'</span>)[<span class="number">0</span>]</span><br><span class="line">img_data = session.get(url=img_code_url, headers=headers).content</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'b.jpg'</span>, <span class="string">'wb'</span>) <span class="keyword">as</span> fp:</span><br><span class="line">    fp.write(img_data)</span><br><span class="line">code = get_img_code(<span class="string">'b.jpg'</span>, <span class="number">1902</span>)</span><br><span class="line">print(code)</span><br><span class="line">login_url = <span class="string">'https://so.gushiwen.org/user/login.aspx?from=http://so.gushiwen.org/user/collect.aspx'</span></span><br><span class="line">data = &#123;</span><br><span class="line">    <span class="string">'__VIEWSTATE'</span>: <span class="string">'zLcWU1Ihz+ZP28Jlu5xMxY8NMnEHb6jYi3hkBbQemydBVHdU8VMEyRw7jL0QOdTEnWM6aGEQMYQiKLb0fccd11U/MqxMMEpMBNI6pF8mr9Xzi0ARS/O3rvKz+vM='</span>,</span><br><span class="line">    <span class="string">'__VIEWSTATEGENERATOR'</span>: <span class="string">'C93BE1AE'</span>,</span><br><span class="line">    <span class="string">'from'</span>: <span class="string">'http://so.gushiwen.org/user/collect.aspx'</span>,</span><br><span class="line">    <span class="string">'email'</span>: <span class="string">'liushuo432@outlook.com'</span>,</span><br><span class="line">    <span class="string">'pwd'</span>: <span class="string">'liushuo'</span>,</span><br><span class="line">    <span class="string">'code'</span>: code,</span><br><span class="line">    <span class="string">'denglu'</span>: <span class="string">'登录'</span>,</span><br><span class="line">&#125;</span><br><span class="line">page_text = session.post(url=login_url, headers=headers, data=data).text</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'gushiwen.html'</span>, <span class="string">'w'</span>, encoding=<span class="string">'utf-8'</span>) <span class="keyword">as</span> fp:</span><br><span class="line">    fp.write(page_text)</span><br></pre></td></tr></table></figure>
+
+<p>这样就成功访问到我们需要的页面了。</p>
+<p>其实我们还有一个东西没有用到，就是 data 中的两个无规律的字符串。在请求参数中如果看到了一组乱序的请求参数，最好去验证这组请求参数是否为动态变化。如果这组参数不变化，直接在请求中写死就行了。但如果请求参数是动态变化的，我们就可能需要对这些数据进行处理：</p>
+<ol>
+<li>常规来讲一半动态变化的请求参数会被隐藏在前台页面中，那么我们就要去前台页面源码中取找。</li>
+<li>如果前台页面没有的话，我们就可以基于抓包工具进行全局搜索。</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/crawler/baidu-ai/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/crawler/baidu-ai/" class="post-title-link" itemprop="url">百度 AI 的基本用法</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-03-25 01:01:14 / 修改时间：01:01:16" itemprop="dateCreated datePublished" datetime="2020-03-25T01:01:14+08:00">2020-03-25</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%88%AC%E8%99%AB/" itemprop="url" rel="index"><span itemprop="name">爬虫</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/crawler/baidu-ai/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/crawler/baidu-ai/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>百度 AI 有很多有趣的功能，在爬虫过程中或许会用到。比如，我们常用的基于百度AI实现的爬虫功能有：</p>
+<ul>
+<li>图像识别</li>
+<li>语音识别&amp;合成</li>
+<li>自然语言处理</li>
+</ul>
+<p>百度 AI 的通用使用流程：</p>
+<ul>
+<li>点击控制台进行登录</li>
+<li>选择想要实现的功能</li>
+<li>实现功能下创建一个 app</li>
+<li>选择对应的 Python SDK 文档进行代码实现</li>
+</ul>
+<p>接下来，我将以百度 AI 的语音合成功能为例，介绍一下百度 AI 的基本用法。百度 AI 的其他功能的使用方法完全类似。</p>
+<p>首先，打开百度 AI 的控制台，可能需要登陆。网址为：<a href="https://console.bce.baidu.com/" target="_blank" rel="noopener">https://console.bce.baidu.com/</a></p>
+<p>找到我们需要的功能，点进去，比如语音技术：</p>
+<img src="/crawler/baidu-ai/1585055445676.png" class="" width="1585055445676">
+
+<p>若没有应用，点击 <code>创建应用</code>，若已有应用，也可点击 <code>管理应用</code>：</p>
+<img src="/crawler/baidu-ai/1585055520026.png" class="" width="1585055520026">
+
+<p>然后填上应用名和描述，选择自己需要用到的功能即可。</p>
+<p>创建好应用后，即可查看应用的各种信息：</p>
+<img src="/crawler/baidu-ai/1585056661418.png" class="" width="1585056661418">
+
+<p>点击 <code>查看文档</code> 即可查看每种功能的具体用法。我们要用的功能是语音合成，要使用的是在线语音合成，要查看的是 Python SDK。</p>
+<img src="/crawler/baidu-ai/1585056753745.png" class="" width="1585056753745">
+
+<p>需要注意的是，语音合成长度不能太长，不可以超过 512 字：</p>
+<img src="/crawler/baidu-ai/1585056845635.png" class="" width="1585056845635">
+
+<p>然后就是按照官方文档的要求，一步一步走下来。</p>
+<p>首先安装 baidu-aip 模块：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install baidu-aip</span><br></pre></td></tr></table></figure>
+
+<p>然后实例化一个 AipSpeech 对象，这些数据都很容易找到：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> aip <span class="keyword">import</span> AipSpeech</span><br><span class="line"></span><br><span class="line"><span class="string">""" 你的 APPID AK SK """</span></span><br><span class="line">APP_ID = <span class="string">'你的 App ID'</span></span><br><span class="line">API_KEY = <span class="string">'你的 Api Key'</span></span><br><span class="line">SECRET_KEY = <span class="string">'你的 Secret Key'</span></span><br><span class="line"></span><br><span class="line">client = AipSpeech(APP_ID, API_KEY, SECRET_KEY)</span><br></pre></td></tr></table></figure>
+
+<p>然后调用语音合成方法 synthesis，把参数传进去即可：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">result  = client.synthesis(<span class="string">'你好百度'</span>, <span class="string">'zh'</span>, <span class="number">1</span>, &#123;</span><br><span class="line">    <span class="string">'vol'</span>: <span class="number">5</span>,</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 识别正确返回语音二进制 错误则返回dict 参照下面错误码</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> isinstance(result, dict):</span><br><span class="line">    <span class="keyword">with</span> open(<span class="string">'auido.mp3'</span>, <span class="string">'wb'</span>) <span class="keyword">as</span> f:</span><br><span class="line">        f.write(result)</span><br></pre></td></tr></table></figure>
+
+<p>参数解释：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>类型</th>
+<th>描述</th>
+<th>是否必须</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>tex</td>
+<td>String</td>
+<td>合成的文本，使用UTF-8编码， 请注意文本长度必须小于1024字节</td>
+<td>是</td>
+</tr>
+<tr>
+<td>cuid</td>
+<td>String</td>
+<td>用户唯一标识，用来区分用户， 填写机器 MAC 地址或 IMEI 码，长度为60以内</td>
+<td>否</td>
+</tr>
+<tr>
+<td>spd</td>
+<td>String</td>
+<td>语速，取值0-9，默认为5中语速</td>
+<td>否</td>
+</tr>
+<tr>
+<td>pit</td>
+<td>String</td>
+<td>音调，取值0-9，默认为5中语调</td>
+<td>否</td>
+</tr>
+<tr>
+<td>vol</td>
+<td>String</td>
+<td>音量，取值0-15，默认为5中音量</td>
+<td>否</td>
+</tr>
+<tr>
+<td>per</td>
+<td>String</td>
+<td>发音人选择, 0为女声，1为男声， 3为情感合成-度逍遥，4为情感合成-度丫丫，默认为普通女</td>
+<td>否</td>
+</tr>
+</tbody></table>
+<p>示例：将段子王的笑话爬取下来，并转换成语音</p>
+<p>段子王 url：<a href="https://duanziwang.com/category/%E7%BB%8F%E5%85%B8%E6%AE%B5%E5%AD%90" target="_blank" rel="noopener">https://duanziwang.com/category/%E7%BB%8F%E5%85%B8%E6%AE%B5%E5%AD%90</a></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</span><br><span class="line">headers = &#123;</span><br><span class="line">    <span class="string">'User-Agent'</span>: <span class="string">'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36'</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">from</span> aip <span class="keyword">import</span> AipSpeech</span><br><span class="line"></span><br><span class="line"><span class="string">""" 你的 APPID AK SK """</span></span><br><span class="line">APP_ID = <span class="string">'19055069'</span></span><br><span class="line">API_KEY = <span class="string">'e6VYNB4tyUU4GH9qWsfQwlvD'</span></span><br><span class="line">SECRET_KEY = <span class="string">'F03R86gmufCwvRkM8LZMfftTZaAikRTg'</span></span><br><span class="line"></span><br><span class="line">client = AipSpeech(APP_ID, API_KEY, SECRET_KEY)</span><br><span class="line"></span><br><span class="line">audio_dir = <span class="string">'DuanziwangAud'</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(audio_dir):</span><br><span class="line">    os.mkdir(audio_dir)</span><br><span class="line"><span class="keyword">for</span> page <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">11</span>):</span><br><span class="line">    url = <span class="string">f'https://duanziwang.com/category/%E7%BB%8F%E5%85%B8%E6%AE%B5%E5%AD%90/<span class="subst">&#123;page&#125;</span>/'</span></span><br><span class="line">    response = requests.get(url=url, headers=headers)</span><br><span class="line">    page_text = response.text</span><br><span class="line">    soup = BeautifulSoup(page_text, <span class="string">'lxml'</span>)</span><br><span class="line">    article_list = soup.findAll(<span class="string">'article'</span>, class_=<span class="string">'post'</span>)</span><br><span class="line">    <span class="keyword">for</span> article <span class="keyword">in</span> article_list:</span><br><span class="line">        title = os.path.join(audio_dir, article.h1.text + <span class="string">'.mp3'</span>)</span><br><span class="line">        content = article.p.text</span><br><span class="line">        result  = client.synthesis(content, <span class="string">'zh'</span>, <span class="number">1</span>, &#123;</span><br><span class="line">            <span class="string">'vol'</span>: <span class="number">5</span>,</span><br><span class="line">        &#125;)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 识别正确返回语音二进制 错误则返回dict 参照下面错误码</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> isinstance(result, dict):</span><br><span class="line">            <span class="keyword">with</span> open(title, <span class="string">'wb'</span>) <span class="keyword">as</span> f:</span><br><span class="line">                f.write(result)</span><br><span class="line">        print(title, <span class="string">'下载成功！'</span>)</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://sliu.vip/git/github/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -431,10 +1220,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-03-24 01:27:19 / 修改时间：11:14:32" itemprop="dateCreated datePublished" datetime="2020-03-24T01:27:19+08:00">2020-03-24</time>
+              <time title="创建时间：2020-03-24 01:27:19" itemprop="dateCreated datePublished" datetime="2020-03-24T01:27:19+08:00">2020-03-24</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-25 01:01:16" itemprop="dateModified" datetime="2020-03-25T01:01:16+08:00">2020-03-25</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -671,451 +1466,6 @@
   
   
 
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/git/team-dev/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="刘硕">
-      <meta itemprop="description" content="不成为自己讨厌的人">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="刘硕的技术查阅手册">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/git/team-dev/" class="post-title-link" itemprop="url">Git 多人协作开发</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-03-24 01:27:19 / 修改时间：11:14:32" itemprop="dateCreated datePublished" datetime="2020-03-24T01:27:19+08:00">2020-03-24</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Git/" itemprop="url" rel="index"><span itemprop="name">Git</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/git/team-dev/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/git/team-dev/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>很多时候，尤其是在公司工作，我们往往不是一个人战斗，而是会和几个同事合作开发。这就是 GitHub 创建组织实现多人协作的目的。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/git/team-dev/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/git/git-ssh/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="刘硕">
-      <meta itemprop="description" content="不成为自己讨厌的人">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="刘硕的技术查阅手册">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/git/git-ssh/" class="post-title-link" itemprop="url">Git 远程仓库免密登陆</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-03-24 01:27:19 / 修改时间：11:14:32" itemprop="dateCreated datePublished" datetime="2020-03-24T01:27:19+08:00">2020-03-24</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Git/" itemprop="url" rel="index"><span itemprop="name">Git</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/git/git-ssh/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/git/git-ssh/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>之前的 git 版本在我们进行 push 的时候，每次都需要输入用户名和密码，很麻烦。好在出现了免密登陆的形式，可以让提交代码更方便。下面我们介绍三种免密登陆的形式。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/git/git-ssh/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/bug-bible/crawler-bug/crawler-experience/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="刘硕">
-      <meta itemprop="description" content="不成为自己讨厌的人">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="刘硕的技术查阅手册">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/bug-bible/crawler-bug/crawler-experience/" class="post-title-link" itemprop="url">爬虫学习过程中的小经验小技巧总结</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-03-24 01:27:19 / 修改时间：11:14:32" itemprop="dateCreated datePublished" datetime="2020-03-24T01:27:19+08:00">2020-03-24</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Bug-%E5%AE%9D%E5%85%B8/" itemprop="url" rel="index"><span itemprop="name">Bug 宝典</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/bug-bible/crawler-bug/crawler-experience/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/bug-bible/crawler-bug/crawler-experience/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>爬虫 Bug 宝典之爬虫学习过程中的小经验小技巧总结</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/bug-bible/crawler-bug/crawler-experience/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/bug-bible/django-bug/django-experience/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="刘硕">
-      <meta itemprop="description" content="不成为自己讨厌的人">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="刘硕的技术查阅手册">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/bug-bible/django-bug/django-experience/" class="post-title-link" itemprop="url">Django 学习过程的小经验小技巧</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-03-24 01:27:19 / 修改时间：11:14:32" itemprop="dateCreated datePublished" datetime="2020-03-24T01:27:19+08:00">2020-03-24</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Bug-%E5%AE%9D%E5%85%B8/" itemprop="url" rel="index"><span itemprop="name">Bug 宝典</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/bug-bible/django-bug/django-experience/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/bug-bible/django-bug/django-experience/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Django Bug 宝典之 Django 学习过程中总结的小经验和小技巧。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/bug-bible/django-bug/django-experience/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/project/renran-reward/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="刘硕">
-      <meta itemprop="description" content="不成为自己讨厌的人">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="刘硕的技术查阅手册">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/project/renran-reward/" class="post-title-link" itemprop="url">荏苒资讯支付宝打赏功能</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-03-24 01:27:18 / 修改时间：11:14:32" itemprop="dateCreated datePublished" datetime="2020-03-24T01:27:18+08:00">2020-03-24</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%BB%BC%E5%90%88%E9%A1%B9%E7%9B%AE/" itemprop="url" rel="index"><span itemprop="name">综合项目</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/project/renran-reward/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/project/renran-reward/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>用户喜欢某篇文章，可以给文章作者打赏，鼓励作者写出更多更好的文章来。文章打赏功能，涉及到了第三方支付，这里主要讨论接入支付宝支付的功能。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/project/renran-reward/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
   </div>
 
   
@@ -1188,14 +1538,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">264</span>
+          <span class="site-state-item-count">269</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-count">13</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">

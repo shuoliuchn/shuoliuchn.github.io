@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="Tu5vqPaUb8svfkPx5eetJFD84ciQCcWVXNatdsWtj9Q">
+  <meta name="baidu-site-verification" content="baidu_verify_FBq9PG4BBb">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"appID":"PXY1Z6GHKT","apiKey":"eb82f2e78e3053f26aa408e9caa96d93","indexName":"blog","hits":{"per_page":10},"labels":{"input_placeholder":"要查点什么(✿◡‿◡)","hits_empty":"没有找到任何关于 ${query} 的结果╥﹏╥...","hits_stats":"搜索到 ${hits} 条记录，用时 ${time} ms o(*￣▽￣*)ブ"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="数据库的概念我们从前都是把数据存放到文件当中。但是对于真正的生产环境而言，文件存储有其先天的不足。 比如，很多情况下，我们的客户端和服务器都不止一个。而如果把数据只以文件的形式存储到一个服务器上，另一台服务器可能不能及时接收到相应。对于用户信息之类的重要数据而言，这将是不可接受的。而且我们往往一台计算机只进行一种任务。这样的话，即便有一台计算机出了问题，其他计算机依然可以继续正常工作，整个系统的容">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库的基本概念和 Windows 下安装 MySQL">
+<meta property="og:url" content="https://sliu.vip/database/database-basic/index.html">
+<meta property="og:site_name" content="刘硕的技术查阅手册">
+<meta property="og:description" content="数据库的概念我们从前都是把数据存放到文件当中。但是对于真正的生产环境而言，文件存储有其先天的不足。 比如，很多情况下，我们的客户端和服务器都不止一个。而如果把数据只以文件的形式存储到一个服务器上，另一台服务器可能不能及时接收到相应。对于用户信息之类的重要数据而言，这将是不可接受的。而且我们往往一台计算机只进行一种任务。这样的话，即便有一台计算机出了问题，其他计算机依然可以继续正常工作，整个系统的容">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sliu.vip/database/database-basic/databaserelationshipsingle.png">
+<meta property="og:image" content="https://sliu.vip/database/database-basic/databaserelationshipmultiple.png">
+<meta property="article:published_time" content="2020-03-24T17:01:14.305Z">
+<meta property="article:modified_time" content="2020-03-24T17:01:16.681Z">
+<meta property="article:author" content="刘硕">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="全栈开发">
+<meta property="article:tag" content="并发编程">
+<meta property="article:tag" content="网络编程">
+<meta property="article:tag" content="爬虫">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="自动化测试">
+<meta property="article:tag" content="Web开发">
+<meta property="article:tag" content="HTML">
+<meta property="article:tag" content="CSS">
+<meta property="article:tag" content="JavaScript">
+<meta property="article:tag" content="jQuery">
+<meta property="article:tag" content="Bootstrap">
+<meta property="article:tag" content="测试自动化">
+<meta property="article:tag" content="Selenium">
+<meta property="article:tag" content="postman">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="Vue">
+<meta property="article:tag" content="drf">
+<meta property="article:tag" content="django">
+<meta property="article:tag" content="文档翻译">
+<meta property="article:tag" content="PEP8">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sliu.vip/database/database-basic/databaserelationshipsingle.png">
+
+<link rel="canonical" href="https://sliu.vip/database/database-basic/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>数据库的基本概念和 Windows 下安装 MySQL | 刘硕的技术查阅手册</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f14f123935d6183fdd06f8f1c4bc378f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="刘硕的技术查阅手册" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">刘硕的技术查阅手册</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">Python 全栈开发学习笔记</h1>
+      
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-toc">
+
+    <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+  
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/database/database-basic/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          数据库的基本概念和 Windows 下安装 MySQL
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-03-25 01:01:14 / 修改时间：01:01:16" itemprop="dateCreated datePublished" datetime="2020-03-25T01:01:14+08:00">2020-03-25</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/database/database-basic/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/database/database-basic/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="数据库的概念"><a href="#数据库的概念" class="headerlink" title="数据库的概念"></a>数据库的概念</h3><p>我们从前都是把数据存放到文件当中。但是对于真正的生产环境而言，文件存储有其先天的不足。</p>
+<p>比如，很多情况下，我们的客户端和服务器都不止一个。而如果把数据只以文件的形式存储到一个服务器上，另一台服务器可能不能及时接收到相应。对于用户信息之类的重要数据而言，这将是不可接受的。而且我们往往一台计算机只进行一种任务。这样的话，即便有一台计算机出了问题，其他计算机依然可以继续正常工作，整个系统的容灾性会很好。</p>
+<p>于是，很多情况下，我们会把储存数据的任务交给独特的计算机，也就是数据库。</p>
+<img src="/database/database-basic/databaserelationshipsingle.png" class="" title="databaserelationshipsingle">
+
+<p>当然，一台数据库也可能不能满足我们对多任务处理和数据安全的要求，我们还会使用多台计算机协调备份数据。</p>
+<img src="/database/database-basic/databaserelationshipmultiple.png" class="" title="databaserelationshipmultiple">
+
+<p>数据库之间实时要进行通信，一旦某一个数据库中的数据发生了改变，另一个数据库也要及时备份。</p>
+<p>我们其实可以按照从前学过的 socket 网络编程和文件操作的只是来实现数据库的操作。但是，如果要保证能够完美地支持高并发，支持多台计算机完美协调，将会是一个极其困难繁琐的工作。</p>
+<p>好在有很多很厉害的程序员已经帮我们写好了这类处理存储数据的工具，我们可以直接拿来用。这就是我们要学期的数据库管理系统。</p>
+<p><strong>数据库是一个存储数据的工具</strong>。</p>
+<p>数据库帮我们解决了很多问题：</p>
+<ul>
+<li>安全认证</li>
+<li>并发问题，多个程序都请求同一个数据库获取数据</li>
+<li>优化：缓存 cache，分析</li>
+<li>容灾：数据库搭建集群</li>
+</ul>
+<p>这里解释一下数据库对我们存储数据的优化。当数据量很大的时候，我们先想要从中获取想要的数据可能会比较麻烦。而有些数据，我们又需要经常地反复地获取。如果每次数据库都从硬盘中重新查找，将会耗费很多时间。于是，很多数据库都对这种情况做出了优化。当我们使用完一条数据之后，这条数据会储存到一个暂存区cache中。当我们下次还想获取同样的数据时，不会去硬盘中查找，而是先去缓存cache中查找。如果能够找到，那就直接使用。这样一来，对于一些经常使用的数据，会节省很多查找的时间，从而提高程序的运行效率。</p>
+<h3 id="数据库的基本术语"><a href="#数据库的基本术语" class="headerlink" title="数据库的基本术语"></a>数据库的基本术语</h3><p>数据库经过这么多年的发展，已经相当成熟。程序员间对数据库中的一些概念有了一套约定俗成的称谓，也就是数据库的基本术语。我们需要了解这些数据，以便日后能够跟人更好地交流学习。</p>
+<p>数据库管理系统（DBMS，database management system）：</p>
+<ul>
+<li>管理着一个大的文件系统</li>
+<li>包括文件夹（数据库）和文件（表）</li>
+</ul>
+<p>数据库（DB，database）：就是文件夹</p>
+<p>表（table）：文件</p>
+<p>一条数据：文件中的每一行数据</p>
+<p>数据：data</p>
+<p>数据库管理员（DBA）：database administrator</p>
+<p>需要指明的是，我们口头上常说的数据库，并不单单指文件夹。我们说的数据库，可能指文件夹，也可能指数据库管理系统，还可能指整个数据库的软硬件体系。具体指代哪一个，要因地制宜，不可钻牛角尖。</p>
+<h3 id="数据库的分类"><a href="#数据库的分类" class="headerlink" title="数据库的分类"></a>数据库的分类</h3><p>数据库根据其数据间的逻辑，可分为关系型数据库和非关系型数据库两类，其代表性的数据库分别有：</p>
+<ul>
+<li>关系型数据库：MySQL，Oracle，SQL server，SQLite</li>
+<li>非关系型数据库：Redis，MongoDB，HBase，MemCache</li>
+</ul>
+<h3 id="MySQL-的安装"><a href="#MySQL-的安装" class="headerlink" title="MySQL 的安装"></a>MySQL 的安装</h3><p>我们要学习的数据库是 MySQL。选择这个数据库的原因是，它发展的时间较久，总体而言比较成熟。而且它开源免费，深受互联网公司欢迎。基本上，我们国家的互联网公司，使用的关系型数据库，90% 以上都是 MySQL。</p>
+<p>最新的 MySQL 版本是 8.0 版本。但是一般而言，新版本的软件不确定性很多。比如兼容性和稳定性都不很确定。大多数时候，我们都会选择一个从前的稳定版本来使用。于是，我们安装的不是最新的 MySQL 8.0 版本，而是 5.6 版本。</p>
+<p>之所以也不使用 5.7 版本，是因为 5.7 版本在初始化时会默认生成一个密码，如果没有记住又没来得及修改很麻烦，所以不推荐使用。</p>
+<p>我们下载 MySQL 只能来自两个途径，<a href="www.mysql.com">MySQL官方网站</a> 和公司给我们提供的 MySQL。其他途径下载的 MySQL 有可能会存在安全隐患，极度不推荐使用。数据是极其重要的，万不可以马虎。</p>
+<p>首先，我们在浏览器中输入 <code>www.mysql.com</code> 进入 <a href="www.mysql.com">MySQL官方网站</a>。点击主页上的 <code>DOWNLOADS</code> 标签，进入 <a href="https://www.mysql.com/downloads/" target="_blank" rel="noopener">MySQL的下载页</a>，<code>https://www.mysql.com/downloads/</code>。</p>
+
+
+<p>在下载页中，找到 MySQL 社区版下载的入口，<code>MySQL Community (GPL) Downloads »</code>，进入到 <a href="https://dev.mysql.com/downloads/" target="_blank" rel="noopener">社区版下载页</a>，<code>https://dev.mysql.com/downloads/</code>。</p>
+
+
+<p>找到需要下载在哪种平台使用的 MySQL。我用的是 Windows 系统，所以选择 <code>MySQL Installer for Windows</code>。进入到 <a href="https://dev.mysql.com/downloads/installer/" target="_blank" rel="noopener">最新版本MySQL的下载页面</a>，<code>https://dev.mysql.com/downloads/installer/</code>。如果是 macOS 或 Linux 系统，也可以按自己的需要下载不同的版本。</p>
+
+
+<p>这个页面是最新的 8.0 版本的下载页面。按我们刚刚所说，我们要下载的是 5.6 版本。点击右上角的 <code>Looking for previous GA versions?</code>，进入到版本选择界面。</p>
+
+
+<p>在下拉框中选择我们要下载的 5.6.45 版本。</p>
+<p>这个方法虽然也能找到 5.6 版本 MySQL 的安装包，但只能找到 32 位版本。如果想要下载 64 位版本的安装包，可以去 <a href="https://dev.mysql.com/downloads/mysql/5.6.html#downloads" target="_blank" rel="noopener">5.6版本专门的下载界面</a>，<code>https://dev.mysql.com/downloads/mysql/5.6.html#downloads</code>。</p>
+
+
+<p>下载好了之后，将压缩包解压到文件夹中。最好把它解压到根目录中。</p>
+<p>需要注意的是，安装路径要尽量避免出现中文。而且不可以有 <code>\n \t</code> 之类有特殊含义的字母。</p>
+<p>使用 PyCharm 创建一个名为 <code>my.ini</code> 的文件，并在文件中写入下面的内容（千万不要用记事本打开，现在不要，以后也不要）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[mysql]</span><br><span class="line"><span class="comment"># 设置mysql客户端默认字符集</span></span><br><span class="line">default-character-set=utf8</span><br><span class="line">[mysqld]</span><br><span class="line"><span class="comment">#设置3306端口</span></span><br><span class="line">port = 3306</span><br><span class="line"><span class="comment"># 设置mysql的安装目录</span></span><br><span class="line">basedir=C:\mysql-5.6.46-winx64</span><br><span class="line"><span class="comment"># 设置mysql数据库的数据的存放目录</span></span><br><span class="line">datadir=C:\mysql-5.6.46-winx64\data</span><br><span class="line"><span class="comment"># 允许最大连接数</span></span><br><span class="line">max_connections=200</span><br><span class="line"><span class="comment"># 服务端使用的字符集默认为8比特编码的latin1字符集</span></span><br><span class="line">character-set-server=utf8</span><br><span class="line"><span class="comment"># 创建新表时将使用的默认存储引擎</span></span><br><span class="line">default-storage-engine=INNODB</span><br></pre></td></tr></table></figure>
+
+<p>如果你是复制粘贴过去的，首先要检查每一行后面是否有空格。如果有，一定要删除干净。<strong>每一行后面都不可以有任何空格</strong>，否则可能会出现莫名其妙的错误。</p>
+<p>然后，将 <code>basedir</code> 和 <code>datadir</code> 两个修改成你刚刚解压的 MySQL 文件所处的路径。</p>
+<p>修改完成后，保存并关闭。然后把这个 <code>my.ini</code> 文件放到刚刚解压的 MySQL 根目录中。</p>
+
+
+<p>数据会存放在 data 文件夹中，而命令的执行程序则被放在 bin 文件夹中。</p>
+
+
+<p>我们需要把 bin 所在的目录放到环境变量中，这样才能顺利使用 MySQL 的各种命令。</p>
+
+
+<p>以<strong>管理员身份</strong>运行终端 cmd，在终端中输入下面两条命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysqld install</span><br><span class="line">net start mysql</span><br></pre></td></tr></table></figure>
+
+<p>如果提示安装成功，则说明一切安装顺利。</p>
+
+
+
+
+<p>如果输入第一条命令时，提示说 mysqld 不是系统命令，说明没有成功将 bin 目录添加到环境变量中，需要检查一下环境变量。</p>
+<p>另外一个需要注意的是一定要以管理员身份运行 cmd。具体方法是，在搜索框（比如小娜）中，搜索 cmd，然后右键出现的 cmd，选择以管理员身份运行即可。</p>
+
+
+<p>还有一点，不可以双击打开 <code>my.ini</code> 文件。因为 Windows 使用的是 gbk 编码，而我们需要它使用 utf-8 编码。但是，如果我们双击打开文件，有可能会改变文件的编码方式，从而导致错误。如果需要编辑，可以使用 PyCharm 或者 notepad++ 之类的能够指定编码的编辑器。</p>
+<p>我们刚刚输入了两条命令，其含义为：</p>
+<ol>
+<li><code>mysqld install</code>，在命令行中启动 <code>mysqld.exe</code> 文件，传入了一个参数 install</li>
+<li><code>net start mysql</code>，告诉操作系统启动已经安装好的 MySQL 服务</li>
+</ol>
+
+
+<p>MySQL 的服务默认开机自启，只要我们不关闭，就会一直在后台运行。如果我们想要关闭这个服务，可以使用与开启服务类似的命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">net stop mysql</span><br></pre></td></tr></table></figure>
+
+<p>只有安装 MySQL 和开启关闭 MySQL 服务时需要使用管理员身份运行 cmd，其他操作都可以在普通的 cmd 中运行。</p>
+<p>另外，我们还需要区分 MySQL 的服务端和客户端：当我们执行 <code>mysql.exe</code> 文件时，实际上执行的是客户端。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/crawler/requests-advanced/" rel="prev" title="requests 高级用法之获取 Cookie、使用代理和识别验证码">
+      <i class="fa fa-chevron-left"></i> requests 高级用法之获取 Cookie、使用代理和识别验证码
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/git/issues-wiki/" rel="next" title="GitHub 做任务管理相关 Issues 和 Wiki">
+      GitHub 做任务管理相关 Issues 和 Wiki <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#数据库的概念"><span class="nav-number">1.</span> <span class="nav-text">数据库的概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据库的基本术语"><span class="nav-number">2.</span> <span class="nav-text">数据库的基本术语</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据库的分类"><span class="nav-number">3.</span> <span class="nav-text">数据库的分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL-的安装"><span class="nav-number">4.</span> <span class="nav-text">MySQL 的安装</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="刘硕"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">刘硕</p>
+  <div class="site-description" itemprop="description">不成为自己讨厌的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">269</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:liushuo432@outlook.com" title="E-Mail → mailto:liushuo432@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/2436055290" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;2436055290" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://wpa.qq.com/msgrd?v=3&uin=1696146913&site=qq&menu=yes" title="QQ → http:&#x2F;&#x2F;wpa.qq.com&#x2F;msgrd?v&#x3D;3&amp;uin&#x3D;1696146913&amp;site&#x3D;qq&amp;menu&#x3D;yes" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-fw fa-rss"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备20001451号 </a>
+      <img src="/images/beian_icon.png" style="display: inline-block;"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=21142102000063" rel="noopener" target="_blank">辽公网安备 21142102000063号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘硕</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.2" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'Ga2II3wuJmHX3GiNHm9TmI97-gzGzoHsz',
+      appKey     : 'esGYJQepdYLHf07E1VMsP3RK',
+      placeholder: "o(*￣▽￣*)ブ来说点什么吧...（填上邮箱可以收到回复提醒）",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : true,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+  <script type="text/javascript" src="/js/love.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/Epsilon2.1.model.json"},"display":{"superSample":2,"width":200,"height":400,"position":"left","hOffset":-30,"vOffset":-40},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>
