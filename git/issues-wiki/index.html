@@ -22,12 +22,12 @@
     var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"appID":"PXY1Z6GHKT","apiKey":"eb82f2e78e3053f26aa408e9caa96d93","indexName":"blog","hits":{"per_page":10},"labels":{"input_placeholder":"要查点什么(✿◡‿◡)","hits_empty":"没有找到任何关于 ${query} 的结果╥﹏╥...","hits_stats":"搜索到 ${hits} 条记录，用时 ${time} ms o(*￣▽￣*)ブ"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="issuesissues 就是问题，在项目使用过程中遇到了什么操作上的问题，或者发现了什么 bug，可以通过提交 issues 向作者反映。具体做法很简单，点点点就行了：   然后看下图：   还可以看下图，给问题打个标签，你是提的bug啊还是文档啊还是什么的。   还可以做bug管理，比如你提的这个问题是个bug，你可以选择bug类型，然后指派给别人进行处理。   然后我们再点击上面这个issu">
+  <meta name="description" content="issues 就是问题，在项目使用过程中遇到了什么操作上的问题，或者发现了什么 bug，可以通过提交 issues 向作者反映。项目介绍，百科，其实写一个项目，都需要写wiki，来做项目的整体描述和说明，其他人来参与项目的时候，先看wiki。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="GitHub 做任务管理相关 Issues 和 Wiki">
 <meta property="og:url" content="https://sliu.vip/git/issues-wiki/index.html">
 <meta property="og:site_name" content="刘硕的技术查阅手册">
-<meta property="og:description" content="issuesissues 就是问题，在项目使用过程中遇到了什么操作上的问题，或者发现了什么 bug，可以通过提交 issues 向作者反映。具体做法很简单，点点点就行了：   然后看下图：   还可以看下图，给问题打个标签，你是提的bug啊还是文档啊还是什么的。   还可以做bug管理，比如你提的这个问题是个bug，你可以选择bug类型，然后指派给别人进行处理。   然后我们再点击上面这个issu">
+<meta property="og:description" content="issues 就是问题，在项目使用过程中遇到了什么操作上的问题，或者发现了什么 bug，可以通过提交 issues 向作者反映。项目介绍，百科，其实写一个项目，都需要写wiki，来做项目的整体描述和说明，其他人来参与项目的时候，先看wiki。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://sliu.vip/git/issues-wiki/988061-20191021220110493-1914835709.png">
 <meta property="og:image" content="https://sliu.vip/git/issues-wiki/988061-20191021220602556-953724024.png">
@@ -37,30 +37,9 @@
 <meta property="og:image" content="https://sliu.vip/git/issues-wiki/988061-20191021220941653-266480100.png">
 <meta property="og:image" content="https://sliu.vip/git/issues-wiki/988061-20191021221109607-451028730.png">
 <meta property="article:published_time" content="2020-03-24T17:01:15.139Z">
-<meta property="article:modified_time" content="2020-03-24T17:01:16.684Z">
+<meta property="article:modified_time" content="2020-03-24T17:08:09.041Z">
 <meta property="article:author" content="刘硕">
-<meta property="article:tag" content="Python">
-<meta property="article:tag" content="全栈开发">
-<meta property="article:tag" content="并发编程">
-<meta property="article:tag" content="网络编程">
-<meta property="article:tag" content="爬虫">
-<meta property="article:tag" content="数据库">
-<meta property="article:tag" content="自动化测试">
-<meta property="article:tag" content="Web开发">
-<meta property="article:tag" content="HTML">
-<meta property="article:tag" content="CSS">
-<meta property="article:tag" content="JavaScript">
-<meta property="article:tag" content="jQuery">
-<meta property="article:tag" content="Bootstrap">
-<meta property="article:tag" content="测试自动化">
-<meta property="article:tag" content="Selenium">
-<meta property="article:tag" content="postman">
-<meta property="article:tag" content="Linux">
-<meta property="article:tag" content="Vue">
-<meta property="article:tag" content="drf">
-<meta property="article:tag" content="django">
-<meta property="article:tag" content="文档翻译">
-<meta property="article:tag" content="PEP8">
+<meta property="article:tag" content="Git">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://sliu.vip/git/issues-wiki/988061-20191021220110493-1914835709.png">
 
@@ -264,7 +243,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-03-25 01:01:15 / 修改时间：01:01:16" itemprop="dateCreated datePublished" datetime="2020-03-25T01:01:15+08:00">2020-03-25</time>
+              <time title="创建时间：2020-03-25 01:01:15 / 修改时间：01:08:09" itemprop="dateCreated datePublished" datetime="2020-03-25T01:01:15+08:00">2020-03-25</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -298,6 +277,7 @@
   </span>
   
   
+            <div class="post-description">issues 就是问题，在项目使用过程中遇到了什么操作上的问题，或者发现了什么 bug，可以通过提交 issues 向作者反映。项目介绍，百科，其实写一个项目，都需要写wiki，来做项目的整体描述和说明，其他人来参与项目的时候，先看wiki。</div>
 
         </div>
       </header>
@@ -338,6 +318,9 @@
     
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Git/" rel="tag"># Git</a>
+          </div>
 
         
 
