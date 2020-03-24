@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="Tu5vqPaUb8svfkPx5eetJFD84ciQCcWVXNatdsWtj9Q">
+  <meta name="baidu-site-verification" content="baidu_verify_FBq9PG4BBb">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"appID":"PXY1Z6GHKT","apiKey":"eb82f2e78e3053f26aa408e9caa96d93","indexName":"blog","hits":{"per_page":10},"labels":{"input_placeholder":"要查点什么(✿◡‿◡)","hits_empty":"没有找到任何关于 ${query} 的结果╥﹏╥...","hits_stats":"搜索到 ${hits} 条记录，用时 ${time} ms o(*￣▽￣*)ブ"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="虽然相较于简单查找而言，二分查找能够节省大量的时间。但随着数据量的增多，查找的速度还是会变得很慢。我们希望有一种数据结构，查找数据时总能一下子就定位到我们要找的数据。换句话说，这种数据结构查找数据所需要的时间为 O(1)。数组和链表做不到这一点，散列表可以做到。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="散列表（哈希表）">
+<meta property="og:url" content="https://sliu.vip/notes/grokking-algorithms-hash-table/index.html">
+<meta property="og:site_name" content="刘硕的技术查阅手册">
+<meta property="og:description" content="虽然相较于简单查找而言，二分查找能够节省大量的时间。但随着数据量的增多，查找的速度还是会变得很慢。我们希望有一种数据结构，查找数据时总能一下子就定位到我们要找的数据。换句话说，这种数据结构查找数据所需要的时间为 O(1)。数组和链表做不到这一点，散列表可以做到。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-hash-table/1584782713289.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-hash-table/1584784156197.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-hash-table/1584784217563.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-hash-table/1584785358808.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-hash-table/1584785407641.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-hash-table/1584785452638.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-hash-table/1584785482473.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-hash-table/1584785522461.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-hash-table/1584785564857.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-hash-table/1584787423452.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-hash-table/1584787441215.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-hash-table/1584787552832.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-hash-table/1584787616605.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-hash-table/1584787830599.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-hash-table/1584788149581.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-hash-table/1584790524974.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-hash-table/1584790602777.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-hash-table/1584790703013.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-hash-table/1584790790517.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-hash-table/1584791656128.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-hash-table/1584792189596.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-hash-table/1584792243587.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-hash-table/1584792332516.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-hash-table/1584792361103.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-hash-table/1584792397294.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-hash-table/1584792547299.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-hash-table/1584792584050.png">
+<meta property="article:published_time" content="2020-03-23T17:27:18.370Z">
+<meta property="article:modified_time" content="2020-03-24T03:14:32.135Z">
+<meta property="article:author" content="刘硕">
+<meta property="article:tag" content="实践笔记">
+<meta property="article:tag" content="算法">
+<meta property="article:tag" content="算法图解">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sliu.vip/notes/grokking-algorithms-hash-table/1584782713289.png">
+
+<link rel="canonical" href="https://sliu.vip/notes/grokking-algorithms-hash-table/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>散列表（哈希表） | 刘硕的技术查阅手册</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f14f123935d6183fdd06f8f1c4bc378f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="刘硕的技术查阅手册" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">刘硕的技术查阅手册</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">Python 全栈开发学习笔记</h1>
+      
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-toc">
+
+    <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+  
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/notes/grokking-algorithms-hash-table/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          散列表（哈希表）
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-03-24 01:27:18 / 修改时间：11:14:32" itemprop="dateCreated datePublished" datetime="2020-03-24T01:27:18+08:00">2020-03-24</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B5%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习实践笔记</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/notes/grokking-algorithms-hash-table/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/notes/grokking-algorithms-hash-table/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <div class="post-description">虽然相较于简单查找而言，二分查找能够节省大量的时间。但随着数据量的增多，查找的速度还是会变得很慢。我们希望有一种数据结构，查找数据时总能一下子就定位到我们要找的数据。换句话说，这种数据结构查找数据所需要的时间为 O(1)。数组和链表做不到这一点，散列表可以做到。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>查找无序数组或者链表中的数据，我们只能从头往后逐个查找。这种简单查找的方式需要消耗的时间为 $O(n)$。而查找有序数组中的数据时，我们可以通过二分查找，快速定位到某个元素，此时消耗的时间为 $O(log\space n)$。</p>
+<p>虽然相较于简单查找而言，二分查找能够节省大量的时间。但随着数据量的增多，查找的速度还是会变得很慢。我们希望有一种数据结构，查找数据时总能一下子就定位到我们要找的数据。换句话说，这种数据结构查找数据所需要的时间为 $O(1)$。数组和链表做不到这一点，散列表可以做到。</p>
+<h3 id="散列函数"><a href="#散列函数" class="headerlink" title="散列函数"></a>散列函数</h3><p>散列函数（哈希函数）是这样的函数，即无论你给它什么数据，它都还你一个数字。</p>
+<img src="/notes/grokking-algorithms-hash-table/1584782713289.png" class="" width="1584782713289">
+
+<p>如果用专业术语来表达的话，我们会说，散列函数是将输入映射到数字。你可能认为散列函数输出的数字没什么规律，但其实散列函数必须满足一些要求：</p>
+<ul>
+<li>它必须是一致的。例如，假设你输入 apple 时得到的是 4，那么每次输入 apple 时，得到的都必须为 4。如果不是这样，散列表将亳无用处</li>
+<li>它应将不同的输入映射到不同的数字。例如，如果一个散列函数不管输入是什么都返回 1，它就不是好的散列函数。最理想的情况是，将不同的输入映射到不同的数字</li>
+</ul>
+<h3 id="散列表"><a href="#散列表" class="headerlink" title="散列表"></a>散列表</h3><p>散列函数可以将不同的输入映射为数字，使用它，我们就可以打造一款查找速度超快的数据结构，散列表（哈希表）。</p>
+<p>首先创建一个空的数组，数组的每个位置都对应一个索引。</p>
+<img src="/notes/grokking-algorithms-hash-table/1584784156197.png" class="" width="1584784156197">
+
+<p>我们将要在这个数组中存储商品的价格。下面首先来将苹果的价格加入到这个数组中。为此，将 apple 作为输入交给散列函数。</p>
+<img src="/notes/grokking-algorithms-hash-table/1584784217563.png" class="" width="1584784217563">
+
+<p>散列函数输出的值是 3，于是我们就把苹果的价格存放到数组索引为 3 的位置。</p>
+<img src="/notes/grokking-algorithms-hash-table/1584785358808.png" class="" width="1584785358808">
+
+<p>下面将牛奶（milk）的价格存储到数组中。为此，将 milk 作为散列函数的输入，得到结果为 0。</p>
+<img src="/notes/grokking-algorithms-hash-table/1584785407641.png" class="" width="1584785407641">
+
+
+
+<p>散列函数的输出结果为 0，因此我们将牛奶的价格存储在索引 0 处。</p>
+<img src="/notes/grokking-algorithms-hash-table/1584785452638.png" class="" width="1584785452638">
+
+<p>不断重复这个过程，直到整个数组都塞满价格。</p>
+<img src="/notes/grokking-algorithms-hash-table/1584785482473.png" class="" width="1584785482473">
+
+<p>现在假设需要知道鳄梨（avocado）的价格。你无需在数组中査找，只需将 avocado 作为输入交给散列函数。</p>
+<img src="/notes/grokking-algorithms-hash-table/1584785522461.png" class="" width="1584785522461">
+
+<p>从而我们得知，鳄梨的价格存放在数组索引为 4 的位置。果然，我们再那里找到了鳄梨的价格。</p>
+<img src="/notes/grokking-algorithms-hash-table/1584785564857.png" class="" width="1584785564857">
+
+<p>散列函数准确地指出了价格的存储位置，我们根本不需要进行査找！之所以能够做到这一点，具体原因如下：</p>
+<ul>
+<li>散列函数总是将同样的输入映射到相同的索引。每次你输入 avocado，得到的都是同一个数字。因此，我们可首先使用它来决定将鳄梨的价格存储在什么地方，并在以后使用它来得知鳄梨的价格存储在什么地方。</li>
+<li>散列函数将不同的输入映射到不同的索引。 avocado 映射到索引 4，milk 映射到索引 0。每种商品都映射到数组的不同位置，让你能够将其价格存储到这里。</li>
+<li>散列函数知道数组有多大，只返回有效的索引。如果数组包含 5 个元素，散列函数就不会返回无效索引 100。</li>
+</ul>
+<p>我们刚刚结合使用散列函数和数组创建了一种被称为散列表（hash table）的数据结构。散列表是我们学习的第一种包含额外逻辑的数据结构。数组和链表都被直接映射到内存，但散列表更复杂，它使用散列函数来确定元素的存储位置。</p>
+<p>在我们将要学习的复杂数据结构中，散列表可能是最有用的，也被称为哈希表、散列映射、映射、字典和关联数组。</p>
+<p>散列表的速度很快！散列表也使用数组来存储数据，因此其获取元素的速度与数组一样快。</p>
+<h3 id="Python-的字典是散列表"><a href="#Python-的字典是散列表" class="headerlink" title="Python 的字典是散列表"></a>Python 的字典是散列表</h3><p>我们已经看到，散列表就是使用类似于键值对的数据存储方式。事实上，Python 中的字典就是一种散列表数据结构。于是，Python 字典的如下性质就很好解释了：</p>
+<ul>
+<li>字典的键必须是可哈希（不可变）的数据类型。因为必须要通过散列函数把字典的键转换成数字索引才能找到值。如果键不可哈希，就无法应用散列函数。</li>
+<li>字典是无序的（Python 3.6 以后的版本字典通过其他手段默认有序，但不影响这里的讨论）。因为值的索引只和键与散列函数有关，不介意键的顺序。换句话说，值的存储是有序的，但是键不需要顺序。</li>
+<li>字典的键不能重复。因为相同内容经过散列函数映射得到的数字一定是相同的。同一个键只能对应数组的一个索引，只能对应存储一个值。</li>
+</ul>
+<h3 id="应用案例"><a href="#应用案例" class="headerlink" title="应用案例"></a>应用案例</h3><h4 id="将散列表用于查找，模拟映射关系"><a href="#将散列表用于查找，模拟映射关系" class="headerlink" title="将散列表用于查找，模拟映射关系"></a>将散列表用于查找，模拟映射关系</h4><p>在下述情况下，使用散列表是很不错的选择：</p>
+<ul>
+<li>创建映射</li>
+<li>查找频繁</li>
+</ul>
+<p>电话簿是很符合上面的条件的。我们要电话簿将姓名映射到电话号码。该电话簿需要提供如下功能：</p>
+<ul>
+<li>添加联系人及其电话号码。</li>
+<li>通过输入联系人来获悉其电话号码</li>
+</ul>
+<img src="/notes/grokking-algorithms-hash-table/1584787423452.png" class="" width="1584787423452">
+
+<img src="/notes/grokking-algorithms-hash-table/1584787441215.png" class="" width="1584787441215">
+
+<p>散列表被用于大海捞针式的查找。例如，你在访问像 <a href="http://adit.io" target="_blank" rel="noopener">http://adit.io</a> 这样的网站时，计算机必须将 adit.io 转换为 IP 地址。</p>
+<img src="/notes/grokking-algorithms-hash-table/1584787552832.png" class="" width="1584787552832">
+
+<p>事实上，无论你访问哪个网站，其网址都必须先转换为 IP 地址。</p>
+<img src="/notes/grokking-algorithms-hash-table/1584787616605.png" class="" width="1584787616605">
+
+<p>这不是将网址映射到 IP 地址吗？好像非常适合使用散列表啰！这个过程被称为 DNS 解析（DNS resolution），散列表是提供这种功能的方式之一。</p>
+<h4 id="防止重复"><a href="#防止重复" class="headerlink" title="防止重复"></a>防止重复</h4><p>假设你负责管理一个投票站。显然，每人只能投一票，但如何避免重复投票呢？有人来投票时，你询问他的全名，并将其与已投票者名单进行比对。</p>
+<p>如果名字在名单中，就说明这个人投过票了，因此将他拒之门外！否则，就将他的姓名加入到名单中，并让他投票。现在假设有很多人来投过了票，因此名单非常长。</p>
+<img src="/notes/grokking-algorithms-hash-table/1584787830599.png" class="" width="1584787830599">
+
+<p>每次有人来投票时，你都得浏览这个长长的名单，以确定他是否投过票。但有一种更好的办法，那就是使用散列表！</p>
+<img src="/notes/grokking-algorithms-hash-table/1584788149581.png" class="" width="1584788149581">
+
+<p>用代码表示就是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">voted = &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">check_voter</span><span class="params">(name: str)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> voted.get(name):  <span class="comment"># 若已经投过票，让他出去</span></span><br><span class="line">        print(<span class="string">'kick them out!'</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        voted[name] = <span class="literal">True</span>  <span class="comment"># 若字典中插入此人，让他投票</span></span><br><span class="line">        print(<span class="string">'let them vote!'</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 测试</span></span><br><span class="line">check_voter(<span class="string">'tom'</span>)</span><br><span class="line">check_voter(<span class="string">'mike'</span>)</span><br><span class="line">check_voter(<span class="string">'mike'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>首先来投票的是 Tom，上述代码打印 <code>let them vote!</code>。接着 Mike 来投票，打印的也是 <code>let them vote!</code>。然后，Mike 又来投票，于是打印的就是 <code>kick them out!</code>。</p>
+<p>别忘了，如果你将已投票者的姓名存储在列表中，这个函数的速度终将变得非常慢，因为它必须使用简单查找搜索整个列表。但这里将它们存储在了散列表中，而散列表让你能够迅速知道来投票的人是否投过票使用散列表来检查是否重复，速度非常快。</p>
+<h4 id="将散列表用作缓存"><a href="#将散列表用作缓存" class="headerlink" title="将散列表用作缓存"></a>将散列表用作缓存</h4><p>假设你有个侄女，总是没完没了地问你有关星球的问题。火星离地球多远？月球呢？木星呢？每次你都得在 Google 搜索，再告诉她答案。这需要几分钟。现在假设她老问你月球离地球多远，很快你就记住了月球离地球 238900 英里。因此不必再去 Google 搜索，你就可以直接告诉她答案。这就是缓存的工作原理：网站将数据记住，而不再重新计算。</p>
+<p>缓存是一种常用的加速方式，所有大型网站都使用缓存，而缓存的数据则存储在散列表中！</p>
+<h3 id="冲突"><a href="#冲突" class="headerlink" title="冲突"></a>冲突</h3><p>大多数语言都提供了散列表实现，我们没有必要知道如何实现它们。有鉴于此，就不再过多地讨论散列表的内部原理。</p>
+<p>但我们依然需要考虑性能！要明白散列表的性能，得先搞清楚什么是冲突。</p>
+<p>理想的散列函数需要将不同的键映射到数组的不同位置。但是这种散列函数几乎是不存在的。有的时候，不同的数据对应的散列函数的映射值是相同的，这就产生了<strong>冲突</strong>。</p>
+<p>假设我们有一个长度为 26 的数组，我们使用的散列函数很简单，按照商品名称的首字母分配位置。</p>
+<img src="/notes/grokking-algorithms-hash-table/1584790524974.png" class="" width="1584790524974">
+
+<p>这时候会出现一个问题：苹果和鳄梨都是以 A 开头，它们的散列函数的映射值都是 0。这下可糟了，一个位置无法存放两个价格信息呀。</p>
+<img src="/notes/grokking-algorithms-hash-table/1584790602777.png" class="" width="1584790602777">
+
+<p>这种情况被称为冲突（collision）：给两个键分配的位置相同。这是个问题。如果我们将鳄梨的价格存储到这个位置，将覆盖苹果的价格，以后再査询苹果的价格时，得到的将是鳄梨的价格！</p>
+<p>冲突很糟糕，必须要避免。处理冲突的方式很多，最简单的办法为：如果两个键映射到了同一个位置，就在这个位置存储一个链表。</p>
+<img src="/notes/grokking-algorithms-hash-table/1584790703013.png" class="" width="1584790703013">
+
+<p>在这个例子中，apple 和 avocado 映射到了同一个位置，因此在这个位置存储一个链表。</p>
+<p>在需要査询香蕉的价格时，速度依然很快。但在需要査询苹果的价格时，速度要慢些：我们必须在相应的链表中找到 apple。</p>
+<p>如果这个链表很短，也没什么大不了——只需搜索三四个元素。但是，假设你工作的杂货店只销售名称以字母 A 打头的商品，这颗就很糟糕了。</p>
+<img src="/notes/grokking-algorithms-hash-table/1584790790517.png" class="" width="1584790790517">
+
+<p>除第一个位置外，整个散列表都是空的，而第一个位置包含一个很长的列表！换言之，这个散列表中的所有元素都在一个链表中，这与开始就将所有元素存储到一个链表中一样糟糕：散列表的速度会很慢。</p>
+<p>这里的经验教训有两个：</p>
+<ul>
+<li>散列函数很重要。前面的散列函数将所有的键都映射到一个位置而最理想的情况是，散列函数将键均匀地映射到散列表的不同位置。</li>
+<li>如果散列表存储的链表很长，散列表的速度将急剧下降。然而，如果使用的散列函数很好，这些链表就不会很长！</li>
+</ul>
+<h3 id="性能"><a href="#性能" class="headerlink" title="性能"></a>性能</h3><p>散列表、数组和链表的运行时间对比如下。</p>
+<img src="/notes/grokking-algorithms-hash-table/1584791656128.png" class="" width="1584791656128">
+
+<p>在平均情况下，散列表执行各种操作所需要的时间都为 $O(1)$。$O(1)$ 被称为常量时间。常量时间并不意味着马上，而是说不管散列表多大，所需的时间都相同。</p>
+<p>在平均情况下，散列表的査找（获取给定索引处的值）速度与数组一样快，而插入和删除速度与链表一样快，因此它兼具两者的优点！但在最糟情况下，散列表的各种操作的速度都很慢。</p>
+<p>因此，在使用散列表时避开最糟情况至关重要。为此，需要避免冲突。而要避免冲突，需要：</p>
+<ul>
+<li>较低的填装因子</li>
+<li>良好的散列函数</li>
+</ul>
+<h4 id="填装因子"><a href="#填装因子" class="headerlink" title="填装因子"></a>填装因子</h4><p>散列表的填装因子很容易计算：</p>
+<img src="/notes/grokking-algorithms-hash-table/1584792189596.png" class="" width="1584792189596">
+
+<p>散列表使用数组来存储数据，因此我们需要计算数组中被占用的位置数。例如，下述散列表的填装因子为 2/5，即0.4。</p>
+<img src="/notes/grokking-algorithms-hash-table/1584792243587.png" class="" width="1584792243587">
+
+<p>填装因子大于 1 意味着商品数量超过了数组的位置数。一旦填装因子开始增大，就需要在散列表中添加位置，这被称为调整长度（resizing）。例如，假设有一个像下面这样相当满的散列表。</p>
+<img src="/notes/grokking-algorithms-hash-table/1584792332516.png" class="" width="1584792332516">
+
+<p>我们就需要调整它的长度。为此，首先创建一个更长的新数组：通常将数组增长一倍。</p>
+<img src="/notes/grokking-algorithms-hash-table/1584792361103.png" class="" width="1584792361103">
+
+<p>接下来，我们需要使用散列函数将所有的元素都插入到这个新的散列表种。</p>
+<img src="/notes/grokking-algorithms-hash-table/1584792397294.png" class="" width="1584792397294">
+
+<p>这个新散列表的填装因子为 3/8，比原来低多了！填装因子越低，发生冲突的可能性越小，散列表的性能越高。一个不错的经验规则是：一旦填装因子大于0.7，就调整散列表的长度。</p>
+<p>调整散列表长度的工作需要很长时间。但平均而言，即便考虑到调整长度所需的时间，散列表操作所需的时间也为 $O(1)$。</p>
+<h4 id="良好的散列函数"><a href="#良好的散列函数" class="headerlink" title="良好的散列函数"></a>良好的散列函数</h4><p>良好的散列函数让数组中的值呈均匀分布。</p>
+<img src="/notes/grokking-algorithms-hash-table/1584792547299.png" class="" width="1584792547299">
+
+<p>糟糕的散列函数让值扎堆，导致大量冲突。</p>
+<img src="/notes/grokking-algorithms-hash-table/1584792584050.png" class="" width="1584792584050">
+
+<p>什么样的散列函数是良好的呢？这个问题我们大可不必操心——天塌下来有高个子顶着，早就有大牛帮我们实现了。如果你好奇，可研究一下 SHA 函数，我们可将它用作散列函数。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%AE%9E%E8%B7%B5%E7%AC%94%E8%AE%B0/" rel="tag"># 实践笔记</a>
+              <a href="/tags/%E7%AE%97%E6%B3%95/" rel="tag"># 算法</a>
+              <a href="/tags/%E7%AE%97%E6%B3%95%E5%9B%BE%E8%A7%A3/" rel="tag"># 算法图解</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/crawler/data-parse/" rel="prev" title="数据解析（正则、bs4 和 xpath）">
+      <i class="fa fa-chevron-left"></i> 数据解析（正则、bs4 和 xpath）
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/project/renran-article-detail/" rel="next" title="荏苒资讯文章详情页开发">
+      荏苒资讯文章详情页开发 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#散列函数"><span class="nav-number">1.</span> <span class="nav-text">散列函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#散列表"><span class="nav-number">2.</span> <span class="nav-text">散列表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python-的字典是散列表"><span class="nav-number">3.</span> <span class="nav-text">Python 的字典是散列表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#应用案例"><span class="nav-number">4.</span> <span class="nav-text">应用案例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#将散列表用于查找，模拟映射关系"><span class="nav-number">4.1.</span> <span class="nav-text">将散列表用于查找，模拟映射关系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#防止重复"><span class="nav-number">4.2.</span> <span class="nav-text">防止重复</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#将散列表用作缓存"><span class="nav-number">4.3.</span> <span class="nav-text">将散列表用作缓存</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#冲突"><span class="nav-number">5.</span> <span class="nav-text">冲突</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#性能"><span class="nav-number">6.</span> <span class="nav-text">性能</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#填装因子"><span class="nav-number">6.1.</span> <span class="nav-text">填装因子</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#良好的散列函数"><span class="nav-number">6.2.</span> <span class="nav-text">良好的散列函数</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="刘硕"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">刘硕</p>
+  <div class="site-description" itemprop="description">不成为自己讨厌的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">264</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:liushuo432@outlook.com" title="E-Mail → mailto:liushuo432@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/2436055290" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;2436055290" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://wpa.qq.com/msgrd?v=3&uin=1696146913&site=qq&menu=yes" title="QQ → http:&#x2F;&#x2F;wpa.qq.com&#x2F;msgrd?v&#x3D;3&amp;uin&#x3D;1696146913&amp;site&#x3D;qq&amp;menu&#x3D;yes" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-fw fa-rss"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备20001451号 </a>
+      <img src="/images/beian_icon.png" style="display: inline-block;"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=21142102000063" rel="noopener" target="_blank">辽公网安备 21142102000063号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘硕</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.2" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'Ga2II3wuJmHX3GiNHm9TmI97-gzGzoHsz',
+      appKey     : 'esGYJQepdYLHf07E1VMsP3RK',
+      placeholder: "o(*￣▽￣*)ブ来说点什么吧...（填上邮箱可以收到回复提醒）",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : true,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+  <script type="text/javascript" src="/js/love.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/Epsilon2.1.model.json"},"display":{"superSample":2,"width":200,"height":400,"position":"left","hOffset":-30,"vOffset":-40},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>

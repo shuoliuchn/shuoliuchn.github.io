@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="Tu5vqPaUb8svfkPx5eetJFD84ciQCcWVXNatdsWtj9Q">
+  <meta name="baidu-site-verification" content="baidu_verify_FBq9PG4BBb">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"appID":"PXY1Z6GHKT","apiKey":"eb82f2e78e3053f26aa408e9caa96d93","indexName":"blog","hits":{"per_page":10},"labels":{"input_placeholder":"要查点什么(✿◡‿◡)","hits_empty":"没有找到任何关于 ${query} 的结果╥﹏╥...","hits_stats":"搜索到 ${hits} 条记录，用时 ${time} ms o(*￣▽￣*)ブ"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="我们做开发的时候，写程序，可能会有多个人一起开发，或者你自己有多个电脑，家里一个电脑，办公室一个电脑。但是你如果刚开始的代码都是在家里的电脑写的，然后你到了公司，你想继续开发你的程序，那么就需要你自己来回的拷贝自己的代码，并随身携带，非常麻烦。于是就出现了代码网络托管站（就类似于行李托管站一样），可以帮你保存你的代码，以及各个版本的代码和所有分支。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GitHub 代码管理仓库">
+<meta property="og:url" content="https://sliu.vip/git/github/index.html">
+<meta property="og:site_name" content="刘硕的技术查阅手册">
+<meta property="og:description" content="我们做开发的时候，写程序，可能会有多个人一起开发，或者你自己有多个电脑，家里一个电脑，办公室一个电脑。但是你如果刚开始的代码都是在家里的电脑写的，然后你到了公司，你想继续开发你的程序，那么就需要你自己来回的拷贝自己的代码，并随身携带，非常麻烦。于是就出现了代码网络托管站（就类似于行李托管站一样），可以帮你保存你的代码，以及各个版本的代码和所有分支。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sliu.vip/git/github/988061-20191015141930513-201066458.png">
+<meta property="og:image" content="https://sliu.vip/git/github/988061-20191015173510206-682603719.png">
+<meta property="og:image" content="https://sliu.vip/git/github/988061-20191015173742775-1263652667.png">
+<meta property="og:image" content="https://sliu.vip/git/github/988061-20191015173907847-1429215622.png">
+<meta property="og:image" content="https://sliu.vip/git/github/988061-20191015175132782-1057140652.png">
+<meta property="og:image" content="https://sliu.vip/git/github/988061-20191015180900255-946808968.png">
+<meta property="og:image" content="https://sliu.vip/git/github/988061-20191015181954281-1529277563.png">
+<meta property="og:image" content="https://sliu.vip/git/github/988061-20191015182359629-1395134938.png">
+<meta property="og:image" content="https://sliu.vip/git/github/988061-20191015182528827-498771431.png">
+<meta property="og:image" content="https://sliu.vip/git/github/988061-20191015184652262-1325276167.png">
+<meta property="og:image" content="https://sliu.vip/git/github/988061-20191015184725290-1740721618.png">
+<meta property="og:image" content="https://sliu.vip/git/github/988061-20191015185334056-658287118.png">
+<meta property="og:image" content="https://sliu.vip/git/github/988061-20191015185923923-337876677.png">
+<meta property="og:image" content="https://sliu.vip/git/github/988061-20191015190005704-678453184.png">
+<meta property="og:image" content="https://sliu.vip/git/github/988061-20191015190058029-2129582994.png">
+<meta property="og:image" content="https://sliu.vip/git/github/988061-20191015193106811-1955362778.png">
+<meta property="og:image" content="https://sliu.vip/git/github/988061-20191015193707578-1017523802.png">
+<meta property="og:image" content="https://sliu.vip/git/github/988061-20191015194407309-606889019.png">
+<meta property="og:image" content="https://sliu.vip/git/github/988061-20191015194513426-1749508682.png">
+<meta property="og:image" content="https://sliu.vip/git/github/988061-20191015194727136-1324371311.png">
+<meta property="og:image" content="https://sliu.vip/git/github/988061-20191015194830104-1133656749.png">
+<meta property="og:image" content="https://sliu.vip/git/github/988061-20191016101042914-1855036556.png">
+<meta property="article:published_time" content="2020-03-23T17:27:19.241Z">
+<meta property="article:modified_time" content="2020-03-24T03:14:32.172Z">
+<meta property="article:author" content="刘硕">
+<meta property="article:tag" content="Git">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sliu.vip/git/github/988061-20191015141930513-201066458.png">
+
+<link rel="canonical" href="https://sliu.vip/git/github/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>GitHub 代码管理仓库 | 刘硕的技术查阅手册</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f14f123935d6183fdd06f8f1c4bc378f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="刘硕的技术查阅手册" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">刘硕的技术查阅手册</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">Python 全栈开发学习笔记</h1>
+      
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-toc">
+
+    <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+  
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/git/github/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          GitHub 代码管理仓库
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-03-24 01:27:19 / 修改时间：11:14:32" itemprop="dateCreated datePublished" datetime="2020-03-24T01:27:19+08:00">2020-03-24</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Git/" itemprop="url" rel="index"><span itemprop="name">Git</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/git/github/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/git/github/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <div class="post-description">我们做开发的时候，写程序，可能会有多个人一起开发，或者你自己有多个电脑，家里一个电脑，办公室一个电脑。但是你如果刚开始的代码都是在家里的电脑写的，然后你到了公司，你想继续开发你的程序，那么就需要你自己来回的拷贝自己的代码，并随身携带，非常麻烦。于是就出现了代码网络托管站（就类似于行李托管站一样），可以帮你保存你的代码，以及各个版本的代码和所有分支。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>我们做开发的时候，写程序，可能会有多个人一起开发，或者你自己有多个电脑，家里一个电脑，办公室一个电脑。但是你如果刚开始的代码都是在家里的电脑写的，然后你到了公司，你想继续开发你的程序，那么就需要你自己来回的拷贝自己的代码，并随身携带，非常麻烦。</p>
+<p>于是就出现了代码网络托管站（就类似于行李托管站一样），可以帮你保存你的代码，以及各个版本的代码和所有分支。这样的话，你在家里开发完了之后，把代码放到托管站，就不用自己随身携带了。等到了公司，使用公司的电脑开发的时候，就可以直接通过网络托管站把自己已经开发好的代码拉下来到自己的本机，然后继续开发。开发完了之后，在交给托管站托管，这样就方便多了。</p>
+<p>这样的托管站有很多，比如今天我们要说的 GitHub，还有 GitLab、码云、开源中国、CSDN 等都在做代码托管平台。 其实这些代码托管平台的用法大同小异，了解了 GitHub 的用法，其他的平台也都信手拈来了。</p>
+<img src="/git/github/988061-20191015141930513-201066458.png" class="" title="988061-20191015141930513-201066458"> 
+
+<pre><code>使用 GitHub 有这么几步：</code></pre><ol>
+<li>注册 GitHub 账号</li>
+<li>创建仓库</li>
+<li>本地代码推送到仓库</li>
+</ol>
+<h3 id="注册-GitHub-账号"><a href="#注册-GitHub-账号" class="headerlink" title="注册 GitHub 账号"></a>注册 GitHub 账号</h3><p>注册就很简单了，网址： <a href="https://github.com/" target="_blank" rel="noopener">https://github.com/</a>  。点击右上角的 <code>Sign up</code> 就可以注册了</p>
+<img src="/git/github/988061-20191015173510206-682603719.png" class="" title="988061-20191015173510206-682603719"> 
+
+<p>注册号账号之后，点击上面的 <code>Sign in</code> 进行登陆，登陆成功之后，会来到这个页面，也就是你的首页 </p>
+<img src="/git/github/988061-20191015173742775-1263652667.png" class="" title="988061-20191015173742775-1263652667"> 
+
+<h3 id="创建仓库"><a href="#创建仓库" class="headerlink" title="创建仓库"></a>创建仓库</h3><p>也就是我们说的托管站里面开辟一个自己的代码托管的空间，看操作 </p>
+<img src="/git/github/988061-20191015173907847-1429215622.png" class="" title="988061-20191015173907847-1429215622"> 
+
+<p>然后会看到下面的页面，看介绍 </p>
+<img src="/git/github/988061-20191015175132782-1057140652.png" class="" title="988061-20191015175132782-1057140652"> 
+
+<p>创建好之后我们会看到下面这个页面，其实在 GitHub 这个托管站上，就相当于我们创建了一个叫做 dbhot（就上面我起的那个仓库名称）的文件夹，用来管理我们的项目。 </p>
+<img src="/git/github/988061-20191015180900255-946808968.png" class="" title="988061-20191015180900255-946808968"> 
+
+<h3 id="GitHub-保存代码"><a href="#GitHub-保存代码" class="headerlink" title="GitHub 保存代码"></a>GitHub 保存代码</h3><p>将我们的代码和分支推送到 GitHub 上保存 </p>
+<p>打开我们的终端，也就是我们那个 <code>git bash</code>，查看一下状态。</p>
+<img src="/git/github/988061-20191015181954281-1529277563.png" class="" title="988061-20191015181954281-1529277563">
+
+<p>然后看一下推送代码的指令：</p>
+<img src="/git/github/988061-20191015182359629-1395134938.png" class="" title="988061-20191015182359629-1395134938">
+
+<p>查看一下当前的分支</p>
+<img src="/git/github/988061-20191015182528827-498771431.png" class="" title="988061-20191015182528827-498771431">
+
+<p>然后执行指令：</p>
+<img src="/git/github/988061-20191015184652262-1325276167.png" class="" title="988061-20191015184652262-1325276167"> 
+
+<p>然后执行它：</p>
+<img src="/git/github/988061-20191015184725290-1740721618.png" class="" title="988061-20191015184725290-1740721618"> 
+
+<p>会给你弹出一个窗口，让你输入 GitHub 的账号和密码，这里我的截图失败了，导致大家在这里看不到效果了，但是没关系，你应该可以搞定的。然后接着看：</p>
+<img src="/git/github/988061-20191015185334056-658287118.png" class="" title="988061-20191015185334056-658287118"> 
+
+<p>等代码都推送成功了之后，我们来 GitHub 上刷新一下我们的仓库页面，就会看到变化了：</p>
+<img src="/git/github/988061-20191015185923923-337876677.png" class="" title="988061-20191015185923923-337876677">
+
+<p>推送一下 dev 分支到 GitHub 上：</p>
+<img src="/git/github/988061-20191015190005704-678453184.png" class="" title="988061-20191015190005704-678453184">
+
+<p>刷新我们的 GitHub 页面，就看到有两个分支了</p>
+<img src="/git/github/988061-20191015190058029-2129582994.png" class="" title="988061-20191015190058029-2129582994">
+
+<h3 id="拉取-GitHub-上的代码继续开发"><a href="#拉取-GitHub-上的代码继续开发" class="headerlink" title="拉取 GitHub 上的代码继续开发"></a>拉取 GitHub 上的代码继续开发</h3><p>换一个电脑，然后拉取 GitHub 上的代码继续开发，我这里简单模拟一下，就在本地重新创建一个文件夹了，然后在这个文件夹里面来搞我们的代码。</p>
+<p>比如：我又创建了一个 gitpro2 文件夹，然后在这个目录里面使用我们的 <code>git bash</code>：</p>
+<img src="/git/github/988061-20191015193106811-1955362778.png" class="" title="988061-20191015193106811-1955362778"> 
+
+<p>在这里面克隆一下远程 GitHub 上的代码到我们的这个文件夹里面：</p>
+<p>先看一下我们远程仓库的地址是什么，看 GitHub：</p>
+<img src="/git/github/988061-20191015193707578-1017523802.png" class="" title="988061-20191015193707578-1017523802"> 
+
+<p>然后执行下面的指令： </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> 地址</span><br><span class="line"><span class="comment"># 例如：</span></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/clschao/dbhot.git</span><br></pre></td></tr></table></figure>
+
+<p>然后整个仓库就被我们克隆下来了（包括所有分支，所有代码，所有版本），在我们的 gitpro2 文件夹里面了，然后我们需要进入到仓库里面才能看到我们的代码： </p>
+<img src="/git/github/988061-20191015194407309-606889019.png" class="" title="988061-20191015194407309-606889019"> 
+
+<img src="/git/github/988061-20191015194513426-1749508682.png" class="" title="988061-20191015194513426-1749508682"> 
+
+<p>查看一下分支： </p>
+<img src="/git/github/988061-20191015194727136-1324371311.png" class="" title="988061-20191015194727136-1324371311"> 
+
+<p>切换到 dev 分支上试试，通过查看提交的版本，你会发现就是我们之前的 dev 分支： </p>
+<img src="/git/github/988061-20191015194830104-1133656749.png" class="" title="988061-20191015194830104-1133656749"> 
+
+<h3 id="换一个电脑继续开发指令总结"><a href="#换一个电脑继续开发指令总结" class="headerlink" title="换一个电脑继续开发指令总结"></a>换一个电脑继续开发指令总结</h3><h4 id="上传代码"><a href="#上传代码" class="headerlink" title="上传代码"></a>上传代码</h4><ol>
+<li><p>给远程仓库起名</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git remote add origin 远程仓库地址</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>向远程推送代码</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push -u origin 分支</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h4 id="在新电脑上第一次获取代码"><a href="#在新电脑上第一次获取代码" class="headerlink" title="在新电脑上第一次获取代码"></a>在新电脑上第一次获取代码</h4><ol>
+<li><p>克隆远程仓库代码</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git <span class="built_in">clone</span> 远程仓库地址    <span class="comment"># 内部已实现git remote add origin 远程仓库地址</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>切换分支</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout 分支</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>在新电脑上进行开发</p>
+<ol>
+<li><p>切换到 dev 分支进行开发</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout dev</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>把 master 分支合并到 dev（仅一次）</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git merge master</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改代码</p>
+</li>
+<li><p>提交代码</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">'xx'</span></span><br><span class="line">git merge master    <span class="comment"># 推送前的好习惯，和master分支合并</span></span><br><span class="line">git push origin dev</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>回老电脑上继续写代码</p>
+<ol>
+<li><p>切换到 dev 分支进行开发</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout dev</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>拉代码</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git pull origin dev</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>继续开发</p>
+</li>
+<li><p>提交代码</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">'xx'</span></span><br><span class="line">git merge master    <span class="comment"># 推送前的好习惯，和master分支合并</span></span><br><span class="line">git push origin dev</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>开发完毕之后，在 dev 分支上 commit。然后切换到 master 分支上合并一下 dev 分支，然后推送到 GitHub 上的 master 分支，就算是完成了 。</p>
+<p>最后，因为我们 dev 分支上也是最新的代码了，也可以将我们的 dev 分支推送到 GitHub 上的 dev 分支上。推送之前有个好习惯就是在 dev 分支上合并一下 master 分支的代码 <code>git merge master</code>，不强制要求，但是个好习惯。</p>
+<p>以后如果我们还想继续开发，我们可以将我们的 dev 和 master 分支上的最新的代码都拉下来进行继续开发：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git pull origin dev</span><br><span class="line">git pull origin master</span><br></pre></td></tr></table></figure>
+
+<h3 id="如果在公司忘记提交代码，怎么搞？"><a href="#如果在公司忘记提交代码，怎么搞？" class="headerlink" title="如果在公司忘记提交代码，怎么搞？"></a><strong>如果在公司忘记提交代码，怎么搞？</strong></h3><p>在公司开发的时候</p>
+<ol>
+<li><p>拉代码</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git pull origin dev</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>继续开发</p>
+</li>
+<li><p>提交代码</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git add .</span><br><span class="line">    git commit -m <span class="string">'xx'</span></span><br><span class="line">    git merge master    <span class="comment"># 推送前的好习惯，和master分支合并</span></span><br><span class="line">    <span class="comment"># 注：在这里忘记push了,没有推给GitHub</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>回到家继续开发</p>
+<ol>
+<li><p>拉代码，发现在公司写的代码忘记提交到 GitHub 上了</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git pull origin dev</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>继续开发其他功能<br> 但是在家里写的功能有可能和你在公司开发的代码有些冲突（在同一行）</p>
+</li>
+<li><p>把 dev 分支也推送到了远程</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">'xxx'</span></span><br><span class="line">git merge master    <span class="comment"># 推送前的好习惯，和master分支合并</span></span><br><span class="line">git push origin dev</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>第二天到了公司继续写代码</p>
+<ol>
+<li><p>拉代码，把昨天晚上在家里写的其他功能的代码拉到本地（有合并、可能产生冲突）</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git pull origin dev</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如果有冲突,手动解决冲突（公司电脑上昨天忘记 push 的代码和昨日回到家后写的代码可能有些冲突）</p>
+</li>
+<li><p>继续开发其他功能</p>
+</li>
+<li><p>把 dev 分支也推送到远程</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git add .</span><br><span class="line">git commit -m <span class="string">'xxxx'</span></span><br><span class="line">git merge master    <span class="comment"># 推送前的好习惯，和master分支合并</span></span><br><span class="line">git push origin dev</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>其实 <code>git pull origin dev</code> 等价于下面两个指令： </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git fetch origin dev   <span class="comment">#将远程仓库dev分支的代码拉到本地git的版本库中，为了和本地dev分支做个区分，远程拉下来的dev分支会叫另外一个名字：origin/dev  </span></span><br><span class="line">git merge origin/dev  <span class="comment"># 合并远程拉取下来的dev分支的代码</span></span><br></pre></td></tr></table></figure>
+
+<p>看图：</p>
+<img src="/git/github/988061-20191016101042914-1855036556.png" class="" title="988061-20191016101042914-1855036556">
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Git/" rel="tag"># Git</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/git/rebase/" rel="prev" title="rebase 变基">
+      <i class="fa fa-chevron-left"></i> rebase 变基
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#注册-GitHub-账号"><span class="nav-number">1.</span> <span class="nav-text">注册 GitHub 账号</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建仓库"><span class="nav-number">2.</span> <span class="nav-text">创建仓库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GitHub-保存代码"><span class="nav-number">3.</span> <span class="nav-text">GitHub 保存代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#拉取-GitHub-上的代码继续开发"><span class="nav-number">4.</span> <span class="nav-text">拉取 GitHub 上的代码继续开发</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#换一个电脑继续开发指令总结"><span class="nav-number">5.</span> <span class="nav-text">换一个电脑继续开发指令总结</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#上传代码"><span class="nav-number">5.1.</span> <span class="nav-text">上传代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#在新电脑上第一次获取代码"><span class="nav-number">5.2.</span> <span class="nav-text">在新电脑上第一次获取代码</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如果在公司忘记提交代码，怎么搞？"><span class="nav-number">6.</span> <span class="nav-text">如果在公司忘记提交代码，怎么搞？</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="刘硕"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">刘硕</p>
+  <div class="site-description" itemprop="description">不成为自己讨厌的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">264</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:liushuo432@outlook.com" title="E-Mail → mailto:liushuo432@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/2436055290" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;2436055290" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://wpa.qq.com/msgrd?v=3&uin=1696146913&site=qq&menu=yes" title="QQ → http:&#x2F;&#x2F;wpa.qq.com&#x2F;msgrd?v&#x3D;3&amp;uin&#x3D;1696146913&amp;site&#x3D;qq&amp;menu&#x3D;yes" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-fw fa-rss"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备20001451号 </a>
+      <img src="/images/beian_icon.png" style="display: inline-block;"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=21142102000063" rel="noopener" target="_blank">辽公网安备 21142102000063号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘硕</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.2" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'Ga2II3wuJmHX3GiNHm9TmI97-gzGzoHsz',
+      appKey     : 'esGYJQepdYLHf07E1VMsP3RK',
+      placeholder: "o(*￣▽￣*)ブ来说点什么吧...（填上邮箱可以收到回复提醒）",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : true,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+  <script type="text/javascript" src="/js/love.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/Epsilon2.1.model.json"},"display":{"superSample":2,"width":200,"height":400,"position":"left","hOffset":-30,"vOffset":-40},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>

@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="Tu5vqPaUb8svfkPx5eetJFD84ciQCcWVXNatdsWtj9Q">
+  <meta name="baidu-site-verification" content="baidu_verify_FBq9PG4BBb">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"appID":"PXY1Z6GHKT","apiKey":"eb82f2e78e3053f26aa408e9caa96d93","indexName":"blog","hits":{"per_page":10},"labels":{"input_placeholder":"要查点什么(✿◡‿◡)","hits_empty":"没有找到任何关于 ${query} 的结果╥﹏╥...","hits_stats":"搜索到 ${hits} 条记录，用时 ${time} ms o(*￣▽￣*)ブ"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="很多时候，尤其是在公司工作，我们往往不是一个人战斗，而是会和几个同事合作开发。这就是 GitHub 创建组织实现多人协作的目的。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git 多人协作开发">
+<meta property="og:url" content="https://sliu.vip/git/team-dev/index.html">
+<meta property="og:site_name" content="刘硕的技术查阅手册">
+<meta property="og:description" content="很多时候，尤其是在公司工作，我们往往不是一个人战斗，而是会和几个同事合作开发。这就是 GitHub 创建组织实现多人协作的目的。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sliu.vip/git/team-dev/988061-20191020153502495-245150897.png">
+<meta property="og:image" content="https://sliu.vip/git/team-dev/988061-20191020154552393-1466917609.png">
+<meta property="og:image" content="https://sliu.vip/git/team-dev/988061-20191020154659950-584299763.png">
+<meta property="og:image" content="https://sliu.vip/git/team-dev/988061-20191020155231187-888922975.png">
+<meta property="og:image" content="https://sliu.vip/git/team-dev/988061-20191020155444078-576266781.png">
+<meta property="og:image" content="https://sliu.vip/git/team-dev/988061-20191020155610914-324225953.png">
+<meta property="og:image" content="https://sliu.vip/git/team-dev/988061-20191020155748815-242704441.png">
+<meta property="og:image" content="https://sliu.vip/git/team-dev/988061-20191020160109433-1167108700.png">
+<meta property="og:image" content="https://sliu.vip/git/team-dev/988061-20191020160546211-1022601629.png">
+<meta property="og:image" content="https://sliu.vip/git/team-dev/988061-20191020160644549-659012299.png">
+<meta property="og:image" content="https://sliu.vip/git/team-dev/988061-20191020161029249-515167840.png">
+<meta property="og:image" content="https://sliu.vip/git/team-dev/988061-20191020161232144-649407668.png">
+<meta property="og:image" content="https://sliu.vip/git/team-dev/988061-20191020161351725-248278697.png">
+<meta property="og:image" content="https://sliu.vip/git/team-dev/988061-20191020161521228-1316408708.png">
+<meta property="og:image" content="https://sliu.vip/git/team-dev/988061-20191020161617937-800931532.png">
+<meta property="og:image" content="https://sliu.vip/git/team-dev/988061-20191020162140866-1880216370.png">
+<meta property="og:image" content="https://sliu.vip/git/team-dev/988061-20191020162323382-542625875.png">
+<meta property="og:image" content="https://sliu.vip/git/team-dev/988061-20191020163352987-1880847728.png">
+<meta property="og:image" content="https://sliu.vip/git/team-dev/988061-20191020163428561-1829982544.png">
+<meta property="og:image" content="https://sliu.vip/git/team-dev/988061-20191020163525744-1854929673.png">
+<meta property="og:image" content="https://sliu.vip/git/team-dev/988061-20191020164547463-1922208982.png">
+<meta property="og:image" content="https://sliu.vip/git/team-dev/988061-20191020164750821-2134777748.png">
+<meta property="og:image" content="https://sliu.vip/git/team-dev/988061-20191020164834384-630101522.png">
+<meta property="og:image" content="https://sliu.vip/git/team-dev/988061-20191020165840135-505608289.png">
+<meta property="og:image" content="https://sliu.vip/git/team-dev/988061-20191020170115672-692310991.png">
+<meta property="og:image" content="https://sliu.vip/git/team-dev/988061-20191020171346846-585392714.png">
+<meta property="og:image" content="https://sliu.vip/git/team-dev/988061-20191020171621912-402251317.png">
+<meta property="og:image" content="https://sliu.vip/git/team-dev/988061-20191020172049539-574340680.png">
+<meta property="og:image" content="https://sliu.vip/git/team-dev/988061-20191020172154949-1100626721.png">
+<meta property="og:image" content="https://img2018.cnblogs.com/blog/988061/201910/988061-20191020172553424-781239443.png">
+<meta property="og:image" content="https://img2018.cnblogs.com/blog/988061/201910/988061-20191020173121778-596980894.png">
+<meta property="og:image" content="https://img2018.cnblogs.com/blog/988061/201910/988061-20191020173348587-362211703.png">
+<meta property="og:image" content="https://img2018.cnblogs.com/blog/988061/201910/988061-20191020173555330-41518070.png">
+<meta property="og:image" content="https://img2018.cnblogs.com/blog/988061/201910/988061-20191020173741302-1482042858.png">
+<meta property="og:image" content="https://img2018.cnblogs.com/blog/988061/201910/988061-20191020175400422-1856662486.png">
+<meta property="og:image" content="https://img2018.cnblogs.com/blog/988061/201910/988061-20191020175602311-280312239.png">
+<meta property="og:image" content="https://img2018.cnblogs.com/blog/988061/201910/988061-20191020175903326-1800649189.png">
+<meta property="og:image" content="https://img2018.cnblogs.com/blog/988061/201910/988061-20191020180022077-2077705238.png">
+<meta property="og:image" content="https://img2018.cnblogs.com/blog/988061/201910/988061-20191020180447925-2101608533.png">
+<meta property="og:image" content="https://img2018.cnblogs.com/blog/988061/201910/988061-20191020180613400-2050375409.png">
+<meta property="og:image" content="https://img2018.cnblogs.com/blog/988061/201910/988061-20191020181329115-1740396279.png">
+<meta property="og:image" content="https://img2018.cnblogs.com/blog/988061/201910/988061-20191020181610212-832741321.png">
+<meta property="og:image" content="https://img2018.cnblogs.com/blog/988061/201910/988061-20191020181713298-1241274500.png">
+<meta property="og:image" content="https://img2018.cnblogs.com/blog/988061/201910/988061-20191020181759894-2094238688.png">
+<meta property="og:image" content="https://img2018.cnblogs.com/blog/988061/201910/988061-20191020181920201-928146835.png">
+<meta property="og:image" content="https://img2018.cnblogs.com/blog/988061/201910/988061-20191020183829425-484800136.png">
+<meta property="og:image" content="https://img2018.cnblogs.com/blog/988061/201910/988061-20191020183851133-218491906.png">
+<meta property="og:image" content="https://img2018.cnblogs.com/blog/988061/201910/988061-20191020183951485-1068005755.png">
+<meta property="article:published_time" content="2020-03-23T17:27:19.213Z">
+<meta property="article:modified_time" content="2020-03-24T03:14:32.156Z">
+<meta property="article:author" content="刘硕">
+<meta property="article:tag" content="Git">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sliu.vip/git/team-dev/988061-20191020153502495-245150897.png">
+
+<link rel="canonical" href="https://sliu.vip/git/team-dev/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>Git 多人协作开发 | 刘硕的技术查阅手册</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f14f123935d6183fdd06f8f1c4bc378f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="刘硕的技术查阅手册" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">刘硕的技术查阅手册</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">Python 全栈开发学习笔记</h1>
+      
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-toc">
+
+    <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+  
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/git/team-dev/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          Git 多人协作开发
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-03-24 01:27:19 / 修改时间：11:14:32" itemprop="dateCreated datePublished" datetime="2020-03-24T01:27:19+08:00">2020-03-24</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Git/" itemprop="url" rel="index"><span itemprop="name">Git</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/git/team-dev/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/git/team-dev/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <div class="post-description">很多时候，尤其是在公司工作，我们往往不是一个人战斗，而是会和几个同事合作开发。这就是 GitHub 创建组织实现多人协作的目的。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>多人协作开发 gitflow 工作流思路，看图：</p>
+<img src="/git/team-dev/988061-20191020153502495-245150897.png" class="" title="988061-20191020153502495-245150897"> 
+
+<p>创建新项目，我们来玩一下整个工作流。</p>
+<h3 id="创建组织"><a href="#创建组织" class="headerlink" title="创建组织"></a>创建组织</h3><p>先去我们远程的 GitHub 上创建一个组织（其实还有另外一种邀请其他人员进行协同开发的方式，不适合公司内部开发，所以我们给大家说一种正规的，就是创建组织）。</p>
+<img src="/git/team-dev/988061-20191020154552393-1466917609.png" class="" title="988061-20191020154552393-1466917609"> 
+
+
+
+<p>然后进入这个页面： </p>
+<img src="/git/team-dev/988061-20191020154659950-584299763.png" class="" title="988061-20191020154659950-584299763"> 
+
+<p>再然后进入这个页面：</p>
+<img src="/git/team-dev/988061-20191020155231187-888922975.png" class="" title="988061-20191020155231187-888922975"> 
+
+<p>点击 next 会看到下面的页面： </p>
+<img src="/git/team-dev/988061-20191020155444078-576266781.png" class="" title="988061-20191020155444078-576266781"> 
+
+<p>然后 skip 之后，我们看到下面的页面： </p>
+<img src="/git/team-dev/988061-20191020155610914-324225953.png" class="" title="988061-20191020155610914-324225953"> 
+
+<p>点击创建仓库之后，就又到了我们创建仓库的页面： </p>
+<img src="/git/team-dev/988061-20191020155748815-242704441.png" class="" title="988061-20191020155748815-242704441"> 
+
+<p>然后就看到了我们仓库，这样我们的组织和仓库就创建好了。 </p>
+<p><strong>注意，我们现在创建的项目仓库是在我们创建的组织里面创建的，和之前单纯的创建仓库是不太一样的，因为我们公司将来可能有多个项目，那么我们就可以通过这个组织来管理多个仓库就可以了。</strong> </p>
+<p>好了，创建我们的本地 git 仓库，然后关联一下我们远程的这个仓库（和远程仓库名称要一致）。执行一下 GitHub 上创建仓库后提示的指令就可以了： </p>
+<img src="/git/team-dev/988061-20191020160109433-1167108700.png" class="" title="988061-20191020160109433-1167108700"> 
+
+<img src="/git/team-dev/988061-20191020160546211-1022601629.png" class="" title="988061-20191020160546211-1022601629"> 
+
+<p>然后刷新一下我们的 GitHub 页面，就看到了我们 push 上来的代码了： </p>
+<img src="/git/team-dev/988061-20191020160644549-659012299.png" class="" title="988061-20191020160644549-659012299"> 
+
+<p>到这里我们的仓库就创建好并且和本地关联好了，那么我们继续学一个新东西，叫做 tag（标签）。公司一般都是用标签来管理版本的。比如看下图，我们 <code>git log</code> 查看一下当前版本： </p>
+<img src="/git/team-dev/988061-20191020161029249-515167840.png" class="" title="988061-20191020161029249-515167840"> 
+
+<p>这样去看版本的时候，一长串的版本号看着其实不太好看，我们就可以给这个版本打上一个标签 tag。</p>
+<h4 id="Git-标签"><a href="#Git-标签" class="headerlink" title="Git 标签"></a>Git 标签</h4><p>看指令： </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git tag -a <span class="string">'v1'</span> -m <span class="string">'第一版'</span></span><br></pre></td></tr></table></figure>
+
+<p>再看 <code>git log</code>：</p>
+<img src="/git/team-dev/988061-20191020161232144-649407668.png" class="" title="988061-20191020161232144-649407668"> 
+
+<p>此时，我们就给第一个版本打上了一个标签，我们还需要将他推到远程仓库：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin --tags    <span class="comment"># 将所有的tag推送到远程仓库</span></span><br></pre></td></tr></table></figure>
+
+<img src="/git/team-dev/988061-20191020161351725-248278697.png" class="" title="988061-20191020161351725-248278697"> 
+
+<p>执行完这个指令之后，我们再去 GitHub 上看一下： </p>
+<img src="/git/team-dev/988061-20191020161521228-1316408708.png" class="" title="988061-20191020161521228-1316408708"> 
+
+<p>点击 release 看一下： </p>
+<img src="/git/team-dev/988061-20191020161617937-800931532.png" class="" title="988061-20191020161617937-800931532"> 
+
+<p>好，创建组织，创建仓库，关联仓库，给版本打标签，我们就学完了，接下来我们学一下如何邀请其他成员。 </p>
+<h3 id="GitHub-组织中邀请成员"><a href="#GitHub-组织中邀请成员" class="headerlink" title="GitHub 组织中邀请成员"></a>GitHub 组织中邀请成员</h3><p>按照我们的 gitflow 工作流程图来看，此时我们的 master 分支和第一个版本已经创建好了。接下来，我们应该创建一个 dev 分支，然后邀请其他成员来完成其他功能的开发。</p>
+<h4 id="创建-dev-分支"><a href="#创建-dev-分支" class="headerlink" title="创建 dev 分支"></a>创建 dev 分支</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout -b dev</span><br></pre></td></tr></table></figure>
+
+<img src="/git/team-dev/988061-20191020162140866-1880216370.png" class="" title="988061-20191020162140866-1880216370"> 
+
+<h4 id="将-dev-分支推送到远程"><a href="#将-dev-分支推送到远程" class="headerlink" title="将 dev 分支推送到远程"></a>将 dev 分支推送到远程</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git push origin dev</span><br></pre></td></tr></table></figure>
+
+<p>查看一下 GitHub，就有了我们的 dev 分支： </p>
+<img src="/git/team-dev/988061-20191020162323382-542625875.png" class="" title="988061-20191020162323382-542625875"> 
+
+<h4 id="邀请两个成员"><a href="#邀请两个成员" class="headerlink" title="邀请两个成员"></a>邀请两个成员</h4><ol>
+<li><p>两个成员都需要先去 GitHub 上注册一下自己的 GitHub 账号。其他的代码托管平台也是这么玩，先去注册账号。这里我自己又通过其他的邮箱创建了一个名为 Jadentest 的账号，用它来测试。</p>
+</li>
+<li><p>邀请成员</p>
+</li>
+</ol>
+<img src="/git/team-dev/988061-20191020163352987-1880847728.png" class="" title="988061-20191020163352987-1880847728"> 
+
+<p>然后看到下面的页面：</p>
+<img src="/git/team-dev/988061-20191020163428561-1829982544.png" class="" title="988061-20191020163428561-1829982544"> 
+
+<p>点击邀请之后，弹出下面的窗口：</p>
+<img src="/git/team-dev/988061-20191020163525744-1854929673.png" class="" title="988061-20191020163525744-1854929673"> 
+
+<p>输入成员名称，然后点击 invite，看到下面的页面，先选择一个普通成员就行了： </p>
+<img src="/git/team-dev/988061-20191020164547463-1922208982.png" class="" title="988061-20191020164547463-1922208982"> 
+
+<p>那么这个 Jadentest 在创建账户时留下的邮箱就会收到一个邮件：</p>
+<img src="/git/team-dev/988061-20191020164750821-2134777748.png" class="" title="988061-20191020164750821-2134777748"> 
+
+<p>点击查看这个邮件，然后点击加入组织：</p>
+<img src="/git/team-dev/988061-20191020164834384-630101522.png" class="" title="988061-20191020164834384-630101522"> 
+
+<p>然后会看到下面这个页面：</p>
+<img src="/git/team-dev/988061-20191020165840135-505608289.png" class="" title="988061-20191020165840135-505608289"> 
+
+<p>再点击 join 加入就可以了。但是记着，上面的页面是出现在了 Jadentest 这个 GitHub 账户中的页面。所以如果你是用一个电脑在玩，需要先登陆上这个账户，再点击邮件加入组织。</p>
+<p>看一下 GitHub 我们的组织中 people 这个选项中，就有了两个成员： </p>
+<img src="/git/team-dev/988061-20191020170115672-692310991.png" class="" title="988061-20191020170115672-692310991"> 
+
+<p>继续登陆我们的 clschao 这个账户，然后看一下组织的权限以及项目的权限。</p>
+<h5 id="组织权限"><a href="#组织权限" class="headerlink" title="组织权限"></a>组织权限</h5><p>在组织的 settings 中：</p>
+<img src="/git/team-dev/988061-20191020171346846-585392714.png" class="" title="988061-20191020171346846-585392714"> 
+
+<p>因为我们的组织中可能有很多的项目，而我邀请的成员不能说上来就对所有的项目都有修改的权限，所以是只读的，可以看看。那么如果我们想让某些成员对某些项目有修改的权限，就需要到项目中去做相关设置。</p>
+<h5 id="项目权限"><a href="#项目权限" class="headerlink" title="项目权限"></a>项目权限</h5><p>点击项目，在项目页面的 settings 中：</p>
+<img src="/git/team-dev/988061-20191020171621912-402251317.png" class="" title="988061-20191020171621912-402251317"> 
+
+<p>这样的话，这个 Jadentest 成员就有了对我们这个 gitflowtest 项目的修改权限了，也就是可以正常的推送代码了。</p>
+<p>成员已经邀请好了，然后这个成员需要在自己的本地将我们远程仓库的项目下载到自己的本地，比如我在本地创建了一个 Jadentest 的文件夹作为它自己的本地 Git 仓库。</p>
+<h5 id="新成员进行项目协作开发"><a href="#新成员进行项目协作开发" class="headerlink" title="新成员进行项目协作开发"></a>新成员进行项目协作开发</h5><p>将我们的远程仓库的这个 gitflowtest 项目的地址给他：</p>
+<img src="/git/team-dev/988061-20191020172049539-574340680.png" class="" title="988061-20191020172049539-574340680"> 
+
+<p>然后他在自己的本地下载我们的代码，使用 <code>git clone</code> 命令：</p>
+<img src="/git/team-dev/988061-20191020172154949-1100626721.png" class="" title="988061-20191020172154949-1100626721"> 
+
+<p>进入到 gitflowtest 文件夹中，就看到了我们远程仓库中的所有内容。进入这个文件夹，然后再运行一下 <code>git bash</code>：</p>
+<p><img src="https://img2018.cnblogs.com/blog/988061/201910/988061-20191020172553424-781239443.png" alt="img"> </p>
+<p>开始开发 yue 功能：</p>
+<p><img src="https://img2018.cnblogs.com/blog/988061/201910/988061-20191020173121778-596980894.png" alt="img"> </p>
+<p>比如，开发就创建了这个文件，然后这个成员就要回家了，然后将自己开发的文件推到远程仓库：</p>
+<p><img src="https://img2018.cnblogs.com/blog/988061/201910/988061-20191020173348587-362211703.png" alt="img"> </p>
+<p>然后回到家之后，继续又想开发了：</p>
+<p><img src="https://img2018.cnblogs.com/blog/988061/201910/988061-20191020173555330-41518070.png" alt="img"> </p>
+<p><img src="https://img2018.cnblogs.com/blog/988061/201910/988061-20191020173741302-1482042858.png" alt="img"> </p>
+<p><img src="https://img2018.cnblogs.com/blog/988061/201910/988061-20191020175400422-1856662486.png" alt="img"> </p>
+<p>接下来需要干什么呢？需要代码的 review，一般是小组长或者技术主管或者总监等。怎么做呢，一般是通过pull request。 </p>
+<h5 id="pull-request-合并请求"><a href="#pull-request-合并请求" class="headerlink" title="pull request 合并请求"></a>pull request 合并请求</h5><p>首先我们的 GitHub 上的项目中进行一些配置：</p>
+<p><img src="https://img2018.cnblogs.com/blog/988061/201910/988061-20191020175602311-280312239.png" alt="img"> </p>
+<p>点击添加规则按钮之后，我们一下页面： </p>
+<p><img src="https://img2018.cnblogs.com/blog/988061/201910/988061-20191020175903326-1800649189.png" alt="img"> </p>
+<p>然后点击下面的一个 create 按钮，然后再点击一下左边的 branches 菜单： </p>
+<p><img src="https://img2018.cnblogs.com/blog/988061/201910/988061-20191020180022077-2077705238.png" alt="img"> </p>
+<p>其实 master 分支也可以继续添加一个这样的规则，这里我就不做演示了。 </p>
+<p>然后我们的 Jadentest 成员将 yue 功能开发完了，需要提交一个 pull request 请求，在哪里做呢？在他自己的 GitHub 上。比如我们登陆一下这个用户，然后看一下 GitHub 上的操作：</p>
+<p><img src="https://img2018.cnblogs.com/blog/988061/201910/988061-20191020180447925-2101608533.png" alt="img"> </p>
+<p>点击这个 <code>new pull request</code>：</p>
+<p><img src="https://img2018.cnblogs.com/blog/988061/201910/988061-20191020180613400-2050375409.png" alt="img"> </p>
+<p>然后我这个管理员 clschao 就能在自己的 GitHub 上看到 Jadentest 这个成员发来的请求了：</p>
+<p><img src="https://img2018.cnblogs.com/blog/988061/201910/988061-20191020181329115-1740396279.png" alt="img"> </p>
+<p>然后点击这个 yue 功能：</p>
+<p><img src="https://img2018.cnblogs.com/blog/988061/201910/988061-20191020181610212-832741321.png" alt="img"> </p>
+<p>然后就看到下面所有的文件以及代码了：</p>
+<p><img src="https://img2018.cnblogs.com/blog/988061/201910/988061-20191020181713298-1241274500.png" alt="img"> </p>
+<p>然后看到下面的页面：</p>
+<p><img src="https://img2018.cnblogs.com/blog/988061/201910/988061-20191020181759894-2094238688.png" alt="img"> </p>
+<p>然后切换会我们的这个页面：</p>
+<p><img src="https://img2018.cnblogs.com/blog/988061/201910/988061-20191020181920201-928146835.png" alt="img"> </p>
+<p>然后还需要确定一下：</p>
+<p><img src="https://img2018.cnblogs.com/blog/988061/201910/988061-20191020183829425-484800136.png" alt="img"> </p>
+<p>还可以删除这个分支，如果没有用了，就可以点击下面的按钮进行删除：</p>
+<p><img src="https://img2018.cnblogs.com/blog/988061/201910/988061-20191020183851133-218491906.png" alt="img"> </p>
+<p>然后再看我们的远程仓库中的 dev 分支，就有了这些 Jadentest 新开发的代码了：</p>
+<p><img src="https://img2018.cnblogs.com/blog/988061/201910/988061-20191020183951485-1068005755.png" alt="img"> </p>
+<p>然后其他成员就可以在自己的本地通过 <code>git pull origin dev</code>，就能将自己的本地的代码变成最新的了。 </p>
+<p>如果是做测试的，一般是从我们的 dev 分支上去获取代码进行测试。测试如果出现了 bug，开分支进行修复，然后再合并会dev分支，然后再测试。没有问题的话，合并到 master 分支上，然后进行项目上线。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Git/" rel="tag"># Git</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/git/git-ssh/" rel="prev" title="Git 远程仓库免密登陆">
+      <i class="fa fa-chevron-left"></i> Git 远程仓库免密登陆
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/git/git-config/" rel="next" title="Git 配置文件详解">
+      Git 配置文件详解 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建组织"><span class="nav-number">1.</span> <span class="nav-text">创建组织</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Git-标签"><span class="nav-number">1.1.</span> <span class="nav-text">Git 标签</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GitHub-组织中邀请成员"><span class="nav-number">2.</span> <span class="nav-text">GitHub 组织中邀请成员</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建-dev-分支"><span class="nav-number">2.1.</span> <span class="nav-text">创建 dev 分支</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#将-dev-分支推送到远程"><span class="nav-number">2.2.</span> <span class="nav-text">将 dev 分支推送到远程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#邀请两个成员"><span class="nav-number">2.3.</span> <span class="nav-text">邀请两个成员</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#组织权限"><span class="nav-number">2.3.1.</span> <span class="nav-text">组织权限</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#项目权限"><span class="nav-number">2.3.2.</span> <span class="nav-text">项目权限</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#新成员进行项目协作开发"><span class="nav-number">2.3.3.</span> <span class="nav-text">新成员进行项目协作开发</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#pull-request-合并请求"><span class="nav-number">2.3.4.</span> <span class="nav-text">pull request 合并请求</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="刘硕"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">刘硕</p>
+  <div class="site-description" itemprop="description">不成为自己讨厌的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">264</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:liushuo432@outlook.com" title="E-Mail → mailto:liushuo432@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/2436055290" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;2436055290" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://wpa.qq.com/msgrd?v=3&uin=1696146913&site=qq&menu=yes" title="QQ → http:&#x2F;&#x2F;wpa.qq.com&#x2F;msgrd?v&#x3D;3&amp;uin&#x3D;1696146913&amp;site&#x3D;qq&amp;menu&#x3D;yes" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-fw fa-rss"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备20001451号 </a>
+      <img src="/images/beian_icon.png" style="display: inline-block;"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=21142102000063" rel="noopener" target="_blank">辽公网安备 21142102000063号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘硕</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.2" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'Ga2II3wuJmHX3GiNHm9TmI97-gzGzoHsz',
+      appKey     : 'esGYJQepdYLHf07E1VMsP3RK',
+      placeholder: "o(*￣▽￣*)ブ来说点什么吧...（填上邮箱可以收到回复提醒）",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : true,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+  <script type="text/javascript" src="/js/love.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/Epsilon2.1.model.json"},"display":{"superSample":2,"width":200,"height":400,"position":"left","hOffset":-30,"vOffset":-40},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>

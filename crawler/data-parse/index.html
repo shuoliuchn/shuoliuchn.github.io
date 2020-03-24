@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="Tu5vqPaUb8svfkPx5eetJFD84ciQCcWVXNatdsWtj9Q">
+  <meta name="baidu-site-verification" content="baidu_verify_FBq9PG4BBb">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"appID":"PXY1Z6GHKT","apiKey":"eb82f2e78e3053f26aa408e9caa96d93","indexName":"blog","hits":{"per_page":10},"labels":{"input_placeholder":"要查点什么(✿◡‿◡)","hits_empty":"没有找到任何关于 ${query} 的结果╥﹏╥...","hits_stats":"搜索到 ${hits} 条记录，用时 ${time} ms o(*￣▽￣*)ブ"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="数据解析，就是把我们所需要的数据从完整的网页中解析出来。数据解析主要用来实现聚焦爬虫。我们知道，网页中显示的数据都是储存在 HTML 的标签或者标签的属性中。所以我们往往也是基于 HTML 的标签对数据进行解析提取。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据解析（正则、bs4 和 xpath）">
+<meta property="og:url" content="https://sliu.vip/crawler/data-parse/index.html">
+<meta property="og:site_name" content="刘硕的技术查阅手册">
+<meta property="og:description" content="数据解析，就是把我们所需要的数据从完整的网页中解析出来。数据解析主要用来实现聚焦爬虫。我们知道，网页中显示的数据都是储存在 HTML 的标签或者标签的属性中。所以我们往往也是基于 HTML 的标签对数据进行解析提取。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-03-23T17:27:18.137Z">
+<meta property="article:modified_time" content="2020-03-24T03:14:32.132Z">
+<meta property="article:author" content="刘硕">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="Anaconda">
+<meta property="article:tag" content="爬虫">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://sliu.vip/crawler/data-parse/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>数据解析（正则、bs4 和 xpath） | 刘硕的技术查阅手册</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f14f123935d6183fdd06f8f1c4bc378f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="刘硕的技术查阅手册" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">刘硕的技术查阅手册</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">Python 全栈开发学习笔记</h1>
+      
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-toc">
+
+    <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+  
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/crawler/data-parse/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          数据解析（正则、bs4 和 xpath）
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-03-24 01:27:18 / 修改时间：11:14:32" itemprop="dateCreated datePublished" datetime="2020-03-24T01:27:18+08:00">2020-03-24</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%88%AC%E8%99%AB/" itemprop="url" rel="index"><span itemprop="name">爬虫</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/crawler/data-parse/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/crawler/data-parse/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <div class="post-description">数据解析，就是把我们所需要的数据从完整的网页中解析出来。数据解析主要用来实现聚焦爬虫。我们知道，网页中显示的数据都是储存在 HTML 的标签或者标签的属性中。所以我们往往也是基于 HTML 的标签对数据进行解析提取。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="数据解析初识"><a href="#数据解析初识" class="headerlink" title="数据解析初识"></a>数据解析初识</h2><p>数据解析，就是把我们所需要的数据从完整的网页中解析出来。数据解析主要用来实现聚焦爬虫。</p>
+<p>我们知道，网页中显示的数据都是储存在 HTML 的标签或者标签的属性中。所以我们往往也是基于 HTML 的标签对数据进行解析提取。</p>
+<p>数据解析的通用原理为：</p>
+<ul>
+<li>通过定位找到指定的标签</li>
+<li>取出标签中存储的数据或者标签属性中的数据</li>
+</ul>
+<p>常用的数据解析方式有如下几种：</p>
+<ul>
+<li>正则</li>
+<li>bs4</li>
+<li>xpath</li>
+<li>pyquery（自学）</li>
+</ul>
+<h2 id="爬取图片的两种方式"><a href="#爬取图片的两种方式" class="headerlink" title="爬取图片的两种方式"></a>爬取图片的两种方式</h2><p>方式一，基于 requests 模块：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line">headers = &#123;</span><br><span class="line">    <span class="string">'User-Agent'</span>: <span class="string">'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36'</span></span><br><span class="line">&#125;</span><br><span class="line">url = <span class="string">'https://tvax1.sinaimg.cn/large/bfe05ea9ly1fxgv7ihvvvj21hc0u07dc.jpg'</span>    <span class="comment"># 图片网上一大堆，如果这个链接失效了，就找一个新的吧</span></span><br><span class="line">response = requests.get(url=url, headers=headers)</span><br><span class="line">img_data = response.content    <span class="comment"># content返回的是二进制形式的响应数据</span></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">'1.jpg'</span>, <span class="string">'wb'</span>) <span class="keyword">as</span> fp:</span><br><span class="line">    fp.write(img_data)</span><br></pre></td></tr></table></figure>
+
+<p>方式二，基于 urllib 模块：</p>
+<p>urllib 模块作用和 requests 模块一样，都是用来发送网络请求并接收响应的模块。当 requests 问世后就迅速的替代了 urllib 模块。requests 模块就是对 urllib 模块进行的封装。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> urllib</span><br><span class="line">url = <span class="string">'https://tvax1.sinaimg.cn/large/bfe05ea9ly1fxgv7ihvvvj21hc0u07dc.jpg'</span></span><br><span class="line">urllib.request.urlretrieve(url, <span class="string">'2.jpg'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>通过比较，我们不难看出，这两种爬取图片的方式各有优劣：</p>
+<ul>
+<li>urllib 的代码更加简洁，但无法进行 UA 伪装</li>
+<li>requests 的代码稍繁琐些，但可以 UA 伪装</li>
+</ul>
+<p>在以后的使用中，我们更多还是用到 requests 模块来爬取图片。毕竟很多网站都要进行 UA 检测。</p>
+<h2 id="正则解析"><a href="#正则解析" class="headerlink" title="正则解析"></a>正则解析</h2><p>正则解析，也就是通过正则匹配的方式，将我们需要的数据从完整的网页文件中提取出来。</p>
+<p>Python 的正则规则参见 <a href="/crawler/..\python-basic\re">re 模块和正则表达式</a>，就不在这里具体讨论了，仅在这里列举几个常见元字符：</p>
+<figure class="highlight taggerscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">单字符：</span><br><span class="line">    . : 除换行以外所有字符，若匹配多行需指定re.DOTALL或re.S</span><br><span class="line">    [] ：[aoe] [a-w] 匹配集合中任意一个字符</span><br><span class="line">    <span class="symbol">\d</span> ：数字  [0-9]</span><br><span class="line">    <span class="symbol">\D</span> : 非数字</span><br><span class="line">    <span class="symbol">\w</span> ：数字、字母、下划线、中文</span><br><span class="line">    <span class="symbol">\W</span> : 非<span class="symbol">\w</span></span><br><span class="line">    <span class="symbol">\s</span> ：所有的空白字符包,括空格、制表符、换页符等等。等价于 [ <span class="symbol">\f</span><span class="symbol">\n</span><span class="symbol">\r</span><span class="symbol">\t</span><span class="symbol">\v</span>]。</span><br><span class="line">    <span class="symbol">\S</span> : 非空白</span><br><span class="line">数量修饰：</span><br><span class="line">    * : 任意多次  &gt;=0</span><br><span class="line">    + : 至少1次   &gt;=1</span><br><span class="line">    ? : 可有可无  0次或者1次</span><br><span class="line">    &#123;m&#125; ：固定m次 hello&#123;3,&#125;</span><br><span class="line">    &#123;m,&#125; ：至少m次</span><br><span class="line">    &#123;m,n&#125; ：m-n次</span><br><span class="line">边界：</span><br><span class="line">    $ : 以某某结尾 </span><br><span class="line">    ^ : 以某某开头</span><br><span class="line">分组：</span><br><span class="line">    (ab)  </span><br><span class="line">贪婪模式： .*</span><br><span class="line">非贪婪（惰性）模式： .*?</span><br></pre></td></tr></table></figure>
+
+<p>分析浏览器开发者工具中 Elements 和 network 这两个选项卡对应的页面源码数据有何不同之处？</p>
+<ul>
+<li>Elements 中包含的显示的页面源码数据为当前页面所有的数据加载完毕后对应的完整的页面源码数据（包含了动态加载数据）。Elements 很容易获得，一点击就到，而且可以很方便找到我们需要的标签。</li>
+<li>network 中显示的页面源码数据仅仅为某一个单独的请求对应的响应数据（不包含动态加载数据）</li>
+<li>结论：如果在进行数据解析的时候，一定是需要对页面布局进行分析，如果当前网站<strong>没有动态加载的数据</strong>就可以直接使用 Elements 对页面布局进行分析，否则只可以使用 network 对页面数据进行分析。</li>
+</ul>
+<p>接下来，我们要使用正则进行图片数据的批量解析爬取。</p>
+<p>需求：爬取校花网中的图片数据</p>
+<ul>
+<li>网址 url：<a href="http://www.521609.com" target="_blank" rel="noopener">www.521609.com</a></li>
+<li>操作：需要将每一张图片的地址解析出来，然后对图片地址发起请求即可。</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">dir_name = <span class="string">'ImgLibs'</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(dir_name):</span><br><span class="line">    os.mkdir(dir_name)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 1.捕获到当前首页的页面源码数据</span></span><br><span class="line">main_url = <span class="string">'http://www.521609.com/xiaoyuanmeinv/'</span></span><br><span class="line">page_text = requests.get(url=main_url, headers=headers).text</span><br><span class="line"><span class="comment"># 2.从当前获取的页面源码数据中解析出图片地址</span></span><br><span class="line">re_ex = <span class="string">'&lt;li&gt;.*?&lt;img src="(.*?)" width=".*?&lt;/li&gt;'</span></span><br><span class="line">img_src_list = re.findall(re_ex, page_text, re.S)</span><br><span class="line"><span class="keyword">for</span> src <span class="keyword">in</span> img_src_list:</span><br><span class="line">    img_url = <span class="string">'http://www.521609.com'</span> + src</span><br><span class="line">    img_name = dir_name + os.path.sep + src.split(<span class="string">'/'</span>)[<span class="number">-1</span>]</span><br><span class="line">    urllib.request.urlretrieve(img_url, img_name)</span><br><span class="line">    print(<span class="string">f'<span class="subst">&#123;img_name&#125;</span>下载完毕！'</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="bs4-解析"><a href="#bs4-解析" class="headerlink" title="bs4 解析"></a>bs4 解析</h2><p>bs4 解析代码编写流程：</p>
+<ol>
+<li>实例化一个 BeautifulSoup 的对象，将待解析的页面源码数据加载到该对象中</li>
+<li>调用 BeautifulSoup 对象中相关方法或者属性进行标签定位和文本数据的提取</li>
+</ol>
+<p>环境安装（若使用 Anaconda，则不需要安装，因为 Anaconda 中已经集成了这两个模块）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pip install lxml    <span class="comment"># 可用作bs4的解析器，同时后面的xpath也会用到</span></span><br><span class="line">pip install bs4</span><br></pre></td></tr></table></figure>
+
+<p>BeautifulSoup 对象的实例化：</p>
+<p>BeautifulSoup 可以将本地的 HTML 文档或互联网请求来的页面进行解析操作</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">BeautifulSoup(fp,<span class="string">'lxml'</span>)    <span class="comment"># 用来将本地存储的html文档中的数据进行解析</span></span><br><span class="line">BeautifulSoup(page_text，’lxml‘)    <span class="comment"># 用来将互联网上请求到的页面源码数据进行解析</span></span><br></pre></td></tr></table></figure>
+
+<p>标签定位：</p>
+<ul>
+<li><code>soup.tagName</code>：只可以定位到第一次出现的 tagName 标签</li>
+<li><code>soup.find(&#39;tagName&#39;,attrName=&#39;value&#39;)</code>：属性定位，同样只能匹配到第一次出现的符合条件的标签</li>
+<li><code>soup.findAll</code>：跟 find 一样用作属性定位，只不过 findAll 返回的是列表，列表中包含了所有符合条件的标签</li>
+<li><code>soup.select(&#39;选择器&#39;)</code>：选择器定位，返回的是列表，列表中包含了所有符合条件的标签<ul>
+<li>类选择器</li>
+<li>id 选择器</li>
+<li>层级选择<ul>
+<li>大于号 <code>&gt;</code>：表示一个层级</li>
+<li>空格：表示多个层级</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>取数据</p>
+<ul>
+<li><code>soup_obj.text</code>：返回的是该标签下所有的文本内容</li>
+<li><code>soup_obj.string</code>：返回的是该标签直系的文本内容</li>
+</ul>
+<p>取属性：</p>
+<ul>
+<li><code>tag[&#39;attrName&#39;]</code></li>
+</ul>
+<p>我们可以将下面这串代码命名为 <code>test.html</code> 保存到当前工作目录下，供测试用：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">"en"</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"UTF-8"</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">title</span>&gt;</span>测试bs4<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">p</span>&gt;</span>百里守约<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"song"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">p</span>&gt;</span>李清照<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">p</span>&gt;</span>王安石<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">p</span>&gt;</span>苏轼<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">p</span>&gt;</span>柳宗元<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"http://www.song.com/"</span> <span class="attr">title</span>=<span class="string">"赵匡胤"</span> <span class="attr">target</span>=<span class="string">"_self"</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">span</span>&gt;</span>this is span<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">		宋朝是最强大的王朝，不是军队的强大，而是经济很强大，国民都很有钱<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">""</span> <span class="attr">class</span>=<span class="string">"du"</span>&gt;</span>总为浮云能蔽日,长安不见使人愁<span class="tag">&lt;/<span class="name">a</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"http://www.baidu.com/meinv.jpg"</span> <span class="attr">alt</span>=<span class="string">""</span> /&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"tang"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"http://www.baidu.com"</span> <span class="attr">title</span>=<span class="string">"qing"</span>&gt;</span>清明时节雨纷纷,路上行人欲断魂,借问酒家何处有,牧童遥指杏花村<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"http://www.163.com"</span> <span class="attr">title</span>=<span class="string">"qin"</span>&gt;</span>秦时明月汉时关,万里长征人未还,但使龙城飞将在,不教胡马度阴山<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"http://www.126.com"</span> <span class="attr">alt</span>=<span class="string">"qi"</span>&gt;</span>岐王宅里寻常见,崔九堂前几度闻,正是江南好风景,落花时节又逢君<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"http://www.sina.com"</span> <span class="attr">class</span>=<span class="string">"du"</span>&gt;</span>杜甫<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"http://www.dudu.com"</span> <span class="attr">class</span>=<span class="string">"du"</span>&gt;</span>杜牧<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">b</span>&gt;</span>杜小月<span class="tag">&lt;/<span class="name">b</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">i</span>&gt;</span>度蜜月<span class="tag">&lt;/<span class="name">i</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">li</span>&gt;</span><span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">"http://www.haha.com"</span> <span class="attr">id</span>=<span class="string">"feng"</span>&gt;</span>凤凰台上凤凰游,凤去台空江自流,吴宫花草埋幽径,晋代衣冠成古丘<span class="tag">&lt;/<span class="name">a</span>&gt;</span><span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>bs4 的使用示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</span><br><span class="line">fp = open(<span class="string">'test.html'</span>, <span class="string">'r'</span>, encoding=<span class="string">'utf-8'</span>)</span><br><span class="line">soup = BeautifulSoup(fp, <span class="string">'lxml'</span>)</span><br><span class="line">fp.close()</span><br><span class="line">soup.p</span><br><span class="line">soup.find(<span class="string">'div'</span>, class_=<span class="string">'song'</span>)</span><br><span class="line">soup.find(<span class="string">'a'</span>, id=<span class="string">'feng'</span>)</span><br><span class="line">soup.findAll(<span class="string">'a'</span>, id=<span class="string">'feng'</span>)</span><br><span class="line">soup.select(<span class="string">'.tang'</span>)</span><br><span class="line">soup.select(<span class="string">'.tang li'</span>)</span><br><span class="line">a_tag = soup.find(<span class="string">'a'</span>, id=<span class="string">'feng'</span>)</span><br><span class="line">a_tag[<span class="string">'href'</span>]</span><br><span class="line">div_tag = soup.find(<span class="string">'div'</span>, class_=<span class="string">'song'</span>)</span><br><span class="line">div_tag.text</span><br><span class="line">a_tag.string</span><br></pre></td></tr></table></figure>
+
+<p>接下来，我们利用 bs4 爬取网页中的文字信息。</p>
+<p>需求：爬取《三国演义》全文</p>
+<ul>
+<li>网址 url：<a href="http://www.shicimingju.com/book/sanguoyanyi.html" target="_blank" rel="noopener">http://www.shicimingju.com/book/sanguoyanyi.html</a></li>
+<li>将每一章的内容爬取到，保存到一个本地文件中</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">main_url = <span class="string">'http://www.shicimingju.com/book/sanguoyanyi.html'</span></span><br><span class="line">page_text = requests.get(url=main_url, headers=headers).text</span><br><span class="line">fp = open(<span class="string">'./sanguo.txt'</span>, <span class="string">'w'</span>, encoding=<span class="string">'utf-8'</span>)</span><br><span class="line"><span class="comment"># 数据解析：章节标题，详情页url，章节内容</span></span><br><span class="line">soup = BeautifulSoup(page_text, <span class="string">'lxml'</span>)</span><br><span class="line"><span class="comment"># 定位到的所有的符合要求的a标签</span></span><br><span class="line">a_list = soup.select(<span class="string">'.book-mulu &gt; ul &gt; li &gt; a'</span>)</span><br><span class="line"><span class="keyword">for</span> a <span class="keyword">in</span> a_list:</span><br><span class="line">    title = a.string</span><br><span class="line">    detail_url = <span class="string">'http://www.shicimingju.com'</span> + a[<span class="string">'href'</span>]</span><br><span class="line">    <span class="comment"># 对详情页发起请求解析出章节内容</span></span><br><span class="line">    page_text_detail = requests.get(url=detail_url, headers=headers).text</span><br><span class="line">    soup = BeautifulSoup(page_text_detail, <span class="string">'lxml'</span>)</span><br><span class="line">    div_tag = soup.find(<span class="string">'div'</span>, class_=<span class="string">"chapter_content"</span>)</span><br><span class="line">    content = div_tag.text</span><br><span class="line">    fp.write(title + <span class="string">':'</span> + content + <span class="string">'\n'</span>)</span><br><span class="line">    print(title, <span class="string">'保存成功！！！'</span>)</span><br><span class="line">fp.close()</span><br></pre></td></tr></table></figure>
+
+<h2 id="xpath-解析"><a href="#xpath-解析" class="headerlink" title="xpath 解析"></a>xpath 解析</h2><p>环境安装（同样，如果使用 Anaconda，则不需要安装）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install lxml</span><br></pre></td></tr></table></figure>
+
+<p>xpath 解析原理：html 标签是以树状的形式进行展示</p>
+<ol>
+<li>实例化一个 etree 的对象，且将待解析的页面源码数据加载到该对象中</li>
+<li>调用 etree 对象的 xpath 方法结合着不同的 xpath 表达式实现标签的定位和数据提取</li>
+</ol>
+<p>实例化 etree 对象</p>
+<ul>
+<li><code>etree.parse(&#39;filename&#39;)</code>：将本地 html 文档加载到该对象中</li>
+<li><code>etree.HTML(page_text)</code>：网站获取的页面数据加载到该对象</li>
+</ul>
+<p>标签定位：</p>
+<ul>
+<li>最左侧的 <code>/</code>：如果 xpath 表达式最左侧是以 <code>/</code> 开头则表示该 xpath 表达式一定要从根标签开始定位指定标签(用的很少，忽略)</li>
+<li>非最左侧的 <code>/</code>：表示一个层级</li>
+<li>非左侧的 <code>//</code>：表示多个层级</li>
+<li>最左侧的 <code>//</code>：xpath 表达式可以从任意位置进行标签定位</li>
+<li>属性定位：<code>tagName[@attrName=&quot;value&quot;]</code></li>
+<li>索引定位：<code>tag[index]</code>，索引是从 1 开始</li>
+<li>模糊匹配（了解）：<ul>
+<li><code>//div[contains(@class, &quot;ng&quot;)]</code></li>
+<li><code>//div[starts-with(@class, &quot;ta&quot;)]</code></li>
+</ul>
+</li>
+</ul>
+<p>取文本</p>
+<ul>
+<li><code>/text()</code>：直系文本内容</li>
+<li><code>//text()</code>：所有的文本内容</li>
+</ul>
+<p>取属性</p>
+<ul>
+<li><code>/@attrName</code></li>
+</ul>
+<p>xpath 的使用示例如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> etree</span><br><span class="line">tree = etree.parse(<span class="string">'test.html'</span>)</span><br><span class="line">tree.xpath(<span class="string">'/html/head/meta'</span>)    <span class="comment"># 定位meta</span></span><br><span class="line">tree.xpath(<span class="string">'/html//meta'</span>)    <span class="comment"># 定位meta</span></span><br><span class="line">tree.xpath(<span class="string">'//meta'</span>)    <span class="comment"># 定位meta</span></span><br><span class="line">tree.xpath(<span class="string">'//div[@class="song"]/p'</span>)    <span class="comment"># 定位class为song的div下面所有的p</span></span><br><span class="line">tree.xpath(<span class="string">'//div[@class="song"]/p[2]//text()'</span>)    <span class="comment"># 定位class为song的div下面第2个p</span></span><br><span class="line">tree.xpath(<span class="string">'//a[@id="feng"]/@href'</span>)    <span class="comment"># a标签的href属性</span></span><br></pre></td></tr></table></figure>
+
+<p>接下来，我们就用 xpath 爬取网页图片</p>
+<p>需求：使用 xpath 爬取图片名称和图片数据</p>
+<ul>
+<li>网址 url：<a href="http://pic.netbian.com/4kmeinv/" target="_blank" rel="noopener">http://pic.netbian.com/4kmeinv/</a></li>
+<li>爬取前 5 页的所有图片</li>
+</ul>
+<p>局部数据解析：</p>
+<ul>
+<li>我们要将定位到的页面中的标签作为待解析的数据。再次使用 xpath 表达式解析待解析的数据。</li>
+<li>在局部数据解析的时候，xpath 表达式中要使用 <code>./</code> 的操作，<code>./</code> 表示的就是当前的局部数据（xpath 的调用者）。</li>
+</ul>
+<p>首先实现爬取第一页所有图片的功能：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 爬取第一页</span></span><br><span class="line">img_dir = <span class="string">'GirlsLib'</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(img_dir):</span><br><span class="line">    os.mkdir(img_dir)</span><br><span class="line">main_url = <span class="string">'http://pic.netbian.com/4kmeinv/'</span></span><br><span class="line">response = requests.get(url=main_url, headers=headers)</span><br><span class="line">response.encoding = <span class="string">'gbk'</span></span><br><span class="line">page_text = response.text</span><br><span class="line">tree = etree.HTML(page_text)</span><br><span class="line"><span class="comment"># 找到所有符合要求的img标签</span></span><br><span class="line">img_list = tree.xpath(<span class="string">'//div[@class="slist"]//img'</span>)</span><br><span class="line"><span class="keyword">for</span> img <span class="keyword">in</span> img_list:</span><br><span class="line">    <span class="comment"># print(type(img))</span></span><br><span class="line">    <span class="comment"># img的数据类型和tree的数据类型一样，img也可以调用xpath方法</span></span><br><span class="line">    img_url = <span class="string">'http://pic.netbian.com'</span> + img.xpath(<span class="string">'./@src'</span>)[<span class="number">0</span>]</span><br><span class="line">    title = img_dir + os.path.sep + img.xpath(<span class="string">'./@alt'</span>)[<span class="number">0</span>] + <span class="string">'.jpg'</span></span><br><span class="line">    img_data = requests.get(url=img_url, headers=headers).content</span><br><span class="line">    <span class="keyword">with</span> open(title, <span class="string">'wb'</span>) <span class="keyword">as</span> fp:</span><br><span class="line">        fp.write(img_data)</span><br><span class="line">    print(title, <span class="string">'保存成功！'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>分析页码规律，即可实现多页图片的爬取：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 爬取多页</span></span><br><span class="line">img_dir = <span class="string">'GirlsLib'</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(img_dir):</span><br><span class="line">    os.mkdir(img_dir)</span><br><span class="line">main_url = <span class="string">'http://pic.netbian.com/4kmeinv/'</span></span><br><span class="line"><span class="keyword">for</span> page <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">6</span>):</span><br><span class="line">    <span class="comment"># main_url不能修改，要保留，新的url要用新名字</span></span><br><span class="line">    <span class="keyword">if</span> page == <span class="number">1</span>:</span><br><span class="line">        new_url = main_url</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        new_url = main_url + <span class="string">f'index_<span class="subst">&#123;page&#125;</span>.html'</span></span><br><span class="line">    response = requests.get(url=new_url, headers=headers)</span><br><span class="line">    response.encoding = <span class="string">'gbk'</span></span><br><span class="line">    page_text = response.text</span><br><span class="line">    tree = etree.HTML(page_text)</span><br><span class="line">    <span class="comment"># 找到所有符合要求的img标签</span></span><br><span class="line">    img_list = tree.xpath(<span class="string">'//div[@class="slist"]//img'</span>)</span><br><span class="line">    <span class="keyword">for</span> img <span class="keyword">in</span> img_list:</span><br><span class="line">        <span class="comment"># print(type(img))</span></span><br><span class="line">        <span class="comment"># img的数据类型和tree的数据类型一样，img也可以调用xpath方法</span></span><br><span class="line">        img_url = <span class="string">'http://pic.netbian.com'</span> + img.xpath(<span class="string">'./@src'</span>)[<span class="number">0</span>]</span><br><span class="line">        title = img_dir + os.path.sep + img.xpath(<span class="string">'./@alt'</span>)[<span class="number">0</span>] + <span class="string">'.jpg'</span></span><br><span class="line">        img_data = requests.get(url=img_url, headers=headers).content</span><br><span class="line">        <span class="keyword">with</span> open(title, <span class="string">'wb'</span>) <span class="keyword">as</span> fp:</span><br><span class="line">            fp.write(img_data)</span><br><span class="line">        print(title, <span class="string">'保存成功！'</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="bs4-和-xpath-综合讨论"><a href="#bs4-和-xpath-综合讨论" class="headerlink" title="bs4 和 xpath 综合讨论"></a>bs4 和 xpath 综合讨论</h2><p>如果想要解析出携带 html 标签的局部数据，需要使用 bs4 还是 xpath 呢？</p>
+<p>答案是 bs4。因为 bs4 在实现标签定位的时候返回的直接就是定位到标签对应的字符串数据，而 xpath 只能获取到标签对象。这也是选择用 bs4 还是 xpath 的一个重要依据。</p>
+<p>如何让 xpath 的表达式更具有通用性？</p>
+<p>可以通过在 xpath 表达式中使用管道符 <code>|</code>，表示管道符左右两侧的子 xpath 表达式同时生效或者一个生效。</p>
+<p>需求：列举出所有城市名称</p>
+<ul>
+<li>网址 url：<a href="https://www.aqistudy.cn/historydata/" target="_blank" rel="noopener">https://www.aqistudy.cn/historydata/</a></li>
+<li>列出包括热门城市和全部城市的所有城市名称</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">url = <span class="string">'https://www.aqistudy.cn/historydata/'</span></span><br><span class="line">page_text = requests.get(url=url, headers=headers).text</span><br><span class="line"></span><br><span class="line">tree = etree.HTML(page_text)</span><br><span class="line"><span class="comment"># hot_cities = tree.xpath('//div[@class="bottom"]/ul/li/a/text()')</span></span><br><span class="line"><span class="comment"># all_cities = tree.xpath('//div[@class="bottom"]/ul/div[2]/li/a/text()')</span></span><br><span class="line">tree.xpath(<span class="string">'//div[@class="bottom"]/ul/li/a/text() | //div[@class="bottom"]/ul/div[2]/li/a/text()'</span>)</span><br></pre></td></tr></table></figure>
+
+<h2 id="作业，爬取站长素材高清图片和简历模板"><a href="#作业，爬取站长素材高清图片和简历模板" class="headerlink" title="作业，爬取站长素材高清图片和简历模板"></a>作业，爬取站长素材高清图片和简历模板</h2><ol>
+<li>爬取站长素材高清图片，这里会涉及到一个反爬机制大家自行解决：<a href="http://sc.chinaz.com/tupian/" target="_blank" rel="noopener">http://sc.chinaz.com/tupian/</a></li>
+<li>爬取站长素材中的简历模板前 5 页：<a href="http://sc.chinaz.com/jianli/free.html" target="_blank" rel="noopener">http://sc.chinaz.com/jianli/free.html</a></li>
+</ol>
+<p>作业 1 参考：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> etree</span><br><span class="line"></span><br><span class="line">headers = &#123;</span><br><span class="line">    <span class="string">'User-Agent'</span>: <span class="string">'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36'</span></span><br><span class="line">&#125;</span><br><span class="line">img_dir = <span class="string">'ZhanzhangGirls'</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(img_dir):</span><br><span class="line">    os.mkdir(img_dir)</span><br><span class="line">main_url = <span class="string">'http://sc.chinaz.com/tupian/nvshengtupian.html'</span></span><br><span class="line">response = requests.get(url=main_url, headers=headers)</span><br><span class="line">response.encoding = <span class="string">'utf-8'</span></span><br><span class="line">page_text = response.text</span><br><span class="line">tree = etree.HTML(page_text)</span><br><span class="line">a_list = tree.xpath(<span class="string">'//div[@id="container"]//p/a'</span>)</span><br><span class="line"><span class="keyword">for</span> a <span class="keyword">in</span> a_list:</span><br><span class="line">    detail_page_url = a.xpath(<span class="string">'./@href'</span>)[<span class="number">0</span>]</span><br><span class="line">    detail_page_response = requests.get(url=detail_page_url, headers=headers)</span><br><span class="line">    detail_page_response.encoding = <span class="string">'utf-8'</span></span><br><span class="line">    detail_page_tree = etree.HTML(detail_page_response.text)</span><br><span class="line">    <span class="comment"># 图片是js生成的，好在链接什么的都放在页面的json里面，可以拿到然后解析出来</span></span><br><span class="line">    img_info_json = detail_page_tree.xpath(<span class="string">'//script[@type="application/ld+json"]//text()'</span>)[<span class="number">0</span>]</span><br><span class="line">    img_info = json.loads(img_info_json)</span><br><span class="line">    img_url = img_info[<span class="string">'images'</span>][<span class="number">0</span>]</span><br><span class="line">    img_title = os.path.join(img_dir, img_info[<span class="string">'description'</span>] + <span class="string">'.jpg'</span>)</span><br><span class="line">    img_data = requests.get(url=img_url, headers=headers).content</span><br><span class="line">    <span class="keyword">with</span> open(img_title, <span class="string">'wb'</span>) <span class="keyword">as</span> fp:</span><br><span class="line">        fp.write(img_data)</span><br><span class="line">    print(img_title, <span class="string">'下载完成！'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>作业 2 参考：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</span><br><span class="line">headers = &#123;</span><br><span class="line">    <span class="string">'User-Agent'</span>: <span class="string">'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.132 Safari/537.36'</span></span><br><span class="line">&#125;</span><br><span class="line">file_dir = <span class="string">'ZhanzhangCV'</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(file_dir):</span><br><span class="line">    os.mkdir(file_dir)</span><br><span class="line">main_url = <span class="string">'http://sc.chinaz.com/jianli/free.html'</span></span><br><span class="line">response = requests.get(url=main_url, headers=headers)</span><br><span class="line">response.encoding = <span class="string">'utf-8'</span></span><br><span class="line">page_text = response.text</span><br><span class="line">soup = BeautifulSoup(page_text, <span class="string">'lxml'</span>)</span><br><span class="line">a_list = soup.select(<span class="string">'#container p &gt; a'</span>)</span><br><span class="line"><span class="keyword">for</span> a <span class="keyword">in</span> a_list:</span><br><span class="line">    detail_url = a[<span class="string">'href'</span>]</span><br><span class="line">    title = a.text</span><br><span class="line">    detail_response = requests.get(url=detail_url, headers=headers)</span><br><span class="line">    detail_response.encoding = <span class="string">'utf-8'</span></span><br><span class="line">    detail_soup = BeautifulSoup(detail_response.text, <span class="string">'lxml'</span>)</span><br><span class="line">    file_url = detail_soup.select(<span class="string">'.downlist li a'</span>)[<span class="number">0</span>][<span class="string">'href'</span>]</span><br><span class="line">    file_name = os.path.join(file_dir, title + <span class="string">'.rar'</span>)</span><br><span class="line">    file_data = requests.get(url=file_url, headers=headers).content</span><br><span class="line">    <span class="keyword">with</span> open(file_name, <span class="string">'wb'</span>) <span class="keyword">as</span> fp:</span><br><span class="line">        fp.write(file_data)</span><br><span class="line">    print(title, <span class="string">'下载完毕！'</span>)</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"># Python</a>
+              <a href="/tags/Anaconda/" rel="tag"># Anaconda</a>
+              <a href="/tags/%E7%88%AC%E8%99%AB/" rel="tag"># 爬虫</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/crawler/anti-crawling/" rel="prev" title="常见的反爬机制以及相应的反反爬策略">
+      <i class="fa fa-chevron-left"></i> 常见的反爬机制以及相应的反反爬策略
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/notes/grokking-algorithms-hash-table/" rel="next" title="散列表（哈希表）">
+      散列表（哈希表） <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#数据解析初识"><span class="nav-number">1.</span> <span class="nav-text">数据解析初识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#爬取图片的两种方式"><span class="nav-number">2.</span> <span class="nav-text">爬取图片的两种方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正则解析"><span class="nav-number">3.</span> <span class="nav-text">正则解析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bs4-解析"><span class="nav-number">4.</span> <span class="nav-text">bs4 解析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#xpath-解析"><span class="nav-number">5.</span> <span class="nav-text">xpath 解析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#bs4-和-xpath-综合讨论"><span class="nav-number">6.</span> <span class="nav-text">bs4 和 xpath 综合讨论</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#作业，爬取站长素材高清图片和简历模板"><span class="nav-number">7.</span> <span class="nav-text">作业，爬取站长素材高清图片和简历模板</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="刘硕"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">刘硕</p>
+  <div class="site-description" itemprop="description">不成为自己讨厌的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">264</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">12</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:liushuo432@outlook.com" title="E-Mail → mailto:liushuo432@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/2436055290" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;2436055290" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://wpa.qq.com/msgrd?v=3&uin=1696146913&site=qq&menu=yes" title="QQ → http:&#x2F;&#x2F;wpa.qq.com&#x2F;msgrd?v&#x3D;3&amp;uin&#x3D;1696146913&amp;site&#x3D;qq&amp;menu&#x3D;yes" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-fw fa-rss"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备20001451号 </a>
+      <img src="/images/beian_icon.png" style="display: inline-block;"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=21142102000063" rel="noopener" target="_blank">辽公网安备 21142102000063号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘硕</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.2" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'Ga2II3wuJmHX3GiNHm9TmI97-gzGzoHsz',
+      appKey     : 'esGYJQepdYLHf07E1VMsP3RK',
+      placeholder: "o(*￣▽￣*)ブ来说点什么吧...（填上邮箱可以收到回复提醒）",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : true,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+  <script type="text/javascript" src="/js/love.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/Epsilon2.1.model.json"},"display":{"superSample":2,"width":200,"height":400,"position":"left","hOffset":-30,"vOffset":-40},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>
