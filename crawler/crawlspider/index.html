@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="Tu5vqPaUb8svfkPx5eetJFD84ciQCcWVXNatdsWtj9Q">
+  <meta name="baidu-site-verification" content="baidu_verify_FBq9PG4BBb">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"appID":"PXY1Z6GHKT","apiKey":"eb82f2e78e3053f26aa408e9caa96d93","indexName":"blog","hits":{"per_page":10},"labels":{"input_placeholder":"要查点什么(✿◡‿◡)","hits_empty":"没有找到任何关于 ${query} 的结果╥﹏╥...","hits_stats":"搜索到 ${hits} 条记录，用时 ${time} ms o(*￣▽￣*)ブ"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="CrawlSpider 的基本用法CrawlSpider 是 Spider 的一个子类。Spider 是爬虫文件中爬虫类的父类。 一般来讲，子类的功能要比父类多，所以 CrawlSpider 的功能是比 Spider 更完善更强大的。 CrawlSpider 的作用：常被用作于专业实现全站数据爬取，也就是将一个页面下所有页码对应的数据进行爬取。 CrawlSpider 的基本使用：  创建一个工程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CrawlSpider 的基本使用">
+<meta property="og:url" content="https://sliu.vip/crawler/crawlspider/index.html">
+<meta property="og:site_name" content="刘硕的技术查阅手册">
+<meta property="og:description" content="CrawlSpider 的基本用法CrawlSpider 是 Spider 的一个子类。Spider 是爬虫文件中爬虫类的父类。 一般来讲，子类的功能要比父类多，所以 CrawlSpider 的功能是比 Spider 更完善更强大的。 CrawlSpider 的作用：常被用作于专业实现全站数据爬取，也就是将一个页面下所有页码对应的数据进行爬取。 CrawlSpider 的基本使用：  创建一个工程">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-03-31T16:56:15.824Z">
+<meta property="article:modified_time" content="2020-03-31T16:56:19.131Z">
+<meta property="article:author" content="刘硕">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="全栈开发">
+<meta property="article:tag" content="并发编程">
+<meta property="article:tag" content="网络编程">
+<meta property="article:tag" content="爬虫">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="自动化测试">
+<meta property="article:tag" content="Web开发">
+<meta property="article:tag" content="HTML">
+<meta property="article:tag" content="CSS">
+<meta property="article:tag" content="JavaScript">
+<meta property="article:tag" content="jQuery">
+<meta property="article:tag" content="Bootstrap">
+<meta property="article:tag" content="测试自动化">
+<meta property="article:tag" content="Selenium">
+<meta property="article:tag" content="postman">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="Vue">
+<meta property="article:tag" content="drf">
+<meta property="article:tag" content="django">
+<meta property="article:tag" content="文档翻译">
+<meta property="article:tag" content="PEP8">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://sliu.vip/crawler/crawlspider/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>CrawlSpider 的基本使用 | 刘硕的技术查阅手册</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f14f123935d6183fdd06f8f1c4bc378f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="刘硕的技术查阅手册" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">刘硕的技术查阅手册</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">Python 全栈开发学习笔记</h1>
+      
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-toc">
+
+    <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+  
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/crawler/crawlspider/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          CrawlSpider 的基本使用
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-04-01 00:56:15 / 修改时间：00:56:19" itemprop="dateCreated datePublished" datetime="2020-04-01T00:56:15+08:00">2020-04-01</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%88%AC%E8%99%AB/" itemprop="url" rel="index"><span itemprop="name">爬虫</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/crawler/crawlspider/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/crawler/crawlspider/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="CrawlSpider-的基本用法"><a href="#CrawlSpider-的基本用法" class="headerlink" title="CrawlSpider 的基本用法"></a>CrawlSpider 的基本用法</h3><p>CrawlSpider 是 Spider 的一个子类。Spider 是爬虫文件中爬虫类的父类。</p>
+<p>一般来讲，子类的功能要比父类多，所以 CrawlSpider 的功能是比 Spider 更完善更强大的。</p>
+<p>CrawlSpider 的作用：常被用作于专业实现全站数据爬取，也就是将一个页面下所有页码对应的数据进行爬取。</p>
+<p>CrawlSpider 的基本使用：</p>
+<ol>
+<li><p>创建一个工程</p>
+</li>
+<li><p>cd 到这个工程根目录</p>
+</li>
+<li><p>创建一个基于 CrawlSpider 的爬虫文件</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scrapy genspider -t crawl SpiderName www.xxx.com</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>执行工程</p>
+</li>
+</ol>
+<p>注意：</p>
+<ol>
+<li>一个链接提取器对应一个规则解析器（多个链接提取器和多个规则解析器）</li>
+<li>在实现深度爬取的过程中需要和 <code>scrapy.Request()</code> 结合使用</li>
+</ol>
+<p>需求：爬取校花网图片</p>
+<p>网址 url：<a href="http://www.521609.com/daxuexiaohua/" target="_blank" rel="noopener">http://www.521609.com/daxuexiaohua/</a></p>
+<p>示例代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> scrapy</span><br><span class="line"><span class="keyword">from</span> scrapy.linkextractors <span class="keyword">import</span> LinkExtractor</span><br><span class="line"><span class="keyword">from</span> scrapy.spiders <span class="keyword">import</span> CrawlSpider, Rule</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FirstSpider</span><span class="params">(CrawlSpider)</span>:</span></span><br><span class="line">    name = <span class="string">'first'</span></span><br><span class="line">    <span class="comment"># allowed_domains = ['www.521609.com']</span></span><br><span class="line">    start_urls = [<span class="string">'http://www.521609.com/daxuexiaohua/'</span>]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 实例化LinkExtractor对象</span></span><br><span class="line">    <span class="comment"># 链接提取器：根据指定规则（allow参数）在页面中进行连接（url）的提取</span></span><br><span class="line">    <span class="comment"># allow='正则'：提取链接的规则</span></span><br><span class="line">    <span class="comment"># link = LinkExtractor(allow=r'list3\d+\.html')</span></span><br><span class="line">    link = LinkExtractor(allow=<span class="string">r''</span>) <span class="comment">#取出网站全站的链接</span></span><br><span class="line">    rules = (</span><br><span class="line">        <span class="comment"># 实例化一个Rule对象</span></span><br><span class="line">        <span class="comment"># 规则解析器：接收链接提取器提取到的链接，对其发起请求，然后根据指定规则（callback）解析数据</span></span><br><span class="line">        Rule(link, callback=<span class="string">'parse_item'</span>, follow=<span class="literal">True</span>),</span><br><span class="line">    )</span><br><span class="line">    <span class="comment"># follow=True:</span></span><br><span class="line">    <span class="comment"># 将链接提取器 继续作用到 连接提取器提取到的页码 所对应的 页面中</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse_item</span><span class="params">(self, response)</span>:</span></span><br><span class="line">        print(response)</span><br><span class="line">        <span class="comment"># 基于response实现数据解析</span></span><br></pre></td></tr></table></figure>
+
+<p>问：如何将一个网站中全站所有的链接都进行爬取。</p>
+<p>答：把正交规则写成空字符串 <code>&#39;&#39;</code> 即可。如果仅要爬取本站所有内容，需要设置 allowed_domains 为当前域名，避免爬取到其他网站。</p>
+<h3 id="使用-CrawlSpider-实现深度爬取"><a href="#使用-CrawlSpider-实现深度爬取" class="headerlink" title="使用 CrawlSpider 实现深度爬取"></a>使用 CrawlSpider 实现深度爬取</h3><p>需求：爬取阳光热线问政平台最新问政的问政标题、状态和问政详细信息。</p>
+<p>网址 url：<a href="http://wz.sun0769.com/political/index/politicsNewest?id=1&amp;type=4&amp;page=" target="_blank" rel="noopener">http://wz.sun0769.com/political/index/politicsNewest?id=1&amp;type=4&amp;page=</a></p>
+<p>分析：问政标题和状态均可在首页得到，但是详细信息需要爬取详情页内容。使用 crawl 确实可以获取到每一个详情页的网址，并获取详细信息，但是如果要将首页的问政标题和状态与详情页的详细信息匹配，需要下一番功夫。（事实上，我们可以在详情页拿到所有这三个信息，但是为了学习和训练，我们分别从首页和详情页抓取。）</p>
+<p>我们可以使用问政编号，作为数据的标识。如此一来，可以将首页内容和详情页内容一一对应了。</p>
+<p>基于上面的思路，我们可以编写出爬虫的源代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scrapy.linkextractors <span class="keyword">import</span> LinkExtractor</span><br><span class="line"><span class="keyword">from</span> scrapy.spiders <span class="keyword">import</span> CrawlSpider, Rule</span><br><span class="line"><span class="keyword">from</span> sunPro.items <span class="keyword">import</span> SunproItem, SunproDeatilItem</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SunSpider</span><span class="params">(CrawlSpider)</span>:</span></span><br><span class="line">    name = <span class="string">'sun'</span></span><br><span class="line">    <span class="comment"># allowed_domains = ['www.xxx.com']</span></span><br><span class="line">    start_urls = [<span class="string">'http://wz.sun0769.com/political/index/politicsNewest?id=1&amp;type=4&amp;page='</span>]</span><br><span class="line"></span><br><span class="line">    rules = (</span><br><span class="line">        <span class="comment"># 提取页码链接，解析每一个页码对应页面中的数据</span></span><br><span class="line">        Rule(LinkExtractor(allow=<span class="string">r'id=1&amp;page=\d+'</span>), callback=<span class="string">'parse_item'</span>, follow=<span class="literal">True</span>),</span><br><span class="line">        <span class="comment"># 提取详情页连接，解析详情页中的数据</span></span><br><span class="line">        Rule(LinkExtractor(allow=<span class="string">r'index\?id=\d+'</span>), callback=<span class="string">'parse_detail'</span>, follow=<span class="literal">False</span>),</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse_item</span><span class="params">(self, response)</span>:</span></span><br><span class="line">        <span class="string">"""首页，用来提取标题和状态"""</span></span><br><span class="line">        li_list = response.xpath(<span class="string">'//ul[@class="title-state-ul"]/li'</span>)</span><br><span class="line">        <span class="keyword">for</span> li <span class="keyword">in</span> li_list:</span><br><span class="line">            item = SunproItem()</span><br><span class="line">            qid = li.xpath(<span class="string">'./span[1]/text()'</span>).extract_first().strip()</span><br><span class="line">            status = li.xpath(<span class="string">'./span[2]/text()'</span>).extract_first().strip()</span><br><span class="line">            title = li.xpath(<span class="string">'./span[3]/a/text()'</span>).extract_first().strip()</span><br><span class="line">            item[<span class="string">'qid'</span>] = qid</span><br><span class="line">            item[<span class="string">'status'</span>] = status</span><br><span class="line">            item[<span class="string">'title'</span>] = title</span><br><span class="line">            <span class="keyword">yield</span> item</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 实现深度爬取：爬取详情页中的数据</span></span><br><span class="line">    <span class="comment"># 1.对详情页的url进行捕获</span></span><br><span class="line">    <span class="comment"># 2.对详情页的url发起请求获取数据</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse_detail</span><span class="params">(self, response)</span>:</span></span><br><span class="line">        <span class="string">"""详情页，用来提取详细信息，实现深度爬取"""</span></span><br><span class="line">        qid = response.xpath(<span class="string">'//div[@class="mr-three"]/div[1]/span[4]/text()'</span>).extract_first().replace(<span class="string">'编号：'</span>, <span class="string">''</span>).strip()</span><br><span class="line">        content = response.xpath(<span class="string">'//div[@class="mr-three"]/div[2]/pre/text()'</span>).extract_first().strip()</span><br><span class="line">        item = SunproDeatilItem()</span><br><span class="line">        item[<span class="string">'qid'</span>] = qid</span><br><span class="line">        item[<span class="string">'content'</span>] = content</span><br><span class="line">        <span class="keyword">yield</span> item</span><br></pre></td></tr></table></figure>
+
+<p>数据通过问政 id 进行标识，数据存储的时候，相同的问政 id 保存在一起就好。</p>
+<p>别忘了在 <code>items.py</code> 中写好两个 Item 类，SunproItem 和 SunproDetailItem。</p>
+<p>但是现在还有一个问题：首页和详情页解析出来的数据统统给了管道。但是这两种数据是不同的，处理方式也是有差异的。我们该如何在管道中区分这两种数据，并对其进行分别存储呢？</p>
+<p>很简单，这两个 item 是不同类的实例化对象，我们只需要通过查询类名，即可对两种数据进行区分。item 类名的查询方式为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">item.__class__.__name__</span><br></pre></td></tr></table></figure>
+
+<p>通过判断类名，分别处理，根据 qid 进行一一对应存储，我这里就不详细写了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SunproPipeline</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">process_item</span><span class="params">(self, item, spider)</span>:</span></span><br><span class="line">        <span class="string">"""数据持久化存储，根据qid进行一一对应，就不详细写了"""</span></span><br><span class="line">        qid = item[<span class="string">'qid'</span>]</span><br><span class="line">        <span class="keyword">if</span> item.__class__.__name__ == <span class="string">'SunproItem'</span>:</span><br><span class="line">            title = item[<span class="string">'title'</span>]</span><br><span class="line">            status = item[<span class="string">'status'</span>]</span><br><span class="line">            print(qid, title, status)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            content = item[<span class="string">'content'</span>]</span><br><span class="line">            print(qid, content)</span><br><span class="line">        <span class="keyword">return</span> item</span><br></pre></td></tr></table></figure>
+
+<h3 id="CrawlSpider-结合-Spider-实现深度爬取"><a href="#CrawlSpider-结合-Spider-实现深度爬取" class="headerlink" title="CrawlSpider 结合 Spider 实现深度爬取"></a>CrawlSpider 结合 Spider 实现深度爬取</h3><p>像上面那种，单独使用 CrawlSpider 确实能够实现深度爬取。但是我们发现，坑一个接着一个：首页和详情页的数据不容易一一对应，两个不同的 item 对象传入管道，携带的数据和数据处理方式也不同，需要区别对待。</p>
+<p>链接获取和发送请求的过程的确是节省了，但是又多出了许多其他的麻烦，有些得不偿失。所以对于深度爬取的任务，我们更倾向于使用的方法是，通过 CrawlSpider 与 <code>spider.Request</code> 结合使用的方式，实现深度爬取。</p>
+<p>这就很容易处理了，手动请求，加上请求参数传递即可实现：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> scrapy</span><br><span class="line"><span class="keyword">from</span> scrapy.linkextractors <span class="keyword">import</span> LinkExtractor</span><br><span class="line"><span class="keyword">from</span> scrapy.spiders <span class="keyword">import</span> CrawlSpider, Rule</span><br><span class="line"><span class="keyword">from</span> sunPro.items <span class="keyword">import</span> SunproItem, SunproDeatilItem</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SunSpider</span><span class="params">(CrawlSpider)</span>:</span></span><br><span class="line">    name = <span class="string">'sun'</span></span><br><span class="line">    <span class="comment"># allowed_domains = ['www.xxx.com']</span></span><br><span class="line">    start_urls = [<span class="string">'http://wz.sun0769.com/political/index/politicsNewest?id=1&amp;type=4&amp;page='</span>]</span><br><span class="line"></span><br><span class="line">    rules = (</span><br><span class="line">        <span class="comment"># 提取页码链接，解析每一个页码对应页面中的数据</span></span><br><span class="line">        Rule(LinkExtractor(allow=<span class="string">r'id=1&amp;page=\d+'</span>), callback=<span class="string">'parse_item'</span>, follow=<span class="literal">False</span>),</span><br><span class="line">        <span class="comment"># # 提取详情页连接，解析详情页中的数据</span></span><br><span class="line">        <span class="comment"># Rule(LinkExtractor(allow=r'index\?id=\d+'), callback='parse_detail', follow=False),</span></span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse_item</span><span class="params">(self, response)</span>:</span></span><br><span class="line">        <span class="string">"""首页，用来提取标题和状态"""</span></span><br><span class="line">        li_list = response.xpath(<span class="string">'//ul[@class="title-state-ul"]/li'</span>)</span><br><span class="line">        <span class="keyword">for</span> li <span class="keyword">in</span> li_list:</span><br><span class="line">            item = SunproItem()</span><br><span class="line">            qid = li.xpath(<span class="string">'./span[1]/text()'</span>).extract_first().strip()</span><br><span class="line">            status = li.xpath(<span class="string">'./span[2]/text()'</span>).extract_first().strip()</span><br><span class="line">            title = li.xpath(<span class="string">'./span[3]/a/text()'</span>).extract_first().strip()</span><br><span class="line">            url = <span class="string">'http://wz.sun0769.com/'</span> + li.xpath(<span class="string">'./span[3]/a/@href'</span>).extract_first().strip()</span><br><span class="line">            item[<span class="string">'qid'</span>] = qid</span><br><span class="line">            item[<span class="string">'status'</span>] = status</span><br><span class="line">            item[<span class="string">'title'</span>] = title</span><br><span class="line">            <span class="keyword">yield</span> scrapy.Request(url, callback=self.parse_detail, meta=&#123;<span class="string">'item'</span>: item&#125;)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse_detail</span><span class="params">(self, response)</span>:</span></span><br><span class="line">        item = response.meta[<span class="string">'item'</span>]</span><br><span class="line">        qid = response.xpath(<span class="string">'//div[@class="mr-three"]/div[1]/span[4]/text()'</span>).extract_first().replace(<span class="string">'编号：'</span>, <span class="string">''</span>).strip()</span><br><span class="line">        content = response.xpath(<span class="string">'//div[@class="mr-three"]/div[2]/pre/text()'</span>).extract_first().strip()</span><br><span class="line">        item[<span class="string">'qid'</span>] = qid</span><br><span class="line">        item[<span class="string">'content'</span>] = content</span><br><span class="line">        <span class="keyword">yield</span> item</span><br></pre></td></tr></table></figure>
+
+<p>这样，只会有一种 item 对象，里面是我们需要的所有数据。在管道中，不需要分类处理，不需要考虑首页和详情页一一对应的问题。一切都变得很简单了。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/testing/selenium-install/" rel="prev" title="selenium 模块的安装和配置">
+      <i class="fa fa-chevron-left"></i> selenium 模块的安装和配置
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/crawler/scrapy-advanced/" rel="next" title="scrapy 高级用法">
+      scrapy 高级用法 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#CrawlSpider-的基本用法"><span class="nav-number">1.</span> <span class="nav-text">CrawlSpider 的基本用法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-CrawlSpider-实现深度爬取"><span class="nav-number">2.</span> <span class="nav-text">使用 CrawlSpider 实现深度爬取</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CrawlSpider-结合-Spider-实现深度爬取"><span class="nav-number">3.</span> <span class="nav-text">CrawlSpider 结合 Spider 实现深度爬取</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="刘硕"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">刘硕</p>
+  <div class="site-description" itemprop="description">不成为自己讨厌的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">291</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:liushuo432@outlook.com" title="E-Mail → mailto:liushuo432@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/2436055290" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;2436055290" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://wpa.qq.com/msgrd?v=3&uin=1696146913&site=qq&menu=yes" title="QQ → http:&#x2F;&#x2F;wpa.qq.com&#x2F;msgrd?v&#x3D;3&amp;uin&#x3D;1696146913&amp;site&#x3D;qq&amp;menu&#x3D;yes" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-fw fa-rss"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备20001451号 </a>
+      <img src="/images/beian_icon.png" style="display: inline-block;"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=21142102000063" rel="noopener" target="_blank">辽公网安备 21142102000063号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘硕</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.2" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'Ga2II3wuJmHX3GiNHm9TmI97-gzGzoHsz',
+      appKey     : 'esGYJQepdYLHf07E1VMsP3RK',
+      placeholder: "o(*￣▽￣*)ブ来说点什么吧...（填上邮箱可以收到回复提醒）",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : true,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+  <script type="text/javascript" src="/js/love.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/Epsilon2.1.model.json"},"display":{"superSample":2,"width":200,"height":400,"position":"left","hOffset":-30,"vOffset":-40},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>

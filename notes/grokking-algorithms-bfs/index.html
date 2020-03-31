@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="Tu5vqPaUb8svfkPx5eetJFD84ciQCcWVXNatdsWtj9Q">
+  <meta name="baidu-site-verification" content="baidu_verify_FBq9PG4BBb">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"appID":"PXY1Z6GHKT","apiKey":"eb82f2e78e3053f26aa408e9caa96d93","indexName":"blog","hits":{"per_page":10},"labels":{"input_placeholder":"要查点什么(✿◡‿◡)","hits_empty":"没有找到任何关于 ${query} 的结果╥﹏╥...","hits_stats":"搜索到 ${hits} 条记录，用时 ${time} ms o(*￣▽￣*)ブ"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="广度优先搜索让我们能够找出两样东西之间的最短距离。不过最短距离的含义有很多，使用广度优先搜索可以：  编写国际跳棋 AI，计算最少走多少步就可获胜 编写拼写检査器，计算最少编辑多少个地方就可将错拼的单词改成正确的单词，如将 READED 改为 READER 只编辑一个字母改如何操作 根据你的人际关系网络找到关系最近的医生。  图简介假设你居住在旧金山，要从双子峰前往金门大桥。你想乘公交车前往，并希">
+<meta property="og:type" content="article">
+<meta property="og:title" content="广度优先搜索">
+<meta property="og:url" content="https://sliu.vip/notes/grokking-algorithms-bfs/index.html">
+<meta property="og:site_name" content="刘硕的技术查阅手册">
+<meta property="og:description" content="广度优先搜索让我们能够找出两样东西之间的最短距离。不过最短距离的含义有很多，使用广度优先搜索可以：  编写国际跳棋 AI，计算最少走多少步就可获胜 编写拼写检査器，计算最少编辑多少个地方就可将错拼的单词改成正确的单词，如将 READED 改为 READER 只编辑一个字母改如何操作 根据你的人际关系网络找到关系最近的医生。  图简介假设你居住在旧金山，要从双子峰前往金门大桥。你想乘公交车前往，并希">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-bfs/1585495772598.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-bfs/1585495818790.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-bfs/1585495990061.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-bfs/1585496028861.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-bfs/1585496094162.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-bfs/1585496587854.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-bfs/1585496660449.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-bfs/1585544498067.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-bfs/1585582209888.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-bfs/1585582311086.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-bfs/1585582936747.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-bfs/1585583225926.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-bfs/1585583539128.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-bfs/1585583593464.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-bfs/1585588829384.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-bfs/1585589015841.png">
+<meta property="article:published_time" content="2020-03-29T16:05:29.625Z">
+<meta property="article:modified_time" content="2020-03-31T16:56:19.102Z">
+<meta property="article:author" content="刘硕">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="全栈开发">
+<meta property="article:tag" content="并发编程">
+<meta property="article:tag" content="网络编程">
+<meta property="article:tag" content="爬虫">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="自动化测试">
+<meta property="article:tag" content="Web开发">
+<meta property="article:tag" content="HTML">
+<meta property="article:tag" content="CSS">
+<meta property="article:tag" content="JavaScript">
+<meta property="article:tag" content="jQuery">
+<meta property="article:tag" content="Bootstrap">
+<meta property="article:tag" content="测试自动化">
+<meta property="article:tag" content="Selenium">
+<meta property="article:tag" content="postman">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="Vue">
+<meta property="article:tag" content="drf">
+<meta property="article:tag" content="django">
+<meta property="article:tag" content="文档翻译">
+<meta property="article:tag" content="PEP8">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sliu.vip/notes/grokking-algorithms-bfs/1585495772598.png">
+
+<link rel="canonical" href="https://sliu.vip/notes/grokking-algorithms-bfs/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>广度优先搜索 | 刘硕的技术查阅手册</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f14f123935d6183fdd06f8f1c4bc378f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="刘硕的技术查阅手册" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">刘硕的技术查阅手册</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">Python 全栈开发学习笔记</h1>
+      
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-toc">
+
+    <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+  
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/notes/grokking-algorithms-bfs/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          广度优先搜索
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-03-30 00:05:29" itemprop="dateCreated datePublished" datetime="2020-03-30T00:05:29+08:00">2020-03-30</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-01 00:56:19" itemprop="dateModified" datetime="2020-04-01T00:56:19+08:00">2020-04-01</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B5%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">学习实践笔记</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/notes/grokking-algorithms-bfs/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/notes/grokking-algorithms-bfs/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>广度优先搜索让我们能够找出两样东西之间的最短距离。不过最短距离的含义有很多，使用广度优先搜索可以：</p>
+<ul>
+<li>编写国际跳棋 AI，计算最少走多少步就可获胜</li>
+<li>编写拼写检査器，计算最少编辑多少个地方就可将错拼的单词改成正确的单词，如将 READED 改为 READER 只编辑一个字母改如何操作</li>
+<li>根据你的人际关系网络找到关系最近的医生。</li>
+</ul>
+<h3 id="图简介"><a href="#图简介" class="headerlink" title="图简介"></a>图简介</h3><p>假设你居住在旧金山，要从双子峰前往金门大桥。你想乘公交车前往，并希望换乘最少。可乘坐的公交车如下：</p>
+<img src="/notes/grokking-algorithms-bfs/1585495772598.png" class="" width="1585495772598">
+
+<p>显然，我们至少需要三步才能从双子峰走到金门大桥：</p>
+<img src="/notes/grokking-algorithms-bfs/1585495818790.png" class="" width="1585495818790">
+
+<p>当然还有其他前往金门大桥的路线，但它们更远（需要四步）。这种问题被称为最短路径问题（shortest-path problem）。</p>
+<p>我们经常要找出最短路径，这可能是前往朋友家的最短路径，也可能是国际象棋中把对方将死的最少步数。解决最短路径问题的算法被称为广度优先搜索。</p>
+<p>要确定如何从双子峰前往金门大桥，需要两个步骤：</p>
+<ol>
+<li>使用图来建立问题模型。</li>
+<li>使用广度优先搜索解决问题。</li>
+</ol>
+<p>图模拟一组连接。例如，假设你与朋友玩牌，并要模拟谁欠谁钱，可像下面这样指出 Alex 欠 Rama 钱：</p>
+<img src="/notes/grokking-algorithms-bfs/1585495990061.png" class="" width="1585495990061">
+
+<p>完整的欠钱关系图可能是这样的：</p>
+<img src="/notes/grokking-algorithms-bfs/1585496028861.png" class="" width="1585496028861">
+
+<p>Alex欠 Rama 钱，Tom 欠 Adit 钱，等等。图由节点（node）和边（edge）组成：</p>
+<img src="/notes/grokking-algorithms-bfs/1585496094162.png" class="" width="1585496094162">
+
+<p>一个节点可能与众多节点直接相连，这些节点被称为邻居。在前面的欠钱图中，Rama 是 Alex 的邻居。Adit 不是 Alex 的邻居，因为他们不直接相连。但 Adit 既是 Rama 的邻居，又是 Tom 的邻居。</p>
+<p>图用于模拟不同的东西是如何相连的。</p>
+<p>#<br>广度优先搜索是一种用于图的查找算法，可帮助回答两类问题：</p>
+<ol>
+<li>从节点 A 出发，有前往节点 B 的路径吗？</li>
+<li>从节点 A 出发，前往节点 B 的哪条路径最短？</li>
+</ol>
+<p>前面计算从双子峰前往金门大桥的最短路径的问题，就属于第二类问题：哪条路径最短？</p>
+<p>假设你经营着一个芒果农场，需要寻找芒果销售商，以便将芒果卖给他。在 Facebook，你与芒果销售商有联系吗？为此，你可以在朋友中查找。</p>
+<p>首先，创建一个朋友的清单，然后依次检查每个朋友，看他是否是芒果经销商。如果是，则大功告成，否则查看下一个朋友。</p>
+<p>如果你的朋友没有任何一个人是芒果经销商，你就需要在朋友的朋友中寻找：</p>
+<img src="/notes/grokking-algorithms-bfs/1585496587854.png" class="" width="1585496587854">
+
+<p>这次，你还是从自己的朋友开始找起。不同的是，如果你的朋友不是经销商，你就把朋友的人际关系，也就是朋友的所有朋友也加入到查找清单中。</p>
+<img src="/notes/grokking-algorithms-bfs/1585496660449.png" class="" width="1585496660449">
+
+<p>这样一来，你不仅在朋友中查找，还在朋友的朋友中查找。别忘了，你的目标是在人际关系网中找到一位芒果销售商。因此，如果 Alice 不是芒果销售商，就将其朋友也加入到名单中。这意味着你将在她的朋友、朋友的朋友等中査找。使用这种算法将搜遍你的整个人际关系网，直到找到芒果销售商。这就是广度优先搜索算法</p>
+<h3 id="查找最短路径"><a href="#查找最短路径" class="headerlink" title="查找最短路径"></a>查找最短路径</h3><p>再说一次，广度优先搜索可回答两类问题：</p>
+<ol>
+<li><p>从节点 A 出发，有前往节点 B 的路径吗？（在你的人际关系网中，有芒果销售商吗？）</p>
+</li>
+<li><p>从节点A出发，前往节点B的哪条路径最短？（哪个芒果销售商与你的关系最近？）</p>
+</li>
+</ol>
+<p>刚刚我们讨论了如何回答第一类问题，下面来尝试回答第二类问题——谁是关系最近的芒果销售商。例如，朋友是一度关系，朋友的朋友是二度关系</p>
+<p>显而易见，一度关系胜过二度关系，二度关系胜过三度关系，以此类推。因此，你应先在一度关系中搜索，确定其中没有芒果销售商后，才在二度关系中搜索。</p>
+<p>广度优先搜索就是这样做的！在广度优先搜索的执行过程中，搜索范围从起点开始逐渐向外延伸。即先检查一度关系，再检查二度关系。</p>
+<p>Claire 是一度关系，而 Anuj 是二度关系，因此将先检查 Claire，后检查 Anuj。你也可以这样看，一度关系在二度关系之前加入查找名单。你按顺序依次检査名单中的每个人，看看他是否是芒果销售商。这将先在一度关系中查找，再在二度关系中查找，因此找到的是关系最近的芒果销售商。广度优先搜索不仅査找从 A 到 B 的路径，而且找到的是最短的路径。</p>
+<img src="/notes/grokking-algorithms-bfs/1585544498067.png" class="" width="1585544498067">
+
+<p>注意，只有按添加顺序査找时，才能实现这样的目的。换句话说，如果 Claire 先于 Anuj 加入名单，就需要先检查 Claire，再检查 Anuj。如果 Claire 和 Anuj 都是芒果销售商，而你先检查 Anuj 再检查 Claire，结果将如何呢？找到的芒果销售商并非是与你关系最近的，因为 Anuj 是你朋友的朋友，而 Claire是你的朋友。因此，你需要按添加顺序进检查。</p>
+<p>这种先添加先检查的数据结构，就是队列。</p>
+<h3 id="队列"><a href="#队列" class="headerlink" title="队列"></a>队列</h3><p>队列类似于栈，你不能随机地访问队列中的元素。队列只支持两种操作：入队和出队。</p>
+<img src="/notes/grokking-algorithms-bfs/1585582209888.png" class="" width="1585582209888">
+
+<p>如果你将两个元素加入队列，先加入的元素将在后加入的元素之前出队。因此，你可使用队列来表示査找名单，这样，先加入的人将先出队并先被检查。</p>
+<p>队列是一种先进先出（First in first out，FIFO）的数据结构，而栈是种后进先出（Last in first out，LIFO）的数据结构。</p>
+<img src="/notes/grokking-algorithms-bfs/1585582311086.png" class="" width="1585582311086">
+
+<h3 id="Python-代码实现图"><a href="#Python-代码实现图" class="headerlink" title="Python 代码实现图"></a>Python 代码实现图</h3><p>接下来，我们要用 Python 代码实现图。</p>
+<p>图由多个节点组成。节点之间有相互关联的关系。我们可以通过散列表来表示这种关系。</p>
+<p>我们要将我们和朋友建立起一种映射关系。</p>
+<img src="/notes/grokking-algorithms-bfs/1585582936747.png" class="" width="1585582936747">
+
+<p>这种映射关系可以用散列表表示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">graph = &#123;&#125;</span><br><span class="line">graph[<span class="string">'you'</span>] = [<span class="string">'alice'</span>, <span class="string">'bob'</span>, <span class="string">'claire'</span>]</span><br></pre></td></tr></table></figure>
+
+<p>图不过是一系列的节点和边，因此在 Python 中，只需使用上述代码就可表示一个图。</p>
+<p>对于像下面这种比较复杂的图，我们同样可以采用上面的思路，只不过需要多写几个中间节点而已。</p>
+<img src="/notes/grokking-algorithms-bfs/1585583225926.png" class="" width="1585583225926">
+
+<p>用 Python 代码表示这个图中的关系就是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">graph = &#123;&#125;</span><br><span class="line">graph[<span class="string">'you'</span>] = [<span class="string">'alice'</span>, <span class="string">'bob'</span>, <span class="string">'claire'</span>]</span><br><span class="line">graph[<span class="string">'bob'</span>] = [<span class="string">'anuj'</span>, <span class="string">'peggy'</span>]</span><br><span class="line">graph[<span class="string">'alice'</span>] = [<span class="string">'peggy'</span>]</span><br><span class="line">graph[<span class="string">'claire'</span>] = [<span class="string">'thom'</span>, <span class="string">'jonny'</span>]</span><br><span class="line">graph[<span class="string">'anuj'</span>] = []</span><br><span class="line">graph[<span class="string">'peggy'</span>] = []</span><br><span class="line">graph[<span class="string">'thom'</span>] = []</span><br><span class="line">graph[<span class="string">'jonny'</span>] = []</span><br></pre></td></tr></table></figure>
+
+<p>Anuj、 Peggy、Thom 和 Jonny 都没有邻居，这是因为虽然有指向他们的箭头，但没有从他们出发指向其他人的箭头。这被称为有向图（directed graph），其中的关系是单向的。因此，Anuj 是 Bob 的邻居，但 Bob 不是 Anuj 的邻居。无向图（undirected graph）没有箭头，直接相连的节点互为邻居。例如，下面两个图是等价的。</p>
+<img src="/notes/grokking-algorithms-bfs/1585583539128.png" class="" width="1585583539128">
+
+<h3 id="实现算法"><a href="#实现算法" class="headerlink" title="实现算法"></a>实现算法</h3><p>算法的工作原理为：</p>
+<img src="/notes/grokking-algorithms-bfs/1585583593464.png" class="" width="1585583593464">
+
+<p> 首先，创建一个队列。在 Python 中，可使用函数 deque 来创建一个双端队列：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> deque</span><br><span class="line">search_queue = deque()    <span class="comment"># 创建一个队列</span></span><br><span class="line">search_queue += graph[<span class="string">'you'</span>]    <span class="comment"># 将你的邻居加入到队列中</span></span><br></pre></td></tr></table></figure>
+
+<p>下面是查看朋友圈中是否有芒果经销商的完整函数代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">search</span><span class="params">(graph)</span>:</span></span><br><span class="line">    search_queue = deque()  <span class="comment"># 创建一个队列</span></span><br><span class="line">    search_queue += graph[<span class="string">'you'</span>]  <span class="comment"># 将你的邻居加入到队列中</span></span><br><span class="line">    <span class="keyword">while</span> search_queue:    <span class="comment"># 只要队列不为空</span></span><br><span class="line">        person = search_queue.popleft()    <span class="comment"># 就取出队列中的第一个人</span></span><br><span class="line">        <span class="keyword">if</span> person_is_seller(person):    <span class="comment"># 检查这个人是否是芒果经销商</span></span><br><span class="line">            print(person, <span class="string">'is a seller!'</span>)    <span class="comment"># 是芒果经销商</span></span><br><span class="line">            <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            search_queue += graph[person]    <span class="comment"># 不是芒果经销商，把这个人的朋友圈都加入到队列中</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">False</span>    <span class="comment"># 如果到达这里，就说明队列中没有芒果经销商</span></span><br></pre></td></tr></table></figure>
+
+<p>我们可以定义一个判断一个人是否是芒果经销商的函数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">person_is_seller</span><span class="params">(name)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> name[<span class="number">-1</span>] == <span class="string">'m'</span></span><br></pre></td></tr></table></figure>
+
+<p>通过一个人名字是否是以 m 结尾来判断他是不是芒果经销商，这在现实中很荒谬，但是给我们做例子已经足够了。</p>
+<p>下面是广度优先搜索的执行过程：</p>
+<img src="/notes/grokking-algorithms-bfs/1585588829384.png" class="" width="1585588829384">
+
+<p>这个算法将不断执行，直到满足以下条件之一：</p>
+<ul>
+<li>找到一位芒果销售商；</li>
+<li>队列变成空的，这意味着你的人际关系网中没有芒果销售商。</li>
+</ul>
+<p>我们前面的代码并不完善，比如 Peggy 既是 Alie 的朋友又是 Bob 的朋友，因此她将被加入队列两次：一次是在添加 Alice 的朋友时，另一次是在添加 Bob 的朋友时。因此，搜索队列将包含两个 Peggy。</p>
+<p>在这个问题中不会出现差错，但是对于有循环关系网的时候，我们有可能会陷入无限循环中。</p>
+<img src="/notes/grokking-algorithms-bfs/1585589015841.png" class="" width="1585589015841">
+
+<p>为了避免这种情况发生，我们需要限制，已经处检查的人将不会被重复检查。</p>
+<p>这时，我们可以创建一个列表，专门存放已经检查过的人。如果下一个要检查的人出现在这个列表中，我们可以直接跳过，不去检查。</p>
+<p>考虑到这一点，广度优先搜索算法的最终版本为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> deque</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">graph = &#123;&#125;</span><br><span class="line">graph[<span class="string">'you'</span>] = [<span class="string">'alice'</span>, <span class="string">'bob'</span>, <span class="string">'claire'</span>]</span><br><span class="line">graph[<span class="string">'bob'</span>] = [<span class="string">'anuj'</span>, <span class="string">'peggy'</span>]</span><br><span class="line">graph[<span class="string">'alice'</span>] = [<span class="string">'peggy'</span>]</span><br><span class="line">graph[<span class="string">'claire'</span>] = [<span class="string">'thom'</span>, <span class="string">'jonny'</span>]</span><br><span class="line">graph[<span class="string">'anuj'</span>] = []</span><br><span class="line">graph[<span class="string">'peggy'</span>] = []</span><br><span class="line">graph[<span class="string">'thom'</span>] = []</span><br><span class="line">graph[<span class="string">'jonny'</span>] = []</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">person_is_seller</span><span class="params">(name)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> name[<span class="number">-1</span>] == <span class="string">'m'</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">search</span><span class="params">(graph, name=<span class="string">'you'</span>)</span>:</span></span><br><span class="line">    search_queue = deque()  <span class="comment"># 创建一个队列</span></span><br><span class="line">    search_queue += graph[name]  <span class="comment"># 将你的邻居加入到队列中</span></span><br><span class="line">    searched = []    <span class="comment"># 这个数组用于存放已经检查过的人</span></span><br><span class="line">    <span class="keyword">while</span> search_queue:    <span class="comment"># 只要队列不为空</span></span><br><span class="line">        person = search_queue.popleft()    <span class="comment"># 就取出队列中的第一个人</span></span><br><span class="line">        <span class="keyword">if</span> person <span class="keyword">not</span> <span class="keyword">in</span> searched:    <span class="comment"># 仅当这个人没有被检查的时候，才会被检查</span></span><br><span class="line">            <span class="keyword">if</span> person_is_seller(person):    <span class="comment"># 检查这个人是否是芒果经销商</span></span><br><span class="line">                print(person, <span class="string">'is a seller!'</span>)    <span class="comment"># 是芒果经销商</span></span><br><span class="line">                <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                search_queue += graph[person]    <span class="comment"># 不是芒果经销商，把这个人的朋友圈都加入到队列中</span></span><br><span class="line">                searched.append(person)    <span class="comment"># 将这个人标记为已经检查过</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">False</span>    <span class="comment"># 如果到达这里，就说明队列中没有芒果经销商</span></span><br><span class="line"></span><br><span class="line">search(graph, <span class="string">'you'</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="运行时间"><a href="#运行时间" class="headerlink" title="运行时间"></a>运行时间</h3><p>如果你在你的整个人际关系网中搜索芒果销售商，就意味着你将沿每条边前行（记住，边是从一个人到另一个人的箭头或连接），因此运行时间至少为 $O(边数)$。你还使用了一个队列，其中包含要检查的每个人。将一个人添加到队列需要的时间是固定的，即为 $O(1)$，因此对每个人都这样做需要的总时间为 $O(人数)$。所以，广度优先搜索的运行时间为 $O(人数+边数)$，这通常写作 $O(V+E)$，其中 V 为顶点（vertice）数，E 为边数。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/crawler/async-crawler/" rel="prev" title="异步爬虫">
+      <i class="fa fa-chevron-left"></i> 异步爬虫
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/database/redis-python/" rel="next" title="Python 操作 Redis">
+      Python 操作 Redis <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#图简介"><span class="nav-number">1.</span> <span class="nav-text">图简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查找最短路径"><span class="nav-number">2.</span> <span class="nav-text">查找最短路径</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#队列"><span class="nav-number">3.</span> <span class="nav-text">队列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python-代码实现图"><span class="nav-number">4.</span> <span class="nav-text">Python 代码实现图</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现算法"><span class="nav-number">5.</span> <span class="nav-text">实现算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#运行时间"><span class="nav-number">6.</span> <span class="nav-text">运行时间</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="刘硕"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">刘硕</p>
+  <div class="site-description" itemprop="description">不成为自己讨厌的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">291</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:liushuo432@outlook.com" title="E-Mail → mailto:liushuo432@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/2436055290" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;2436055290" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://wpa.qq.com/msgrd?v=3&uin=1696146913&site=qq&menu=yes" title="QQ → http:&#x2F;&#x2F;wpa.qq.com&#x2F;msgrd?v&#x3D;3&amp;uin&#x3D;1696146913&amp;site&#x3D;qq&amp;menu&#x3D;yes" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-fw fa-rss"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备20001451号 </a>
+      <img src="/images/beian_icon.png" style="display: inline-block;"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=21142102000063" rel="noopener" target="_blank">辽公网安备 21142102000063号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘硕</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.2" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'Ga2II3wuJmHX3GiNHm9TmI97-gzGzoHsz',
+      appKey     : 'esGYJQepdYLHf07E1VMsP3RK',
+      placeholder: "o(*￣▽￣*)ブ来说点什么吧...（填上邮箱可以收到回复提醒）",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : true,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+  <script type="text/javascript" src="/js/love.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/Epsilon2.1.model.json"},"display":{"superSample":2,"width":200,"height":400,"position":"left","hOffset":-30,"vOffset":-40},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>

@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="Tu5vqPaUb8svfkPx5eetJFD84ciQCcWVXNatdsWtj9Q">
+  <meta name="baidu-site-verification" content="baidu_verify_FBq9PG4BBb">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"appID":"PXY1Z6GHKT","apiKey":"eb82f2e78e3053f26aa408e9caa96d93","indexName":"blog","hits":{"per_page":10},"labels":{"input_placeholder":"要查点什么(✿◡‿◡)","hits_empty":"没有找到任何关于 ${query} 的结果╥﹏╥...","hits_stats":"搜索到 ${hits} 条记录，用时 ${time} ms o(*￣▽￣*)ブ"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="异步爬虫概述异步爬虫的作用很显而易见，就是为了提高我们爬虫的效率。因为网络请求通常会消耗一点时间，普通的爬虫在网络请求这段时间会诸塞住，CPU 的资源是浪费掉了。使用异步爬虫，就是在一个任务请求数据的时候，把 CPU 让出来，处理其他任务，从而提高爬虫的效率。 异步爬虫在实际应用中很有用也很没有用。说他有用，是因为就是像前面说的，可以提高爬虫的效率。说他没用，是因为实际的爬虫中，我们很多时候不那么">
+<meta property="og:type" content="article">
+<meta property="og:title" content="异步爬虫">
+<meta property="og:url" content="https://sliu.vip/crawler/async-crawler/index.html">
+<meta property="og:site_name" content="刘硕的技术查阅手册">
+<meta property="og:description" content="异步爬虫概述异步爬虫的作用很显而易见，就是为了提高我们爬虫的效率。因为网络请求通常会消耗一点时间，普通的爬虫在网络请求这段时间会诸塞住，CPU 的资源是浪费掉了。使用异步爬虫，就是在一个任务请求数据的时候，把 CPU 让出来，处理其他任务，从而提高爬虫的效率。 异步爬虫在实际应用中很有用也很没有用。说他有用，是因为就是像前面说的，可以提高爬虫的效率。说他没用，是因为实际的爬虫中，我们很多时候不那么">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sliu.vip/crawler/async-crawler/Snip20200325_2.png">
+<meta property="og:image" content="https://sliu.vip/crawler/async-crawler/multitaskingfail.gif">
+<meta property="og:image" content="https://sliu.vip/crawler/async-crawler/multitaskingsuccess.gif">
+<meta property="article:published_time" content="2020-03-29T16:05:29.350Z">
+<meta property="article:modified_time" content="2020-03-29T16:05:32.378Z">
+<meta property="article:author" content="刘硕">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="全栈开发">
+<meta property="article:tag" content="并发编程">
+<meta property="article:tag" content="网络编程">
+<meta property="article:tag" content="爬虫">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="自动化测试">
+<meta property="article:tag" content="Web开发">
+<meta property="article:tag" content="HTML">
+<meta property="article:tag" content="CSS">
+<meta property="article:tag" content="JavaScript">
+<meta property="article:tag" content="jQuery">
+<meta property="article:tag" content="Bootstrap">
+<meta property="article:tag" content="测试自动化">
+<meta property="article:tag" content="Selenium">
+<meta property="article:tag" content="postman">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="Vue">
+<meta property="article:tag" content="drf">
+<meta property="article:tag" content="django">
+<meta property="article:tag" content="文档翻译">
+<meta property="article:tag" content="PEP8">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sliu.vip/crawler/async-crawler/Snip20200325_2.png">
+
+<link rel="canonical" href="https://sliu.vip/crawler/async-crawler/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>异步爬虫 | 刘硕的技术查阅手册</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f14f123935d6183fdd06f8f1c4bc378f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="刘硕的技术查阅手册" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">刘硕的技术查阅手册</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">Python 全栈开发学习笔记</h1>
+      
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-toc">
+
+    <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+  
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/crawler/async-crawler/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          异步爬虫
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-03-30 00:05:29 / 修改时间：00:05:32" itemprop="dateCreated datePublished" datetime="2020-03-30T00:05:29+08:00">2020-03-30</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%88%AC%E8%99%AB/" itemprop="url" rel="index"><span itemprop="name">爬虫</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/crawler/async-crawler/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/crawler/async-crawler/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="异步爬虫概述"><a href="#异步爬虫概述" class="headerlink" title="异步爬虫概述"></a>异步爬虫概述</h3><p>异步爬虫的作用很显而易见，就是为了提高我们爬虫的效率。因为网络请求通常会消耗一点时间，普通的爬虫在网络请求这段时间会诸塞住，CPU 的资源是浪费掉了。使用异步爬虫，就是在一个任务请求数据的时候，把 CPU 让出来，处理其他任务，从而提高爬虫的效率。</p>
+<p>异步爬虫在实际应用中很有用也很没有用。说他有用，是因为就是像前面说的，可以提高爬虫的效率。说他没用，是因为实际的爬虫中，我们很多时候不那么追求效率。毕竟如果请求过于频繁，是有可能把人家的服务器搞崩掉的，会造成麻烦。另外，如果人家的服务器设置了反爬，有可能会禁掉我们的 IP。所以有些时候，我们不但不会想方设法提高效率，反而还会适当降低一点请求的频率。细水长流嘛。</p>
+<p>当然，话说回来，有没有用是他的事，学不学是我们的事。知道怎么进行异步爬虫，才不至于将来用的时候手忙脚乱。</p>
+<p>在这里主要介绍两种异步爬虫机制：</p>
+<ul>
+<li>基于线程池的异步爬虫</li>
+<li>基于单线程 + 多任务的异步爬虫（基于 asyncio 协程）</li>
+</ul>
+<p>当然异步爬虫不仅限于这两个，而且线程池和协程也会有很多种写法，这里只是抛砖引玉，具体怎么用还得随机应变，灵活使用。</p>
+<h3 id="使用-Flask-框架搭建一个简单的-Web-服务器"><a href="#使用-Flask-框架搭建一个简单的-Web-服务器" class="headerlink" title="使用 Flask 框架搭建一个简单的 Web 服务器"></a>使用 Flask 框架搭建一个简单的 Web 服务器</h3><p>我们要进行异步爬虫的演示，要看到效果就要对比同步和异步过程需要消耗的时间。如果使用网络中的服务器，测试时间会受网络波动的影响，不一定准确。所以在开始介绍异步爬虫之前，先让我们在本地搭建一个 Web 服务器。这样，用这个服务器测试我们的结果，就不会受网速的影响了。</p>
+<p>我们从前一致用 Django 搭建 Web 服务器，这次我们换一个轻量的 Web 框架，Flask。</p>
+<p>首先，我们要安装 Flask：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install flask</span><br></pre></td></tr></table></figure>
+
+<p>然后创建一个 py 文件，名字随意，比如就叫 <code>FlaskServer.py</code>。</p>
+<p>然后就可以创建一个 Web 服务器了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, render_template</span><br><span class="line"><span class="keyword">from</span> time <span class="keyword">import</span> sleep</span><br><span class="line"><span class="comment"># 实例化一个app</span></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建视图函数&amp;路由地址</span></span><br><span class="line"><span class="meta">@app.route('/sure')</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">index_1</span><span class="params">()</span>:</span></span><br><span class="line">    sleep(<span class="number">2</span>)    <span class="comment"># 这里睡2秒是为了模拟网络请求消耗的时间</span></span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">'test.html'</span>)    <span class="comment"># test.html放在FlaskServer.py同级目录下的templates文件夹中</span></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route('/xiaoming')</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">index_2</span><span class="params">()</span>:</span></span><br><span class="line">    sleep(<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">'test.html'</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route('/xiaohui')</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">index_3</span><span class="params">()</span>:</span></span><br><span class="line">    sleep(<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">'test.html'</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    <span class="comment"># debug=True表示开启调试模式：服务器端代码被修改后按下保存键会自动重启服务</span></span><br><span class="line">    app.run(debug=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+
+<p>执行文件，即可启动 Flask 项目。项目默认运行在 <code>http://127.0.0.1:5000/</code>。</p>
+<p>可以通过修改 run 的 port 的参数，置顶端口。</p>
+<h3 id="基于线程池的异步爬虫"><a href="#基于线程池的异步爬虫" class="headerlink" title="基于线程池的异步爬虫"></a>基于线程池的异步爬虫</h3><p>首先，我们用从前的方法，写一个同步的爬虫代码，爬取我们刚刚写好的三个页面，看一看需要花费多长时间：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">url_list = [</span><br><span class="line">    <span class="string">'http://127.0.0.1:5000/sure'</span>,</span><br><span class="line">    <span class="string">'http://127.0.0.1:5000/xiaoming'</span>,</span><br><span class="line">    <span class="string">'http://127.0.0.1:5000/xiaohui'</span>,</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_requests</span><span class="params">(url)</span>:</span></span><br><span class="line">    page_text = requests.get(url).text</span><br><span class="line">    <span class="keyword">return</span> len(page_text)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    start = time.time()</span><br><span class="line">    <span class="keyword">for</span> url <span class="keyword">in</span> url_list:</span><br><span class="line">        ret = get_requests(url)</span><br><span class="line">        print(ret)</span><br><span class="line">    print(<span class="string">'总耗时：'</span>, time.time() - start)</span><br></pre></td></tr></table></figure>
+
+<p>运行代码，我们发现，总耗时大约是 6 秒。因为每个视图函数，我们都休眠 2 秒，用来模拟网络请求的消耗时间。3 个网页总共耗时 6 秒，没毛病。</p>
+<p>接下来，我们使用线程池实现异步爬虫，看看会不会提高我们的爬虫效率：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> multiprocessing.dummy <span class="keyword">import</span> Pool</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">url_list = [</span><br><span class="line">    <span class="string">'http://127.0.0.1:5000/sure'</span>,</span><br><span class="line">    <span class="string">'http://127.0.0.1:5000/xiaoming'</span>,</span><br><span class="line">    <span class="string">'http://127.0.0.1:5000/xiaohui'</span>,</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_requests</span><span class="params">(url)</span>:</span></span><br><span class="line">    page_text = requests.get(url).text</span><br><span class="line">    <span class="keyword">return</span> len(page_text)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    start = time.time()</span><br><span class="line">    pool = Pool(<span class="number">3</span>)</span><br><span class="line">    ret = pool.map(get_requests, url_list)</span><br><span class="line">    print(ret)</span><br><span class="line">    print(<span class="string">'总耗时：'</span>, time.time() - start)</span><br></pre></td></tr></table></figure>
+
+<p>总耗时降低到了 2 秒左右，鸡蛋缩短了爬虫所需要的时间。</p>
+<p>这里我们简单提一下 pool 线程池对象的 <code>map(callback,alist)</code> 方法。</p>
+<ul>
+<li>可以使用 callback 对 alist 中的每一个元素进行指定形式的异步操作</li>
+</ul>
+<h3 id="基于单线程多任务（协程）的异步爬虫"><a href="#基于单线程多任务（协程）的异步爬虫" class="headerlink" title="基于单线程多任务（协程）的异步爬虫"></a>基于单线程多任务（协程）的异步爬虫</h3><p>首先安装 asyncio 模块：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip <span class="keyword">install</span> asyncio</span><br></pre></td></tr></table></figure>
+
+<p>然后就要介绍几个概念：</p>
+<h4 id="特殊的函数"><a href="#特殊的函数" class="headerlink" title="特殊的函数"></a>特殊的函数</h4><p>一个函数的定义被 async 修饰后，该函数就变成了一个特殊的函数</p>
+<p>这个函数的特殊之处在于：</p>
+<ul>
+<li>该特殊的函数被调用后，函数中的代码不会被立即执行</li>
+<li>该特殊函数被调用后的返回值是一个<strong>协程对象</strong></li>
+</ul>
+<h4 id="协程对象"><a href="#协程对象" class="headerlink" title="协程对象"></a>协程对象</h4><p>协程对象首先是一个对象。通过特殊函数的调用能够返回一个协程对象。</p>
+<p>换句话说，协程对象就是特殊函数，而特殊函数是一组指定的操作。</p>
+<p>那么，协程对象其实就是一组指定的操作。</p>
+<h4 id="任务对象"><a href="#任务对象" class="headerlink" title="任务对象"></a>任务对象</h4><p>任务对象就是一个高级的协程对象（任务对象就是对协程对象的进一步封装）。</p>
+<p>任务对象就是协程对象，而协程对象是特殊函数，特殊函数是封装了的一组指定操作。</p>
+<p>所以，任务对象也是一组指定的操作。</p>
+<p>创建任务对象的方式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">asyncio.ensure_future(协程对象)</span><br></pre></td></tr></table></figure>
+
+<p>任务对象的高级之处在于可以给任务对象绑定回调，这个特点在爬虫任务中，应用十分广泛。回调任务对象的方式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">task.add_done_callback(task_callback)</span><br></pre></td></tr></table></figure>
+
+<p>回调函数的调用时机：</p>
+<ul>
+<li>当任务执行完成后，才会调用回调函数</li>
+</ul>
+<p>回调函数的参数只可以有一个：表示的就是该回调函数的调用者（任务对象）</p>
+<p>使用回调函数的参数调用 <code>result()</code> 方法，得到的就是任务对象表示的特殊函数 return 的结果</p>
+<h4 id="事件循环对象"><a href="#事件循环对象" class="headerlink" title="事件循环对象"></a>事件循环对象</h4><ul>
+<li><p>事件循环对象也是一个对象。</p>
+</li>
+<li><p>作用：</p>
+<ul>
+<li>可以将多个任务对象注册/装载到事件循环对象中</li>
+<li>如果开启了事件循环后，则其内部注册/装载的任务对象表示的指定操作就会被基于异步的被执行</li>
+</ul>
+</li>
+<li><p>创建事件循环对象：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">loop = asyncio.get_event_loop()</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>注册并启动事件循环对象：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">loop.run_until_complete(task)</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>启动事件循环对象，函数中的代码即可执行。</p>
+<p>前面的几个概念，包括特殊的函数、协程对象、任务对象和事件循环的对象的用法如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line"><span class="comment"># 声明特殊的函数</span></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">get_request</span><span class="params">(url)</span>:</span></span><br><span class="line">    print(<span class="string">'正在请求的 url：'</span>, url)</span><br><span class="line">    time.sleep(<span class="number">2</span>)</span><br><span class="line">    print(<span class="string">'请求结束'</span>, url)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="comment"># 特殊的函数执行后，成为协程对象</span></span><br><span class="line">    c = get_request(<span class="string">'www.baidu.com'</span>)</span><br><span class="line">    <span class="comment"># 将协程对象转换为任务对象</span></span><br><span class="line">    task = asyncio.ensure_future(c)</span><br><span class="line">    <span class="comment"># 创建任务循环对象</span></span><br><span class="line">    loop = asyncio.get_event_loop()</span><br><span class="line">    <span class="comment"># 注册并启动事件循环对象</span></span><br><span class="line">    loop.run_until_complete(task)</span><br></pre></td></tr></table></figure>
+
+<h4 id="wait-方法"><a href="#wait-方法" class="headerlink" title="wait 方法"></a>wait 方法</h4><p>wait 方法用来将任务列表中的任务对象赋予可被挂起的权限。只有任务对象被赋予了可被挂起的权限后，该<br>任务对象才可以被挂起。</p>
+<p>挂起指的是，将当前的任务对象交出 CPU 的使用权。</p>
+<p>wait 方法的作用如图所示：</p>
+<img src="/crawler/async-crawler/Snip20200325_2.png" class="" title="Snip20200325_2">
+
+<p>有了 wait 方法，我们就可以实现多任务操作了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">get_request</span><span class="params">(url)</span>:</span></span><br><span class="line">    print(<span class="string">'正在请求的 url：'</span>, url)</span><br><span class="line">    <span class="comment"># time.sleep是不支持异步模块的代码</span></span><br><span class="line">    time.sleep(<span class="number">2</span>)</span><br><span class="line">    print(<span class="string">'请求结束'</span>, url)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    url_list = [</span><br><span class="line">        <span class="string">'http://127.0.0.1:5000/sure'</span>,</span><br><span class="line">        <span class="string">'http://127.0.0.1:5000/xiaoming'</span>,</span><br><span class="line">        <span class="string">'http://127.0.0.1:5000/xiaohui'</span>,</span><br><span class="line">    ]</span><br><span class="line">    task_list = []</span><br><span class="line">    <span class="keyword">for</span> url <span class="keyword">in</span> url_list:</span><br><span class="line">        c = get_request(url)</span><br><span class="line">        task = asyncio.ensure_future(c)</span><br><span class="line">        task_list.append(task)</span><br><span class="line">    loop = asyncio.get_event_loop()</span><br><span class="line">    <span class="comment"># 必须使用wait方法对task_list进行封装才可以实现多任务，wait赋予task_list中所有的任务可挂起的权限</span></span><br><span class="line">    loop.run_until_complete(asyncio.wait(task_list))</span><br></pre></td></tr></table></figure>
+
+<p>我们看到，代码顺利执行了，也没报错。但总觉得哪里不对——说好的异步执行呢？三个任务逐个完成，分明是串行的，没有一点异步执行的意味。</p>
+<img src="/crawler/async-crawler/multitaskingfail.gif" class="" title="multitaskingfail">
+
+<p>注意事项【重要】：</p>
+<ul>
+<li>在特殊函数内部不可以出现不支持异步模块对应的代码，否则会中断整个异步效果</li>
+</ul>
+<p>很遗憾，<code>time.sleep</code> 和 <code>requests</code> 都是不支持异步的模块，所以都不能用在这里。</p>
+<p>我们需要把 <code>time.sleep</code> 更换为 <code>asyncio.sleep</code>，把 <code>requests</code> 更换为我们下面很快就会讨论的 <code>aiohttp</code>。</p>
+<h4 id="await-关键字"><a href="#await-关键字" class="headerlink" title="await 关键字"></a>await 关键字</h4><p>前面的代码光把不支持异步的模块更换为支持的模块还是不够的，我们还需要使用 await 关键字。否则的话，阻塞的操作会被直接跳过，不被执行。</p>
+<p>在特殊函数内部，凡是阻塞操作前都必须使用 await 进行修饰。await 就可以保证阻塞操作在异步执行的过程中不会被跳过！</p>
+<p>于是，<strong>完整的多任务操作</strong>代码就是这样的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">get_request</span><span class="params">(url)</span>:</span></span><br><span class="line">    print(<span class="string">'正在请求的 url：'</span>, url)</span><br><span class="line">    <span class="comment"># 使用支持异步的阻塞模块，且用await装饰</span></span><br><span class="line">    <span class="keyword">await</span> asyncio.sleep(<span class="number">2</span>)</span><br><span class="line">    print(<span class="string">'请求结束'</span>, url)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    url_list = [</span><br><span class="line">        <span class="string">'http://127.0.0.1:5000/sure'</span>,</span><br><span class="line">        <span class="string">'http://127.0.0.1:5000/xiaoming'</span>,</span><br><span class="line">        <span class="string">'http://127.0.0.1:5000/xiaohui'</span>,</span><br><span class="line">    ]</span><br><span class="line">    task_list = []</span><br><span class="line">    <span class="keyword">for</span> url <span class="keyword">in</span> url_list:</span><br><span class="line">        c = get_request(url)</span><br><span class="line">        task = asyncio.ensure_future(c)</span><br><span class="line">        task_list.append(task)</span><br><span class="line">    loop = asyncio.get_event_loop()</span><br><span class="line">    loop.run_until_complete(asyncio.wait(task_list))</span><br></pre></td></tr></table></figure>
+
+<p>就成功实现异步操作了</p>
+<img src="/crawler/async-crawler/multitaskingsuccess.gif" class="" title="multitaskingsuccess">
+
+<h4 id="aiohttp-异步请求模块"><a href="#aiohttp-异步请求模块" class="headerlink" title="aiohttp 异步请求模块"></a>aiohttp 异步请求模块</h4><p>我们前面提到，requests 并不是一个支持异步的模块。若要实现异步爬虫，我们就需要使用 aiohttp。</p>
+<p>aiohttp 是一个支持异步的网络请求模块。</p>
+<p>aiohttp 模块的安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install aiohttp</span><br></pre></td></tr></table></figure>
+
+<p>使用代码：</p>
+<ol>
+<li><p>写出一个大致的架构：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"><span class="keyword">import</span> aiohttp</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">get_request</span><span class="params">(url)</span>:</span></span><br><span class="line">    <span class="comment"># 实例化一个请求对象，使用with是为了避免后续关闭起来混乱</span></span><br><span class="line">    <span class="keyword">with</span> aiohttp.ClientSession() <span class="keyword">as</span> sess:</span><br><span class="line">        <span class="comment"># 调用get发起请求，返回一个响应对象</span></span><br><span class="line">        <span class="comment"># get/post(url,headers,params/data,proxy="http://ip:port")</span></span><br><span class="line">        <span class="keyword">with</span> sess.get(url=url) <span class="keyword">as</span> response:</span><br><span class="line">            <span class="comment"># 获取字符串形式的响应数据</span></span><br><span class="line">            page_text = response.text()</span><br><span class="line">            <span class="keyword">return</span> page_text</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>补充细节</p>
+<ul>
+<li>在阻塞操作前加上 await 关键字。对于网络请求来说，发送请求和获取数据都会有阻塞</li>
+<li>在每一个 with 前加上 async 关键字</li>
+</ul>
+</li>
+</ol>
+<p>完整代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"><span class="keyword">import</span> aiohttp</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">get_request</span><span class="params">(url)</span>:</span></span><br><span class="line">    <span class="comment"># 实例化一个请求对象，使用with是为了避免后续关闭起来混乱</span></span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">with</span> aiohttp.ClientSession() <span class="keyword">as</span> sess:</span><br><span class="line">        <span class="comment"># 调用get发起请求，返回一个响应对象</span></span><br><span class="line">        <span class="comment"># get/post(url,headers,params/data,proxy="http://ip:port")</span></span><br><span class="line">        <span class="keyword">async</span> <span class="keyword">with</span> <span class="keyword">await</span> sess.get(url=url) <span class="keyword">as</span> response:</span><br><span class="line">            <span class="comment"># text()获取字符串形式的响应数据</span></span><br><span class="line">            <span class="comment"># read()获取byte类型的响应数据</span></span><br><span class="line">            <span class="comment"># json()获取json类型的数据</span></span><br><span class="line">            page_text = <span class="keyword">await</span> response.text()</span><br><span class="line">            <span class="keyword">return</span> page_text</span><br></pre></td></tr></table></figure>
+
+<h4 id="多任务爬虫完整代码"><a href="#多任务爬虫完整代码" class="headerlink" title="多任务爬虫完整代码"></a>多任务爬虫完整代码</h4><p>多任务爬虫的数据解析一定要使用任务对象的回调函数实现数据解析，因为多任务的架构中数据的爬取是封装在特殊函数中，我们一定要保证数据请求结束后，再实现数据解析。</p>
+<p>使用多任务的异步协程爬取数据实现套路：</p>
+<ul>
+<li>先使用 requests 模块将待请求数据对应的 url 封装到某个列表中（同步）</li>
+<li>然后使用 aiohttp 模式将列表中的 url 进行异步的请求和数据解析（异步）</li>
+</ul>
+<p>多任务爬虫完整代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> asyncio</span><br><span class="line"><span class="keyword">import</span> aiohttp</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> etree</span><br><span class="line"></span><br><span class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">def</span> <span class="title">get_request</span><span class="params">(url)</span>:</span></span><br><span class="line">    <span class="comment"># 实例化一个请求对象，使用with是为了避免后续关闭起来混乱</span></span><br><span class="line">    <span class="keyword">async</span> <span class="keyword">with</span> aiohttp.ClientSession() <span class="keyword">as</span> sess:</span><br><span class="line">        <span class="comment"># 调用get发起请求，返回一个响应对象</span></span><br><span class="line">        <span class="comment"># get/post(url,headers,params/data,proxy="http://ip:port")</span></span><br><span class="line">        <span class="keyword">async</span> <span class="keyword">with</span> <span class="keyword">await</span> sess.get(url=url) <span class="keyword">as</span> response:</span><br><span class="line">            <span class="comment"># text()获取字符串形式的响应数据</span></span><br><span class="line">            <span class="comment"># read()获取byte类型的响应数据</span></span><br><span class="line">            <span class="comment"># json()获取json类型的数据</span></span><br><span class="line">            page_text = <span class="keyword">await</span> response.text()</span><br><span class="line">            <span class="keyword">return</span> page_text</span><br><span class="line"></span><br><span class="line"><span class="comment"># 解析函数的封装</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">parse</span><span class="params">(task)</span>:</span></span><br><span class="line">    <span class="comment"># 获取请求到页面源码数据</span></span><br><span class="line">    page_text = task.result()</span><br><span class="line">    tree = etree.HTML(page_text)</span><br><span class="line">    msg = tree.xpath(<span class="string">'//a[@id="feng"]//text()'</span>)[<span class="number">0</span>]</span><br><span class="line">    <span class="comment"># 数据持久化</span></span><br><span class="line">    print(msg)</span><br><span class="line"></span><br><span class="line">url_list = [</span><br><span class="line">    <span class="string">'http://127.0.0.1:5000/sure'</span>,</span><br><span class="line">    <span class="string">'http://127.0.0.1:5000/xiaoming'</span>,</span><br><span class="line">    <span class="string">'http://127.0.0.1:5000/xiaohui'</span>,</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    start = time.time()</span><br><span class="line">    task_list = []</span><br><span class="line">    <span class="keyword">for</span> url <span class="keyword">in</span> url_list:</span><br><span class="line">        task = asyncio.ensure_future(get_request(url))</span><br><span class="line">        task.add_done_callback(parse)</span><br><span class="line">        task_list.append(task)</span><br><span class="line">    loop = asyncio.get_event_loop()</span><br><span class="line">    loop.run_until_complete(asyncio.wait(task_list))</span><br><span class="line">    print(<span class="string">'总耗时：'</span>, time.time() - start)</span><br></pre></td></tr></table></figure>
+
+<h3 id="简答题"><a href="#简答题" class="headerlink" title="简答题"></a>简答题</h3><ol>
+<li><p>说明是特殊函数特殊之处在哪里</p>
+<ul>
+<li><p>定义特殊：需要用 async 修饰</p>
+</li>
+<li><p>执行过程特殊：执行后，函数中的代码不会立即执行</p>
+</li>
+<li><p>返回值特殊：返回的是协程对象</p>
+</li>
+</ul>
+</li>
+<li><p>阐述任务对象和协程的区别，任务对象的回调函数在爬虫中的作用是什么</p>
+<p>任务对象和协程对象都是函数中封装的一组可执行的操作。任务对象是对协程对象的进一步封装，可以实现结果的回调。</p>
+<p>在爬虫中，请求任务的返回结果往往还需要做进一步的处理。这些处理，需要拿到结果后才能进行。所以，最好的办法是将数据处理的代码作为回调函数交给任务。当任务执行完毕，返回页面数据。回调函数就可以用来处理页面数据了。</p>
+</li>
+<li><p>阐述事件循环的工作流程</p>
+<p>首先，实例化一个事件循环对象：<code>loop = asyncio.get_event_loop()</code></p>
+<p>然后，注册并执行实现循环对象即可：<code>loop.run_until_complete(tast)</code></p>
+</li>
+<li><p>简述 wait() 和 await 关键字的作用</p>
+<p>wait 可以实现列表中的多个任务的并发执行。当执行中的任务进入阻塞时，将变成挂起状态，交出 CPU 的使用权。待其完成阻塞，将继续执行。</p>
+<p>await 用来保证阻塞的操作在异步任务中不被跳过。</p>
+</li>
+<li><p>aiohttp的基本使用有哪些？</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 伪代码</span></span><br><span class="line"><span class="keyword">with</span> aiohttp.ClientSession <span class="keyword">as</span> sess:</span><br><span class="line">    <span class="keyword">with</span> sess.get/post(url=url, headers=headers, data=data, params=params, proxy=<span class="string">'代理'</span>) <span class="keyword">as</span> response:</span><br><span class="line">        <span class="keyword">return</span> response.text()/read()</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/crawler/scrapy-basic/" rel="prev" title="scrapy 框架的基本用法">
+      <i class="fa fa-chevron-left"></i> scrapy 框架的基本用法
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/notes/grokking-algorithms-bfs/" rel="next" title="广度优先搜索">
+      广度优先搜索 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#异步爬虫概述"><span class="nav-number">1.</span> <span class="nav-text">异步爬虫概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用-Flask-框架搭建一个简单的-Web-服务器"><span class="nav-number">2.</span> <span class="nav-text">使用 Flask 框架搭建一个简单的 Web 服务器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基于线程池的异步爬虫"><span class="nav-number">3.</span> <span class="nav-text">基于线程池的异步爬虫</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基于单线程多任务（协程）的异步爬虫"><span class="nav-number">4.</span> <span class="nav-text">基于单线程多任务（协程）的异步爬虫</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#特殊的函数"><span class="nav-number">4.1.</span> <span class="nav-text">特殊的函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#协程对象"><span class="nav-number">4.2.</span> <span class="nav-text">协程对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#任务对象"><span class="nav-number">4.3.</span> <span class="nav-text">任务对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#事件循环对象"><span class="nav-number">4.4.</span> <span class="nav-text">事件循环对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#wait-方法"><span class="nav-number">4.5.</span> <span class="nav-text">wait 方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#await-关键字"><span class="nav-number">4.6.</span> <span class="nav-text">await 关键字</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#aiohttp-异步请求模块"><span class="nav-number">4.7.</span> <span class="nav-text">aiohttp 异步请求模块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多任务爬虫完整代码"><span class="nav-number">4.8.</span> <span class="nav-text">多任务爬虫完整代码</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#简答题"><span class="nav-number">5.</span> <span class="nav-text">简答题</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="刘硕"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">刘硕</p>
+  <div class="site-description" itemprop="description">不成为自己讨厌的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">291</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:liushuo432@outlook.com" title="E-Mail → mailto:liushuo432@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/2436055290" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;2436055290" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://wpa.qq.com/msgrd?v=3&uin=1696146913&site=qq&menu=yes" title="QQ → http:&#x2F;&#x2F;wpa.qq.com&#x2F;msgrd?v&#x3D;3&amp;uin&#x3D;1696146913&amp;site&#x3D;qq&amp;menu&#x3D;yes" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-fw fa-rss"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备20001451号 </a>
+      <img src="/images/beian_icon.png" style="display: inline-block;"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=21142102000063" rel="noopener" target="_blank">辽公网安备 21142102000063号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘硕</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.2" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'Ga2II3wuJmHX3GiNHm9TmI97-gzGzoHsz',
+      appKey     : 'esGYJQepdYLHf07E1VMsP3RK',
+      placeholder: "o(*￣▽￣*)ブ来说点什么吧...（填上邮箱可以收到回复提醒）",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : true,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+  <script type="text/javascript" src="/js/love.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/Epsilon2.1.model.json"},"display":{"superSample":2,"width":200,"height":400,"position":"left","hOffset":-30,"vOffset":-40},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>
