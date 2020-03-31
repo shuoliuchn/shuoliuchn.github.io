@@ -255,7 +255,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-04-01 00:56:16 / 修改时间：00:56:19" itemprop="dateCreated datePublished" datetime="2020-04-01T00:56:16+08:00">2020-04-01</time>
+              <time title="创建时间：2020-04-01 00:56:16 / 修改时间：01:23:50" itemprop="dateCreated datePublished" datetime="2020-04-01T00:56:16+08:00">2020-04-01</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -292,28 +292,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>狄克斯特拉算法用来找到加权图中的最短路径。</p>
-<p> <a href="/notes/grokking-algorithms-bfs">广度优先搜索</a> 可以找到段数最少的路径，但是如果我们要找到用时最少的路径，就要使用狄克斯特拉算法（Dijkstra’s Algorithm）。</p>
-<img src="/notes/grokking-algorithms-dijkstra/1585634441563.png" class="" width="1585634441563">
-
-<h3 id="狄克斯特拉算法的使用思路"><a href="#狄克斯特拉算法的使用思路" class="headerlink" title="狄克斯特拉算法的使用思路"></a>狄克斯特拉算法的使用思路</h3><p>下面这张图中，每个数字表示的都是时间，单位分钟。为找出从起点到终点耗时最短的路径，我们需要使用狄克斯特拉算法。</p>
-<img src="/notes/grokking-algorithms-dijkstra/1585635691679.png" class="" width="1585635691679">
-
-<p>如果使用广度优先搜索，将得到下面这条段数最少的路径。</p>
-<img src="/notes/grokking-algorithms-dijkstra/1585635897343.png" class="" width="1585635897343">
-
-<p>这条路径耗时 7 分钟。下面来看看能否找到耗时更短的路径。</p>
-<p>狄克斯特拉算法包含 4 个步骤：</p>
-<ol>
-<li>找出“最便宜”的节点，即可在最短时间内到达的节点。</li>
-<li>更新该节点的邻居的开销，其含义将稍后介绍。</li>
-<li>重复这个过程，直到对图中的每个节点都这样做了。</li>
-<li>计算最终路径。</li>
-</ol>
-<p>第一步：找出最便宜的节点。你站在起点，不知道该前往节点 A 还是前往节点 B。前往这两个节点都要多长时间呢？</p>
-<p>前往节点 A 需要 6 分钟，而前往节点 B 需要 2 分钟。至于前往其他节点，我们暂且还不知道需要多长时间。</p>
-<img src="/notes/grokking-algorithms-dijkstra/1585636064788.png" class="" width="1585636064788">
-
+          <p>狄克斯特拉算法用来找到加权图中的最短路径。 广度优先搜索可以找到段数最少的路径，但是如果我们要找到用时最少的路径，就要使用狄克斯特拉算法（Dijkstra's Algorithm）。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/notes/grokking-algorithms-dijkstra/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -357,7 +344,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-04-01 00:56:15 / 修改时间：00:56:19" itemprop="dateCreated datePublished" datetime="2020-04-01T00:56:15+08:00">2020-04-01</time>
+              <time title="创建时间：2020-04-01 00:56:15 / 修改时间：01:23:50" itemprop="dateCreated datePublished" datetime="2020-04-01T00:56:15+08:00">2020-04-01</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -394,36 +381,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>一直以来，我们都是直接使用 scrapy 框架的 Request 模块进行网页数据的请求。但是如果网页中有动态加载的数据，这种方式就不容易实现了。</p>
-<p>其实 scrapy 更多的处理的还是没有动态加载数据的页面。对于动态加载的页面，我们还是比较倾向于使用 requests。</p>
-<p>但是如果真的有这么个需求，需要我们使用 scrapy 爬取动态页面的话，通过 selenium 发送请求获取数据，将会是一个不错的选择。</p>
-<p>接下来，我们通过爬取网易新闻，来演示如何在 scrapy 中，使用 selenium 爬取数据。</p>
-<p>需求：爬取网易新闻中的国内，国际，军事，航空，无人机这五个板块下所有的新闻数据（标题+内容）</p>
-<p>网址 url：<a href="https://news.163.com/" target="_blank" rel="noopener">https://news.163.com/</a></p>
-<p>分析：</p>
-<ul>
-<li>首页没有动态加载的数据，可以直接爬取到五个板块对应的 url</li>
-<li>每一个板块对应的页面中的新闻标题是动态加载，需要使用 selenium 爬取新闻标题和详情页的 url（关键）</li>
-<li>每一条新闻详情页面中的数据不是动态加载，在这里可以爬取到新闻内容</li>
-</ul>
-<p>selenium 在 scrapy 中的使用流程</p>
-<ol>
-<li>在爬虫类中实例化一个浏览器对象，将其作为爬虫类的一个属性</li>
-<li>在中间件中实现浏览器自动化相关的操作</li>
-<li>在爬虫类中重写 <code>closed(self, spider)</code> 方法，在其内部关闭浏览器对象</li>
-</ol>
-<p>接下来，我们就按照流程，依次编写我们的代码。</p>
-<p>首先，编写爬虫源文件中的代码，一切都按照正常思路走就行。先从首页到每个模块页，在模块页中拿到新闻的标题和详情页的 url。再从模块页进入到详情页，拿到文章内容。</p>
-<p>用代码表示就是：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> scrapy</span><br><span class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</span><br><span class="line"><span class="keyword">from</span> wangyiPro.items <span class="keyword">import</span> WangyiproItem</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">WangyiSpider</span><span class="params">(scrapy.Spider)</span>:</span></span><br><span class="line">    name = <span class="string">'wangyi'</span></span><br><span class="line">    <span class="comment"># allowed_domains = ['news.163.com']</span></span><br><span class="line">    start_urls = [<span class="string">'http://news.163.com/'</span>]</span><br><span class="line">    module_urls = []</span><br><span class="line">    <span class="comment"># 实例化了一个全局的浏览器对象，稍后在中间件中会用到</span></span><br><span class="line">    bro = webdriver.Chrome()</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse</span><span class="params">(self, response)</span>:</span></span><br><span class="line">        <span class="comment"># 国内，国际，军事，航空，无人机这五个板块的索引</span></span><br><span class="line">        target_list = [<span class="number">3</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>]</span><br><span class="line">        li_list = response.xpath(<span class="string">'//div[@class="ns_area list"]/ul/li'</span>)</span><br><span class="line">        <span class="keyword">for</span> target <span class="keyword">in</span> target_list:</span><br><span class="line">            li = li_list[target]</span><br><span class="line">            url = li.xpath(<span class="string">'./a/@href'</span>).extract_first()</span><br><span class="line">            self.module_urls.append(url)</span><br><span class="line">            <span class="comment"># 对每一个板块的url发起请求</span></span><br><span class="line">            <span class="keyword">yield</span> scrapy.Request(url, callback=self.parse_module)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 数据解析：新闻标题+新闻详情页的url（动态加载的数据）</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse_module</span><span class="params">(self, response)</span>:</span></span><br><span class="line">        <span class="comment"># 直接对response解析新闻标题数据是无法获取该数据（动态加载的数据）</span></span><br><span class="line">        <span class="comment"># response是不满足当下需求的response，需要将其变成满足需求的response</span></span><br><span class="line">        <span class="comment"># 满足需求的response就是包含了动态加载数据的response</span></span><br><span class="line">        <span class="comment"># 满足需求的response和不满足的response区别在哪里？</span></span><br><span class="line">        <span class="comment"># 区别就在于响应数据不同。我们可以使用中间件将不满足需求的响应对象中的响应数据篡改成包含</span></span><br><span class="line">        <span class="comment"># 了动态加载数据的响应数据，将其变成满足需求的响应对象</span></span><br><span class="line">        div_list = response.xpath(<span class="string">'//div[@class="newsdata_wrap"]/ul/li[1]/div/div'</span>)</span><br><span class="line">        <span class="keyword">for</span> div <span class="keyword">in</span> div_list:</span><br><span class="line">            url = div.xpath(<span class="string">'./a/@href'</span>).extract_first()</span><br><span class="line">            title = div.xpath(<span class="string">'./div/div[1]/h3/a/text()'</span>).extract_first()</span><br><span class="line">            <span class="keyword">if</span> url <span class="keyword">and</span> title:  <span class="comment"># 因为广告等原因，有些链接取不到url和title</span></span><br><span class="line">                item = WangyiproItem()</span><br><span class="line">                item[<span class="string">'title'</span>] = title</span><br><span class="line">                <span class="keyword">yield</span> scrapy.Request(url, callback=self.parse_detail, meta=&#123;<span class="string">'item'</span>: item&#125;)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse_detail</span><span class="params">(self, response)</span>:</span></span><br><span class="line">        <span class="string">"""解析新闻详情"""</span></span><br><span class="line">        item = response.meta[<span class="string">'item'</span>]</span><br><span class="line">        content = response.xpath(<span class="string">'//div[@id="endText"]/p/text()'</span>).extract()</span><br><span class="line">        item[<span class="string">'content'</span>] = content</span><br><span class="line">        <span class="keyword">yield</span> item</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 爬虫类父类的方法，该方法是在爬虫结束前最后一刻执行</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">closed</span><span class="params">(self, spider)</span>:</span></span><br><span class="line">        self.bro.close()</span><br></pre></td></tr></table></figure>
-
-<p>但是这样是解析不出数据来的。因为我们前面分析过，模块页中的每个文章都是动态加载的。我们需要修改响应数据，让响应数据变成我们想要的那种，加载好了新闻链接和标题的网页数据。这就要在中间件中，通过 selenium 发送请求，获取数据了。</p>
-<p>用代码实现就是：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scrapy.http <span class="keyword">import</span> HtmlResponse</span><br><span class="line"><span class="keyword">from</span> time <span class="keyword">import</span> sleep</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">WangyiproDownloaderMiddleware</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="comment"># 拦截所有的响应对象</span></span><br><span class="line">    <span class="comment"># 整个工程发起的请求：1+5+n，相应也会有1+5+n个响应</span></span><br><span class="line">    <span class="comment"># 只有指定的5个响应对象是不满足需求</span></span><br><span class="line">    <span class="comment"># 只将不满足需求的5个指定的响应对象的响应数据进行篡改即可</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">process_response</span><span class="params">(self, request, response, spider)</span>:</span></span><br><span class="line">        <span class="comment"># 在所有拦截到的响应对象中找出指定的5个响应对象</span></span><br><span class="line">        <span class="keyword">if</span> request.url <span class="keyword">in</span> spider.module_urls:</span><br><span class="line">            bro = spider.bro</span><br><span class="line">            <span class="comment"># response表示的就是指定的不满足需求的5个响应对象</span></span><br><span class="line">            <span class="comment"># 篡改响应数据：首先先获取满足需求的响应数据，将其篡改到响应对象中即可</span></span><br><span class="line">            <span class="comment"># 满足需求的响应数据就可以使用selenium获取</span></span><br><span class="line">            bro.get(request.url)    <span class="comment"># 对五个板块的url发起请求</span></span><br><span class="line">            sleep(<span class="number">2</span>)</span><br><span class="line">            bro.execute_script(<span class="string">'window.scrollTo(0, document.body.scrollHeight)'</span>)</span><br><span class="line">            sleep(<span class="number">2</span>)</span><br><span class="line">            <span class="comment"># 捕获到了板块页面中加载出来的全部数据（包含了动态加载的数据）</span></span><br><span class="line">            <span class="comment"># response.text = bro.page_source</span></span><br><span class="line">            <span class="comment"># 返回一个新的响应对象，新的对象替换原来不满足需求的旧的响应对象</span></span><br><span class="line">            <span class="keyword">return</span> HtmlResponse(url=request.url, body=bro.page_source, encoding=<span class="string">'utf-8'</span>, request=request)</span><br><span class="line">        <span class="keyword">return</span> response    <span class="comment"># 1+n</span></span><br></pre></td></tr></table></figure>
-
-<p>剩下的就是在配置中开启管道和中间件，在 items 中写上相应字段，在管道中进行数据持久化存储，就不一一介绍了。</p>
-<p>至此，我们实现了在 scrapy 中使用 selenium 发送请求。</p>
-
+          <p>一直以来，我们都是直接使用 scrapy 框架的 Request 模块进行网页数据的请求。但是如果网页中有动态加载的数据，这种方式就不容易实现了。其实 scrapy 更多的处理的还是没有动态加载数据的页面。对于动态加载的页面，我们还是比较倾向于使用 requests。但是如果真的有这么个需求，需要我们使用 scrapy 爬取动态页面的话，通过 selenium 发送请求获取数据，将会是一个不错的选择。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/crawler/scrapy-selenium/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -467,7 +433,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-04-01 00:56:15 / 修改时间：00:56:19" itemprop="dateCreated datePublished" datetime="2020-04-01T00:56:15+08:00">2020-04-01</time>
+              <time title="创建时间：2020-04-01 00:56:15 / 修改时间：01:23:50" itemprop="dateCreated datePublished" datetime="2020-04-01T00:56:15+08:00">2020-04-01</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -505,29 +471,14 @@
 
       
           <p>对于我们前面的那些爬虫方法，如果我们之前爬取过某个网站，下次再启动工程，还是会从头爬取。即便我们之前爬取过这个网站的很多数据，但是我们还是会对这些爬取过的数据重复爬取。为了减少这种重复爬取的操作，让程序更加集中运行在我们没有爬取过的，新出现的网页中，从而提高爬取效率。</p>
-<p>增量式爬虫的概念：监测网站数据更新的情况，以便于爬取到最新更新出来的数据。</p>
-<p>实现增量式的核心是要<strong>去重</strong>。</p>
-<p>实战中去重的方式：记录表。</p>
-<p>记录表需要记录的一定是爬取过的相关信息，能够唯一标识爬取过的任务。</p>
-<p>爬取过的相关信息通常指的是详情页的 url。当然只要某一组数据，该组数据如果可以作为该部电影的唯一标识即可，刚好详情页的 url 往往就可以作为任务单元的唯一标识。只要可以表示任务单元唯一标识的数据我们统称为<strong>数据指纹</strong>。</p>
-<p>去重的方式对应的记录表应该使用什么数据结构呢？</p>
-<ul>
-<li>python 中的 set 集合是不太合适的，因为 set 集合不方便进行持久化存储</li>
-<li>redis 中的 set 则可以胜任我们的记录表，因为它可以持久化存储数据</li>
-</ul>
-<p>数据指纹一般是经过加密处理的。数据量不是很大的数据指纹没有必要加密。如果数据的唯一标识标识的内容数据量比较大，可以使用 hash 函数将数据加密成 32 位的密文。</p>
-<p>给数据指纹加密目的是为了节省空间。</p>
-<p>接下来，我们就以 2345 电影网为例，看看如何实现增量式爬虫。</p>
-<p>需求：使用增量式爬虫实现 2345 电影网的电影标题和电影细节描述的爬取。</p>
-<p>网址 url：<a href="https://www.4567kan.com/index.php/vod/show/class/动作/id/1.html" target="_blank" rel="noopener">https://www.4567kan.com/index.php/vod/show/class/动作/id/1.html</a></p>
-<p>在爬虫源文件中，大部分代码和普通的爬虫是一样的，只是多了一步将数据指纹存放到 redis 集合中的操作。这里的数据指纹是电影的 url。如果 url 在集合中，添加不成功，返回的是 0。这意味着，之前已经爬取过这部电影了，无需再次爬取。如果集合中没有这部电影的 url，则说明这部电影还没有爬取，就要爬取这个链接后，获取电影的详细信息。这就很简单了，一步简单判断即可实现：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> scrapy</span><br><span class="line"><span class="keyword">from</span> scrapy.linkextractors <span class="keyword">import</span> LinkExtractor</span><br><span class="line"><span class="keyword">from</span> scrapy.spiders <span class="keyword">import</span> CrawlSpider, Rule</span><br><span class="line"><span class="keyword">from</span> redis <span class="keyword">import</span> Redis</span><br><span class="line"><span class="keyword">from</span> zlsPro.items <span class="keyword">import</span> ZlsproItem</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ZlsSpider</span><span class="params">(CrawlSpider)</span>:</span></span><br><span class="line">    name = <span class="string">'zls'</span></span><br><span class="line">    <span class="comment"># allowed_domains = ['www.4567kan.com/index.php/vod/show/class/动作/id/1.html']</span></span><br><span class="line">    start_urls = [<span class="string">'http://www.4567kan.com/index.php/vod/show/class/动作/id/1.html/'</span>]</span><br><span class="line">    <span class="comment"># 建立redis连接</span></span><br><span class="line">    conn = Redis(<span class="string">'127.0.0.1'</span>, <span class="number">6379</span>)</span><br><span class="line"></span><br><span class="line">    rules = (</span><br><span class="line">        Rule(LinkExtractor(allow=<span class="string">r'page/\d+\.html'</span>), callback=<span class="string">'parse_item'</span>, follow=<span class="literal">True</span>),</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse_item</span><span class="params">(self, response)</span>:</span></span><br><span class="line">        li_list = response.xpath(<span class="string">'//ul[@class="stui-vodlist clearfix"]/li'</span>)</span><br><span class="line">        <span class="keyword">for</span> li <span class="keyword">in</span> li_list:</span><br><span class="line">            url = <span class="string">'https://www.4567kan.com'</span> + li.xpath(<span class="string">'./div/a/@href'</span>).extract_first()</span><br><span class="line">            title = li.xpath(<span class="string">'./div/a/@title'</span>).extract_first()</span><br><span class="line">            ex = self.conn.sadd(<span class="string">'movie_urls'</span>, url)</span><br><span class="line">            <span class="comment"># ex==1插入成功，ex==0插入失败</span></span><br><span class="line">            <span class="keyword">if</span> ex:     <span class="comment"># detail_url表示的电影没有存在于记录表中</span></span><br><span class="line">                item = ZlsproItem()</span><br><span class="line">                item[<span class="string">'title'</span>] = title</span><br><span class="line">                <span class="comment"># 爬取电影数据：发起请求</span></span><br><span class="line">                print(<span class="string">f'有数据更新，电影《<span class="subst">&#123;title&#125;</span>》正在爬取中...'</span>)</span><br><span class="line">                <span class="keyword">yield</span> scrapy.Request(url, callback=self.parse_detail, meta=&#123;<span class="string">'item'</span>: item&#125;)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="comment"># 这个链接已经存在于记录表中，不需要爬取</span></span><br><span class="line">                print(<span class="string">'这部电影已经爬过了，不需要再爬了...'</span>)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse_detail</span><span class="params">(self, response)</span>:</span></span><br><span class="line">        <span class="comment"># 解析电影简介</span></span><br><span class="line">        desc = response.xpath(<span class="string">'//span[@class="detail-content"]/text()'</span>).extract_first()</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> desc:</span><br><span class="line">            desc = response.xpath(<span class="string">'//span[@class="detail-sketch"]/text()'</span>).extract_first()</span><br><span class="line">        item = response.meta[<span class="string">'item'</span>]</span><br><span class="line">        item[<span class="string">'desc'</span>] = desc</span><br><span class="line">        <span class="keyword">yield</span> item</span><br></pre></td></tr></table></figure>
-
-<p>在管道中，我们可以将数据以任意形式存储，这里将数据存储到 redis 中：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ZlsproPipeline</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">process_item</span><span class="params">(self, item, spider)</span>:</span></span><br><span class="line">        <span class="comment"># spider即爬虫对象，conn是redis连接</span></span><br><span class="line">        conn = spider.conn</span><br><span class="line">        conn.lpush(<span class="string">'movieData'</span>, item)</span><br><span class="line">        <span class="keyword">return</span> item</span><br></pre></td></tr></table></figure>
-
-<p>其他如 <code>settings.py</code> 中的配置和 items 的配置就不介绍了吧。</p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/crawler/incremental/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -571,7 +522,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-04-01 00:56:15 / 修改时间：00:56:19" itemprop="dateCreated datePublished" datetime="2020-04-01T00:56:15+08:00">2020-04-01</time>
+              <time title="创建时间：2020-04-01 00:56:15 / 修改时间：01:23:50" itemprop="dateCreated datePublished" datetime="2020-04-01T00:56:15+08:00">2020-04-01</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -608,73 +559,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="分布式爬虫概述"><a href="#分布式爬虫概述" class="headerlink" title="分布式爬虫概述"></a>分布式爬虫概述</h3><p>分布式爬虫，是一种能够将爬虫效率发挥到极致的爬虫方法。</p>
-<p>实现方式：scrapy + redis（完整说法是 scrapy 结合着 scrapy-redis 组件）</p>
-<p>原生的 scrapy 框架是无法实现分布式的。</p>
-<p>什么是是分布式？</p>
-<ul>
-<li>分布式就是搭建一个分布式的机群，然后让机群中的每一台电脑执行同一组程序，让其对同一组资源<br>  进行联合且分布的数据爬取。</li>
-</ul>
-<p>为什么原生的 scrapy 框架无法实现分布式？</p>
-<ul>
-<li>调度器无法被分布式机群共享</li>
-<li>管道无法分布式机群被共享</li>
-</ul>
-<p>如何实现分布式？</p>
-<ul>
-<li>使用scrapy-redis组件即可</li>
-</ul>
-<p>scrapy-redis 组件的作用是，可以给原生的 scrapy 框架提供共享的管道和调度器。</p>
-<p>scrapy-redis 的安装：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install scrapy-redis</span><br></pre></td></tr></table></figure>
-
-<h3 id="分布式爬虫的实现流程"><a href="#分布式爬虫的实现流程" class="headerlink" title="分布式爬虫的实现流程"></a>分布式爬虫的实现流程</h3><h4 id="修改爬虫文件"><a href="#修改爬虫文件" class="headerlink" title="修改爬虫文件"></a>修改爬虫文件</h4><p>导包方式：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scrapy_redis.spiders <span class="keyword">import</span> RedisCrawlSpider</span><br></pre></td></tr></table></figure>
-
-<p>然后修改当前爬虫类的父类为 RedisCrawlSpider，将 start_url 替换成 redis_keys 的属性，属性值为任意字符串，比如：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scrapy.linkextractors <span class="keyword">import</span> LinkExtractor</span><br><span class="line"><span class="keyword">from</span> scrapy.spiders <span class="keyword">import</span> CrawlSpider, Rule</span><br><span class="line"><span class="keyword">from</span> scrapy_redis.spiders <span class="keyword">import</span> RedisCrawlSpider</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FbsSpider</span><span class="params">(RedisCrawlSpider)</span>:</span></span><br><span class="line">    name = <span class="string">'fbs'</span></span><br><span class="line">    <span class="comment"># allowed_domains = ['www.xxx.com']</span></span><br><span class="line">    <span class="comment"># start_urls = ['http://www.xxx.com/']</span></span><br><span class="line">    redis_key = <span class="string">'sunQueue'</span>    <span class="comment"># 可以被共享的调度器队列的名称，可以随意取</span></span><br></pre></td></tr></table></figure>
-
-<p><code>redis_key = &#39;xxx&#39;</code> 表示的是可以被共享的调度器队列的名称，最终是需要将起始的 url 手动放置到 redis_key 表示的队列中。</p>
-<p>剩下的，就跟正常解析数据一样了。</p>
-<h4 id="配置-settings-py-文件"><a href="#配置-settings-py-文件" class="headerlink" title="配置 settings.py 文件"></a>配置 <code>settings.py</code> 文件</h4><p>指定调度器。增加一个去重容器类的配置，作用是使用 Redis 的 set 集合来存储请求的指纹数据，从而实现请求去重的持久化。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DUPEFILTER_CLASS = <span class="string">"scrapy_redis.dupefilter.RFPDupeFilter"</span></span><br></pre></td></tr></table></figure>
-
-<p>使用 scrapy-redis 组件自己的调度器。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SCHEDULER = <span class="string">"scrapy_redis.scheduler.Scheduler"</span></span><br></pre></td></tr></table></figure>
-
-<p>配置调度器是否要持久化。也就是当爬虫结束了，要不要清空 Redis 中请求队列和去重指纹的 set。如果是 True, 就表示要持久化存储，就不清空数据，否则清空数据。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SCHEDULER_PERSIST = <span class="literal">True</span></span><br></pre></td></tr></table></figure>
-
-<p>指定管道。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ITEM_PIPELINES = &#123;</span><br><span class="line">    <span class="string">'scrapy_redis.pipelines.RedisPipeline'</span>: <span class="number">400</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>特点：该种管道只可以将 item 写入 redis。</p>
-<p>指定 redis。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">REDIS_HOST = <span class="string">'redis服务的ip地址'</span></span><br><span class="line">REDIS_PORT = <span class="number">6379</span></span><br></pre></td></tr></table></figure>
-
-<h4 id="配置-redis-的配置文件"><a href="#配置-redis-的配置文件" class="headerlink" title="配置 redis 的配置文件"></a>配置 redis 的配置文件</h4><p>Windows 中是 redis 安装目录下的 <code>redis.window.conf</code> 文件。</p>
-<p>解除默认绑定，注释掉第 56 行的绑定 IP 的代码</p>
-<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#bind 127.0.0.1</span></span><br></pre></td></tr></table></figure>
-
-<p>关闭保护模式，将第 75 行的 protected-mode 设置成 no</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">protected-mode no</span><br></pre></td></tr></table></figure>
-
-<h4 id="启动-redis-服务和客户端"><a href="#启动-redis-服务和客户端" class="headerlink" title="启动 redis 服务和客户端"></a>启动 redis 服务和客户端</h4><p>进入 redis 安装路径，执行命令启动 redis。</p>
-<h4 id="执行-scrapy-工程"><a href="#执行-scrapy-工程" class="headerlink" title="执行 scrapy 工程"></a>执行 scrapy 工程</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scrapy crawl fbs</span><br></pre></td></tr></table></figure>
-
-<p>注意，执行 scrapy 工程时，不要在配置文件中加入 LOG_LEVEL。我们需要分析这些日志信息。</p>
-<p>工程启动后，程序会停留在 listening 位置，等待起始的 url 加入。</p>
-<h4 id="向-redis-key-表示的队列中添加起始-url"><a href="#向-redis-key-表示的队列中添加起始-url" class="headerlink" title="向 redis_key 表示的队列中添加起始 url"></a>向 redis_key 表示的队列中添加起始 url</h4><p>需要在 redis 的客户端执行如下指令（调度器队列是存在于 redis 中）：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lpush sunQueue http:&#x2F;&#x2F;wz.sun0769.com&#x2F;political&#x2F;index&#x2F;politicsNewest?id&#x3D;1&amp;page&#x3D;1</span><br></pre></td></tr></table></figure>
-
-<h3 id="分布式爬虫实例"><a href="#分布式爬虫实例" class="headerlink" title="分布式爬虫实例"></a>分布式爬虫实例</h3><p>需求：使用分布式爬虫爬取阳光问政平台全站的问政标题和状态</p>
-<p>网址 url：<a href="http://wz.sun0769.com/political/index/politicsNewest?id=1&amp;page=1" target="_blank" rel="noopener">http://wz.sun0769.com/political/index/politicsNewest?id=1&amp;page=1</a></p>
-<p>分析：分布式爬虫和普通爬虫的核心数据解析代码是一致的，只需要稍加修改，再进行一些配置，即可实现分布式。</p>
-<p>爬虫源文件的写法：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scrapy.linkextractors <span class="keyword">import</span> LinkExtractor</span><br><span class="line"><span class="keyword">from</span> scrapy.spiders <span class="keyword">import</span> CrawlSpider, Rule</span><br><span class="line"><span class="keyword">from</span> scrapy_redis.spiders <span class="keyword">import</span> RedisCrawlSpider</span><br><span class="line"><span class="keyword">from</span> fbsPro.items <span class="keyword">import</span> FbsproItem</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FbsSpider</span><span class="params">(RedisCrawlSpider)</span>:</span></span><br><span class="line">    name = <span class="string">'fbs'</span></span><br><span class="line">    <span class="comment"># allowed_domains = ['www.xxx.com']</span></span><br><span class="line">    <span class="comment"># start_urls = ['http://www.xxx.com/']</span></span><br><span class="line">    redis_key = <span class="string">'sunQueue'</span>    <span class="comment"># 可以被共享的调度器队列的名称，可以随意取</span></span><br><span class="line">    <span class="comment"># 稍后我们是需要将一个起始的url手动的添加到redis_key表示的队列中</span></span><br><span class="line">    rules = (</span><br><span class="line">        Rule(LinkExtractor(allow=<span class="string">r'id=1&amp;page=\d+'</span>), callback=<span class="string">'parse_item'</span>, follow=<span class="literal">True</span>),</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse_item</span><span class="params">(self, response)</span>:</span></span><br><span class="line">        li_list = response.xpath(<span class="string">'//ul[@class="title-state-ul"]/li'</span>)</span><br><span class="line">        <span class="keyword">for</span> li <span class="keyword">in</span> li_list:</span><br><span class="line">            status = li.xpath(<span class="string">'./span[2]/text()'</span>).extract_first().strip()</span><br><span class="line">            title = li.xpath(<span class="string">'./span[3]/a/text()'</span>).extract_first().strip()</span><br><span class="line">            item = FbsproItem()</span><br><span class="line">            item[<span class="string">'status'</span>] = status</span><br><span class="line">            item[<span class="string">'title'</span>] = title</span><br><span class="line">            <span class="keyword">yield</span> item</span><br></pre></td></tr></table></figure>
-
-<p>然后安装前面所说的，配置 settings.py 即可。</p>
-
+          <p>分布式爬虫，是一种能够将爬虫效率发挥到极致的爬虫方法。实现方式：scrapy + redis（完整说法是 scrapy 结合着 scrapy-redis 组件）。scrapy-redis 组件的作用是，可以给原生的 scrapy 框架提供共享的管道和调度器。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/crawler/distributed/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -718,7 +611,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-04-01 00:56:15 / 修改时间：00:56:19" itemprop="dateCreated datePublished" datetime="2020-04-01T00:56:15+08:00">2020-04-01</time>
+              <time title="创建时间：2020-04-01 00:56:15 / 修改时间：01:23:50" itemprop="dateCreated datePublished" datetime="2020-04-01T00:56:15+08:00">2020-04-01</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -755,121 +648,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="scrapy-的五大核心组件"><a href="#scrapy-的五大核心组件" class="headerlink" title="scrapy 的五大核心组件"></a>scrapy 的五大核心组件</h3><p>学习 scrapy 核心组件的目的：</p>
-<ol>
-<li><p>大概了解 scrapy 的运行机制</p>
-</li>
-<li><p>为我们后面学习分布式爬虫做铺垫</p>
-</li>
-</ol>
-<p>五大核心组件及其作用：</p>
-<ul>
-<li>引擎（Scrapy）：用来处理整个系统的数据流，触发事务（框架核心）</li>
-<li>调度器（Scheduler）：用来接收引擎发过来的请求，压入队列中，并在引擎再次请求的时候返回。可以想像成一个 URL（抓取网页的网址或者说是链接）的优先队列，由它来决定下一个要抓取的网址是什么，同时去除重复的网址。事实上，调度器可分为两个部分：过滤器和队列。过滤器用来将请求去重，队列用来调整网址抓取的顺序</li>
-<li>下载器（Downloader）：用于下载网页内容, 并将网页内容返回给蜘蛛引擎（Scrapy 下载器是建立在 twisted 这个高效的异步模型上的）</li>
-<li>爬虫（Spiders）：爬虫是主要干活的，用于从特定的网页中提取自己需要的信息，即所谓的实体（Item）。用户也可以从中提取出链接，让 Scrapy 继续抓取下一个页面</li>
-<li>项目管道（Pipeline）：负责处理爬虫从网页中抽取的实体（Item），主要的功能是持久化实体、验证实体的有效性、清除不需要的信息。当页面被爬虫解析后，将被发送到项目管道，并经过几个特定的次序处理数据。</li>
-</ul>
-<img src="/crawler/scrapy-advanced/scrapy-architecture.png" class="" title="scrapy-architecture">
-
-<p>如上图所示，scrapy 五大核心组件的请求调度流程为：</p>
-<ol>
-<li>请求最先从爬虫中发出，发送给引擎。</li>
-<li>引擎将请求交给调度器。</li>
-<li>调度器分为两部分，过滤器和队列。请求经过滤器进行去重后，交给队列。调度器将按照队列中元素的次序，将请求返回给引擎。</li>
-<li>引擎将调度好的请求交给下载器下载资源。</li>
-<li>下载器从网络中把资源下载好后，把响应结果交给引擎。</li>
-<li>引擎把响应结果交给爬虫，进行数据解析</li>
-<li>爬虫将解析好的数据放到实体（Item）中，交给引擎</li>
-<li>引擎根据爬虫返回的结果进行不同的处理。如果返回的是实体对象，则交给管道进行数据持久化操作；如果返回的是请求对象，则交给调度器，重复步骤 2。</li>
-</ol>
-<h3 id="请求传参实现深度爬取"><a href="#请求传参实现深度爬取" class="headerlink" title="请求传参实现深度爬取"></a>请求传参实现深度爬取</h3><p>深度爬取指的爬取的数据没有在同一张页面中，比如首页数据和详情页数据。</p>
-<p>在 scrapy 中如果没有请求传参我们是无法持久化存储数据的。</p>
-<p>请求传参的实现方式：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scrapy.Request(url, callback, meta)</span><br></pre></td></tr></table></figure>
-
-<p>meta 是一个字典，可以将 meta 传递给 callback。我们可以在回调函数 callback 中取出 meta：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">response.meta</span><br></pre></td></tr></table></figure>
-
-<p>需求：爬取 2345 电影网电影前五页中所有的电影标题和电影简介信息</p>
-<p>网址 url：<a href="https://www.4567kan.com/index.php/vod/show/id/5.html" target="_blank" rel="noopener">https://www.4567kan.com/index.php/vod/show/id/5.html</a></p>
-<p>分析：首页只能看见电影标题，电影简介要在电影的详情页才能看见。这就涉及了网页的深度爬取，需要结合请求传参来实现。</p>
-<p>爬虫源文件的写法为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> scrapy</span><br><span class="line"><span class="keyword">from</span> moviePro.items <span class="keyword">import</span> MovieproItem</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MovieSpider</span><span class="params">(scrapy.Spider)</span>:</span></span><br><span class="line">    name = <span class="string">'movie'</span></span><br><span class="line">    <span class="comment"># allowed_domains = ['www.xxx.com']</span></span><br><span class="line">    start_urls = [<span class="string">'https://www.4567kan.com/index.php/vod/show/id/5.html'</span>]</span><br><span class="line">    url = <span class="string">'https://www.4567kan.com/index.php/vod/show/id/5/page/%s.html'</span></span><br><span class="line">    page = <span class="number">2</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse</span><span class="params">(self, response)</span>:</span></span><br><span class="line">        li_list = response.xpath(<span class="string">'//ul[@class="stui-vodlist clearfix"]/li'</span>)</span><br><span class="line">        <span class="keyword">for</span> li <span class="keyword">in</span> li_list:</span><br><span class="line">            url = <span class="string">'https://www.4567kan.com'</span> + li.xpath(<span class="string">'./div/a/@href'</span>).extract_first()</span><br><span class="line">            name = li.xpath(<span class="string">'./div/a/@title'</span>).extract_first()</span><br><span class="line">            item = MovieproItem()</span><br><span class="line">            item[<span class="string">'name'</span>] = name</span><br><span class="line">            <span class="comment"># 对详情页url发起请求</span></span><br><span class="line">            <span class="comment"># meta作用：可以将meta字典传递给callback</span></span><br><span class="line">            <span class="keyword">yield</span> scrapy.Request(url, self.parse_detail, meta=&#123;<span class="string">'item'</span>: item&#125;)</span><br><span class="line">        <span class="keyword">if</span> self.page &lt;= <span class="number">5</span>:</span><br><span class="line">            new_url = self.url % self.page</span><br><span class="line">            self.page += <span class="number">1</span></span><br><span class="line">            <span class="keyword">yield</span> scrapy.Request(new_url, self.parse)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 被用作于解析详情页的数据</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse_detail</span><span class="params">(self, response)</span>:</span></span><br><span class="line">        desc = response.xpath(<span class="string">'//span[@class="detail-content"]/text()'</span>).extract_first()</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> desc:</span><br><span class="line">            desc = response.xpath(<span class="string">'//span[@class="detail-sketch"]/text()'</span>).extract_first()</span><br><span class="line">        <span class="comment"># 接收传递过来的meta</span></span><br><span class="line">        item = response.meta[<span class="string">'item'</span>]</span><br><span class="line">        item[<span class="string">'desc'</span>] = desc</span><br><span class="line">        <span class="keyword">yield</span> item</span><br></pre></td></tr></table></figure>
-
-<p>settings 里面要配置 UA 伪装，要在 items 里面写好字段，还要再管道中写好数据持久化代码，这里就不列举了。</p>
-<h3 id="中间件"><a href="#中间件" class="headerlink" title="中间件"></a>中间件</h3><p>在 Django 中我们已经学习过中间件了，scrapy 的中间件与 Django 的中间件类似，也是用来批量拦截处理请求和响应。</p>
-<p>scrapy 的中间件有两种：</p>
-<ul>
-<li><p>爬虫中间件</p>
-</li>
-<li><p>下载中间件（推荐）</p>
-</li>
-</ul>
-<p>爬虫中间件和下在中间件的作用是类似的。稍微有点区别是，下在中间件处理的请求是经过调度器调度去重了的。</p>
-<p>通过中间件，我们可以在三个方面进行处理：拦截请求、拦截响应和拦截异常的请求</p>
-<p>拦截请求可以做到：</p>
-<ul>
-<li>篡改请求 url（可以，但是没必要）</li>
-<li>伪装请求头信息（通常在 settings 里面配置）<ul>
-<li>UA 伪装</li>
-<li>Cookie 伪装</li>
-</ul>
-</li>
-</ul>
-<p>拦截响应可以用来：</p>
-<ul>
-<li>篡改响应数据（一般不这么做）</li>
-</ul>
-<p>拦截异常的请求通常用来：</p>
-<ul>
-<li><p>代理操作必须使用中间件才可以实现（重点）</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">process_exception:</span><br><span class="line">    request.meta[<span class="string">'proxy'</span>] = <span class="string">'http://ip:port'</span></span><br></pre></td></tr></table></figure>
-
-</li>
-</ul>
-<p>中间件的使用示例：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MiddleproDownloaderMiddleware</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="comment"># 拦截所有（正常&amp;异常）的请求</span></span><br><span class="line">    <span class="comment"># 参数：request就是拦截到的请求，spider就是爬虫类实例化的对象</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">process_request</span><span class="params">(self, request, spider)</span>:</span></span><br><span class="line">        print(<span class="string">'process_request()'</span>)</span><br><span class="line">        request.headers[<span class="string">'User-Agent'</span>] = <span class="string">'xxx'</span></span><br><span class="line">        <span class="comment"># request.headers['Cookie'] = 'xxxxx'</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span> <span class="comment">#or request</span></span><br><span class="line">    <span class="comment"># 拦截所有的响应对象</span></span><br><span class="line">    <span class="comment"># 参数：response拦截到的响应对象，request响应对象对应的请求对象</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">process_response</span><span class="params">(self, request, response, spider)</span>:</span></span><br><span class="line">        print(<span class="string">'process_response()'</span>)</span><br><span class="line">        <span class="keyword">return</span> response</span><br><span class="line">    <span class="comment"># 拦截异常的请求</span></span><br><span class="line">    <span class="comment"># 参数：request就是拦截到的发生异常的请求</span></span><br><span class="line">    <span class="comment"># 作用：想要将异常的请求进行修正，将其变成正常的请求，然后对其进行重新发送</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">process_exception</span><span class="params">(self, request, exception, spider)</span>:</span></span><br><span class="line">        <span class="comment"># 如果请求的ip被禁掉，该请求就会变成一个异常的请求</span></span><br><span class="line">        request.meta[<span class="string">'proxy'</span>] = <span class="string">'http://ip:port'</span> <span class="comment">#设置代理</span></span><br><span class="line">        print(<span class="string">'process_exception()'</span>)</span><br><span class="line">        <span class="keyword">return</span> request <span class="comment">#将异常的请求修正后将其进行重新发送</span></span><br></pre></td></tr></table></figure>
-
-<p>不要忘了在 settings 中，把下载中间件的代码取消注释：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">DOWNLOADER_MIDDLEWARES = &#123;</span><br><span class="line">   <span class="string">'middlePro.middlewares.MiddleproDownloaderMiddleware'</span>: <span class="number">543</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="大文件（图片视频等）下载"><a href="#大文件（图片视频等）下载" class="headerlink" title="大文件（图片视频等）下载"></a>大文件（图片视频等）下载</h3><p>大文件数据是在管道中请求到的。下载管道类是 scrapy 封装好的我们直接用即可：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scrapy.pipelines.images <span class="keyword">import</span> ImagesPipeline    <span class="comment"># 提供了数据下载功能</span></span><br></pre></td></tr></table></figure>
-
-<p>创建一个管道类，继承自 ImagesPipeline（类似地，还有 MediaPipeline 和 FilePipeline，用法大同小异），重写该管道类的三个方法：</p>
-<ul>
-<li>get_media_requests：对图片地址发起请求</li>
-<li>file_path：返回图片名称即可</li>
-<li>item_completed：返回 item，将其返回给下一个即将被执行的管道类</li>
-</ul>
-<p>在配置文件中指定文件下载后存放的文件夹：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">IMAGES_STORE = <span class="string">'dirName'</span></span><br></pre></td></tr></table></figure>
-
-<p>需求：使用 scrapy 爬取校花网的图片</p>
-<p>网址 url：<a href="http://www.521609.com/daxuexiaohua/" target="_blank" rel="noopener">http://www.521609.com/daxuexiaohua/</a></p>
-<p>管道类代码：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 该默认管道无法帮助我们请求图片数据，因此该管道我们就不用</span></span><br><span class="line"><span class="comment"># class ImgproPipeline(object):</span></span><br><span class="line"><span class="comment">#     def process_item(self, item, spider):</span></span><br><span class="line"><span class="comment">#         return item</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 管道需要接受item中的图片地址和名称，然后再管道中请求到图片的数据对其进行持久化存储</span></span><br><span class="line"><span class="keyword">from</span> scrapy.pipelines.images <span class="keyword">import</span> ImagesPipeline    <span class="comment"># 提供了数据下载功能</span></span><br><span class="line"><span class="comment"># from scrapy.pipelines.media import MediaPipeline</span></span><br><span class="line"><span class="comment"># from scrapy.pipelines.files import FilesPipeline</span></span><br><span class="line"><span class="keyword">import</span> scrapy</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ImgsPipiLine</span><span class="params">(ImagesPipeline)</span>:</span></span><br><span class="line">    <span class="comment"># 根据图片地址发起请求</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_media_requests</span><span class="params">(self, item, info)</span>:</span></span><br><span class="line">        <span class="comment"># print(item)</span></span><br><span class="line">        <span class="keyword">yield</span> scrapy.Request(url=item[<span class="string">'src'</span>],meta=&#123;<span class="string">'item'</span>:item&#125;)</span><br><span class="line">    <span class="comment"># 返回图片名称即可</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">file_path</span><span class="params">(self, request, response=None, info=None)</span>:</span></span><br><span class="line">        <span class="comment"># 通过request获取meta</span></span><br><span class="line">        item = request.meta[<span class="string">'item'</span>]</span><br><span class="line">        filePath = item[<span class="string">'name'</span>]</span><br><span class="line">        <span class="keyword">return</span> filePath    <span class="comment"># 只需要返回图片名称</span></span><br><span class="line">    <span class="comment"># 将item传递给下一个即将被执行的管道类</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">item_completed</span><span class="params">(self, results, item, info)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> item</span><br></pre></td></tr></table></figure>
-
-<p>爬虫源文件代码：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> scrapy</span><br><span class="line"><span class="keyword">from</span> imgPro.items <span class="keyword">import</span> ImgproItem</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ImgSpider</span><span class="params">(scrapy.Spider)</span>:</span></span><br><span class="line">    name = <span class="string">'img'</span></span><br><span class="line">    <span class="comment"># allowed_domains = ['www.xxx.com']</span></span><br><span class="line">    start_urls = [<span class="string">'http://www.521609.com/daxuexiaohua/'</span>]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse</span><span class="params">(self, response)</span>:</span></span><br><span class="line">        li_list = response.xpath(<span class="string">'//div[@id="content"]/div[2]/div[2]/ul/li'</span>)</span><br><span class="line">        <span class="keyword">for</span> li <span class="keyword">in</span> li_list:</span><br><span class="line">            name = li.xpath(<span class="string">'./a/img/@alt'</span>).extract_first() + <span class="string">'.jpg'</span></span><br><span class="line">            src = <span class="string">'http://www.521609.com'</span> + li.xpath(<span class="string">'./a/img/@src'</span>).extract_first()</span><br><span class="line">            item = ImgproItem()</span><br><span class="line">            item[<span class="string">'name'</span>] = name</span><br><span class="line">            item[<span class="string">'src'</span>] = src</span><br><span class="line">            <span class="keyword">yield</span> item</span><br></pre></td></tr></table></figure>
-
-<p>items 和 settings 也要进行常规配置，就不一一列举了。</p>
-<h3 id="settings-py-中的常用配置"><a href="#settings-py-中的常用配置" class="headerlink" title="settings.py 中的常用配置"></a>settings.py 中的常用配置</h3><p>增加并发。默认 scrapy 开启的并发线程为 32 个，可以适当进行增加。在 settings 配置文件中修改 CONCURRENT_REQUESTS 的值即可：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CONCURRENT_REQUESTS = <span class="number">100</span></span><br></pre></td></tr></table></figure>
-
-<p>降低日志级别。在运行 scrapy 时，会有大量日志信息的输出，为了减少 CPU 的使用率，可以设置 log 输出信息为 INFO 或者 ERROR。在配置文件中编写：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">LOG_LEVEL = <span class="string">'INFO'</span></span><br><span class="line"><span class="comment"># 或者</span></span><br><span class="line">LOG_LEVEL = <span class="string">'ERROR'</span></span><br></pre></td></tr></table></figure>
-
-<p>禁止 cookie。如果不是真的需要 cookie，则在 scrapy 爬取数据时可以禁止 cookie 从而减少 CPU 的使用率，提升爬取效率。在配置文件中编写（如果要启用 cookie，将这个值改成 True 即可）：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">COOKIES_ENABLED = <span class="literal">False</span></span><br></pre></td></tr></table></figure>
-
-<p>禁止重试。对失败的 HTTP 进行重新请求（重试）会减慢爬取速度，因此可以禁止重试。在配置文件中编写：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RETRY_ENABLED = <span class="literal">False</span></span><br></pre></td></tr></table></figure>
-
-<p>减少下载超时。如果对一个非常慢的链接进行爬取，减少下载超时可以能让卡住的链接快速被放弃，从而提升效率。在配置文件中进行编写：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DOWNLOAD_TIMEOUT = <span class="number">10</span>    <span class="comment"># 超时时间为10s</span></span><br></pre></td></tr></table></figure>
-
+          <p>scrapy 的高级用法，包括：scrapy 的五大核心组件的概念和 scrappy 的运行机制；请求传参实现深度爬取，也就是获取详情页的数据；scrapy 的中间件，跟 Django 的中间件很相似；大文件（图片视频等）下载，这是爬虫很重要的应用；settings.py 中的常用配置，一些比较重要的配置方法。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/crawler/scrapy-advanced/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -913,7 +700,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-04-01 00:56:15 / 修改时间：00:56:19" itemprop="dateCreated datePublished" datetime="2020-04-01T00:56:15+08:00">2020-04-01</time>
+              <time title="创建时间：2020-04-01 00:56:15 / 修改时间：01:23:50" itemprop="dateCreated datePublished" datetime="2020-04-01T00:56:15+08:00">2020-04-01</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -950,56 +737,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="CrawlSpider-的基本用法"><a href="#CrawlSpider-的基本用法" class="headerlink" title="CrawlSpider 的基本用法"></a>CrawlSpider 的基本用法</h3><p>CrawlSpider 是 Spider 的一个子类。Spider 是爬虫文件中爬虫类的父类。</p>
-<p>一般来讲，子类的功能要比父类多，所以 CrawlSpider 的功能是比 Spider 更完善更强大的。</p>
-<p>CrawlSpider 的作用：常被用作于专业实现全站数据爬取，也就是将一个页面下所有页码对应的数据进行爬取。</p>
-<p>CrawlSpider 的基本使用：</p>
-<ol>
-<li><p>创建一个工程</p>
-</li>
-<li><p>cd 到这个工程根目录</p>
-</li>
-<li><p>创建一个基于 CrawlSpider 的爬虫文件</p>
- <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scrapy genspider -t crawl SpiderName www.xxx.com</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>执行工程</p>
-</li>
-</ol>
-<p>注意：</p>
-<ol>
-<li>一个链接提取器对应一个规则解析器（多个链接提取器和多个规则解析器）</li>
-<li>在实现深度爬取的过程中需要和 <code>scrapy.Request()</code> 结合使用</li>
-</ol>
-<p>需求：爬取校花网图片</p>
-<p>网址 url：<a href="http://www.521609.com/daxuexiaohua/" target="_blank" rel="noopener">http://www.521609.com/daxuexiaohua/</a></p>
-<p>示例代码：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> scrapy</span><br><span class="line"><span class="keyword">from</span> scrapy.linkextractors <span class="keyword">import</span> LinkExtractor</span><br><span class="line"><span class="keyword">from</span> scrapy.spiders <span class="keyword">import</span> CrawlSpider, Rule</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FirstSpider</span><span class="params">(CrawlSpider)</span>:</span></span><br><span class="line">    name = <span class="string">'first'</span></span><br><span class="line">    <span class="comment"># allowed_domains = ['www.521609.com']</span></span><br><span class="line">    start_urls = [<span class="string">'http://www.521609.com/daxuexiaohua/'</span>]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 实例化LinkExtractor对象</span></span><br><span class="line">    <span class="comment"># 链接提取器：根据指定规则（allow参数）在页面中进行连接（url）的提取</span></span><br><span class="line">    <span class="comment"># allow='正则'：提取链接的规则</span></span><br><span class="line">    <span class="comment"># link = LinkExtractor(allow=r'list3\d+\.html')</span></span><br><span class="line">    link = LinkExtractor(allow=<span class="string">r''</span>) <span class="comment">#取出网站全站的链接</span></span><br><span class="line">    rules = (</span><br><span class="line">        <span class="comment"># 实例化一个Rule对象</span></span><br><span class="line">        <span class="comment"># 规则解析器：接收链接提取器提取到的链接，对其发起请求，然后根据指定规则（callback）解析数据</span></span><br><span class="line">        Rule(link, callback=<span class="string">'parse_item'</span>, follow=<span class="literal">True</span>),</span><br><span class="line">    )</span><br><span class="line">    <span class="comment"># follow=True:</span></span><br><span class="line">    <span class="comment"># 将链接提取器 继续作用到 连接提取器提取到的页码 所对应的 页面中</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse_item</span><span class="params">(self, response)</span>:</span></span><br><span class="line">        print(response)</span><br><span class="line">        <span class="comment"># 基于response实现数据解析</span></span><br></pre></td></tr></table></figure>
-
-<p>问：如何将一个网站中全站所有的链接都进行爬取。</p>
-<p>答：把正交规则写成空字符串 <code>&#39;&#39;</code> 即可。如果仅要爬取本站所有内容，需要设置 allowed_domains 为当前域名，避免爬取到其他网站。</p>
-<h3 id="使用-CrawlSpider-实现深度爬取"><a href="#使用-CrawlSpider-实现深度爬取" class="headerlink" title="使用 CrawlSpider 实现深度爬取"></a>使用 CrawlSpider 实现深度爬取</h3><p>需求：爬取阳光热线问政平台最新问政的问政标题、状态和问政详细信息。</p>
-<p>网址 url：<a href="http://wz.sun0769.com/political/index/politicsNewest?id=1&amp;type=4&amp;page=" target="_blank" rel="noopener">http://wz.sun0769.com/political/index/politicsNewest?id=1&amp;type=4&amp;page=</a></p>
-<p>分析：问政标题和状态均可在首页得到，但是详细信息需要爬取详情页内容。使用 crawl 确实可以获取到每一个详情页的网址，并获取详细信息，但是如果要将首页的问政标题和状态与详情页的详细信息匹配，需要下一番功夫。（事实上，我们可以在详情页拿到所有这三个信息，但是为了学习和训练，我们分别从首页和详情页抓取。）</p>
-<p>我们可以使用问政编号，作为数据的标识。如此一来，可以将首页内容和详情页内容一一对应了。</p>
-<p>基于上面的思路，我们可以编写出爬虫的源代码：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> scrapy.linkextractors <span class="keyword">import</span> LinkExtractor</span><br><span class="line"><span class="keyword">from</span> scrapy.spiders <span class="keyword">import</span> CrawlSpider, Rule</span><br><span class="line"><span class="keyword">from</span> sunPro.items <span class="keyword">import</span> SunproItem, SunproDeatilItem</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SunSpider</span><span class="params">(CrawlSpider)</span>:</span></span><br><span class="line">    name = <span class="string">'sun'</span></span><br><span class="line">    <span class="comment"># allowed_domains = ['www.xxx.com']</span></span><br><span class="line">    start_urls = [<span class="string">'http://wz.sun0769.com/political/index/politicsNewest?id=1&amp;type=4&amp;page='</span>]</span><br><span class="line"></span><br><span class="line">    rules = (</span><br><span class="line">        <span class="comment"># 提取页码链接，解析每一个页码对应页面中的数据</span></span><br><span class="line">        Rule(LinkExtractor(allow=<span class="string">r'id=1&amp;page=\d+'</span>), callback=<span class="string">'parse_item'</span>, follow=<span class="literal">True</span>),</span><br><span class="line">        <span class="comment"># 提取详情页连接，解析详情页中的数据</span></span><br><span class="line">        Rule(LinkExtractor(allow=<span class="string">r'index\?id=\d+'</span>), callback=<span class="string">'parse_detail'</span>, follow=<span class="literal">False</span>),</span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse_item</span><span class="params">(self, response)</span>:</span></span><br><span class="line">        <span class="string">"""首页，用来提取标题和状态"""</span></span><br><span class="line">        li_list = response.xpath(<span class="string">'//ul[@class="title-state-ul"]/li'</span>)</span><br><span class="line">        <span class="keyword">for</span> li <span class="keyword">in</span> li_list:</span><br><span class="line">            item = SunproItem()</span><br><span class="line">            qid = li.xpath(<span class="string">'./span[1]/text()'</span>).extract_first().strip()</span><br><span class="line">            status = li.xpath(<span class="string">'./span[2]/text()'</span>).extract_first().strip()</span><br><span class="line">            title = li.xpath(<span class="string">'./span[3]/a/text()'</span>).extract_first().strip()</span><br><span class="line">            item[<span class="string">'qid'</span>] = qid</span><br><span class="line">            item[<span class="string">'status'</span>] = status</span><br><span class="line">            item[<span class="string">'title'</span>] = title</span><br><span class="line">            <span class="keyword">yield</span> item</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 实现深度爬取：爬取详情页中的数据</span></span><br><span class="line">    <span class="comment"># 1.对详情页的url进行捕获</span></span><br><span class="line">    <span class="comment"># 2.对详情页的url发起请求获取数据</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse_detail</span><span class="params">(self, response)</span>:</span></span><br><span class="line">        <span class="string">"""详情页，用来提取详细信息，实现深度爬取"""</span></span><br><span class="line">        qid = response.xpath(<span class="string">'//div[@class="mr-three"]/div[1]/span[4]/text()'</span>).extract_first().replace(<span class="string">'编号：'</span>, <span class="string">''</span>).strip()</span><br><span class="line">        content = response.xpath(<span class="string">'//div[@class="mr-three"]/div[2]/pre/text()'</span>).extract_first().strip()</span><br><span class="line">        item = SunproDeatilItem()</span><br><span class="line">        item[<span class="string">'qid'</span>] = qid</span><br><span class="line">        item[<span class="string">'content'</span>] = content</span><br><span class="line">        <span class="keyword">yield</span> item</span><br></pre></td></tr></table></figure>
-
-<p>数据通过问政 id 进行标识，数据存储的时候，相同的问政 id 保存在一起就好。</p>
-<p>别忘了在 <code>items.py</code> 中写好两个 Item 类，SunproItem 和 SunproDetailItem。</p>
-<p>但是现在还有一个问题：首页和详情页解析出来的数据统统给了管道。但是这两种数据是不同的，处理方式也是有差异的。我们该如何在管道中区分这两种数据，并对其进行分别存储呢？</p>
-<p>很简单，这两个 item 是不同类的实例化对象，我们只需要通过查询类名，即可对两种数据进行区分。item 类名的查询方式为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">item.__class__.__name__</span><br></pre></td></tr></table></figure>
-
-<p>通过判断类名，分别处理，根据 qid 进行一一对应存储，我这里就不详细写了：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SunproPipeline</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">process_item</span><span class="params">(self, item, spider)</span>:</span></span><br><span class="line">        <span class="string">"""数据持久化存储，根据qid进行一一对应，就不详细写了"""</span></span><br><span class="line">        qid = item[<span class="string">'qid'</span>]</span><br><span class="line">        <span class="keyword">if</span> item.__class__.__name__ == <span class="string">'SunproItem'</span>:</span><br><span class="line">            title = item[<span class="string">'title'</span>]</span><br><span class="line">            status = item[<span class="string">'status'</span>]</span><br><span class="line">            print(qid, title, status)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            content = item[<span class="string">'content'</span>]</span><br><span class="line">            print(qid, content)</span><br><span class="line">        <span class="keyword">return</span> item</span><br></pre></td></tr></table></figure>
-
-<h3 id="CrawlSpider-结合-Spider-实现深度爬取"><a href="#CrawlSpider-结合-Spider-实现深度爬取" class="headerlink" title="CrawlSpider 结合 Spider 实现深度爬取"></a>CrawlSpider 结合 Spider 实现深度爬取</h3><p>像上面那种，单独使用 CrawlSpider 确实能够实现深度爬取。但是我们发现，坑一个接着一个：首页和详情页的数据不容易一一对应，两个不同的 item 对象传入管道，携带的数据和数据处理方式也不同，需要区别对待。</p>
-<p>链接获取和发送请求的过程的确是节省了，但是又多出了许多其他的麻烦，有些得不偿失。所以对于深度爬取的任务，我们更倾向于使用的方法是，通过 CrawlSpider 与 <code>spider.Request</code> 结合使用的方式，实现深度爬取。</p>
-<p>这就很容易处理了，手动请求，加上请求参数传递即可实现：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> scrapy</span><br><span class="line"><span class="keyword">from</span> scrapy.linkextractors <span class="keyword">import</span> LinkExtractor</span><br><span class="line"><span class="keyword">from</span> scrapy.spiders <span class="keyword">import</span> CrawlSpider, Rule</span><br><span class="line"><span class="keyword">from</span> sunPro.items <span class="keyword">import</span> SunproItem, SunproDeatilItem</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SunSpider</span><span class="params">(CrawlSpider)</span>:</span></span><br><span class="line">    name = <span class="string">'sun'</span></span><br><span class="line">    <span class="comment"># allowed_domains = ['www.xxx.com']</span></span><br><span class="line">    start_urls = [<span class="string">'http://wz.sun0769.com/political/index/politicsNewest?id=1&amp;type=4&amp;page='</span>]</span><br><span class="line"></span><br><span class="line">    rules = (</span><br><span class="line">        <span class="comment"># 提取页码链接，解析每一个页码对应页面中的数据</span></span><br><span class="line">        Rule(LinkExtractor(allow=<span class="string">r'id=1&amp;page=\d+'</span>), callback=<span class="string">'parse_item'</span>, follow=<span class="literal">False</span>),</span><br><span class="line">        <span class="comment"># # 提取详情页连接，解析详情页中的数据</span></span><br><span class="line">        <span class="comment"># Rule(LinkExtractor(allow=r'index\?id=\d+'), callback='parse_detail', follow=False),</span></span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse_item</span><span class="params">(self, response)</span>:</span></span><br><span class="line">        <span class="string">"""首页，用来提取标题和状态"""</span></span><br><span class="line">        li_list = response.xpath(<span class="string">'//ul[@class="title-state-ul"]/li'</span>)</span><br><span class="line">        <span class="keyword">for</span> li <span class="keyword">in</span> li_list:</span><br><span class="line">            item = SunproItem()</span><br><span class="line">            qid = li.xpath(<span class="string">'./span[1]/text()'</span>).extract_first().strip()</span><br><span class="line">            status = li.xpath(<span class="string">'./span[2]/text()'</span>).extract_first().strip()</span><br><span class="line">            title = li.xpath(<span class="string">'./span[3]/a/text()'</span>).extract_first().strip()</span><br><span class="line">            url = <span class="string">'http://wz.sun0769.com/'</span> + li.xpath(<span class="string">'./span[3]/a/@href'</span>).extract_first().strip()</span><br><span class="line">            item[<span class="string">'qid'</span>] = qid</span><br><span class="line">            item[<span class="string">'status'</span>] = status</span><br><span class="line">            item[<span class="string">'title'</span>] = title</span><br><span class="line">            <span class="keyword">yield</span> scrapy.Request(url, callback=self.parse_detail, meta=&#123;<span class="string">'item'</span>: item&#125;)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse_detail</span><span class="params">(self, response)</span>:</span></span><br><span class="line">        item = response.meta[<span class="string">'item'</span>]</span><br><span class="line">        qid = response.xpath(<span class="string">'//div[@class="mr-three"]/div[1]/span[4]/text()'</span>).extract_first().replace(<span class="string">'编号：'</span>, <span class="string">''</span>).strip()</span><br><span class="line">        content = response.xpath(<span class="string">'//div[@class="mr-three"]/div[2]/pre/text()'</span>).extract_first().strip()</span><br><span class="line">        item[<span class="string">'qid'</span>] = qid</span><br><span class="line">        item[<span class="string">'content'</span>] = content</span><br><span class="line">        <span class="keyword">yield</span> item</span><br></pre></td></tr></table></figure>
-
-<p>这样，只会有一种 item 对象，里面是我们需要的所有数据。在管道中，不需要分类处理，不需要考虑首页和详情页一一对应的问题。一切都变得很简单了。</p>
-
+          <p>CrawlSpider 是 Spider 的一个子类。Spider 是爬虫文件中爬虫类的父类。一般来讲，子类的功能要比父类多，所以 CrawlSpider 的功能是比 Spider 更完善更强大的。CrawlSpider 的作用：常被用作于专业实现全站数据爬取，也就是将一个页面下所有页码对应的数据进行爬取。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/crawler/crawlspider/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1041,10 +787,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-03-30 00:05:29 / 修改时间：00:05:32" itemprop="dateCreated datePublished" datetime="2020-03-30T00:05:29+08:00">2020-03-30</time>
+              <time title="创建时间：2020-03-30 00:05:29" itemprop="dateCreated datePublished" datetime="2020-03-30T00:05:29+08:00">2020-03-30</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-01 01:23:50" itemprop="dateModified" datetime="2020-04-01T01:23:50+08:00">2020-04-01</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -1080,85 +832,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="selenium-IDE-的安装"><a href="#selenium-IDE-的安装" class="headerlink" title="selenium IDE 的安装"></a>selenium IDE 的安装</h3><p>selenium IDE 是浏览器的插件，我们可以使用它来录制我们操作浏览器的动作。</p>
-<p>录制好的动作可以自动执行，也可以导出成其他语言的脚本代码。</p>
-<p>看着挺炫，其实没什么用。</p>
-<p>selenium IDE 是用来录制和回放的 selenium 工具。谷歌和火狐都支持该插件的下载。</p>
-<p>火狐浏览器直接去应用商店搜索 <code>selenium ide</code> 即可下载：</p>
-<img src="/testing/selenium-install/1578472218567.png" class="" width="1578472218567">
-
-<img src="/testing/selenium-install/1578472204130.png" class="" width="1578472204130">
-
-<p>点击 <code>添加到Firefox</code> 按钮，即可安装。安装成功后，浏览器的右上角将会出现 Selenium IDE 的图标</p>
-<img src="/testing/selenium-install/1578472283022.png" class="" width="1578472283022">
-
-<p>至于谷歌浏览器可能要稍微麻烦一些。因为谷歌商店一般被墙，我们无法从官方的应用商店下载到插件。好在国内有很多插件代理网站，比如我们可以去 <code>https://www.extfans.com/</code> 网站搜索下载。</p>
-<p>从那里下载到本地的将是一个压缩包，解压后以此点击谷歌浏览器的设置–&gt; 更多工具–&gt;扩展程序。将解压包内的 <code>selenium-ide.crx</code> 拖到该页面中。</p>
-<p>注意：需要打开 <code>开发者模式</code> 选项。</p>
-<img src="/testing/selenium-install/1578472523346.png" class="" width="1578472523346">
-
-<p>安装成功后将会是这个样子：</p>
-<img src="/testing/selenium-install/1578472556092.png" class="" width="1578472556092">
-
-<h3 id="Selenium-IDE-的使用"><a href="#Selenium-IDE-的使用" class="headerlink" title="Selenium IDE 的使用"></a>Selenium IDE 的使用</h3><p>首先，创建一个新的项目：</p>
-<img src="/testing/selenium-install/1578472642643.png" class="" width="1578472642643">
-
-<p>项目名随便取：</p>
-<img src="/testing/selenium-install/1585152539728.png" class="" width="1585152539728">
-
-<p>点击左上角加号，添加新的测试：</p>
-<img src="/testing/selenium-install/1585152617402.png" class="" width="1585152617402">
-
-<p>测试名随便写：</p>
-<img src="/testing/selenium-install/1585152652128.png" class="" width="1585152652128">
-
-<p>点击右上角的红色按钮，开始录制：</p>
-<img src="/testing/selenium-install/1585152730173.png" class="" width="1585152730173">
-
-
-
-<p>随便写名字，然后开始录制：</p>
-<img src="/testing/selenium-install/1585152777870.png" class="" width="1585152777870">
-
-<p>在新弹出的窗口点点，即可开始录制。录制完成后，直接关闭窗口即可。</p>
-<p>然后，我们就可以执行录制的动作，也可以导出为各种语言的脚本。</p>
-<img src="/testing/selenium-install/1585152971834.png" class="" width="1585152971834">
-
-<p>再说一次，前面这些东西基本没什么用，了解即可。从这以后，都是很常用到的。</p>
-<h3 id="selenium-模块的安装"><a href="#selenium-模块的安装" class="headerlink" title="selenium 模块的安装"></a>selenium 模块的安装</h3><p>直接使用 pip 安装即可：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install selenium</span><br></pre></td></tr></table></figure>
-
-<h3 id="浏览器驱动下载"><a href="#浏览器驱动下载" class="headerlink" title="浏览器驱动下载"></a>浏览器驱动下载</h3><p>除了需要安装 selenium 第三方模块，我们还要安装适配浏览器的驱动。最常用的当然是 Chrome 和火狐。IE 和 Safari 也有各自的驱动。他们的下载链接如下：</p>
-<ul>
-<li><p>Chrome 驱动地址：<a href="https://npm.taobao.org/mirrors/chromedriver" target="_blank" rel="noopener">https://npm.taobao.org/mirrors/chromedriver</a></p>
-<p>也可以使用 Chrome 官网的下载地址：<a href="http://chromedriver.storage.googleapis.com/index.html" target="_blank" rel="noopener">http://chromedriver.storage.googleapis.com/index.html</a></p>
-</li>
-<li><p>Firefox 驱动地址：<a href="https://github.com/mozilla/geckodriver/releases" target="_blank" rel="noopener">https://github.com/mozilla/geckodriver/releases</a></p>
-</li>
-<li><p>IE 驱动地址：<a href="https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/" target="_blank" rel="noopener">https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/</a></p>
-</li>
-<li><p>Safari 驱动地址：<a href="https://webkit.org/blog/6900/webdriver-support-in-safari-10/" target="_blank" rel="noopener">https://webkit.org/blog/6900/webdriver-support-in-safari-10/</a></p>
-</li>
-</ul>
-<p>注意 Chrome 浏览器需要先查看自己浏览器的版本，然后下载与浏览器版本号最接近的浏览器驱动。如果驱动与浏览器版本差别过大，有可能会出问题。</p>
-<p>可通过下面的方式查看浏览器的版本：</p>
-<img src="/testing/selenium-install/1585153703130.png" class="" width="1585153703130">
-
-<p>根据浏览器版本和系统平台下载对应的浏览器驱动，Windows 系统下 32 位的版本即可：</p>
-<img src="/testing/selenium-install/1585153883442.png" class="" width="1585153883442">
-
-<p>一般情况下，最后一位版本号可以不同，影响不大。</p>
-<p>下载到本地之后，把 <code>chromedriver.exe</code> 移动至 Python 解释器同级的目录（Python 的安装目录）或者 Scripts 目录下即可。</p>
-<img src="/testing/selenium-install/1585154063211.png" class="" width="1585154063211">
-
-<h3 id="测试运行"><a href="#测试运行" class="headerlink" title="测试运行"></a>测试运行</h3><p>安装好 selenium 模块，并且配置好浏览器驱动之后，我们可以执行一段简单的 selenium 代码测试一下安装的情况。</p>
-<p>创建一个 py 文件，比如就叫 <code>test.py</code>，在里面写上下面的代码：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</span><br><span class="line"><span class="comment"># 创建Chrome WebDriver实例，此路径为驱动程序的路径</span></span><br><span class="line">driver = webdriver.Chrome()</span><br><span class="line"><span class="comment"># firefox浏览器打开</span></span><br><span class="line"><span class="comment"># driver = webdriver.Firefox()</span></span><br><span class="line"><span class="comment"># 加载URL网页</span></span><br><span class="line">driver.get(<span class="string">"http://www.baidu.com/"</span>)</span><br><span class="line"><span class="comment"># 打印当前页面的title属性内容</span></span><br><span class="line">print(driver.title)</span><br><span class="line"><span class="comment"># 关闭浏览器</span></span><br><span class="line">driver.quit()</span><br></pre></td></tr></table></figure>
-
-<p>可以看到打开一个浏览器，然后很快就关闭了。本地打印出了结果，表示安装成功！</p>
-<h3 id="可能的报错"><a href="#可能的报错" class="headerlink" title="可能的报错"></a>可能的报错</h3><p>有时候，即便将浏览器驱动添加到环境变量中，仍然找不到。这时候，我们就要在创建浏览器对象的时候，使用绝对路径指定浏览器驱动的安装位置，比如：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</span><br><span class="line">driver = webdriver.Firefox(executable_path=<span class="string">r'C:\Python36\Scripts\geckodriver.exe'</span>)</span><br><span class="line">driver.get(<span class="string">'https://www.baidu.com/'</span>)</span><br></pre></td></tr></table></figure>
-
+          <p>包括 selenium IDE 的安装何使用、selenium 的安装和浏览器驱动的下载配置。只有配置好，才能正常使用 selenium 爬取数据。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/testing/selenium-install/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1200,10 +882,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-03-30 00:05:29 / 修改时间：00:05:32" itemprop="dateCreated datePublished" datetime="2020-03-30T00:05:29+08:00">2020-03-30</time>
+              <time title="创建时间：2020-03-30 00:05:29" itemprop="dateCreated datePublished" datetime="2020-03-30T00:05:29+08:00">2020-03-30</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-01 01:23:50" itemprop="dateModified" datetime="2020-04-01T01:23:50+08:00">2020-04-01</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -1239,18 +927,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="使用示例"><a href="#使用示例" class="headerlink" title="使用示例"></a>使用示例</h3><p>首先来看一个 selenium 的使用示例：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="comment"># 导入浏览器驱动</span></span><br><span class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</span><br><span class="line"><span class="comment"># 使用浏览器驱动实例化一个谷歌浏览器驱动对象: driver,所有关于浏览器的操作,都由driver对象完成</span></span><br><span class="line">driver = webdriver.Chrome()</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 打开浏览器,访问指定的url</span></span><br><span class="line">    driver.get(<span class="string">'https://www.baidu.com/'</span>)</span><br><span class="line">    <span class="comment"># 你对当前的页面要做的操作</span></span><br><span class="line">    input_obj = driver.find_element_by_id(<span class="string">'kw'</span>)</span><br><span class="line">    print(input_obj)</span><br><span class="line">    input_obj.send_keys(<span class="string">'听雨危楼'</span>)</span><br><span class="line">    time.sleep(<span class="number">2</span>)</span><br><span class="line">    driver.find_element_by_id(<span class="string">'su'</span>).click()</span><br><span class="line">    time.sleep(<span class="number">2</span>)</span><br><span class="line">    driver.find_element_by_xpath(<span class="string">'//*[@id="1"]/h3/a'</span>).click()</span><br><span class="line"></span><br><span class="line"><span class="keyword">finally</span>:</span><br><span class="line">    time.sleep(<span class="number">10</span>)</span><br><span class="line">    <span class="comment"># 关闭浏览器</span></span><br><span class="line">    driver.close()</span><br></pre></td></tr></table></figure>
-
-<p>在下面的讨论中，如无特别声明，我将使用 driver 指代浏览器驱动对象，而不会每次都创建。而且使用完毕后，都会关闭掉驱动，关闭操作也先不写了。</p>
-<h3 id="常用类"><a href="#常用类" class="headerlink" title="常用类"></a>常用类</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver   <span class="comment"># 驱动浏览器</span></span><br><span class="line"><span class="keyword">from</span> selenium.webdriver <span class="keyword">import</span> ActionChains   <span class="comment"># 鼠标的相关操作，比如滑动验证</span></span><br><span class="line"><span class="keyword">from</span> selenium.webdriver.common.by <span class="keyword">import</span> By   <span class="comment"># 选择器，以什么方式选择标签元素</span></span><br><span class="line"><span class="keyword">from</span> selenium.webdriver.common.keys <span class="keyword">import</span> Keys   <span class="comment"># 键盘相关</span></span><br><span class="line"><span class="keyword">from</span> selenium.webdriver.support <span class="keyword">import</span> expected_conditions <span class="keyword">as</span> EC  <span class="comment"># 各种判断，一般跟等待事件连用，比如说等待某个元素加载出来</span></span><br><span class="line"><span class="keyword">from</span> selenium.webdriver.support.wait <span class="keyword">import</span> WebDriverWait  <span class="comment"># 等待事件，可以与EC连用</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="浏览器页面操作"><a href="#浏览器页面操作" class="headerlink" title="浏览器页面操作"></a>浏览器页面操作</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">driver.maximize_window()    <span class="comment"># 浏览器窗口最大化</span></span><br><span class="line">driver.minimize_window()    <span class="comment"># 最小化</span></span><br><span class="line">driver.set_window_size(<span class="number">800</span>, <span class="number">600</span>)    <span class="comment"># 指定窗口大小</span></span><br><span class="line">print(driver.title)    <span class="comment"># 获取页面的title</span></span><br><span class="line">print(driver.page_source)    <span class="comment"># 获取网页文本</span></span><br><span class="line">print(driver.current_url)    <span class="comment"># 获取当前页的url</span></span><br><span class="line">print(driver.name)    <span class="comment"># 获取driver对象名，比如：chrome</span></span><br><span class="line">print(driver.get_cookies())   <span class="comment"># 获取cookies</span></span><br><span class="line">print(driver.current_window_handle)    <span class="comment"># 获取当前浏览器窗口id，切换窗口时会用到</span></span><br><span class="line">driver.refresh()    <span class="comment"># 刷新当前页面</span></span><br><span class="line">driver.back()    <span class="comment"># 后退</span></span><br><span class="line">driver.forward()    <span class="comment"># 前进</span></span><br><span class="line">driver.execute_script(<span class="string">'alert("xxoo不可描述")'</span>)    <span class="comment"># js注入</span></span><br><span class="line">driver.close()    <span class="comment"># 关闭当前的窗口对象</span></span><br><span class="line">driver.quit()    <span class="comment"># 退出浏览器</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="截屏操作"><a href="#截屏操作" class="headerlink" title="截屏操作"></a>截屏操作</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 获取截屏的字节流，需要我们手动写到文件中</span></span><br><span class="line">res = driver.get_screenshot_as_png()</span><br><span class="line"><span class="comment"># print(res)</span></span><br><span class="line">f = open(<span class="string">'a.png'</span>, <span class="string">'wb'</span>)</span><br><span class="line">f.write(res)</span><br><span class="line"><span class="comment"># 直接保存截屏，图片的格式为png</span></span><br><span class="line">driver.save_screenshot(<span class="string">'b.png'</span>)</span><br><span class="line"><span class="comment"># 截屏某个元素</span></span><br><span class="line">driver.find_element_by_id(<span class="string">'login_box'</span>).screenshot(<span class="string">'c.png'</span>)</span><br></pre></td></tr></table></figure>
-
-<h3 id="选择器"><a href="#选择器" class="headerlink" title="选择器"></a>选择器</h3><p>选择器用来找到页面中的某个指定到标签。</p>
-
+          <p>selenium 是一款基于浏览器的自动化爬虫工具，可以给我们的测试开发提供极大的便利。这里介绍了一些 selenium 常用的使用方法。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/testing/selenium-basic/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1292,10 +977,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-03-30 00:05:29 / 修改时间：00:05:32" itemprop="dateCreated datePublished" datetime="2020-03-30T00:05:29+08:00">2020-03-30</time>
+              <time title="创建时间：2020-03-30 00:05:29" itemprop="dateCreated datePublished" datetime="2020-03-30T00:05:29+08:00">2020-03-30</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-01 01:23:50" itemprop="dateModified" datetime="2020-04-01T01:23:50+08:00">2020-04-01</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -1331,57 +1022,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h3 id="Tablestore-的配置"><a href="#Tablestore-的配置" class="headerlink" title="Tablestore 的配置"></a>Tablestore 的配置</h3><p>首先，开通阿里云表格存储服务。连接：<a href="https://www.aliyun.com/product/ots?spm=a2c4g.11186623.2.7.6f0b23a5RBru3P" target="_blank" rel="noopener">https://www.aliyun.com/product/ots?spm=a2c4g.11186623.2.7.6f0b23a5RBru3P</a></p>
-<img src="/project/renran-tablestore/1585484760889.png" class="" width="1585484760889">
-
-<p>开通好之后，创建一个实例：</p>
-<img src="/project/renran-tablestore/1585486077949.png" class="" width="1585486077949">
-
-<p>在开始之前，还要创建 Access Key。</p>
-<p>Access Key 的创建参见：<a href="https://help.aliyun.com/document_detail/53045.html?spm=a2c4g.11186623.2.12.7ed845d1l6vPRz" target="_blank" rel="noopener">https://help.aliyun.com/document_detail/53045.html?spm=a2c4g.11186623.2.12.7ed845d1l6vPRz</a></p>
-<p>需要注意的是，AccessKeySecret 只在创建时显示，不要一出来就手滑关闭。等稍后，我们把它记录下来只会，再关不迟。</p>
-<p>Python 操作 TableStore 的 SDK：<a href="https://github.com/aliyun/aliyun-tablestore-python-sdk" target="_blank" rel="noopener">https://github.com/aliyun/aliyun-tablestore-python-sdk</a></p>
-<p>阿里云官方 Python SDK：<a href="https://help.aliyun.com/document_detail/31723.html?spm=a2c4g.11186623.6.891.563c3d76sdVMpI" target="_blank" rel="noopener">https://help.aliyun.com/document_detail/31723.html?spm=a2c4g.11186623.6.891.563c3d76sdVMpI</a></p>
-<p>首先安装 Tablestore 的 Python 模块：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install tablestore</span><br></pre></td></tr></table></figure>
-
-<p><code>settings/dev.py</code>，添加 TableStore 的 API 接口配置：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># tablestore</span></span><br><span class="line">OTS_ID = <span class="string">"LTAI4FxkXpCaQwsNTMzxGmMk"</span>    <span class="comment"># AccessKeyId</span></span><br><span class="line">OTS_SECRET = <span class="string">"AxS8Y0m3US8prS8XJuqkHDpd2XGRii"</span>    <span class="comment"># AccessKeySecret</span></span><br><span class="line">OTS_INSTANCE = <span class="string">"renrantablestore"</span>    <span class="comment"># 实例名称</span></span><br><span class="line">OTS_ENDPOINT = <span class="string">"https://renranzixun.cn-hangzhou.ots.aliyuncs.com"</span>    <span class="comment"># 实力访问公网地址</span></span><br></pre></td></tr></table></figure>
-
-<p>Tablestore 目前只支持四种数据类型：INTEGER、STRING、DOUBLE 和 BOOLEAN。其中 DOUBLE 类型不能做主键类型，BOOLEAN 不可以做主键的第一列（分区键）。</p>
-<p>为了方便演示，我们另外创建一个单独的子应用 store 来编写 tablestore 的代码：</p>
-<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">cd</span> renranapi/apps</span><br><span class="line"><span class="keyword">python</span> ../../manage.<span class="keyword">py</span> startapp store</span><br></pre></td></tr></table></figure>
-
-<p>在 <code>settings/dev.py</code> 注册：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">INSALL_APPS = [</span><br><span class="line">    ...</span><br><span class="line">    <span class="string">'store'</span>,    <span class="comment"># 用于演示tableStore，后续删除掉即可</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
-
-<h3 id="表操作"><a href="#表操作" class="headerlink" title="表操作"></a>表操作</h3><p>Tablestore 里面创建表的时候必须设置表名，主键列，还有表元信息和表的描述项（有效期，版本，吞吐量）。</p>
-<p>创建表的时候，除了主键列以外，还可以设置预设字段列。这个不常用，因为当前使用 tablestore 是 NoSQL 数据，所以我们表结构的字段列可以在添加数据的时候再指定。</p>
-<p>视图代码：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Create your views here.</span></span><br><span class="line"><span class="keyword">from</span> tablestore <span class="keyword">import</span> TableMeta,TableOptions,ReservedThroughput,CapacityUnit,OTSClient</span><br><span class="line"><span class="keyword">from</span> tablestore <span class="keyword">import</span> PK_AUTO_INCR</span><br><span class="line"><span class="keyword">from</span> django.conf <span class="keyword">import</span> settings</span><br><span class="line"><span class="keyword">from</span> rest_framework.views <span class="keyword">import</span> APIView</span><br><span class="line"><span class="keyword">from</span> rest_framework.response <span class="keyword">import</span> Response</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TableAPIView</span><span class="params">(APIView)</span>:</span></span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">client</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> OTSClient(settings.OTS_ENDPOINT, settings.OTS_ID, settings.OTS_SECRET, settings.OTS_INSTANCE)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">post</span><span class="params">(self,request)</span>:</span></span><br><span class="line">        <span class="string">"""创建表"""</span></span><br><span class="line">        <span class="comment"># 设置主键和字段</span></span><br><span class="line">        table_name = <span class="string">"user_message_table"</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># schema_of_primary_key = [</span></span><br><span class="line">        <span class="comment"># ('字段名', '字段类型', PK_AUTO_INCR),</span></span><br><span class="line">        <span class="comment"># ('uid', 'STRING')</span></span><br><span class="line">        <span class="comment"># ]</span></span><br><span class="line">        <span class="comment"># 主键列</span></span><br><span class="line">        schema_of_primary_key = [</span><br><span class="line">            (<span class="string">'user_id'</span>, <span class="string">'INTEGER'</span>),</span><br><span class="line">            (<span class="string">'sequence_id'</span>, <span class="string">'INTEGER'</span>,PK_AUTO_INCR),</span><br><span class="line">            (<span class="string">"sender_id"</span>,<span class="string">'INTEGER'</span>),</span><br><span class="line">            (<span class="string">"message_id"</span>,<span class="string">'INTEGER'</span>)</span><br><span class="line">        ]</span><br><span class="line">        <span class="comment"># 设置表的元信息</span></span><br><span class="line">        table_meta = TableMeta(table_name, schema_of_primary_key)</span><br><span class="line">        <span class="comment"># 设置数据的有效期</span></span><br><span class="line">        table_option = TableOptions(<span class="number">7</span>*<span class="number">86400</span>, <span class="number">5</span>)</span><br><span class="line">        <span class="comment"># 设置数据的预留读写吞吐量</span></span><br><span class="line">        reserved_throughput = ReservedThroughput(CapacityUnit(<span class="number">0</span>, <span class="number">0</span>))</span><br><span class="line">        <span class="comment"># 创建数据</span></span><br><span class="line">        self.client.create_table(table_meta, table_option, reserved_throughput)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> Response(&#123;<span class="string">"message"</span>:<span class="string">"ok"</span>&#125;)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">delete</span><span class="params">(self,request)</span>:</span></span><br><span class="line">        <span class="string">"""删除表"""</span></span><br><span class="line">        table = <span class="string">"user_message_table"</span></span><br><span class="line">        self.client.delete_table(table)</span><br><span class="line">        <span class="keyword">return</span> Response(&#123;<span class="string">"message"</span>:<span class="string">"ok"</span>&#125;)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self,request)</span>:</span></span><br><span class="line">        <span class="string">"""列出所有的表"""</span></span><br><span class="line">        table_list = self.client.list_table()</span><br><span class="line">        <span class="keyword">for</span> table <span class="keyword">in</span> table_list:</span><br><span class="line">            print(table)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> Response(&#123;<span class="string">"message"</span>: <span class="string">"ok"</span>&#125;)</span><br></pre></td></tr></table></figure>
-
-<p>注意：</p>
-<ol>
-<li>创建表后需要等待 1 分钟进行加载，在此期间对该表的读/写数据操作有可能会失败。<br>应用程序应该等待表加载完毕后再进行数据操作。</li>
-<li>创建表格存储的表时必须指定表的主键。<br>主键包含 1~4 个主键列，每一个主键列都有名字和类型。</li>
-</ol>
-<p>路由:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> django.urls <span class="keyword">import</span> path,re_path</span><br><span class="line"><span class="keyword">from</span> . <span class="keyword">import</span> views</span><br><span class="line">urlpatterns = [</span><br><span class="line">    path(<span class="string">"table/"</span>, views.TableAPIView.as_view()),</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 总路由</span></span><br><span class="line">    path(<span class="string">'ots/'</span>, include(<span class="string">"store.urls"</span>)),</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="一条数据的操作"><a href="#一条数据的操作" class="headerlink" title="一条数据的操作"></a>一条数据的操作</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> datetime <span class="keyword">import</span> datetime</span><br><span class="line"><span class="keyword">from</span> tablestore <span class="keyword">import</span> Row</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">DataAPIView</span><span class="params">(APIView)</span>:</span></span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">client</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> OTSClient(settings.OTS_ENDPOINT, settings.OTS_ID, settings.OTS_SECRET, settings.OTS_INSTANCE)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">post</span><span class="params">(self,rquest)</span>:</span></span><br><span class="line">        <span class="string">"""添加数据到表格中"""</span></span><br><span class="line">        table_name = <span class="string">"user_message_table"</span></span><br><span class="line">        <span class="comment"># 主键列</span></span><br><span class="line">        primary_key = [</span><br><span class="line">            <span class="comment"># ('主键名', 值),</span></span><br><span class="line">            (<span class="string">'user_id'</span>, <span class="number">3</span>), <span class="comment"># 接收Feed的用户ID</span></span><br><span class="line">            (<span class="string">'sequence_id'</span>, PK_AUTO_INCR), <span class="comment"># 如果是自增主键，则值就是 PK_AUTO_INCR</span></span><br><span class="line">            (<span class="string">"sender_id"</span>,<span class="number">1</span>), <span class="comment"># 发布Feed的用户ID</span></span><br><span class="line">            (<span class="string">"message_id"</span>,<span class="number">4</span>), <span class="comment"># 文章ID</span></span><br><span class="line">        ]</span><br><span class="line"></span><br><span class="line">        attribute_columns = [(<span class="string">'recevice_time'</span>, datetime.now().timestamp()), (<span class="string">'read_status'</span>, <span class="literal">False</span>)]</span><br><span class="line">        row = Row(primary_key, attribute_columns)</span><br><span class="line">        consumed, return_row = self.client.put_row(table_name, row)</span><br><span class="line">        print(return_row)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> Response(&#123;<span class="string">"message"</span>:<span class="string">"ok"</span>&#125;)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self,request)</span>:</span></span><br><span class="line">        <span class="string">"""获取指定数据"""</span></span><br><span class="line">        table_name = <span class="string">"user_message_table"</span></span><br><span class="line"></span><br><span class="line">        primary_key = [(<span class="string">'user_id'</span>, <span class="number">3</span>), (<span class="string">'sequence_id'</span>, <span class="number">1579245502645000</span>),(<span class="string">"sender_id"</span>,<span class="number">1</span>), (<span class="string">"message_id"</span>,<span class="number">4</span>)]</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 需要返回的属性列：。如果columns_to_get为[]，则返回所有属性列。</span></span><br><span class="line">        columns_to_get = []</span><br><span class="line">        <span class="comment"># columns_to_get = ['recevice_time', 'read_status', 'age', 'sex']</span></span><br><span class="line"></span><br><span class="line">        consumed, return_row, next_token = self.client.get_row(table_name, primary_key, columns_to_get)</span><br><span class="line"></span><br><span class="line">        print( return_row.attribute_columns )</span><br><span class="line">        <span class="comment"># [('read_status', False, 1579245502645), ('recevice_time', 1579245502137.347, 1579245502645)]</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> Response(&#123;<span class="string">"message"</span>:<span class="string">"ok"</span>&#125;)</span><br></pre></td></tr></table></figure>
-
-<p>路由,代码:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">path(<span class="string">"data/"</span>, views.DataAPIView.as_view()),</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="多条数据的操作"><a href="#多条数据的操作" class="headerlink" title="多条数据的操作"></a>多条数据的操作</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> tablestore <span class="keyword">import</span> INF_MAX,INF_MIN,CompositeColumnCondition,LogicalOperator,SingleColumnCondition,ComparatorType,Direction,Condition,RowExistenceExpectation,PutRowItem</span><br><span class="line"><span class="keyword">from</span> tablestore <span class="keyword">import</span> BatchWriteRowRequest,TableInBatchWriteRowItem</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">RowAPIView</span><span class="params">(APIView)</span>:</span></span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">client</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> OTSClient(settings.OTS_ENDPOINT, settings.OTS_ID, settings.OTS_SECRET, settings.OTS_INSTANCE)</span><br><span class="line"></span><br><span class="line">    <span class="string">"""多行数据操作"""</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self,request)</span>:</span></span><br><span class="line">        <span class="string">"""按范围获取多行数据"""</span></span><br><span class="line"></span><br><span class="line">        table_name = <span class="string">"user_message_table"</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 范围查询的起始主键</span></span><br><span class="line">        inclusive_start_primary_key = [</span><br><span class="line">            (<span class="string">'user_id'</span>, <span class="number">3</span>),</span><br><span class="line">            (<span class="string">'sequence_id'</span>, INF_MIN),</span><br><span class="line">            (<span class="string">'sender_id'</span>, INF_MIN),</span><br><span class="line">            (<span class="string">'message_id'</span>, INF_MIN)</span><br><span class="line">        ]</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 范围查询的结束主键</span></span><br><span class="line">        exclusive_end_primary_key = [</span><br><span class="line">            (<span class="string">'user_id'</span>, <span class="number">3</span>),</span><br><span class="line">            (<span class="string">'sequence_id'</span>, INF_MAX),</span><br><span class="line">            (<span class="string">'sender_id'</span>, INF_MAX),</span><br><span class="line">            (<span class="string">'message_id'</span>, INF_MAX)</span><br><span class="line">        ]</span><br><span class="line"></span><br><span class="line">        <span class="comment"># 查询所有列</span></span><br><span class="line">        columns_to_get = [] <span class="comment"># 表示返回所有列</span></span><br><span class="line">        limit = <span class="number">5</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 设置多条件</span></span><br><span class="line">        <span class="comment"># cond = CompositeColumnCondition(LogicalOperator.AND) # 逻辑条件</span></span><br><span class="line">        <span class="comment"># cond = CompositeColumnCondition(LogicalOperator.OR)</span></span><br><span class="line">        <span class="comment"># cond = CompositeColumnCondition(LogicalOperator.NOT)</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># 多条件下的子条件</span></span><br><span class="line">        <span class="comment"># cond.add_sub_condition(SingleColumnCondition("read_status", False, ComparatorType.EQUAL)) #  比较运算符:　等于</span></span><br><span class="line">        <span class="comment"># cond.add_sub_condition(SingleColumnCondition("属性列", '属性值', ComparatorType.NOT_EQUAL)) #  比较运算符:　不等于</span></span><br><span class="line">        <span class="comment"># cond.add_sub_condition(SingleColumnCondition("属性列", '属性值', ComparatorType.GREATER_THAN)) #  比较运算符:　大于</span></span><br><span class="line">        <span class="comment"># cond.add_sub_condition(SingleColumnCondition("recevice_time", 1579246049, ComparatorType.GREATER_EQUAL)) #  比较运算符:　大于等于</span></span><br><span class="line">        <span class="comment"># cond.add_sub_condition(SingleColumnCondition("属性列", '属性值', ComparatorType.LESS_THAN)) #  比较运算符:　小于</span></span><br><span class="line">        <span class="comment"># cond.add_sub_condition(SingleColumnCondition("recevice_time", 1579246049, ComparatorType.LESS_EQUAL)) #  比较运算符:　小于等于</span></span><br><span class="line"></span><br><span class="line">        consumed, next_start_primary_key, row_list, next_token = self.client.get_range(</span><br><span class="line">            table_name, <span class="comment"># 操作表明</span></span><br><span class="line">            Direction.FORWARD, <span class="comment"># 范围的方向，字符串格式，取值包括'FORWARD'和'BACKWARD'。</span></span><br><span class="line">            inclusive_start_primary_key, exclusive_end_primary_key, <span class="comment"># 取值范围</span></span><br><span class="line">            columns_to_get, <span class="comment"># 返回字段列</span></span><br><span class="line">            limit, <span class="comment">#　结果数量</span></span><br><span class="line">            <span class="comment"># column_filter=cond, # 条件</span></span><br><span class="line">            max_version=<span class="number">1</span>         <span class="comment"># 返回版本数量</span></span><br><span class="line">        )</span><br><span class="line"></span><br><span class="line">        print(<span class="string">"一共返回了：%s"</span> % len(row_list))</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> row <span class="keyword">in</span> row_list:</span><br><span class="line">            <span class="keyword">print</span> ( row.primary_key, row.attribute_columns )</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> Response(&#123;<span class="string">"message"</span>:<span class="string">"ok"</span>&#125;)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">post</span><span class="params">(self,request)</span>:</span></span><br><span class="line">        <span class="string">"""添加多条数据"""</span></span><br><span class="line"></span><br><span class="line">        table_name = <span class="string">"user_message_table"</span></span><br><span class="line"></span><br><span class="line">        put_row_items = []</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, <span class="number">10</span>):</span><br><span class="line">            <span class="comment"># 主键列</span></span><br><span class="line">            primary_key = [  <span class="comment"># ('主键名', 值),</span></span><br><span class="line">                (<span class="string">'user_id'</span>, i), <span class="comment"># 接收Feed的用户ID</span></span><br><span class="line">                (<span class="string">'sequence_id'</span>, PK_AUTO_INCR), <span class="comment"># 如果是自增主键，则值就是 PK_AUTO_INCR</span></span><br><span class="line">                (<span class="string">"sender_id"</span>,<span class="number">1</span>), <span class="comment"># 发布Feed的用户ID</span></span><br><span class="line">                (<span class="string">"message_id"</span>,<span class="number">5</span>), <span class="comment"># 文章ID</span></span><br><span class="line">            ]</span><br><span class="line"></span><br><span class="line">            attribute_columns = [(<span class="string">'recevice_time'</span>, datetime.now().timestamp()), (<span class="string">'read_status'</span>, <span class="literal">False</span>)]</span><br><span class="line">            row = Row(primary_key, attribute_columns)</span><br><span class="line">            condition = Condition(RowExistenceExpectation.IGNORE)</span><br><span class="line">            item = PutRowItem(row, condition)</span><br><span class="line">            put_row_items.append(item)</span><br><span class="line"></span><br><span class="line">        request = BatchWriteRowRequest()</span><br><span class="line">        request.add(TableInBatchWriteRowItem(table_name, put_row_items))</span><br><span class="line">        result = self.client.batch_write_row(request)</span><br><span class="line">        print(result)</span><br><span class="line">        print(result.is_all_succeed())</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> Response(&#123;<span class="string">"message"</span>:<span class="string">"ok"</span>&#125;)</span><br></pre></td></tr></table></figure>
-
-<p>多行路由,代码:</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">path(<span class="string">"row/"</span>, views.RowAPIView.as_view()),</span><br></pre></td></tr></table></figure>
-
+          <p>Tablestore 目前只支持四种数据类型：INTEGER、STRING、DOUBLE 和 BOOLEAN。其中 DOUBLE 类型不能做主键类型，BOOLEAN 不可以做主键的第一列（分区键）。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/project/renran-tablestore/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1423,10 +1072,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-03-30 00:05:29 / 修改时间：00:05:32" itemprop="dateCreated datePublished" datetime="2020-03-30T00:05:29+08:00">2020-03-30</time>
+              <time title="创建时间：2020-03-30 00:05:29" itemprop="dateCreated datePublished" datetime="2020-03-30T00:05:29+08:00">2020-03-30</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-01 01:23:50" itemprop="dateModified" datetime="2020-04-01T01:23:50+08:00">2020-04-01</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -1462,208 +1117,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="Feed-流的定义"><a href="#Feed-流的定义" class="headerlink" title="Feed 流的定义"></a>Feed 流的定义</h2><p>Feed 流这个词可拆分成两部分来看，即 <code>Feed</code> 和 <code>流</code>。Feed 的本意是饲料，Feed 流的的本意就是有人一直在往一个地方投递新鲜的饲料。如果需要饲料，只需要盯着投递点就可以了，这样就能源源不断获取到新鲜的饲料。</p>
-<p>在信息工程中，Feed 其实是一个信息单元，比如一条朋友圈状态、一条微博、一条咨询或一条短视频等。Feed 流就是不停更新的信息单元，只要关注某些发布者就能获取到源源不断的新鲜信息，我们的用户也就可以在移动设备上逐条去浏览这些信息单元。</p>
-<p>当前最流行的 Feed 流产品有微博、微信朋友圈、头条的资讯推荐、快手抖音的视频推荐等。还有一些变种，比如私信、通知等，这些系统都是 Feed 流系统。接下来我们将介绍如何设计一个 Feed 流系统架构。</p>
-<h2 id="Feed-流系统特点"><a href="#Feed-流系统特点" class="headerlink" title="Feed 流系统特点"></a>Feed 流系统特点</h2><p>Feed 流本质上是数据流，是服务端系统将多个发布者的信息内容通过关注收藏等关系推送给多个接收者。</p>
-<img src="/project/renran-feed-flow/1579146889360.png" class="" width="1579146889360">
-
-<p>Feed 流系统的特点：</p>
-<ul>
-<li>多账号内容流：Feed 流系统中肯定会存在成千上万的账号，账号之间可以关注，取关，加好友和拉黑等操作。只要满足这一条，那么就可以当做 Feed 流系统来设计。</li>
-<li>非稳定的账号关系：由于存在关注，取关等操作，所以系统中的用户之间的关系就会一直在变化，是一种非稳定的状态。</li>
-<li>读写比例 <code>100:1</code>：读写严重不平衡，读多写少。</li>
-<li>消息必达性要求高：比如发送了一条朋友圈后，结果部分朋友看到了，部分朋友没看到。如果偏偏女朋友没看到，那么可能会产生很严重的感情矛盾，后果很严重。</li>
-</ul>
-<h2 id="Feed-流系统分类"><a href="#Feed-流系统分类" class="headerlink" title="Feed 流系统分类"></a>Feed 流系统分类</h2><p>Feed 流的分类有很多种，但最常见的分类有两种：</p>
-<ul>
-<li>Timeline：按发布的时间顺序排序，先发布的先看到，后发布的排列在最顶端，例如微信朋友圈，微博等。这也是一种最常见的形式。产品如果选择 Timeline 类型，那么就是认为 Feed 流中的 Feed 不多，但是每个 Feed 都很重要，都需要用户看到。</li>
-<li>Rank：按某个非时间的因子排序，一般是按照用户的喜好度排序，用户最喜欢的排在最前面，次喜欢的排在后面。这种一般假定用户可能看到的 Feed 非常多，而用户花费在这里的时间有限，那么就为用户选择出用户最想看的 Top N 结果，场景的应用场景有图片分享、新闻推荐类、商品推荐等。</li>
-</ul>
-<p>上面两种是最典型，也是最常见的分类方式。除此之外，也有其他的分类标准。在其他的分类标准中，还有两种类型比较常见：</p>
-<ul>
-<li>Aggregate：聚合类型。比如好几个朋友都看了同一场电影，这个就可以聚合为一条 Feed：A，B，C 看了电影《你的名字》，这种聚合功能比较适合在客户端做。一般的 Aggregate 类型是 Timeline 类型 + 客户端聚合。比如豆瓣电影的 <code>喜欢这部电影的人也喜欢</code> 部分。</li>
-<li>Notice：通知类型。这种其实已经是功能类型了。通知类型一般用于 APP 中的各种通知，私信等。这种也是 Timeline 类型，或者是 Aggregate 类型。</li>
-</ul>
-<h2 id="设计-Feed-流系统的-2-个核心"><a href="#设计-Feed-流系统的-2-个核心" class="headerlink" title="设计 Feed 流系统的 2 个核心"></a>设计 Feed 流系统的 2 个核心</h2><h3 id="Feed-数据"><a href="#Feed-数据" class="headerlink" title="Feed 数据"></a>Feed 数据</h3><p>Feed 流系统是一个数据流系统。如果要设计一个 Feed 流系统，最关键的两个核心：一个是数据存储（发布 Feed），一个是数据推送（读取 Feed）。</p>
-<p>这两个核心我们稍后再谈，我们先从数据层面看。Feed 流中的数据主要可分为三类，分别是：</p>
-<ul>
-<li>发布者的数据：发布者发布数据，然后数据需要按照关注者进行组织，需要根据关注者查到所有数据，比如微博的个人页面、朋友圈的个人相册等。</li>
-<li>关注关系：系统中个体间的关系。微博中是关注，是单向流，朋友圈是好友，是双向流。不管是单向还是双向，当发布者发布一条信息时，该条信息的流动永远是单向的。</li>
-<li>粉丝的数据：从不同发布者那里获取到的数据，然后通过某种顺序（一般为时间 timeline）组织到一起，比如微博首页、朋友圈首页等。这些数据具有时间热度属性，越新的数据越有价值，越新的数据就要排在最前面。</li>
-</ul>
-<p>针对这三类数据，我们可以定义为三个数据库：</p>
-<ul>
-<li>存储库：存储发布者的 Feed 数据，永久保存。我们已经存放到 MySQL 中</li>
-<li>关注表：用户关系表，永久保存。</li>
-<li>同步库（未读池）：存储接收者的时间热度数据，只需要保留最近一段时间的数据即可。</li>
-</ul>
-<h3 id="数据存储（发布-Feed）"><a href="#数据存储（发布-Feed）" class="headerlink" title="数据存储（发布 Feed）"></a>数据存储（发布 Feed）</h3><p>Feed 消息的特点：</p>
-<ul>
-<li>Feed 信息的最大特点就是数据量大。而且在 Feed 流系统里面很多时候都会选择写扩散（推模式）模式，这时候数据量会再膨胀几个数量级，这里的数据量很容易达到 100TB，甚至 PB 级别。</li>
-<li>数据格式简单。</li>
-<li>数据不能丢失，可靠性要求高。</li>
-<li>自增主键功能，保证个人发的 Feed 的消息 ID 在个人发件箱中都是严格递增的，这样读取时只需要一个范围读取即可。由于个人发布的 Feed 并发度很低，这里用时间戳也能满足基本需求，但是当应用层队列堵塞，网络延迟变大或时间回退时，用时间戳还是无法保证严格递增。这里最好是有自增功能。</li>
-</ul>
-<p>根据上述这些 Feed 数据的特征，最佳的系统应该是具有主键自增功能的分布式 NoSQL 数据库。但是这样的数据库在开源系统里面没有，所以常用的做法有两种：</p>
-<ul>
-<li>关系型数据库 + 分库分表</li>
-<li>关系型数据库 + 分布式 NoSQL 数据库，其中关系型数据库提供主键自增功能。</li>
-</ul>
-<p>目前业界大部分著名的 Feed 流产品，早期都是上面的 2 种模式之一。但是这会存在一个非常大的问题就是关系型数据库，比如开源 MySQL 数据库的主键自增功能性能差。不管是用 MyISAM，还是 InnoDB 引擎，要保证自增 ID 严格递增，必须使用表锁。这个粒度非常大，会严重限制并发度，影响性能。</p>
-<p>基于上述原因，部分技术公司早已经开始考虑使用表格存储（TableStore）。</p>
-<p>表格存储是一个具有自增主键功能的分布式 NoSQL 数据库，这样就只需要使用一种系统即可。除此之外表格存储还有以下的特点：</p>
-<ul>
-<li>天然分布式数据库，无需分库分表，单表可达 10PB，10 万亿行，可支持千万级 TPS/QPS。</li>
-<li>号称 SLA 可用性可达到 10 个 9，Feed 内容不容易丢失。</li>
-<li>主键自增功能性能极佳，其他所有系统在做自增功能的时候都需要加锁，但是表格存储的主键自增功能在写入自增列行的时候，完全不需要锁，既不需要表锁，也不需要行锁。</li>
-</ul>
-<h3 id="数据推送（读取-Feed）"><a href="#数据推送（读取-Feed）" class="headerlink" title="数据推送（读取 Feed）"></a>数据推送（读取 Feed）</h3><p>数据推送的实现有 3 种方案，分别是：</p>
-<ul>
-<li>拉方案：也称为读扩散。很多 Feed 流产品的第一版会采用这种方案，但很快就抛弃了。</li>
-<li>推方案：也成为写扩散。Feed 流系统中最常用、有效的模式。用户关系数比较均匀，或者有上限，比较出名的有微信朋友圈。</li>
-<li>推拉组合：大部分用户的账号关系都是几百个，但是有个别用户是 1000 万以上，比如微博。</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th align="center">类型</th>
-<th align="center">推模式</th>
-<th align="center">拉模式</th>
-<th align="center">推拉结合模式</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="center">写放大</td>
-<td align="center">高</td>
-<td align="center">无</td>
-<td align="center">中</td>
-</tr>
-<tr>
-<td align="center">读放大</td>
-<td align="center">无</td>
-<td align="center">高</td>
-<td align="center">中</td>
-</tr>
-<tr>
-<td align="center">用户读取延时</td>
-<td align="center">毫秒</td>
-<td align="center">秒</td>
-<td align="center">秒</td>
-</tr>
-<tr>
-<td align="center">读写比例</td>
-<td align="center">1:99</td>
-<td align="center">99:1</td>
-<td align="center">50:50</td>
-</tr>
-<tr>
-<td align="center">系统要求</td>
-<td align="center">写能力强</td>
-<td align="center">读能力强</td>
-<td align="center">读写都适中</td>
-</tr>
-<tr>
-<td align="center">常见系统</td>
-<td align="center">分布式 NoSQL</td>
-<td align="center">内存缓存或搜索系统<br>(推荐排序场景)</td>
-<td align="center">两者结合</td>
-</tr>
-<tr>
-<td align="center">架构复杂度</td>
-<td align="center">简单</td>
-<td align="center">复杂</td>
-<td align="center">更复杂</td>
-</tr>
-</tbody></table>
-<p>数据推送方式的选择依据：</p>
-<ul>
-<li>如果产品中是双向关系，那么就采用推模式。</li>
-<li>如果产品中是单向关系，且用户数少于 1000 万，那么也采用推模式，足够了。</li>
-<li>如果产品是单向关系，单用户数大于 1000 万，那么采用推拉结合模式，这时候可以从推模式演进过来，不需要额外重新推翻重做。</li>
-<li>永远不要只用拉模式。</li>
-<li>如果是一个初创企业，先用推模式，快速把系统设计出来，然后让产品去验证、迭代，等客户数大幅上涨到 1000 万后，再考虑升级为推拉集合模式。</li>
-</ul>
-<p>所以，接下来我们选择的先是写扩散，然后推拉组合。</p>
-<h3 id="表结构设计"><a href="#表结构设计" class="headerlink" title="表结构设计"></a>表结构设计</h3><p>同步库表设计结构：</p>
-<p>Table：user_message_table</p>
-<table>
-<thead>
-<tr>
-<th align="left">主键列</th>
-<th align="left">第1列主键</th>
-<th align="left">第2列主键</th>
-<th align="left">第3列主键</th>
-<th align="left">第4列主键</th>
-<th align="left">属性列</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">列名</td>
-<td align="left">user_id</td>
-<td align="left">sequence_id</td>
-<td align="left">sender_id</td>
-<td align="left">message_id</td>
-<td align="left">other</td>
-</tr>
-<tr>
-<td align="left">解释</td>
-<td align="left">接收者 ID</td>
-<td align="left">消息顺序 ID，要求自增。</td>
-<td align="left">发送者的用户 ID</td>
-<td align="left">消息 ID。通过 sender_id 和 message_id 可以到存储库中查询到消息内容</td>
-<td align="left">其他字段内容，同步库中不需要包括消息内容。</td>
-</tr>
-</tbody></table>
-<p>关注或好友关系表设计结构：</p>
-<p>Table：user_relation_table</p>
-<table>
-<thead>
-<tr>
-<th align="left">主键顺序</th>
-<th align="left">第1列主键</th>
-<th align="left">第2列主键</th>
-<th align="left">属性列</th>
-<th align="left">属性列</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">Table 字段名</td>
-<td align="left">user_id</td>
-<td align="left">follow_user_id</td>
-<td align="left">timestamp</td>
-<td align="left">other</td>
-</tr>
-<tr>
-<td align="left">备注</td>
-<td align="left">用户 ID</td>
-<td align="left">粉丝用户 ID</td>
-<td align="left">关注时间</td>
-<td align="left">其他属性列</td>
-</tr>
-</tbody></table>
-<p>未读池表设计结构：</p>
-<p>Table: user_message_session_table</p>
-<table>
-<thead>
-<tr>
-<th align="left">主键列顺序</th>
-<th align="left">第一列主键</th>
-<th align="left">属性列</th>
-</tr>
-</thead>
-<tbody><tr>
-<td align="left">列名</td>
-<td align="left">user_id</td>
-<td align="left">last_sequence_id</td>
-</tr>
-<tr>
-<td align="left">备注</td>
-<td align="left">接收者用户 ID</td>
-<td align="left">该接收者已经推送给客户端的最新的顺序 ID</td>
-</tr>
-</tbody></table>
-
+          <p>在信息工程中，Feed 其实是一个信息单元，比如一条朋友圈状态、一条微博、一条咨询或一条短视频等。Feed 流就是不停更新的信息单元，只要关注某些发布者就能获取到源源不断的新鲜信息，我们的用户也就可以在移动设备上逐条去浏览这些信息单元。当前最流行的 Feed 流产品有微博、微信朋友圈、头条的资讯推荐、快手抖音的视频推荐等。还有一些变种，比如私信、通知等，这些系统都是 Feed 流系统。接下来我们将介绍如何设计一个 Feed 流系统架构。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/project/renran-feed-flow/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -1763,7 +1225,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-count">47</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>

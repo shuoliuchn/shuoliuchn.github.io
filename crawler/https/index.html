@@ -22,42 +22,22 @@
     var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"appID":"PXY1Z6GHKT","apiKey":"eb82f2e78e3053f26aa408e9caa96d93","indexName":"blog","hits":{"per_page":10},"labels":{"input_placeholder":"要查点什么(✿◡‿◡)","hits_empty":"没有找到任何关于 ${query} 的结果╥﹏╥...","hits_stats":"搜索到 ${hits} 条记录，用时 ${time} ms o(*￣▽￣*)ブ"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="HTTPS 是基于 HTTP 和 SSL&#x2F;TLS 实现的一个协议，使用 HTTPS 在网络上传输的数据都是加密的，从而保证数据安全。 接下来我们从没有加密的 HTTP 协议开始，逐步对数据进行加密，增加安全性，最终实现 HTTPS。 HTTP 协议是不安全的。在 HTTPS 诞生之前，所有网站都直接使用 HTTP 协议。而 HTTP 协议在数据传输的过程中使用的都是明文，传输的数据很容易被泄露和篡">
+  <meta name="description" content="HTTPS 是基于 HTTP 和 SSL&#x2F;TLS 实现的一个协议，使用 HTTPS 在网络上传输的数据都是加密的，从而保证数据安全。接下来我们从没有加密的 HTTP 协议开始，逐步对数据进行加密，增加安全性，最终实现 HTTPS。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="HTTPS 简要介绍">
 <meta property="og:url" content="https://sliu.vip/crawler/https/index.html">
 <meta property="og:site_name" content="刘硕的技术查阅手册">
-<meta property="og:description" content="HTTPS 是基于 HTTP 和 SSL&#x2F;TLS 实现的一个协议，使用 HTTPS 在网络上传输的数据都是加密的，从而保证数据安全。 接下来我们从没有加密的 HTTP 协议开始，逐步对数据进行加密，增加安全性，最终实现 HTTPS。 HTTP 协议是不安全的。在 HTTPS 诞生之前，所有网站都直接使用 HTTP 协议。而 HTTP 协议在数据传输的过程中使用的都是明文，传输的数据很容易被泄露和篡">
+<meta property="og:description" content="HTTPS 是基于 HTTP 和 SSL&#x2F;TLS 实现的一个协议，使用 HTTPS 在网络上传输的数据都是加密的，从而保证数据安全。接下来我们从没有加密的 HTTP 协议开始，逐步对数据进行加密，增加安全性，最终实现 HTTPS。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://sliu.vip/crawler/https/425762-20191011170310978-1749072007.png">
 <meta property="og:image" content="https://sliu.vip/crawler/https/425762-20191011171952360-1006144456.png">
 <meta property="og:image" content="https://sliu.vip/crawler/https/425762-20191012094802650-1040359608.png">
 <meta property="og:image" content="https://sliu.vip/crawler/https/425762-20191012103813623-466756626.png">
 <meta property="article:published_time" content="2020-03-29T16:05:29.278Z">
-<meta property="article:modified_time" content="2020-03-29T16:05:32.361Z">
+<meta property="article:modified_time" content="2020-03-31T17:23:50.195Z">
 <meta property="article:author" content="刘硕">
-<meta property="article:tag" content="Python">
-<meta property="article:tag" content="全栈开发">
-<meta property="article:tag" content="并发编程">
-<meta property="article:tag" content="网络编程">
 <meta property="article:tag" content="爬虫">
-<meta property="article:tag" content="数据库">
-<meta property="article:tag" content="自动化测试">
-<meta property="article:tag" content="Web开发">
-<meta property="article:tag" content="HTML">
-<meta property="article:tag" content="CSS">
-<meta property="article:tag" content="JavaScript">
-<meta property="article:tag" content="jQuery">
-<meta property="article:tag" content="Bootstrap">
-<meta property="article:tag" content="测试自动化">
-<meta property="article:tag" content="Selenium">
-<meta property="article:tag" content="postman">
-<meta property="article:tag" content="Linux">
-<meta property="article:tag" content="Vue">
-<meta property="article:tag" content="drf">
-<meta property="article:tag" content="django">
-<meta property="article:tag" content="文档翻译">
-<meta property="article:tag" content="PEP8">
+<meta property="article:tag" content="网络编程">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://sliu.vip/crawler/https/425762-20191011170310978-1749072007.png">
 
@@ -259,10 +239,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-03-30 00:05:29 / 修改时间：00:05:32" itemprop="dateCreated datePublished" datetime="2020-03-30T00:05:29+08:00">2020-03-30</time>
+              <time title="创建时间：2020-03-30 00:05:29" itemprop="dateCreated datePublished" datetime="2020-03-30T00:05:29+08:00">2020-03-30</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-01 01:23:50" itemprop="dateModified" datetime="2020-04-01T01:23:50+08:00">2020-04-01</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -295,6 +281,7 @@
   </span>
   
   
+            <div class="post-description">HTTPS 是基于 HTTP 和 SSL/TLS 实现的一个协议，使用 HTTPS 在网络上传输的数据都是加密的，从而保证数据安全。接下来我们从没有加密的 HTTP 协议开始，逐步对数据进行加密，增加安全性，最终实现 HTTPS。</div>
 
         </div>
       </header>
@@ -347,6 +334,10 @@
     
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%88%AC%E8%99%AB/" rel="tag"># 爬虫</a>
+              <a href="/tags/%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" rel="tag"># 网络编程</a>
+          </div>
 
         
 
@@ -450,7 +441,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-count">47</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
