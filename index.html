@@ -230,6 +230,935 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/data-analysis/pandas-basic/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/data-analysis/pandas-basic/" class="post-title-link" itemprop="url">pandas 的基础操作</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-04-02 01:35:37 / 修改时间：01:35:38" itemprop="dateCreated datePublished" datetime="2020-04-02T01:35:37+08:00">2020-04-02</time>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/data-analysis/pandas-basic/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/data-analysis/pandas-basic/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>4.8k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>4 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="pandas-初识"><a href="#pandas-初识" class="headerlink" title="pandas 初识"></a>pandas 初识</h3><p>既然 numpy 已经可以帮助我们进行数据的处理了，我们为什么还要学习 pandas 呢？</p>
+<p>原来，numpy 主要用来帮助我们处理的是数值型的数据，当然在数据分析中除了数值型的数据还有好多其他类型的数据（字符串，时间序列）， pandas 就可以帮我们很好地处理除了数值型的其他数据！</p>
+<p>学习 pandas 我们主要是学习其中的两个常用的类：</p>
+<ul>
+<li>Series</li>
+<li>DataFrame（重点）</li>
+</ul>
+<p>导包方式：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pandas <span class="keyword">import</span> Series, DataFrame</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br></pre></td></tr></table></figure>
+
+<h3 id="Series"><a href="#Series" class="headerlink" title="Series"></a>Series</h3><h4 id="Series-的创建"><a href="#Series-的创建" class="headerlink" title="Series 的创建"></a>Series 的创建</h4><p>Series 是一种类似于一维数组的对象，由下面两个部分组成：</p>
+<ul>
+<li>values：一组数据（ndarray 类型）</li>
+<li>index：相关的数据索引标签</li>
+</ul>
+<p>Series 可以通过两种方式来创建：</p>
+<ol>
+<li>由列表或一维 numpy 数组创建</li>
+<li>由字典创建</li>
+</ol>
+<p>由列表创建 Series：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s = Series(data=[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])    <span class="comment"># 索引是0，1，2的默认形式：隐式索引</span></span><br><span class="line">s</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0</span>    <span class="number">1</span></span><br><span class="line"><span class="number">1</span>    <span class="number">2</span></span><br><span class="line"><span class="number">2</span>    <span class="number">3</span></span><br><span class="line">dtype: int64</span><br></pre></td></tr></table></figure>
+
+<p>右侧的一列是我们的数据，左侧的那一列则是索引。在不指定的情况下，使用的是隐式索引。</p>
+<p>列表创建显式索引的 Series：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">s = Series(data=[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], index=[<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>])</span><br><span class="line">s</span><br><span class="line"><span class="comment"># a,b,c索引叫做显式索引,不会覆盖原有的隐式索引</span></span><br><span class="line"><span class="comment"># 显式索引可以增加数据的可读性</span></span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a    <span class="number">1</span></span><br><span class="line">b    <span class="number">2</span></span><br><span class="line">c    <span class="number">3</span></span><br><span class="line">dtype: int64</span><br></pre></td></tr></table></figure>
+
+<p>要注意，Series 的数据必须是一维的，否则会报错。</p>
+<p>除了使用列表，我们也可以通过 array 创建 Series：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s= Series(data=np.random.randint(<span class="number">0</span>, <span class="number">100</span>, size=(<span class="number">4</span>,)))</span><br><span class="line">s</span><br></pre></td></tr></table></figure>
+
+<p>创建出来的 Series 为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0</span>    <span class="number">59</span></span><br><span class="line"><span class="number">1</span>    <span class="number">88</span></span><br><span class="line"><span class="number">2</span>    <span class="number">99</span></span><br><span class="line"><span class="number">3</span>    <span class="number">37</span></span><br><span class="line">dtype: int32</span><br></pre></td></tr></table></figure>
+
+<p>列表创建的 Series 默认是隐式索引，因为列表是无法指定显示索引的。如果我们使用字典作为数据源创建 Series，键将会用作显式索引，值则为数据：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">data = &#123;</span><br><span class="line">    <span class="string">'语文'</span>: <span class="number">100</span>,</span><br><span class="line">    <span class="string">'数学'</span>: <span class="number">120</span>,</span><br><span class="line">    <span class="string">'英语'</span>: <span class="number">120</span>,</span><br><span class="line">&#125;</span><br><span class="line">s = Series(data=data)    <span class="comment"># 字典的key作为Seres的显示索引</span></span><br><span class="line">s</span><br></pre></td></tr></table></figure>
+
+<p>这样生成的 Series 为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">语文    <span class="number">100</span></span><br><span class="line">数学    <span class="number">120</span></span><br><span class="line">英语    <span class="number">120</span></span><br><span class="line">dtype: int64</span><br></pre></td></tr></table></figure>
+
+<p>数据成功加入，键作为了 Series 的索引。</p>
+<h4 id="Series-的索引和切片"><a href="#Series-的索引和切片" class="headerlink" title="Series 的索引和切片"></a>Series 的索引和切片</h4><p>Series 的隐式索引是永远可用的，显式索引只有在指定了的时候才可用。</p>
+<p>Series 的索引可以像列表一样中括号取值，也可以像类属性一样用点取值，甚至还可以一次取多个值，使用方法十分灵活多样。</p>
+<p>我们用的数据还是刚刚通过字典创建的 Series：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">数学    <span class="number">120</span></span><br><span class="line">英语    <span class="number">120</span></span><br><span class="line">语文    <span class="number">100</span></span><br><span class="line">dtype: int64</span><br></pre></td></tr></table></figure>
+
+<p>索引演示：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">s[<span class="number">0</span>]    <span class="comment"># 120    隐式索引取值</span></span><br><span class="line">s[<span class="string">'语文'</span>]    <span class="comment"># 100    显式索引取值</span></span><br><span class="line">s.英语    <span class="comment"># 120    点取值</span></span><br><span class="line">s[[<span class="string">'语文'</span>, <span class="string">'数学'</span>]]    <span class="comment"># 取多值</span></span><br><span class="line"><span class="comment"># 取多值的结果为：</span></span><br><span class="line">语文    <span class="number">100</span></span><br><span class="line">数学    <span class="number">120</span></span><br><span class="line">dtype: int64</span><br></pre></td></tr></table></figure>
+
+<p>Series 的切片和普通列表一样，只是多了显示索引切片的方法。</p>
+<p>隐式索引切片和普通列表使用方法相同，顾头不顾尾：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">s[<span class="number">0</span>:<span class="number">2</span>]</span><br></pre></td></tr></table></figure>
+
+<p>切片的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">数学    <span class="number">120</span></span><br><span class="line">英语    <span class="number">120</span></span><br><span class="line">dtype: int64</span><br></pre></td></tr></table></figure>
+
+<p>显示索引切片与列表略有不同，切片结果首位兼得：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">s[<span class="string">'英语'</span>: <span class="string">'语文'</span>]</span><br></pre></td></tr></table></figure>
+
+<p>切片的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">英语    <span class="number">120</span></span><br><span class="line">语文    <span class="number">100</span></span><br><span class="line">dtype: int64</span><br></pre></td></tr></table></figure>
+
+<h4 id="Series-的常用属性"><a href="#Series-的常用属性" class="headerlink" title="Series 的常用属性"></a>Series 的常用属性</h4><p>Series 的常用属性有：</p>
+<ul>
+<li>shape</li>
+<li>size</li>
+<li>index</li>
+<li>values</li>
+</ul>
+<p>使用方式如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">s.shape    <span class="comment"># (3,) Series的结构形状</span></span><br><span class="line">s.size    <span class="comment"># 3 Series的尺寸，也就是元素个数</span></span><br><span class="line">s.index    <span class="comment"># Index(['数学', '英语', '语文'], dtype='object') 索引</span></span><br><span class="line">s.values    <span class="comment"># array([120, 120, 100], dtype=int64) 值</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="Series-的常用方法"><a href="#Series-的常用方法" class="headerlink" title="Series 的常用方法"></a>Series 的常用方法</h4><ul>
+<li><code>head()</code> 和 <code>tail()</code></li>
+<li><code>unique()</code> 和 <code>nunique()</code></li>
+<li><code>isnull()</code> 和 <code>notnull()</code></li>
+<li><code>add()</code>、<code>sub()</code>、<code>mul()</code> 和 <code>div()</code></li>
+</ul>
+<p>首先创建一个 Series：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s = Series(data=[<span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">6</span>, <span class="number">7</span>])</span><br><span class="line">s</span><br></pre></td></tr></table></figure>
+
+<p>head 方法可以查看前 n 个数据：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">s.head(<span class="number">5</span>)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0</span>    <span class="number">1</span></span><br><span class="line"><span class="number">1</span>    <span class="number">1</span></span><br><span class="line"><span class="number">2</span>    <span class="number">2</span></span><br><span class="line"><span class="number">3</span>    <span class="number">2</span></span><br><span class="line"><span class="number">4</span>    <span class="number">3</span></span><br><span class="line">dtype: <span class="built_in">int</span>64</span><br></pre></td></tr></table></figure>
+
+<p>tail 方法用来查看后 n 个数据：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">s.tail(<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+
+<p>就拿到了后 3 条数据：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">7</span>    <span class="number">6</span></span><br><span class="line"><span class="number">8</span>    <span class="number">6</span></span><br><span class="line"><span class="number">9</span>    <span class="number">7</span></span><br><span class="line">dtype: int64</span><br></pre></td></tr></table></figure>
+
+<p>unique 用于给 Series 去重：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">s.unique()</span><br></pre></td></tr></table></figure>
+
+<p>注意返回的是数组，而不是 Series：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">array([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>], dtype=int64)</span><br></pre></td></tr></table></figure>
+
+<p>nunique 可以查看 Series 中非重复元素的总个数：</p>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">s.nunique()    <span class="meta"># 7</span></span><br></pre></td></tr></table></figure>
+
+<p>在这里先讨论一下 Series 的算术运算。Series 的运算法则是索引一致的元素进行算数运算否则补空。例如：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">s1 = Series(data=[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], index=[<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>])</span><br><span class="line">s2 = Series(data=[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], index=[<span class="string">'a'</span>, <span class="string">'d'</span>, <span class="string">'c'</span>])</span><br><span class="line">s = s1 + s2</span><br><span class="line">s</span><br></pre></td></tr></table></figure>
+
+<p>注意在 s1 中没有索引为 d 的数据，而 s2 中没有索引为 b 的数据。所以两个 Series 加和之后，得到的新 Series中，b 和 d 对应的数据为空：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a    <span class="number">2.0</span></span><br><span class="line">b    NaN</span><br><span class="line">c    <span class="number">6.0</span></span><br><span class="line">d    NaN</span><br><span class="line">dtype: float64</span><br></pre></td></tr></table></figure>
+
+<p>isnull 方法可以判断 Series 中的元素是否为空：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">s.isnull()</span><br></pre></td></tr></table></figure>
+
+<p>返回的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a    <span class="literal">False</span></span><br><span class="line">b     <span class="literal">True</span></span><br><span class="line">c    <span class="literal">False</span></span><br><span class="line">d     <span class="literal">True</span></span><br><span class="line">dtype: bool</span><br></pre></td></tr></table></figure>
+
+<p>notnull 方法用来判断 Series 中的元素是否非空：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">s</span><span class="selector-class">.notnull</span>()</span><br></pre></td></tr></table></figure>
+
+<p>返回的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">a     <span class="literal">True</span></span><br><span class="line">b    <span class="literal">False</span></span><br><span class="line">c     <span class="literal">True</span></span><br><span class="line">d    <span class="literal">False</span></span><br><span class="line">dtype: bool</span><br></pre></td></tr></table></figure>
+
+<h3 id="DataFrame"><a href="#DataFrame" class="headerlink" title="DataFrame"></a>DataFrame</h3><p>DataFrame 是一个 <code>表格型</code> 的数据结构。DataFrame 由按一定顺序排列的多列数据组成。设计初衷是将 Series 的使用场景从一维拓展到多维。DataFrame 既有行索引，也有列索引。</p>
+<ul>
+<li>行索引：index</li>
+<li>列索引：columns</li>
+<li>值：values</li>
+</ul>
+<h4 id="DataFrame-的创建"><a href="#DataFrame-的创建" class="headerlink" title="DataFrame 的创建"></a>DataFrame 的创建</h4><p>DataFrame 同样有两种创建方式：</p>
+<ul>
+<li>ndarray 或列表创建</li>
+<li>字典创建</li>
+</ul>
+<p>使用 ndarray 创建 DataFrame：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df = DataFrame(data=[[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]], index=[<span class="string">'a'</span>, <span class="string">'b'</span>], columns=[<span class="string">'A'</span>, <span class="string">'B'</span>, <span class="string">'C'</span>])</span><br><span class="line">df</span><br></pre></td></tr></table></figure>
+
+<p>创建出来的 DataFrame 是表格形式的数据：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">	A	B	C</span><br><span class="line">a	<span class="number">1</span>	<span class="number">2</span>	<span class="number">3</span></span><br><span class="line">b	<span class="number">4</span>	<span class="number">5</span>	<span class="number">6</span></span><br></pre></td></tr></table></figure>
+
+<p>还可以通过 ndarray 创建 DataFrame：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df = DataFrame(data=np.random.randint(<span class="number">0</span>, <span class="number">100</span>, (<span class="number">6</span>, <span class="number">8</span>)))</span><br><span class="line">df</span><br></pre></td></tr></table></figure>
+
+<p>如果不指定显性索引，将使用隐式索引：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">	<span class="number">0</span>	<span class="number">1</span>	<span class="number">2</span>	<span class="number">3</span>	<span class="number">4</span>	<span class="number">5</span>	<span class="number">6</span>	<span class="number">7</span></span><br><span class="line"><span class="number">0</span>	<span class="number">82</span>	<span class="number">31</span>	<span class="number">53</span>	<span class="number">64</span>	<span class="number">75</span>	<span class="number">48</span>	<span class="number">72</span>	<span class="number">32</span></span><br><span class="line"><span class="number">1</span>	<span class="number">54</span>	<span class="number">37</span>	<span class="number">20</span>	<span class="number">29</span>	<span class="number">73</span>	<span class="number">52</span>	<span class="number">23</span>	<span class="number">38</span></span><br><span class="line"><span class="number">2</span>	<span class="number">17</span>	<span class="number">14</span>	<span class="number">13</span>	<span class="number">60</span>	<span class="number">24</span>	<span class="number">69</span>	<span class="number">27</span>	<span class="number">36</span></span><br><span class="line"><span class="number">3</span>	<span class="number">37</span>	<span class="number">8</span>	<span class="number">51</span>	<span class="number">18</span>	<span class="number">77</span>	<span class="number">58</span>	<span class="number">56</span>	<span class="number">32</span></span><br><span class="line"><span class="number">4</span>	<span class="number">29</span>	<span class="number">13</span>	<span class="number">41</span>	<span class="number">31</span>	<span class="number">95</span>	<span class="number">6</span>	<span class="number">66</span>	<span class="number">67</span></span><br><span class="line"><span class="number">5</span>	<span class="number">14</span>	<span class="number">39</span>	<span class="number">5</span>	<span class="number">29</span>	<span class="number">79</span>	<span class="number">62</span>	<span class="number">42</span>	<span class="number">90</span></span><br></pre></td></tr></table></figure>
+
+<p>我们同样可以通过字典来创建 DataFrame：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">data = &#123;</span><br><span class="line">    <span class="string">'A'</span>: &#123;<span class="string">'a'</span>: <span class="number">1</span>, <span class="string">'b'</span>: <span class="number">2</span>&#125;,</span><br><span class="line">    <span class="string">'B'</span>: &#123;<span class="string">'a'</span>: <span class="number">3</span>, <span class="string">'b'</span>: <span class="number">4</span>&#125;,</span><br><span class="line">&#125;</span><br><span class="line">df = DataFrame(data=data)</span><br><span class="line">df</span><br></pre></td></tr></table></figure>
+
+<p>创建出来的 DataFrame 就是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">	A	B</span><br><span class="line">a	<span class="number">1</span>	<span class="number">3</span></span><br><span class="line">b	<span class="number">2</span>	<span class="number">4</span></span><br></pre></td></tr></table></figure>
+
+<p>我们也可以在字典中部分指定显式索引，然后将另外的显式索引作为参数传递进去：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">data = &#123;</span><br><span class="line">    <span class="string">'张三'</span>: [<span class="number">150</span>, <span class="number">150</span>, <span class="number">150</span>, <span class="number">150</span>],</span><br><span class="line">    <span class="string">'李四'</span>: [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>],</span><br><span class="line">&#125;</span><br><span class="line">df = DataFrame(data=data, index=[<span class="string">'语文'</span>, <span class="string">'数学'</span>, <span class="string">'英语'</span>, <span class="string">'理综'</span>])</span><br><span class="line">df</span><br></pre></td></tr></table></figure>
+
+<p>创建出来的 DataFrame 就是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">	张三	李四</span><br><span class="line">语文	<span class="number">150</span>	<span class="number">0</span></span><br><span class="line">数学	<span class="number">150</span>	<span class="number">0</span></span><br><span class="line">英语	<span class="number">150</span>	<span class="number">0</span></span><br><span class="line">理综	<span class="number">150</span>	<span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="DataFrame-的属性"><a href="#DataFrame-的属性" class="headerlink" title="DataFrame 的属性"></a>DataFrame 的属性</h4><ul>
+<li>values</li>
+<li>columns</li>
+<li>index</li>
+<li>shape</li>
+</ul>
+<p>这里仍然使用刚刚创建的 DataFrame 数据：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">	张三	李四</span><br><span class="line">语文	<span class="number">150</span>	<span class="number">0</span></span><br><span class="line">数学	<span class="number">150</span>	<span class="number">0</span></span><br><span class="line">英语	<span class="number">150</span>	<span class="number">0</span></span><br><span class="line">理综	<span class="number">150</span>	<span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<p>这些属性的用法如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">df.values    <span class="comment"># 查看DataFrame中所有的值，返回的是数组</span></span><br><span class="line"><span class="comment"># 查看值的结果：</span></span><br><span class="line">array([[<span class="number">150</span>,   <span class="number">0</span>],</span><br><span class="line">       [<span class="number">150</span>,   <span class="number">0</span>],</span><br><span class="line">       [<span class="number">150</span>,   <span class="number">0</span>],</span><br><span class="line">       [<span class="number">150</span>,   <span class="number">0</span>]], dtype=int64)</span><br><span class="line"></span><br><span class="line">df.index     <span class="comment"># Index(['语文', '数学', '英语', '理综'], dtype='object') 横向索引</span></span><br><span class="line">df.columns    <span class="comment"># Index(['张三', '李四'], dtype='object') 纵向索引</span></span><br><span class="line">df.shape    <span class="comment"># (4, 2)</span></span><br><span class="line">df.size    <span class="comment"># 8</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="DataFrame-的索引和切片"><a href="#DataFrame-的索引和切片" class="headerlink" title="DataFrame 的索引和切片"></a>DataFrame 的索引和切片</h4><p>首先，创建一个 5 行 4 列的数据，用来后面的操作：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df = DataFrame(data=np.random.randint(<span class="number">0</span>, <span class="number">100</span>, (<span class="number">5</span>, <span class="number">4</span>)), columns=[<span class="string">'A'</span>, <span class="string">'B'</span>, <span class="string">'C'</span>, <span class="string">'D'</span>], index=[<span class="string">'a'</span>, <span class="string">'b'</span>, <span class="string">'c'</span>, <span class="string">'d'</span>, <span class="string">'e'</span>])</span><br><span class="line">df</span><br></pre></td></tr></table></figure>
+
+<p>生成的数据为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">	A	B	C	D</span><br><span class="line">a	<span class="number">31</span>	<span class="number">2</span>	<span class="number">57</span>	<span class="number">84</span></span><br><span class="line">b	<span class="number">88</span>	<span class="number">18</span>	<span class="number">64</span>	<span class="number">81</span></span><br><span class="line">c	<span class="number">35</span>	<span class="number">5</span>	<span class="number">48</span>	<span class="number">71</span></span><br><span class="line">d	<span class="number">69</span>	<span class="number">57</span>	<span class="number">86</span>	<span class="number">44</span></span><br><span class="line">e	<span class="number">19</span>	<span class="number">92</span>	<span class="number">8</span>	<span class="number">68</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="DataFrame-的索引操作"><a href="#DataFrame-的索引操作" class="headerlink" title="DataFrame 的索引操作"></a>DataFrame 的索引操作</h5><p>DataFrame 的索引操作分为三个方面：</p>
+<ul>
+<li>对行进行索引</li>
+<li>对列进行索引</li>
+<li>对元素进行索引</li>
+</ul>
+<p>对列进行索引是最简单直观的，直接通过索引取即可：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df[<span class="string">'A'</span>]</span><br></pre></td></tr></table></figure>
+
+<p>成功取到 A 列：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">a    <span class="number">31</span></span><br><span class="line">b    <span class="number">88</span></span><br><span class="line">c    <span class="number">35</span></span><br><span class="line">d    <span class="number">69</span></span><br><span class="line">e    <span class="number">19</span></span><br><span class="line">Name: A, dtype: int32</span><br></pre></td></tr></table></figure>
+
+<p>我们同样可以取多列：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df[[<span class="string">'B'</span>, <span class="string">'D'</span>]]</span><br></pre></td></tr></table></figure>
+
+<p>取到的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">	B	D</span><br><span class="line">a	<span class="number">2</span>	<span class="number">84</span></span><br><span class="line">b	<span class="number">18</span>	<span class="number">81</span></span><br><span class="line">c	<span class="number">5</span>	<span class="number">71</span></span><br><span class="line">d	<span class="number">57</span>	<span class="number">44</span></span><br><span class="line">e	<span class="number">92</span>	<span class="number">68</span></span><br></pre></td></tr></table></figure>
+
+<p>索引取行要用到 loc 和 iloc。其中，loc 用来进行显式索引取行，iloc 用来进行隐式索引取行。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df.loc[<span class="string">'a'</span>]    <span class="comment"># 显式索引取行</span></span><br><span class="line">df.iloc[<span class="number">3</span>]    <span class="comment"># 隐式索引取行</span></span><br></pre></td></tr></table></figure>
+
+<p>虽然两种方式返回的数据不同，但格式是一致的，我就只放一个隐式索引的结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">A    <span class="number">69</span></span><br><span class="line">B    <span class="number">57</span></span><br><span class="line">C    <span class="number">86</span></span><br><span class="line">D    <span class="number">44</span></span><br><span class="line">Name: d, dtype: int32</span><br></pre></td></tr></table></figure>
+
+<p>同样，可以索引取多行：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df.loc[[<span class="string">'b'</span>, <span class="string">'e'</span>]]    <span class="comment"># 显式索引取多行</span></span><br><span class="line">df.iloc[[<span class="number">3</span>, <span class="number">4</span>]]    <span class="comment"># 隐式索引取多行</span></span><br></pre></td></tr></table></figure>
+
+<p>同样只放一个隐士索引的结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">	A	B	C	D</span><br><span class="line">d	<span class="number">69</span>	<span class="number">57</span>	<span class="number">86</span>	<span class="number">44</span></span><br><span class="line">e	<span class="number">19</span>	<span class="number">92</span>	<span class="number">8</span>	<span class="number">68</span></span><br></pre></td></tr></table></figure>
+
+<p>给定两个坐标，可以定位到 DataFrame 中的元素：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df.loc[<span class="string">'b'</span>, <span class="string">'D'</span>]    <span class="comment"># 81</span></span><br><span class="line">df.iloc[<span class="number">2</span>, <span class="number">3</span>]    <span class="comment"># 71</span></span><br></pre></td></tr></table></figure>
+
+<h5 id="DataFrame-的切片操作"><a href="#DataFrame-的切片操作" class="headerlink" title="DataFrame 的切片操作"></a>DataFrame 的切片操作</h5><p>切片操作包括两部分：</p>
+<ul>
+<li>对行进行切片</li>
+<li>对列进行切片</li>
+</ul>
+<p>与索引操作相反，DataFrame 对行切片可以直接操作。同 Series 一样，隐式索引切片是顾头不顾尾的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df[<span class="number">2</span>:<span class="number">4</span>]</span><br></pre></td></tr></table></figure>
+
+<p>切片结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">	A	B	C	D</span><br><span class="line">c	<span class="number">35</span>	<span class="number">5</span>	<span class="number">48</span>	<span class="number">71</span></span><br><span class="line">d	<span class="number">69</span>	<span class="number">57</span>	<span class="number">86</span>	<span class="number">44</span></span><br></pre></td></tr></table></figure>
+
+<p>也可以用显示索引切片，这回是顾头又顾尾了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df[<span class="string">'b'</span>: <span class="string">'d'</span>]</span><br></pre></td></tr></table></figure>
+
+<p>切片结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">	A	B	C	D</span><br><span class="line">b	<span class="number">88</span>	<span class="number">18</span>	<span class="number">64</span>	<span class="number">81</span></span><br><span class="line">c	<span class="number">35</span>	<span class="number">5</span>	<span class="number">48</span>	<span class="number">71</span></span><br><span class="line">d	<span class="number">69</span>	<span class="number">57</span>	<span class="number">86</span>	<span class="number">44</span></span><br></pre></td></tr></table></figure>
+
+<p>DataFrame 对列进行切片需要使用 loc 和 iloc 方法。</p>
+<p>使用显式索引对列切片：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.loc[:, <span class="string">'B'</span>: <span class="string">'C'</span>]</span><br></pre></td></tr></table></figure>
+
+<p>切片结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">	B	C</span><br><span class="line">a	<span class="number">2</span>	<span class="number">57</span></span><br><span class="line">b	<span class="number">18</span>	<span class="number">64</span></span><br><span class="line">c	<span class="number">5</span>	<span class="number">48</span></span><br><span class="line">d	<span class="number">57</span>	<span class="number">86</span></span><br><span class="line">e	<span class="number">92</span>	<span class="number">8</span></span><br></pre></td></tr></table></figure>
+
+<p>使用隐式索引切片：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.iloc[:, <span class="number">1</span>:<span class="number">3</span>]</span><br></pre></td></tr></table></figure>
+
+<p>切片结果同上。</p>
+<h5 id="DataFrame-索引和切片操作总结"><a href="#DataFrame-索引和切片操作总结" class="headerlink" title="DataFrame 索引和切片操作总结"></a>DataFrame 索引和切片操作总结</h5><p>索引：</p>
+<ul>
+<li><code>df[col]</code> 取列</li>
+<li><code>df.loc[index]</code> 取行</li>
+<li><code>df.iloc[index,col]</code> 取元素</li>
+</ul>
+<p>切片：</p>
+<ul>
+<li><code>df[index1:index3]</code> 切行</li>
+<li><code>df.iloc[:,col1:col3]</code> 切列</li>
+</ul>
+<h4 id="DataFrame-的运算"><a href="#DataFrame-的运算" class="headerlink" title="DataFrame 的运算"></a>DataFrame 的运算</h4><p>同 Series。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/data-analysis/numpy-basic/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/data-analysis/numpy-basic/" class="post-title-link" itemprop="url">numpy 的基本使用</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-04-02 01:35:37 / 修改时间：01:35:38" itemprop="dateCreated datePublished" datetime="2020-04-02T01:35:37+08:00">2020-04-02</time>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/data-analysis/numpy-basic/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/data-analysis/numpy-basic/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>8.6k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>8 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>NumPy（Numerical Python）是 Python 语言中做科学计算的基础库。重在于数值计算，也是大部分 Python 科学计算库的基础，多用于在大型、多维数组上执行的数值运算。</p>
+<p>在开始之前，我们先简要介绍一种新的数据类型：数组。</p>
+<p>数组的结构和用法和列表十分相似。不同的是，列表中的元素可以实任意数据类型，可以相同也可以不同，而数组中的元素必须是相同类型的。</p>
+<p>如果初始化传入的数据数据类型不一致，将按照 <code>字符串 &gt; 浮点型 &gt; 整数</code> 的顺序确定数组中元素的数据类型。即，如果数据中有字符串，那么数组中所有元素都会转成字符串。如果没有字符串，但是又浮点型数据，那么所有元素都会按照浮点型存储。只有当所有元素都是整型的时候，数组才会将数据存储为整型。</p>
+<h3 id="numpy-的创建"><a href="#numpy-的创建" class="headerlink" title="numpy 的创建"></a>numpy 的创建</h3><p>创建之前，要导入 numpy 数据包，一般情况下，大家会把 numpy 取别名为 np：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br></pre></td></tr></table></figure>
+
+<p>numpy 数据可以通过下面三种方式创建：</p>
+<ol>
+<li>使用 <code>np.array()</code> 创建</li>
+<li>使用 plt 创建</li>
+<li>使用 np 的 routines 函数创建</li>
+</ol>
+<h4 id="使用-array-创建数组"><a href="#使用-array-创建数组" class="headerlink" title="使用 array 创建数组"></a>使用 array 创建数组</h4><p>使用 <code>array()</code> 创建一个一维数组，很简单也很直观，就相当于把列表转成了数组：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建一个一维的numpy数组</span></span><br><span class="line">arr = np.array([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line">arr</span><br></pre></td></tr></table></figure>
+
+<p>返回的结果是一个一维数组：<code>array([1, 2, 3])</code></p>
+<p>使用 <code>array()</code> 创建一个多维数组，需要注意每个维度的数据数量要对应上，否则可能会出现问题：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">arr = np.array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]])</span><br><span class="line">arr</span><br></pre></td></tr></table></figure>
+
+<p>返回的结果是要给多维数组：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>],</span><br><span class="line">       [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]])</span><br></pre></td></tr></table></figure>
+
+<p>我们前面提到，数组中的数据类型要统一，如果不统一，将会转成优先级高的数据类型：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">arr = np.<span class="built_in">array</span>([<span class="number">1</span>, <span class="string">'a'</span>, <span class="number">3</span>,<span class="number">4</span>])</span><br><span class="line">arr</span><br></pre></td></tr></table></figure>
+
+<p>返回的结果是，三个元素都为字符串的一维数组：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">array([<span class="string">'1'</span>, <span class="string">'a'</span>, <span class="string">'3'</span>, <span class="string">'4'</span>], dtype=<span class="string">'&lt;U11'</span>)</span><br></pre></td></tr></table></figure>
+
+<h4 id="使用-plt-创建图片数组"><a href="#使用-plt-创建图片数组" class="headerlink" title="使用 plt 创建图片数组"></a>使用 plt 创建图片数组</h4><p>接下来，我们要将外部的一张图片读取加载到 numpy 数组中，然后尝试改变数组元素的数值查看对原始图片的影响。</p>
+<p>这里我们要用到数据分析中另一个很常用的模块，matplotlib。这个模块我们后面会讨论到，主要用来进行数据的可视化。事实上，只要是与图像相关的操作，都可以使用它来进行。这里我们将用这个模块进行图片数据的读取。</p>
+<p>比如这张图片：</p>
+<img src="/data-analysis/numpy-basic/bobo.jpg" class="" title="bobo">
+
+<p>首先，读取图片，并加载到数组中：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line">img_arr = plt.imread(<span class="string">'./bobo.jpg'</span>)</span><br><span class="line">img_arr</span><br></pre></td></tr></table></figure>
+
+<p>我们成功获取到了一个三维数组数据。数组中存放的数据是图片中每个元素的 rgb 数值。</p>
+<p>要将数组数据显示出来，只需要一条命令即可：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">plt.imshow(img_arr)</span><br></pre></td></tr></table></figure>
+
+<img src="/data-analysis/numpy-basic/1585733371798.png" class="" width="1585733371798">
+
+<p>接下来，我们用数组 - 100，也就是对数组中每个元素都减少 100，看看会发生什么：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">plt.imshow(img_arr - <span class="number">100</span>)</span><br></pre></td></tr></table></figure>
+
+<img src="/data-analysis/numpy-basic/1585733405186.png" class="" width="1585733405186">
+
+<p>图片发生了奇怪的变化，人变黑了，因为每个颜色都有减少。不过究竟为什么变成这样并不重要，我们只需知道数组加上（或其他四则运算）一个常数意味着给每个元素都加上（或其他四则运算）一个常数即可。</p>
+<h4 id="使用-np-的方法创建数组"><a href="#使用-np-的方法创建数组" class="headerlink" title="使用 np 的方法创建数组"></a>使用 np 的方法创建数组</h4><p>np 中有很多可以创建数组的方法，比如：</p>
+<ul>
+<li><code>zero()</code></li>
+<li><code>ones()</code></li>
+<li><code>linespace()</code></li>
+<li><code>arange()</code></li>
+<li>random 系列</li>
+</ul>
+<p>接下来，我们将逐个进行介绍。</p>
+<h5 id="zeros-和-ones"><a href="#zeros-和-ones" class="headerlink" title="zeros 和 ones"></a>zeros 和 ones</h5><p>这两个方法可以创建指定尺寸的数组，数组中的元素会全部用 0 或 1 填充：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">zeros_arr = np.zeros(shape=(<span class="number">3</span>, <span class="number">4</span>))</span><br><span class="line">ones_arr = np.ones(shape=(<span class="number">3</span>, <span class="number">4</span>))</span><br><span class="line">print(zeros_arr)</span><br><span class="line">print(ones_arr)</span><br></pre></td></tr></table></figure>
+
+<p>输出结果为（因为打印的缘故，显示的是类似列表的结构，其实是 array 数组类型的）：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[[<span class="number">0.</span> <span class="number">0.</span> <span class="number">0.</span> <span class="number">0.</span>]</span><br><span class="line"> [<span class="number">0.</span> <span class="number">0.</span> <span class="number">0.</span> <span class="number">0.</span>]</span><br><span class="line"> [<span class="number">0.</span> <span class="number">0.</span> <span class="number">0.</span> <span class="number">0.</span>]]</span><br><span class="line">[[<span class="number">1.</span> <span class="number">1.</span> <span class="number">1.</span> <span class="number">1.</span>]</span><br><span class="line"> [<span class="number">1.</span> <span class="number">1.</span> <span class="number">1.</span> <span class="number">1.</span>]</span><br><span class="line"> [<span class="number">1.</span> <span class="number">1.</span> <span class="number">1.</span> <span class="number">1.</span>]]</span><br></pre></td></tr></table></figure>
+
+<h5 id="linspace-和-arange-等差数组"><a href="#linspace-和-arange-等差数组" class="headerlink" title="linspace 和 arange 等差数组"></a>linspace 和 arange 等差数组</h5><p>这两个方法都是用来创建一个等差的数组。</p>
+<p>linspace 通过指定起始元素、终止元素和元素个数来创建：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">line_arr = np.linspace(<span class="number">0</span>, <span class="number">100</span>, num=<span class="number">20</span>)</span><br><span class="line">line_arr</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">array([  <span class="number">0.</span>        ,   <span class="number">5.26315789</span>,  <span class="number">10.52631579</span>,  <span class="number">15.78947368</span>,</span><br><span class="line">        <span class="number">21.05263158</span>,  <span class="number">26.31578947</span>,  <span class="number">31.57894737</span>,  <span class="number">36.84210526</span>,</span><br><span class="line">        <span class="number">42.10526316</span>,  <span class="number">47.36842105</span>,  <span class="number">52.63157895</span>,  <span class="number">57.89473684</span>,</span><br><span class="line">        <span class="number">63.15789474</span>,  <span class="number">68.42105263</span>,  <span class="number">73.68421053</span>,  <span class="number">78.94736842</span>,</span><br><span class="line">        <span class="number">84.21052632</span>,  <span class="number">89.47368421</span>,  <span class="number">94.73684211</span>, <span class="number">100.</span>        ])</span><br></pre></td></tr></table></figure>
+
+<p>arange 通过指定起始元素、终止元素和步长来创建，终止元素有可能不会被包含在数组中：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">arange_arr = np.arange(<span class="number">0</span>, <span class="number">100</span>, <span class="number">5</span>)</span><br><span class="line">arange_arr</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">array([ <span class="number">0</span>,  <span class="number">5</span>, <span class="number">10</span>, <span class="number">15</span>, <span class="number">20</span>, <span class="number">25</span>, <span class="number">30</span>, <span class="number">35</span>, <span class="number">40</span>, <span class="number">45</span>, <span class="number">50</span>, <span class="number">55</span>, <span class="number">60</span>, <span class="number">65</span>, <span class="number">70</span>, <span class="number">75</span>, <span class="number">80</span>,</span><br><span class="line">       <span class="number">85</span>, <span class="number">90</span>, <span class="number">95</span>])</span><br></pre></td></tr></table></figure>
+
+<h5 id="random-系列"><a href="#random-系列" class="headerlink" title="random 系列"></a>random 系列</h5><p>random 系列方法用来随机生成一些数组。</p>
+<p>我们最常用的是 randint，用一定范围的随机数字生成指定形状的数组：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">np.random.randint(<span class="number">0</span>, <span class="number">100</span>, size=(<span class="number">4</span>,))    <span class="comment"># 一维数组</span></span><br></pre></td></tr></table></figure>
+
+<p>输出结果为：<code>array([62, 40, 96, 89])</code></p>
+<p>也可以生成多维数组：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">np.random.randint(<span class="number">0</span>, <span class="number">100</span>, size=(<span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>))</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">array([[[<span class="number">33</span>, <span class="number">62</span>, <span class="number">98</span>, <span class="number">28</span>, <span class="number">23</span>],</span><br><span class="line">        [<span class="number">71</span>, <span class="number">25</span>, <span class="number">72</span>, <span class="number">92</span>, <span class="number">42</span>],</span><br><span class="line">        [<span class="number">10</span>, <span class="number">46</span>, <span class="number">32</span>, <span class="number">88</span>,  <span class="number">8</span>],</span><br><span class="line">        [ <span class="number">2</span>, <span class="number">58</span>, <span class="number">38</span>, <span class="number">80</span>, <span class="number">68</span>]],</span><br><span class="line"></span><br><span class="line">       [[<span class="number">45</span>, <span class="number">10</span>, <span class="number">74</span>, <span class="number">34</span>, <span class="number">74</span>],</span><br><span class="line">        [<span class="number">94</span>, <span class="number">39</span>, <span class="number">79</span>, <span class="number">69</span>,  <span class="number">5</span>],</span><br><span class="line">        [<span class="number">82</span>, <span class="number">63</span>, <span class="number">32</span>, <span class="number">36</span>, <span class="number">84</span>],</span><br><span class="line">        [<span class="number">74</span>, <span class="number">48</span>, <span class="number">99</span>,  <span class="number">0</span>, <span class="number">42</span>]],</span><br><span class="line"></span><br><span class="line">       [[<span class="number">98</span>, <span class="number">52</span>, <span class="number">69</span>, <span class="number">69</span>,  <span class="number">4</span>],</span><br><span class="line">        [<span class="number">97</span>, <span class="number">71</span>, <span class="number">69</span>, <span class="number">42</span>, <span class="number">94</span>],</span><br><span class="line">        [<span class="number">92</span>, <span class="number">93</span>,  <span class="number">3</span>, <span class="number">66</span>, <span class="number">57</span>],</span><br><span class="line">        [<span class="number">33</span>, <span class="number">53</span>, <span class="number">26</span>, <span class="number">67</span>,  <span class="number">8</span>]]])</span><br></pre></td></tr></table></figure>
+
+<h3 id="数组维度讨论"><a href="#数组维度讨论" class="headerlink" title="数组维度讨论"></a>数组维度讨论</h3><p>上面的例子中，生成了一个三维数组。我们理解三维还是比较容易的，比如一本书表示三维，则书中的一页表示二维，一页中的一行数据表示一维。</p>
+<p>上一个数组的形状 shape 是 <code>(3, 4, 5)</code>，这该如何理解呢？</p>
+<p>anaconda 很友好地给我们做了区分：数组分成了三大块，四中块，每个中块里面有五个元素。三大块，是最外层的三个大数组，四中块，是中间的四个小数组。每个小数组里面有五个元素。</p>
+<p>当然这是很简单的数据，我们可以一眼看出来维度的数目和含义。如果维度数很高，数据量很大，恐怕就不能这么直观看出来了。不过倒也不至于束手无策。</p>
+<p>可以通过数开头或结尾的中括号数目来确定数组维度。一般情况下，是几维的数组，就会以几个中括号开头和结尾。</p>
+<p>至于元素形状的含义，我们可以由内而外看。最后一个形状参数，在上面的例子中就是 5 的含义是最内层数组的元素个数。倒数第二个参数， 也就是 4 的含义是，内层数组每四个会组成一个中等大小的数组。最前面的 3 的含义是，每三个这样的数组组成一个大数组。这样从内而外，由简到繁，即可理解数组维度的含义。</p>
+<h3 id="numpy-的常用属性"><a href="#numpy-的常用属性" class="headerlink" title="numpy 的常用属性"></a>numpy 的常用属性</h3><p>numpy 中比较常用的属性有：</p>
+<ul>
+<li>shape</li>
+<li>ndim</li>
+<li>size</li>
+<li>dtype</li>
+</ul>
+<p>其用法为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">arr = np.array([[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], [<span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>]])</span><br><span class="line">arr.shape    <span class="comment"># (2, 3) 数组的形状</span></span><br><span class="line">arr.ndim    <span class="comment"># 2 数组的维度数</span></span><br><span class="line">arr.size    <span class="comment"># 6 数组元素总个数</span></span><br><span class="line">arr.dtype    <span class="comment"># dtype('int32') 数组元素的数据类型</span></span><br><span class="line">type(arr)    <span class="comment"># numpy.ndarray 数组的类型</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="numpy-的数据类型"><a href="#numpy-的数据类型" class="headerlink" title="numpy 的数据类型"></a>numpy 的数据类型</h3><p><code>array(dtype=?)</code> 可以设定数据类型：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">arr = np.array([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>], dtype=<span class="string">'int64'</span>)</span><br><span class="line">arr    <span class="comment"># array([1, 2, 3], dtype=int64)</span></span><br></pre></td></tr></table></figure>
+
+<p><code>arr.dtype</code> 可以查看数据类型：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">arr.dtype    <span class="comment"># dtype('int64')</span></span><br></pre></td></tr></table></figure>
+
+<p><code>arr.dtype = &#39;?&#39;</code> 可以修改数据类型：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">arr.dtype = <span class="string">'int32'</span>    <span class="comment"># 直接改变了原始数组</span></span><br></pre></td></tr></table></figure>
+
+<p>需要注意，如果原数据是 int64 类型的，转成 int32 后，数组中会补充一些 0。这是因为 64 位数据在那个位置的数值为 0。如果数据量很大，超出了 int 32 能表示的范围，还可能会把数字拆分成两部分：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">arr = np.array([<span class="number">1</span>, <span class="number">2</span>, <span class="number">22222222222</span>], dtype=<span class="string">'int64'</span>)</span><br><span class="line">arr.dtype = <span class="string">'int32'</span></span><br><span class="line">arr</span><br></pre></td></tr></table></figure>
+
+<p>上面的操作输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">array([        <span class="number">1</span>,         <span class="number">0</span>,         <span class="number">2</span>,         <span class="number">0</span>, <span class="number">747385742</span>,         <span class="number">5</span>])</span><br></pre></td></tr></table></figure>
+
+<p>这种无用的 0 将来我们会有办法去掉。</p>
+<p>如果不想要这些 0，可以考虑用 astype 来修改数据类型。</p>
+<p>需要注意的是，dtype 是对数组本身进行数据类型修改操作。而 astype 则是生成一个新数组：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">new_arr = arr.astype(<span class="string">'int8'</span>)</span><br><span class="line">new_arr</span><br></pre></td></tr></table></figure>
+
+<p>这种方法如果数据超出范围，也是会截取的，只不过高位的数字将会被舍弃掉，仅保留低位数字。</p>
+<p>附：numpy 中的数据类型</p>
+<img src="/data-analysis/numpy-basic/numpydatatype.png" class="" title="numpydatatype">
+
+<h3 id="numpy-的索引和切片操作（重点）"><a href="#numpy-的索引和切片操作（重点）" class="headerlink" title="numpy 的索引和切片操作（重点）"></a>numpy 的索引和切片操作（重点）</h3><p>先创建一个随机数组：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">arr = np.random.randint(<span class="number">0</span>, <span class="number">100</span>, size=(<span class="number">5</span>, <span class="number">6</span>))</span><br></pre></td></tr></table></figure>
+
+<p>得到一个 5 行 6 列的数组：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">array([[<span class="number">42</span>, <span class="number">24</span>, <span class="number">69</span>, <span class="number">19</span>,  <span class="number">4</span>, <span class="number">76</span>],</span><br><span class="line">       [<span class="number">28</span>, <span class="number">71</span>, <span class="number">41</span>, <span class="number">50</span>, <span class="number">79</span>, <span class="number">64</span>],</span><br><span class="line">       [<span class="number">15</span>,  <span class="number">7</span>, <span class="number">97</span>, <span class="number">38</span>, <span class="number">68</span>, <span class="number">59</span>],</span><br><span class="line">       [<span class="number">81</span>, <span class="number">24</span>,  <span class="number">2</span>, <span class="number">38</span>, <span class="number">65</span>, <span class="number">83</span>],</span><br><span class="line">       [<span class="number">77</span>, <span class="number">93</span>, <span class="number">18</span>, <span class="number">44</span>, <span class="number">85</span>, <span class="number">17</span>]])</span><br></pre></td></tr></table></figure>
+
+<h4 id="索引操作"><a href="#索引操作" class="headerlink" title="索引操作"></a>索引操作</h4><p>索引操作和列表同理：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">arr[<span class="number">0</span>]    <span class="comment"># array([42, 24, 69, 19,  4, 76])</span></span><br><span class="line">arr[<span class="number">2</span>][<span class="number">4</span>]    <span class="comment"># 68</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="切片操作"><a href="#切片操作" class="headerlink" title="切片操作"></a>切片操作</h4><p>数组切片操作的方法为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">arr[行切片,列切片]</span><br><span class="line">arr[第一个维度切片, 第二个维度切片, 第三个维度切片 ...]</span><br></pre></td></tr></table></figure>
+
+<p>切出前两行数据，这和普通列表切片很相似了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">arr[<span class="number">0</span>:<span class="number">2</span>]</span><br></pre></td></tr></table></figure>
+
+<p>切出前两列数据，也很简单，在行切片后面加上一个逗号即可：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">arr[:, <span class="number">0</span>:<span class="number">2</span>]</span><br></pre></td></tr></table></figure>
+
+<p>输出的效果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">array([[<span class="number">42</span>, <span class="number">24</span>],</span><br><span class="line">       [<span class="number">28</span>, <span class="number">71</span>],</span><br><span class="line">       [<span class="number">15</span>,  <span class="number">7</span>],</span><br><span class="line">       [<span class="number">81</span>, <span class="number">24</span>],</span><br><span class="line">       [<span class="number">77</span>, <span class="number">93</span>]])</span><br></pre></td></tr></table></figure>
+
+<p>切出前两行的前两列的数据，把前两个例子结合起来即可：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">arr[:<span class="number">2</span>, :<span class="number">2</span>]</span><br></pre></td></tr></table></figure>
+
+<p>数组数据翻转，步长为 -1 是精髓：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">arr[::<span class="number">-1</span>]    <span class="comment"># 数组行翻转</span></span><br><span class="line">arr[:, ::<span class="number">-1</span>]    <span class="comment"># 数组列翻转</span></span><br><span class="line">arr[::<span class="number">-1</span>, ::<span class="number">-1</span>]    <span class="comment"># 数组所有元素翻转</span></span><br></pre></td></tr></table></figure>
+
+<p>练习：将一张图片上下左右进行翻转操作</p>
+<p>分析：可以看出，图片数组的第一个维度是纵向的像素，第二个维度是横向的像素。上下翻转，需要倒置第一个维度；左右翻转则要倒置第二个维度。</p>
+<img src="/data-analysis/numpy-basic/1585747488537.png" class="" width="1585747488537">
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">plt.imshow(img_arr[:, ::<span class="number">-1</span>])    <span class="comment"># 左右翻转</span></span><br><span class="line">plt.imshow(img_arr[::<span class="number">-1</span>])    <span class="comment"># 上下倒置</span></span><br></pre></td></tr></table></figure>
+
+<p>练习：将图片进行指定区域的裁剪</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">plt.imshow(img_arr[<span class="number">50</span>:<span class="number">400</span>, <span class="number">75</span>:<span class="number">340</span>])</span><br></pre></td></tr></table></figure>
+
+<p>效果：</p>
+<img src="/data-analysis/numpy-basic/tripimg.png" class="" title="tripimg">
+
+<h3 id="变形-reshape"><a href="#变形-reshape" class="headerlink" title="变形 reshape"></a>变形 reshape</h3><p>先创建一个二维数组：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">arr = np.random.randint(<span class="number">0</span>, <span class="number">100</span>, size=(<span class="number">3</span>, <span class="number">4</span>))</span><br></pre></td></tr></table></figure>
+
+<p>创建好的数组为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">array([[<span class="number">76</span>, <span class="number">59</span>, <span class="number">22</span>, <span class="number">57</span>],</span><br><span class="line">       [<span class="number">33</span>, <span class="number">50</span>, <span class="number">14</span>, <span class="number">91</span>],</span><br><span class="line">       [<span class="number">26</span>, <span class="number">31</span>,  <span class="number">3</span>, <span class="number">62</span>]])</span><br></pre></td></tr></table></figure>
+
+<p>将二维数组转为一维数组：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">arr_1 = arr.reshape((<span class="number">12</span>,))</span><br></pre></td></tr></table></figure>
+
+<p>转换好的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">array([<span class="number">76</span>, <span class="number">59</span>, <span class="number">22</span>, <span class="number">57</span>, <span class="number">33</span>, <span class="number">50</span>, <span class="number">14</span>, <span class="number">91</span>, <span class="number">26</span>, <span class="number">31</span>,  <span class="number">3</span>, <span class="number">62</span>])</span><br></pre></td></tr></table></figure>
+
+<p>将一维数组转为二维数组：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">arr_2 = arr_1.reshape((<span class="number">4</span>, <span class="number">3</span>))</span><br></pre></td></tr></table></figure>
+
+<p>转化后的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">array([[<span class="number">76</span>, <span class="number">59</span>, <span class="number">22</span>],</span><br><span class="line">       [<span class="number">57</span>, <span class="number">33</span>, <span class="number">50</span>],</span><br><span class="line">       [<span class="number">14</span>, <span class="number">91</span>, <span class="number">26</span>],</span><br><span class="line">       [<span class="number">31</span>,  <span class="number">3</span>, <span class="number">62</span>]])</span><br></pre></td></tr></table></figure>
+
+<p>要注意的是，这里转换的元素数目要对应上，不能多也不能少，多了少了都会报错。</p>
+<p>如果我们已知行数，可以将列数设置为 -1，程序将自动计算列数，无需我们特别指定：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">arr_3 = arr_1.reshape((<span class="number">2</span>, <span class="number">-1</span>))</span><br></pre></td></tr></table></figure>
+
+<h3 id="级联操作"><a href="#级联操作" class="headerlink" title="级联操作"></a>级联操作</h3><p>级联操作就是将多个 numpy 数组进行横向或者纵向的拼接</p>
+<p>axis 轴向的理解</p>
+<ul>
+<li>0：纵向拼接</li>
+<li>1：横向拼接</li>
+</ul>
+<p>对于更高维度（二维依然有效）的数组而言，axis 实际上是维度的索引，也就是在哪个维度进行拼接。</p>
+<p>拼接的数组首先需要维度数目相同。不同维度的数组是无论如何也无法拼接的。</p>
+<p>除此之外，还要要求除了待拼接的维度之外，所有其他维度的元素个数要相同。如果其他维度的元素个数不同，将无法进行拼接。待拼接的维度的元素数目可以不一致。</p>
+<p>对于二维数组而言，就是行和列必须要只要有一个数目相同才能进行拼接，否则无法拼接。行的数目相同可以拼接列，列的数目相同可以拼接行。</p>
+<p>我们还是使用上面的那个二维数组：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">array([[<span class="number">76</span>, <span class="number">59</span>, <span class="number">22</span>, <span class="number">57</span>],</span><br><span class="line">       [<span class="number">33</span>, <span class="number">50</span>, <span class="number">14</span>, <span class="number">91</span>],</span><br><span class="line">       [<span class="number">26</span>, <span class="number">31</span>,  <span class="number">3</span>, <span class="number">62</span>]])</span><br></pre></td></tr></table></figure>
+
+<p>我们想要让它自己对第二个维度进行拼接，可以这样写：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">np.concatenate((arr, arr), axis=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<p>结果是横向拼接的数组：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">array([[<span class="number">76</span>, <span class="number">59</span>, <span class="number">22</span>, <span class="number">57</span>, <span class="number">76</span>, <span class="number">59</span>, <span class="number">22</span>, <span class="number">57</span>],</span><br><span class="line">       [<span class="number">33</span>, <span class="number">50</span>, <span class="number">14</span>, <span class="number">91</span>, <span class="number">33</span>, <span class="number">50</span>, <span class="number">14</span>, <span class="number">91</span>],</span><br><span class="line">       [<span class="number">26</span>, <span class="number">31</span>,  <span class="number">3</span>, <span class="number">62</span>, <span class="number">26</span>, <span class="number">31</span>,  <span class="number">3</span>, <span class="number">62</span>]])</span><br></pre></td></tr></table></figure>
+
+<p>要纵向拼接，只需将 axis 设置为 0：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">np.concatenate((arr, arr), axis=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+
+<p>结果就是在第一个维度进行拼接：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">array([[<span class="number">76</span>, <span class="number">59</span>, <span class="number">22</span>, <span class="number">57</span>],</span><br><span class="line">       [<span class="number">33</span>, <span class="number">50</span>, <span class="number">14</span>, <span class="number">91</span>],</span><br><span class="line">       [<span class="number">26</span>, <span class="number">31</span>,  <span class="number">3</span>, <span class="number">62</span>],</span><br><span class="line">       [<span class="number">76</span>, <span class="number">59</span>, <span class="number">22</span>, <span class="number">57</span>],</span><br><span class="line">       [<span class="number">33</span>, <span class="number">50</span>, <span class="number">14</span>, <span class="number">91</span>],</span><br><span class="line">       [<span class="number">26</span>, <span class="number">31</span>,  <span class="number">3</span>, <span class="number">62</span>]])</span><br></pre></td></tr></table></figure>
+
+<p>如果我们现在有一个三行两列的列表，那么它只能在第二个维度进行拼接。因为第二个维度是不同的，我们需要保证除了拼接维度外，其他维度的元素个数都相同才行：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">arr_new = np.array([[<span class="number">1</span>, <span class="number">2</span>], [<span class="number">3</span>, <span class="number">4</span>], [<span class="number">5</span>, <span class="number">6</span>]])</span><br><span class="line">np.concatenate((arr, arr_new), axis=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<p>合并后的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">array([[<span class="number">76</span>, <span class="number">59</span>, <span class="number">22</span>, <span class="number">57</span>,  <span class="number">1</span>,  <span class="number">2</span>],</span><br><span class="line">       [<span class="number">33</span>, <span class="number">50</span>, <span class="number">14</span>, <span class="number">91</span>,  <span class="number">3</span>,  <span class="number">4</span>],</span><br><span class="line">       [<span class="number">26</span>, <span class="number">31</span>,  <span class="number">3</span>, <span class="number">62</span>,  <span class="number">5</span>,  <span class="number">6</span>]])</span><br></pre></td></tr></table></figure>
+
+<p>练习：把图片拼接九宫格的形式。</p>
+<p>思路：同一张照片，肯定行列都相同，所以无需顾忌方向问题。可以先横向拼接，然后纵向拼接。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">img_3 = np.concatenate((img_arr, img_arr, img_arr), axis=<span class="number">1</span>)    <span class="comment"># 横向拼接</span></span><br><span class="line">img_9 = np.concatenate((img_3, img_3, img_3), axis=<span class="number">0</span>)    <span class="comment"># 纵向拼接</span></span><br><span class="line">plt.imshow(img_9)    <span class="comment"># 显示图片</span></span><br></pre></td></tr></table></figure>
+
+<p>最终成功显示出九宫格图片：</p>
+<img src="/data-analysis/numpy-basic/nineimgs.png" class="" title="nineimgs">
+
+<h3 id="常用的聚合操作"><a href="#常用的聚合操作" class="headerlink" title="常用的聚合操作"></a>常用的聚合操作</h3><p>常用的聚合操作有：</p>
+<ul>
+<li>sum</li>
+<li>max</li>
+<li>min</li>
+<li>mean</li>
+</ul>
+<p>聚合操作默认是对所有元素进行运算的。也可以指定维度进行运算。聚合运算将会让数组坍缩一个维度。</p>
+<p>对于二维数组而言，0 维可以理解为纵向运算，1 维可以理解为横向运算。</p>
+<p>对于较高的维度，理解起来可能要稍复杂些。指定维度运算可以理解为将那个维度坍缩。数字按照坍缩方向进行聚合运算。</p>
+<p>同样地，我们创建一个三维的随机数组进行演示操作：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">arr_3 = np.random.randint(<span class="number">0</span>, <span class="number">100</span>, size=(<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>))</span><br><span class="line">arr_3</span><br></pre></td></tr></table></figure>
+
+<p>得到了一个三维数组：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">array([[[<span class="number">55</span>, <span class="number">62</span>, <span class="number">50</span>, <span class="number">69</span>],</span><br><span class="line">        [<span class="number">19</span>, <span class="number">68</span>, <span class="number">85</span>, <span class="number">11</span>],</span><br><span class="line">        [ <span class="number">1</span>, <span class="number">16</span>, <span class="number">46</span>, <span class="number">71</span>]],</span><br><span class="line"></span><br><span class="line">       [[<span class="number">30</span>, <span class="number">11</span>, <span class="number">24</span>, <span class="number">68</span>],</span><br><span class="line">        [<span class="number">66</span>,  <span class="number">8</span>, <span class="number">74</span>, <span class="number">46</span>],</span><br><span class="line">        [<span class="number">84</span>, <span class="number">13</span>, <span class="number">27</span>, <span class="number">97</span>]]])</span><br></pre></td></tr></table></figure>
+
+<p>sum 用来对数组中的元素进行求和，默认是对所有元素求和，数组会完全坍缩成一个数字：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">arr.sum()    <span class="comment"># 1101</span></span><br></pre></td></tr></table></figure>
+
+<p>当然我们可以指定维度进行求和运算。比如，我们让第一个维度坍缩：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">arr.sum(<span class="attribute">axis</span>=0)</span><br></pre></td></tr></table></figure>
+
+<img src="/data-analysis/numpy-basic/1585752020149.png" class="" width="1585752020149">
+
+<p>对另外两个维度坍缩也是同样道理：</p>
+<img src="/data-analysis/numpy-basic/1585752077577.png" class="" width="1585752077577">
+
+<img src="/data-analysis/numpy-basic/1585752088012.png" class="" width="1585752088012">
+
+<p>求和理解了，另外三个函数用法同理，max 用来求最大值，min 求最小值，mean 求均值，就不一一介绍了。</p>
+<h3 id="常用的数学函数"><a href="#常用的数学函数" class="headerlink" title="常用的数学函数"></a>常用的数学函数</h3><p>NumPy 为我们提供了标准的三角函数：<code>sin()</code>、<code>cos()</code>、<code>tan()</code></p>
+<p><code>np.around(a,decimals)</code> 函数返回指定数字的四舍五入（四舍六入五成双）值，decimals 为正，从小数点右边保留；为负，从小数点左边保留。</p>
+<ul>
+<li>参数说明：<ul>
+<li>a：数组</li>
+<li>decimals：舍入的小数位数。 默认值为 0。 如果为负，整数将四舍五入到小数点左侧的位置</li>
+</ul>
+</li>
+</ul>
+<p>我们还使用上面的三维数组进行测试：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">array([[<span class="number">76</span>, <span class="number">59</span>, <span class="number">22</span>, <span class="number">57</span>],</span><br><span class="line">       [<span class="number">33</span>, <span class="number">50</span>, <span class="number">14</span>, <span class="number">91</span>],</span><br><span class="line">       [<span class="number">26</span>, <span class="number">31</span>,  <span class="number">3</span>, <span class="number">62</span>]])</span><br></pre></td></tr></table></figure>
+
+<p>可以对所有数值求解三角函数：</p>
+<figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">np</span>.<span class="built_in">sin</span>(arr)</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">array([[ <span class="number">0.56610764</span>,  <span class="number">0.63673801</span>, <span class="number">-0.00885131</span>,  <span class="number">0.43616476</span>],</span><br><span class="line">       [ <span class="number">0.99991186</span>, <span class="number">-0.26237485</span>,  <span class="number">0.99060736</span>,  <span class="number">0.10598751</span>],</span><br><span class="line">       [ <span class="number">0.76255845</span>, <span class="number">-0.40403765</span>,  <span class="number">0.14112001</span>, <span class="number">-0.7391807</span> ]])</span><br></pre></td></tr></table></figure>
+
+<p>around 的取舍规则是四舍六入五成双：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a = np.array([<span class="number">1.2</span>, <span class="number">4.5</span>, <span class="number">3.5</span>, <span class="number">6.7</span>])</span><br><span class="line">np.around(a)    <span class="comment"># array([1., 4., 4., 7.])</span></span><br><span class="line">np.around(np.sin(arr), decimals=<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+
+<p>保留两位小数的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">array([[ <span class="number">0.57</span>,  <span class="number">0.64</span>, <span class="number">-0.01</span>,  <span class="number">0.44</span>],</span><br><span class="line">       [ <span class="number">1.</span>  , <span class="number">-0.26</span>,  <span class="number">0.99</span>,  <span class="number">0.11</span>],</span><br><span class="line">       [ <span class="number">0.76</span>, <span class="number">-0.4</span> ,  <span class="number">0.14</span>, <span class="number">-0.74</span>]])</span><br></pre></td></tr></table></figure>
+
+<h3 id="常用的统计函数"><a href="#常用的统计函数" class="headerlink" title="常用的统计函数"></a>常用的统计函数</h3><p><code>numpy.amin()</code> 和 <code>numpy.amax()</code>，用于计算数组中的元素沿指定轴的最小、最大值。</p>
+<p><code>numpy.ptp()</code>：计算数组中元素最大值与最小值的差（最大值 - 最小值），也就是极差。</p>
+<p><code>numpy.median()</code> 函数用于计算数组 a 中元素的中位数（中值）</p>
+<p>标准差 <code>std()</code>：标准差是一组数据平均值分散程度的一种度量。</p>
+<ul>
+<li>标准差计算公式：<code>std = sqrt(mean((x - x.mean())**2))</code></li>
+<li>如果数组是 <code>[1，2，3，4]</code>，则其平均值为 2.5。 因此，差的平方是 <code>[2.25,0.25,0.25,2.25]</code>，并且其平均值的平方根除以 4，即 <code>sqrt(5/4)</code> ，结果为 <code>1.1180339887498949</code>。</li>
+</ul>
+<p>方差 <code>var()</code>：统计中的方差（样本方差）是每个样本值与全体样本值的平均数之差的平方值的平均数，即  <code>mean((x - x.mean())** 2)</code>。换句话说，标准差是方差的平方根。</p>
+<p>注意：在求标准差时需要注意几个问题：</p>
+<ol>
+<li><p>在统计学中，标准差分为两种：</p>
+<p>总体标准差：标准差公式根号内除以 n，是有偏的。</p>
+<p>样本标准差：标准差公式根号内除以 n-1，是无偏的。</p>
+</li>
+<li><p>pandas 与 numpy 在计算标准差时的区别</p>
+<p>在 numpy 中计算标准差时，括号内要指定 ddof 的值，ddof 表示自由度。当 ddof=0 时计算的是总体标准差；当 ddof=1 时计算的是样本标准差，当不为 ddof 设置值时，其默认为总体标准差。</p>
+<p>在使用 pandas 计算标准差时，其与 numpy 的默认情况是相反的，在默认情况下，pandas 计算的标准差为样本标准差。</p>
+</li>
+</ol>
+<p>例如，求标准差和方差：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a = np.array([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>])</span><br><span class="line">a.std()    <span class="comment"># 1.118033988749895 标准差</span></span><br><span class="line">a.var()    <span class="comment"># 1.25 方差</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="矩阵相关"><a href="#矩阵相关" class="headerlink" title="矩阵相关"></a>矩阵相关</h3><p>NumPy 中包含了一个矩阵库 <code>numpy.matlib</code>，该模块中的函数返回的是一个矩阵，而不是 ndarray 对象。一个 的矩阵是一个由行（row）列（column）元素排列成的矩形阵列。</p>
+<p><code>numpy.matlib.identity()</code> 函数返回给定大小的单位矩阵。单位矩阵是个方阵，从左上角到右下角的对角线（称为主对角线）上的元素均为 1，除此以外全都为 0。</p>
+<p>转置矩阵，也就是将矩阵的行列互换，通过 <code>.T</code> 方法实现。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a = np.array([[<span class="number">2</span>, <span class="number">1</span>], [<span class="number">4</span>, <span class="number">3</span>]])</span><br><span class="line">a.T</span><br></pre></td></tr></table></figure>
+
+<p>转置后的矩阵为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">array([[<span class="number">2</span>, <span class="number">4</span>],</span><br><span class="line">       [<span class="number">1</span>, <span class="number">3</span>]])</span><br></pre></td></tr></table></figure>
+
+<p>矩阵相乘 <code>numpy.dot(a, b, out=None)</code></p>
+<ul>
+<li>a : ndarray 数组</li>
+<li>b : ndarray 数组</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a = np.array([[<span class="number">2</span>, <span class="number">1</span>], [<span class="number">4</span>, <span class="number">3</span>]])</span><br><span class="line">b = np.array([[<span class="number">1</span>, <span class="number">2</span>], [<span class="number">1</span>, <span class="number">0</span>]])</span><br><span class="line">np.dot(a, b, out=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+
+<p>矩阵相乘的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">array([[<span class="number">3</span>, <span class="number">4</span>],</span><br><span class="line">       [<span class="number">7</span>, <span class="number">8</span>]])</span><br></pre></td></tr></table></figure>
+
+<p>矩阵乘法的规则：</p>
+<img src="/data-analysis/numpy-basic/1585754989834.png" class="" width="1585754989834">
+
+<p>左行乘右列。第一个矩阵第一行的每个数字（2 和 1），各自乘以第二个矩阵第一列对应位置的数字（1 和 1），然后将乘积相加（ 2 x 1 + 1 x 1），得到结果矩阵左上角的那个值3。也就是说，结果矩阵第m行与第n列交叉位置的那个值，等于第一个矩阵第 m 行与第二个矩阵第n列，对应位置的每个值的乘积之和。</p>
+<p>线性代数基于矩阵的推导：<a href="https://www.cnblogs.com/alantu2018/p/8528299.html" target="_blank" rel="noopener">https://www.cnblogs.com/alantu2018/p/8528299.html</a></p>
+<img src="/data-analysis/numpy-basic/matirxmultiple.png" class="" title="matirxmultiple">
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/data-analysis/data-analysis-abc/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/data-analysis/data-analysis-abc/" class="post-title-link" itemprop="url">数据分析基本概念</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-04-02 01:35:37 / 修改时间：01:35:38" itemprop="dateCreated datePublished" datetime="2020-04-02T01:35:37+08:00">2020-04-02</time>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/data-analysis/data-analysis-abc/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/data-analysis/data-analysis-abc/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.5k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>1 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="数据分析概述"><a href="#数据分析概述" class="headerlink" title="数据分析概述"></a>数据分析概述</h3><p>我们爬虫可以爬取到大量的数据，公司日常运营，也会产生很多数据。这些数据单独放在那里，并没有什么作用。我们需要对这些数据进行整理归纳和分析，从数据中提取到我们想要的信息，这样才能让这些数据体现出它们应有的价值来。</p>
+<p>数据分析，就是是把隐藏在一些看似杂乱无章的数据背后的信息提炼出来，总结出所研究对象的内在规律。</p>
+<p>通过数据分析，可以使得数据的价值最大化。比如，在实际工作中，我们可以通过数据分析进行以下的分析。</p>
+<ul>
+<li>通过分析用户的消费行为，我们可以：<ul>
+<li>制定促销活动的方案</li>
+<li>制定促销时间和粒度</li>
+<li>计算用户的活跃度</li>
+<li>分析产品的回购力度</li>
+</ul>
+</li>
+<li>通过分析广告点击率，我们可以：<ul>
+<li>决定投放时间</li>
+<li>制定广告定向人群方案</li>
+<li>决定相关平台的投放</li>
+</ul>
+</li>
+<li>……</li>
+</ul>
+<p>数据分析是用适当的方法对收集来的大量数据进行分析，帮助人们做出判断，以便采取适当的行动。生活中，方方面面都有数据分析的影子，只需稍加留意，就可以发现：</p>
+<ul>
+<li>保险公司从大量赔付申请数据中判断哪些可能是骗保的情况</li>
+<li>支付宝通过从大量的用户消费记录和行为自动调整花呗的额度</li>
+<li>短视频平台通过用户的点击和观看行为数据针对性的给用户推送喜欢的视频</li>
+</ul>
+<h3 id="数据分析的作用"><a href="#数据分析的作用" class="headerlink" title="数据分析的作用"></a>数据分析的作用</h3><p>我们已经讨论了，数据分析最根本的作用是尽可能地从数据中挖取价值。</p>
+<p>数据就好比矿石，数据分析就是将矿石中的有用的贵重的金属提取出来的过程。没有数据分析，矿石只能是不起眼的石头。有了数据分析，矿石就变成了发光的金子。</p>
+<p>前面的价值都是理论上的，说实际一点，就是数据分析能给我们带来财富。这包括数据分析有岗位的需求，我们也可以通过数据竞赛平台赚一些赏金。</p>
+<p>另外，数据分析是 Python 数据科学的基础。要想通过 Python 搞科学研究，首先要会数据分析。</p>
+<p>数据分析也是机器学习课程的基础。机器学习本质上就是大型的数据分析项目。</p>
+<h3 id="数据分析的实现流程¶"><a href="#数据分析的实现流程¶" class="headerlink" title="数据分析的实现流程¶"></a>数据分析的实现流程<a href="http://localhost:8888/notebooks/数据分析day01/1.numpy模块.ipynb#数据分析实现流程" target="_blank" rel="noopener">¶</a></h3><ol>
+<li><p>提出问题。</p>
+<p>问题通常由甲方提出，给我们数据，告诉我们要完成的任务和目标。有了这些，我们才能进行数据分析。</p>
+</li>
+<li><p>准备数据。</p>
+<p>我们的数据来源通常可以是这么几个：</p>
+<ul>
+<li>爬虫项目爬取到的数据。互联网数据十分庞大，我们爬虫可以爬取到几乎任何我们想要的数据。这些数据便成了我们数据分析十分不错的数据来源。</li>
+<li>公司提供。公司日常会产生大量的诸如财务流水、人事调度等数据。分析这些数据可以对公司的运行状态进行大致的评估。</li>
+<li>合法途径购买。数据本身并非一文不值，所以有时候，我们也需要通过合法的方式购买一些我们不容易获得到的数据。</li>
+</ul>
+</li>
+<li><p>分析数据</p>
+<p>这是我们数据分析要做的核心任务。</p>
+</li>
+<li><p>获得结论</p>
+<p>数据分析过后，得出需要的结论。没有结论的数据分析是没有价值的。</p>
+</li>
+<li><p>成果可视化</p>
+<p>我们的老板未必是懂技术的，直接把数字给他，恐怕是在难为人家。我们需要通过数据的可视化处理，让数据以更加直观的方式展示出来。</p>
+</li>
+</ol>
+<h3 id="开发环境介绍"><a href="#开发环境介绍" class="headerlink" title="开发环境介绍"></a>开发环境介绍</h3><p>我们使用 anaconda 结合 jupyter 进行开发。这两个工具在爬虫部分已经使用很多了，这里只是简单做一些回顾。</p>
+<h4 id="anaconda"><a href="#anaconda" class="headerlink" title="anaconda"></a>anaconda</h4><p>官网：<a href="https://www.anaconda.com/" target="_blank" rel="noopener">https://www.anaconda.com/</a></p>
+<p>集成环境：集成好了数据分析和机器学习中所需要的全部环境</p>
+<p>注意：安装目录不可以有中文和特殊符号</p>
+<h4 id="jupyter"><a href="#jupyter" class="headerlink" title="jupyter"></a>jupyter</h4><p>jupyter 就是 anaconda 提供的一个基于浏览器的可视化开发工具</p>
+<p>jupyter 的基本使用</p>
+<ul>
+<li>启动：在终端中录入：<code>jupyter notebook</code> 的指令，按下回车</li>
+<li>新建：<ul>
+<li>Python 3：anaconda 中的一个源文件</li>
+<li>cell 有两种模式：<ul>
+<li>code：编写代码</li>
+<li>markdown：编写笔记</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>快捷键：<ul>
+<li>添加 cell：a 或者 b</li>
+<li>删除：x</li>
+<li>修改 cell 的模式：<ul>
+<li>m：修改成 markdown 模式</li>
+<li>y：修改成 code 模式</li>
+</ul>
+</li>
+<li>执行 cell：<ul>
+<li>shift + enter</li>
+</ul>
+</li>
+<li>tab：自动补全</li>
+<li>代开帮助文档：shift + tab</li>
+</ul>
+</li>
+</ul>
+<h3 id="数据分析三剑客"><a href="#数据分析三剑客" class="headerlink" title="数据分析三剑客"></a>数据分析三剑客</h3><ul>
+<li>numpy</li>
+<li>pandas（重点）</li>
+<li>matplotlib</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://sliu.vip/notes/grokking-algorithms-dijkstra/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -253,10 +1182,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-04-01 00:56:16 / 修改时间：01:23:50" itemprop="dateCreated datePublished" datetime="2020-04-01T00:56:16+08:00">2020-04-01</time>
+              <time title="创建时间：2020-04-01 00:56:16" itemprop="dateCreated datePublished" datetime="2020-04-01T00:56:16+08:00">2020-04-01</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-02 01:35:38" itemprop="dateModified" datetime="2020-04-02T01:35:38+08:00">2020-04-02</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -281,7 +1216,21 @@
     </a>
   </span>
   
-  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>607</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>1 分钟</span>
+            </span>
 
         </div>
       </header>
@@ -370,7 +1319,21 @@
     </a>
   </span>
   
-  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.1k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
 
         </div>
       </header>
@@ -459,7 +1422,21 @@
     </a>
   </span>
   
-  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.4k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
 
         </div>
       </header>
@@ -548,7 +1525,21 @@
     </a>
   </span>
   
-  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.7k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
 
         </div>
       </header>
@@ -637,7 +1628,21 @@
     </a>
   </span>
   
-  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>5.5k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>5 分钟</span>
+            </span>
 
         </div>
       </header>
@@ -726,7 +1731,21 @@
     </a>
   </span>
   
-  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>5.1k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>5 分钟</span>
+            </span>
 
         </div>
       </header>
@@ -821,7 +1840,21 @@
     </a>
   </span>
   
-  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>1.9k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>2 分钟</span>
+            </span>
 
         </div>
       </header>
@@ -836,291 +1869,6 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/testing/selenium-install/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/testing/selenium-basic/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="刘硕">
-      <meta itemprop="description" content="不成为自己讨厌的人">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="刘硕的技术查阅手册">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/testing/selenium-basic/" class="post-title-link" itemprop="url">selenium 的基本操作</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-03-30 00:05:29" itemprop="dateCreated datePublished" datetime="2020-03-30T00:05:29+08:00">2020-03-30</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-01 01:23:50" itemprop="dateModified" datetime="2020-04-01T01:23:50+08:00">2020-04-01</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%B5%8B%E8%AF%95/" itemprop="url" rel="index"><span itemprop="name">测试</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/testing/selenium-basic/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/testing/selenium-basic/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>selenium 是一款基于浏览器的自动化爬虫工具，可以给我们的测试开发提供极大的便利。这里介绍了一些 selenium 常用的使用方法。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/testing/selenium-basic/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/project/renran-tablestore/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="刘硕">
-      <meta itemprop="description" content="不成为自己讨厌的人">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="刘硕的技术查阅手册">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/project/renran-tablestore/" class="post-title-link" itemprop="url">Django 操作阿里云表格存储 Tablestore</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-03-30 00:05:29" itemprop="dateCreated datePublished" datetime="2020-03-30T00:05:29+08:00">2020-03-30</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-01 01:23:50" itemprop="dateModified" datetime="2020-04-01T01:23:50+08:00">2020-04-01</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%BB%BC%E5%90%88%E9%A1%B9%E7%9B%AE/" itemprop="url" rel="index"><span itemprop="name">综合项目</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/project/renran-tablestore/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/project/renran-tablestore/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Tablestore 目前只支持四种数据类型：INTEGER、STRING、DOUBLE 和 BOOLEAN。其中 DOUBLE 类型不能做主键类型，BOOLEAN 不可以做主键的第一列（分区键）。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/project/renran-tablestore/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/project/renran-feed-flow/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="刘硕">
-      <meta itemprop="description" content="不成为自己讨厌的人">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="刘硕的技术查阅手册">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/project/renran-feed-flow/" class="post-title-link" itemprop="url">Feed 流系统概述</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-03-30 00:05:29" itemprop="dateCreated datePublished" datetime="2020-03-30T00:05:29+08:00">2020-03-30</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-01 01:23:50" itemprop="dateModified" datetime="2020-04-01T01:23:50+08:00">2020-04-01</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E7%BB%BC%E5%90%88%E9%A1%B9%E7%9B%AE/" itemprop="url" rel="index"><span itemprop="name">综合项目</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/project/renran-feed-flow/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/project/renran-feed-flow/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>在信息工程中，Feed 其实是一个信息单元，比如一条朋友圈状态、一条微博、一条咨询或一条短视频等。Feed 流就是不停更新的信息单元，只要关注某些发布者就能获取到源源不断的新鲜信息，我们的用户也就可以在移动设备上逐条去浏览这些信息单元。当前最流行的 Feed 流产品有微博、微信朋友圈、头条的资讯推荐、快手抖音的视频推荐等。还有一些变种，比如私信、通知等，这些系统都是 Feed 流系统。接下来我们将介绍如何设计一个 Feed 流系统架构。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/project/renran-feed-flow/">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1212,7 +1960,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">291</span>
+          <span class="site-state-item-count">294</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1272,6 +2020,16 @@
     <i class="fa fa-user"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">刘硕</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">1.7m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">25:10</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
   </div>

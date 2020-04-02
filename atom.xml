@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://sliu.vip/"/>
-  <updated>2020-03-31T17:23:50.370Z</updated>
+  <updated>2020-04-01T17:35:38.617Z</updated>
   <id>https://sliu.vip/</id>
   
   <author>
@@ -17,11 +17,80 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>pandas 的基础操作</title>
+    <link href="https://sliu.vip/data-analysis/pandas-basic/"/>
+    <id>https://sliu.vip/data-analysis/pandas-basic/</id>
+    <published>2020-04-01T17:35:37.205Z</published>
+    <updated>2020-04-01T17:35:38.617Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          
+        
+      
+    
+    </summary>
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>numpy 的基本使用</title>
+    <link href="https://sliu.vip/data-analysis/numpy-basic/"/>
+    <id>https://sliu.vip/data-analysis/numpy-basic/</id>
+    <published>2020-04-01T17:35:37.198Z</published>
+    <updated>2020-04-01T17:35:38.615Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          
+        
+      
+    
+    </summary>
+    
+    
+    
+  </entry>
+  
+  <entry>
+    <title>数据分析基本概念</title>
+    <link href="https://sliu.vip/data-analysis/data-analysis-abc/"/>
+    <id>https://sliu.vip/data-analysis/data-analysis-abc/</id>
+    <published>2020-04-01T17:35:37.192Z</published>
+    <updated>2020-04-01T17:35:38.613Z</updated>
+    
+    <summary type="html">
+    
+      
+      
+        
+        
+          
+        
+      
+    
+    </summary>
+    
+    
+    
+  </entry>
+  
+  <entry>
     <title>狄克斯特拉算法</title>
     <link href="https://sliu.vip/notes/grokking-algorithms-dijkstra/"/>
     <id>https://sliu.vip/notes/grokking-algorithms-dijkstra/</id>
     <published>2020-03-31T16:56:16.182Z</published>
-    <updated>2020-03-31T17:23:50.370Z</updated>
+    <updated>2020-04-01T17:35:38.611Z</updated>
     
     <summary type="html">
     
@@ -423,88 +492,11 @@
     <link href="https://sliu.vip/crawler/js-decode/"/>
     <id>https://sliu.vip/crawler/js-decode/</id>
     <published>2020-03-29T16:05:29.299Z</published>
-    <updated>2020-03-31T17:23:50.234Z</updated>
+    <updated>2020-04-01T17:35:38.540Z</updated>
     
     <summary type="html">
     
       我们已经学到很多反爬机制以及相应的反反爬策略。是用那些手段，其实以及完全可以完成绝大多数的爬虫任务。但是，还是有极个别的情况下，会出现诸如 JS 加密和 JS 混淆之类的高深反爬机制。这里就以中国空气质量在线检测平台为例，介绍 JS 加密和 JS 混淆的实现和破解方法。
-    
-    </summary>
-    
-    
-      <category term="爬虫" scheme="https://sliu.vip/categories/%E7%88%AC%E8%99%AB/"/>
-    
-    
-      <category term="Python" scheme="https://sliu.vip/tags/Python/"/>
-    
-      <category term="Anaconda" scheme="https://sliu.vip/tags/Anaconda/"/>
-    
-      <category term="爬虫" scheme="https://sliu.vip/tags/%E7%88%AC%E8%99%AB/"/>
-    
-      <category term="requests" scheme="https://sliu.vip/tags/requests/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>使用 Fiddle 实现移动端数据的爬取</title>
-    <link href="https://sliu.vip/crawler/mobile/"/>
-    <id>https://sliu.vip/crawler/mobile/</id>
-    <published>2020-03-29T16:05:29.294Z</published>
-    <updated>2020-03-31T17:23:50.219Z</updated>
-    
-    <summary type="html">
-    
-      移动端数据的爬取，主要指的针对手机、平板电脑等便携设备的应用数据进行爬取。因为移动端应用获取数据也是使用 HTTP 协议，通过发送请求获取到数据。所以我们只需要获取到移动端应用的请求接口，给足所需的参数，就可以实现移动端数据的爬取。
-    
-    </summary>
-    
-    
-      <category term="爬虫" scheme="https://sliu.vip/categories/%E7%88%AC%E8%99%AB/"/>
-    
-    
-      <category term="Python" scheme="https://sliu.vip/tags/Python/"/>
-    
-      <category term="爬虫" scheme="https://sliu.vip/tags/%E7%88%AC%E8%99%AB/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>selenium 模块的基本使用</title>
-    <link href="https://sliu.vip/crawler/selenium/"/>
-    <id>https://sliu.vip/crawler/selenium/</id>
-    <published>2020-03-29T16:05:29.288Z</published>
-    <updated>2020-03-31T17:23:50.215Z</updated>
-    
-    <summary type="html">
-    
-      爬虫过程中，各种反爬机制让人头疼。由于动态网页的存在，明明浏览器看得见可以点击的东西，却不能直接通过 requests 请求得到。非要绕很多弯才能获取我们想要的数据。有的请求还要携带 cookie 和一些乱七八糟的字符串。selenium 模块就是为了帮我们解决这些困扰而诞生的。selenium 是一种基于浏览器的自动化的模块。
-    
-    </summary>
-    
-    
-      <category term="爬虫" scheme="https://sliu.vip/categories/%E7%88%AC%E8%99%AB/"/>
-    
-    
-      <category term="Python" scheme="https://sliu.vip/tags/Python/"/>
-    
-      <category term="Anaconda" scheme="https://sliu.vip/tags/Anaconda/"/>
-    
-      <category term="爬虫" scheme="https://sliu.vip/tags/%E7%88%AC%E8%99%AB/"/>
-    
-      <category term="selenium" scheme="https://sliu.vip/tags/selenium/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>空气质量在线监测平台首页数据爬取</title>
-    <link href="https://sliu.vip/crawler/get-aqistudy/"/>
-    <id>https://sliu.vip/crawler/get-aqistudy/</id>
-    <published>2020-03-29T16:05:29.284Z</published>
-    <updated>2020-03-31T17:23:50.210Z</updated>
-    
-    <summary type="html">
-    
-      在 JS 解密和混淆破解 这篇博客中，我们尝试抓取了空气质量在线监测平台网页的数据。但是因为这个网站最近似乎在更新，前端解密不稳定，所以最终没能解析出数据来。
     
     </summary>
     
