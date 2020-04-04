@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="Tu5vqPaUb8svfkPx5eetJFD84ciQCcWVXNatdsWtj9Q">
+  <meta name="baidu-site-verification" content="baidu_verify_FBq9PG4BBb">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"appID":"PXY1Z6GHKT","apiKey":"eb82f2e78e3053f26aa408e9caa96d93","indexName":"blog","hits":{"per_page":10},"labels":{"input_placeholder":"要查点什么(✿◡‿◡)","hits_empty":"没有找到任何关于 ${query} 的结果╥﹏╥...","hits_stats":"搜索到 ${hits} 条记录，用时 ${time} ms o(*￣▽￣*)ブ"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="DataFrame 是一个十分强大的数据分析工具，功能很多，一时半会儿学不完。与其枯燥地学习每一个方法，不如结合实际项目应用，一边解决问题，一边学习方法。这样能加深理解，也不至于太乏味。数据分析的一个很重要的应用领域，就是金融量化。我们今天以金融量化中的一种方法，双均值法，来学习 DataFrame 的操作。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DataFrame 基础操作巩固 - 股票分析">
+<meta property="og:url" content="https://sliu.vip/data-analysis/stock-analysis/index.html">
+<meta property="og:site_name" content="刘硕的技术查阅手册">
+<meta property="og:description" content="DataFrame 是一个十分强大的数据分析工具，功能很多，一时半会儿学不完。与其枯燥地学习每一个方法，不如结合实际项目应用，一边解决问题，一边学习方法。这样能加深理解，也不至于太乏味。数据分析的一个很重要的应用领域，就是金融量化。我们今天以金融量化中的一种方法，双均值法，来学习 DataFrame 的操作。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sliu.vip/data-analysis/stock-analysis/dataframesavetofiels.gif">
+<meta property="article:published_time" content="2020-04-02T17:49:49.787Z">
+<meta property="article:modified_time" content="2020-04-04T10:23:53.439Z">
+<meta property="article:author" content="刘硕">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="Anaconda">
+<meta property="article:tag" content="数据分析">
+<meta property="article:tag" content="Pandas">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sliu.vip/data-analysis/stock-analysis/dataframesavetofiels.gif">
+
+<link rel="canonical" href="https://sliu.vip/data-analysis/stock-analysis/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>DataFrame 基础操作巩固 - 股票分析 | 刘硕的技术查阅手册</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f14f123935d6183fdd06f8f1c4bc378f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="刘硕的技术查阅手册" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">刘硕的技术查阅手册</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">Python 全栈开发学习笔记</h1>
+      
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-toc">
+
+    <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+  
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/data-analysis/stock-analysis/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          DataFrame 基础操作巩固 - 股票分析
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-04-03 01:49:49" itemprop="dateCreated datePublished" datetime="2020-04-03T01:49:49+08:00">2020-04-03</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-04 18:23:53" itemprop="dateModified" datetime="2020-04-04T18:23:53+08:00">2020-04-04</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" itemprop="url" rel="index"><span itemprop="name">数据分析</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/data-analysis/stock-analysis/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/data-analysis/stock-analysis/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>18k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>32 分钟</span>
+            </span>
+            <div class="post-description">DataFrame 是一个十分强大的数据分析工具，功能很多，一时半会儿学不完。与其枯燥地学习每一个方法，不如结合实际项目应用，一边解决问题，一边学习方法。这样能加深理解，也不至于太乏味。数据分析的一个很重要的应用领域，就是金融量化。我们今天以金融量化中的一种方法，双均值法，来学习 DataFrame 的操作。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>DataFrame 是一个十分强大的数据分析工具，功能很多，一时半会儿学不完。与其枯燥地学习每一个方法，不如结合实际项目应用，一边解决问题，一边学习方法。这样能加深理解，也不至于太乏味。</p>
+<p>数据分析的一个很重要的应用领域，就是金融量化。我们今天以金融量化中的一种方法，双均值法，来学习 DataFrame 的操作。主要是以学习数据分析的方法为主，现实中的金融量化可要比这复杂多了。</p>
+<h2 id="基本的股票数据分析"><a href="#基本的股票数据分析" class="headerlink" title="基本的股票数据分析"></a>基本的股票数据分析</h2><p>需求：股票分析</p>
+<ul>
+<li>使用 tushare 包获取某股票的历史行情数据。</li>
+<li>输出该股票所有收盘比开盘上涨 3% 以上的日期。</li>
+<li>输出该股票所有开盘比前日收盘跌幅超过 2% 的日期。</li>
+<li>假如我从 2010 年 1 月 1 日开始，每月第一个交易日买入 1 手股票，每年最后一个交易日卖出所有股票，到今天为止，我的收益如何？</li>
+</ul>
+<p>这里面提到了 tushare 模块，它是一个财经数据接口包，可以批量获取相关金融产品的历史数据。可以从官方网址找到各种数据的接口：<a href="http://tushare.org/index.html" target="_blank" rel="noopener">http://tushare.org/index.html</a></p>
+<p>使用之前，需要安装 tushare 模块：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install tushare</span><br></pre></td></tr></table></figure>
+
+<p>注意如果使用的是 anaconda 和 jupyter 开发，需要把模块安装在 anaconda 环境中。</p>
+<p>最开始，导入我们要用到的模块和类：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> tushare <span class="keyword">as</span> ts</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">from</span> pandas <span class="keyword">import</span> Series, DataFrame</span><br></pre></td></tr></table></figure>
+
+<p>使用 tushare 包获取某股票的历史行情数据，这里以茅台的股票为例。<code>600519</code> 是茅台的股票代码。<code>1900-01-01</code> 是起始时间。事实上，我们想要拿到的是茅台上市以来的所有数据，这个时间一定是在茅台上市之前了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">data = ts.get_k_data(code=<span class="string">'600519'</span>, start=<span class="string">'1900-01-01'</span>)</span><br><span class="line">data.head()</span><br></pre></td></tr></table></figure>
+
+<p>我们可以看看前五条数据：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">	date	open	close	high	low	volume	code</span><br><span class="line"><span class="number">0</span>	<span class="number">2001</span><span class="number">-08</span><span class="number">-27</span>	<span class="number">5.392</span>	<span class="number">5.554</span>	<span class="number">5.902</span>	<span class="number">5.132</span>	<span class="number">406318.00</span>	<span class="number">600519</span></span><br><span class="line"><span class="number">1</span>	<span class="number">2001</span><span class="number">-08</span><span class="number">-28</span>	<span class="number">5.467</span>	<span class="number">5.759</span>	<span class="number">5.781</span>	<span class="number">5.407</span>	<span class="number">129647.79</span>	<span class="number">600519</span></span><br><span class="line"><span class="number">2</span>	<span class="number">2001</span><span class="number">-08</span><span class="number">-29</span>	<span class="number">5.777</span>	<span class="number">5.684</span>	<span class="number">5.781</span>	<span class="number">5.640</span>	<span class="number">53252.75</span>	<span class="number">600519</span></span><br><span class="line"><span class="number">3</span>	<span class="number">2001</span><span class="number">-08</span><span class="number">-30</span>	<span class="number">5.668</span>	<span class="number">5.796</span>	<span class="number">5.860</span>	<span class="number">5.624</span>	<span class="number">48013.06</span>	<span class="number">600519</span></span><br><span class="line"><span class="number">4</span>	<span class="number">2001</span><span class="number">-08</span><span class="number">-31</span>	<span class="number">5.804</span>	<span class="number">5.782</span>	<span class="number">5.877</span>	<span class="number">5.749</span>	<span class="number">23231.48</span>	<span class="number">600519</span></span><br></pre></td></tr></table></figure>
+
+<p>date 对应的是数据的日期，open 是开盘价，close 是收盘价，high 是当日最高价，low 是当日最低价，volume 是成交手数，code 是股票代码。</p>
+<h3 id="股票数据的持久化操作"><a href="#股票数据的持久化操作" class="headerlink" title="股票数据的持久化操作"></a>股票数据的持久化操作</h3><p>我们看到，返回的股票数据其实是 DataFrame 类型的数据。对于 DataFrame 类型的数据，我们可以把它存储成文件，进行持久化保存。</p>
+<p>我们可以使用 DataFrame 的 to 系列方法，将数据保存为文件。DataFrame 可以保存到文件格式十分丰富。</p>
+<img src="/data-analysis/stock-analysis/dataframesavetofiels.gif" class="" title="dataframesavetofiels">
+
+<p>在这里，我们以 csv 格式为例，对 data 数据进行保存：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将股票数据持久化存储：to_xxx()</span></span><br><span class="line">data.to_csv(<span class="string">'maotai.csv'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>对于已经保存到文件，我们可以使用 pd 的 read 系列方法读取出来。DataFrame 可以保存的数据，pd 都能读取出来。这里，我们把刚刚保存的茅台股票信息的 csv 数据读取到：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df = pd.read_csv(<span class="string">'maotai.csv'</span>)</span><br><span class="line">df.head()</span><br></pre></td></tr></table></figure>
+
+<p>读取到的数据看起来是正确的，但是似乎有些不大对劲：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">	Unnamed: <span class="number">0</span>	date	open	close	high	low	volume	code</span><br><span class="line"><span class="number">0</span>	<span class="number">0</span>	<span class="number">2001</span><span class="number">-08</span><span class="number">-27</span>	<span class="number">5.392</span>	<span class="number">5.554</span>	<span class="number">5.902</span>	<span class="number">5.132</span>	<span class="number">406318.00</span>	<span class="number">600519</span></span><br><span class="line"><span class="number">1</span>	<span class="number">1</span>	<span class="number">2001</span><span class="number">-08</span><span class="number">-28</span>	<span class="number">5.467</span>	<span class="number">5.759</span>	<span class="number">5.781</span>	<span class="number">5.407</span>	<span class="number">129647.79</span>	<span class="number">600519</span></span><br><span class="line"><span class="number">2</span>	<span class="number">2</span>	<span class="number">2001</span><span class="number">-08</span><span class="number">-29</span>	<span class="number">5.777</span>	<span class="number">5.684</span>	<span class="number">5.781</span>	<span class="number">5.640</span>	<span class="number">53252.75</span>	<span class="number">600519</span></span><br><span class="line"><span class="number">3</span>	<span class="number">3</span>	<span class="number">2001</span><span class="number">-08</span><span class="number">-30</span>	<span class="number">5.668</span>	<span class="number">5.796</span>	<span class="number">5.860</span>	<span class="number">5.624</span>	<span class="number">48013.06</span>	<span class="number">600519</span></span><br><span class="line"><span class="number">4</span>	<span class="number">4</span>	<span class="number">2001</span><span class="number">-08</span><span class="number">-31</span>	<span class="number">5.804</span>	<span class="number">5.782</span>	<span class="number">5.877</span>	<span class="number">5.749</span>	<span class="number">23231.48</span>	<span class="number">600519</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="股票数据预处理"><a href="#股票数据预处理" class="headerlink" title="股票数据预处理"></a>股票数据预处理</h3><p>原来，第一列的隐式索引也被识别成了数据，因为没有列的显式索引，所以自动生成了一个名为 <code>Unnamed: 0</code> 的显式索引。</p>
+<p>可是第一列我们是不需要的，可以将其删除。通过 DataFrame 的 drop 方法，可以删除指定的行或者列：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df.drop(labels=<span class="string">'Unnamed: 0'</span>, axis=<span class="number">1</span>, inplace=<span class="literal">True</span>)</span><br><span class="line">df.head()</span><br></pre></td></tr></table></figure>
+
+<p>参数解释：</p>
+<ul>
+<li>labels 用于指定索引</li>
+<li>axis 指定删除的方向，在 drop 系列方法中，axis=1 代表列，0 代表行</li>
+<li>inplace 指定是否在原 DataFrame 数据中删除。若 inplace 设置为 False，则原数据不会发生变化，而是会返回一个新的修改过的 DataFrame；若 inplace 为 True，则直接在原数据中进行修改，无返回值（返回 None）</li>
+</ul>
+<p>查看前五行数据，第一列被顺利删除：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">	date	open	close	high	low	volume	code</span><br><span class="line"><span class="number">0</span>	<span class="number">2001</span><span class="number">-08</span><span class="number">-27</span>	<span class="number">5.392</span>	<span class="number">5.554</span>	<span class="number">5.902</span>	<span class="number">5.132</span>	<span class="number">406318.00</span>	<span class="number">600519</span></span><br><span class="line"><span class="number">1</span>	<span class="number">2001</span><span class="number">-08</span><span class="number">-28</span>	<span class="number">5.467</span>	<span class="number">5.759</span>	<span class="number">5.781</span>	<span class="number">5.407</span>	<span class="number">129647.79</span>	<span class="number">600519</span></span><br><span class="line"><span class="number">2</span>	<span class="number">2001</span><span class="number">-08</span><span class="number">-29</span>	<span class="number">5.777</span>	<span class="number">5.684</span>	<span class="number">5.781</span>	<span class="number">5.640</span>	<span class="number">53252.75</span>	<span class="number">600519</span></span><br><span class="line"><span class="number">3</span>	<span class="number">2001</span><span class="number">-08</span><span class="number">-30</span>	<span class="number">5.668</span>	<span class="number">5.796</span>	<span class="number">5.860</span>	<span class="number">5.624</span>	<span class="number">48013.06</span>	<span class="number">600519</span></span><br><span class="line"><span class="number">4</span>	<span class="number">2001</span><span class="number">-08</span><span class="number">-31</span>	<span class="number">5.804</span>	<span class="number">5.782</span>	<span class="number">5.877</span>	<span class="number">5.749</span>	<span class="number">23231.48</span>	<span class="number">600519</span></span><br></pre></td></tr></table></figure>
+
+<p>现在有一个问题：这些数据都是什么数据类型的呢？</p>
+<p>这很重要，因为不同数据类型的方法种类会有差别，即便是相同的方法，计算方式也会有所不同。比如字符串的加法和整数的加法是不一样的。</p>
+<p>我们可以通过指定列，使用 Series 的 dtype 方法，获取某一列数据的数据类型：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df[<span class="string">'date'</span>].dtype</span><br></pre></td></tr></table></figure>
+
+<p>返回的结果为：<code>dtype(&#39;O&#39;)</code></p>
+<p><code>dtype(&#39;O&#39;)</code>，是 objects 的缩写，也就是对象，一般指的是 pandas 中的字符串。</p>
+<p>这样一列一列地查看数据类型似乎太麻烦，我们可以通过 DataFrame 的 info 方法，批量查看所有列的数据类型：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.info()</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果就有每一列的数据类型了，还有 DataFrame 的一些其他常用信息：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">pandas</span>.<span class="title">core</span>.<span class="title">frame</span>.<span class="title">DataFrame</span>'&gt;</span></span><br><span class="line"><span class="class"><span class="title">RangeIndex</span>:</span> <span class="number">4437</span> entries, <span class="number">0</span> to <span class="number">4436</span></span><br><span class="line">Data columns (total <span class="number">7</span> columns):</span><br><span class="line">date      <span class="number">4437</span> non-null object</span><br><span class="line">open      <span class="number">4437</span> non-null float64</span><br><span class="line">close     <span class="number">4437</span> non-null float64</span><br><span class="line">high      <span class="number">4437</span> non-null float64</span><br><span class="line">low       <span class="number">4437</span> non-null float64</span><br><span class="line">volume    <span class="number">4437</span> non-null float64</span><br><span class="line">code      <span class="number">4437</span> non-null int64</span><br><span class="line">dtypes: float64(<span class="number">5</span>), int64(<span class="number">1</span>), object(<span class="number">1</span>)</span><br><span class="line">memory usage: <span class="number">242.7</span>+ KB</span><br></pre></td></tr></table></figure>
+
+<p>其他的数据类型都还好，但是日期是字符串类型的数据就不是十分合适。我们需要把日期列的数据类型修改为时间类型。</p>
+<p>我们可以先通过索引获取到 date 那一列的数据，然后通过 pandas 的 to_datetime 方法，将其全部转换成时间类型，最后将转换好的数据替换掉原来的 date 数据。实现起来其实只需要一行代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df[<span class="string">'date'</span>] = pd.to_datetime(df[<span class="string">'date'</span>])    <span class="comment"># dtype('&lt;M8[ns]')</span></span><br><span class="line">df.info()</span><br></pre></td></tr></table></figure>
+
+<p>再次查看数据类型，我们发现，date 列的数据成功转成了时间类型：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">pandas</span>.<span class="title">core</span>.<span class="title">frame</span>.<span class="title">DataFrame</span>'&gt;</span></span><br><span class="line"><span class="class"><span class="title">RangeIndex</span>:</span> <span class="number">4437</span> entries, <span class="number">0</span> to <span class="number">4436</span></span><br><span class="line">Data columns (total <span class="number">7</span> columns):</span><br><span class="line">date      <span class="number">4437</span> non-null datetime64[ns]</span><br><span class="line">open      <span class="number">4437</span> non-null float64</span><br><span class="line">close     <span class="number">4437</span> non-null float64</span><br><span class="line">high      <span class="number">4437</span> non-null float64</span><br><span class="line">low       <span class="number">4437</span> non-null float64</span><br><span class="line">volume    <span class="number">4437</span> non-null float64</span><br><span class="line">code      <span class="number">4437</span> non-null int64</span><br><span class="line">dtypes: datetime64[ns](<span class="number">1</span>), float64(<span class="number">5</span>), int64(<span class="number">1</span>)</span><br><span class="line">memory usage: <span class="number">242.7</span> KB</span><br></pre></td></tr></table></figure>
+
+<p>转换好数据类型，我们的数据看起来好很多。但是还有一个问题——纵向的数据没有显式索引。</p>
+<p>显式索引可以让我们的数据更加易读，而且查找起来也更加方便。</p>
+<p>索引需要唯一，而且最好含义明确，且数据直接有一定的关联。价格数据并不合适，因为有可能会出现重复的价格，而且每个价格是很随意的。这些数据中，最适合作为索引的是时间。</p>
+<p>使用 set_index 方法将 date 列设置为源数据的行索引：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df.set_index(<span class="string">'date'</span>, inplace=<span class="literal">True</span>)    <span class="comment"># inplace=True意味着直接在原数据中修改</span></span><br><span class="line">df.head()</span><br></pre></td></tr></table></figure>
+
+<p>修改完成的数据前五行为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">		open	close	high	low	volume	code</span><br><span class="line">	date						</span><br><span class="line"><span class="number">2001</span><span class="number">-08</span><span class="number">-27</span>	<span class="number">5.392</span>	<span class="number">5.554</span>	<span class="number">5.902</span>	<span class="number">5.132</span>	<span class="number">406318.00</span>	<span class="number">600519</span></span><br><span class="line"><span class="number">2001</span><span class="number">-08</span><span class="number">-28</span>	<span class="number">5.467</span>	<span class="number">5.759</span>	<span class="number">5.781</span>	<span class="number">5.407</span>	<span class="number">129647.79</span>	<span class="number">600519</span></span><br><span class="line"><span class="number">2001</span><span class="number">-08</span><span class="number">-29</span>	<span class="number">5.777</span>	<span class="number">5.684</span>	<span class="number">5.781</span>	<span class="number">5.640</span>	<span class="number">53252.75</span>	<span class="number">600519</span></span><br><span class="line"><span class="number">2001</span><span class="number">-08</span><span class="number">-30</span>	<span class="number">5.668</span>	<span class="number">5.796</span>	<span class="number">5.860</span>	<span class="number">5.624</span>	<span class="number">48013.06</span>	<span class="number">600519</span></span><br><span class="line"><span class="number">2001</span><span class="number">-08</span><span class="number">-31</span>	<span class="number">5.804</span>	<span class="number">5.782</span>	<span class="number">5.877</span>	<span class="number">5.749</span>	<span class="number">23231.48</span>	<span class="number">600519</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="简单的股票数据分析"><a href="#简单的股票数据分析" class="headerlink" title="简单的股票数据分析"></a>简单的股票数据分析</h3><h4 id="该股票所有收盘比开盘上涨-3-以上的日期"><a href="#该股票所有收盘比开盘上涨-3-以上的日期" class="headerlink" title="该股票所有收盘比开盘上涨 3% 以上的日期"></a>该股票所有收盘比开盘上涨 3% 以上的日期</h4><p>需求：求出该股票所有收盘价格比开盘价格上涨 3% 以上的日期</p>
+<p>分析：收盘价格比开盘价格的上涨幅度可以使用公式 <code>(收盘价格 - 开盘价格) / 开盘价格</code> 计算。将计算的结果和 0.03 作比较即可。因为需求中要的是日期，而我们刚好用日期做的索引，所以在获取到的</p>
+<p>在计算之前，我们先学习一下 DataFrame 使用布尔值索引取值的方法。我们可以使用一个长度与 DataFrame 的行数相等的，由布尔值组成的列表作为索引取 DataFrame 的数据。我们取到的将是布尔值为 True 对应的那些行。比如，对前五行数据，我们使用列表 <code>[True, False, False, True, False]</code> 进行取值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将布尔值作为源数据的行索引，则保留True对应的行数据，舍弃False对应的行数据</span></span><br><span class="line">df.head().loc[[<span class="literal">True</span>, <span class="literal">False</span>, <span class="literal">False</span>, <span class="literal">True</span>, <span class="literal">False</span>]]</span><br></pre></td></tr></table></figure>
+
+<p>我们成功拿到第一行和第四行的数据：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">	open	close	high	low	volume	code</span><br><span class="line">date						</span><br><span class="line"><span class="number">2001</span><span class="number">-08</span><span class="number">-27</span>	<span class="number">5.392</span>	<span class="number">5.554</span>	<span class="number">5.902</span>	<span class="number">5.132</span>	<span class="number">406318.00</span>	<span class="number">600519</span></span><br><span class="line"><span class="number">2001</span><span class="number">-08</span><span class="number">-30</span>	<span class="number">5.668</span>	<span class="number">5.796</span>	<span class="number">5.860</span>	<span class="number">5.624</span>	<span class="number">48013.06</span>	<span class="number">600519</span></span><br></pre></td></tr></table></figure>
+
+<p>有了这个基础，我们就可以首先通过拿到是否当日涨幅超过 3% 的布尔值，然后以布尔值数组为索引，获得所有符合条件的数据行了。</p>
+<p>首先，获取布尔值数组：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(df[<span class="string">'close'</span>] - df[<span class="string">'open'</span>]) / df[<span class="string">'open'</span>] &gt; <span class="number">0.03</span></span><br></pre></td></tr></table></figure>
+
+<p>结果的数据量太大，我只截取前几天数据：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">date</span><br><span class="line"><span class="number">2001</span><span class="number">-08</span><span class="number">-27</span>     <span class="literal">True</span></span><br><span class="line"><span class="number">2001</span><span class="number">-08</span><span class="number">-28</span>     <span class="literal">True</span></span><br><span class="line"><span class="number">2001</span><span class="number">-08</span><span class="number">-29</span>    <span class="literal">False</span></span><br><span class="line"><span class="number">2001</span><span class="number">-08</span><span class="number">-30</span>    <span class="literal">False</span></span><br><span class="line"><span class="number">2001</span><span class="number">-08</span><span class="number">-31</span>    <span class="literal">False</span></span><br><span class="line"><span class="number">2001</span><span class="number">-09</span><span class="number">-03</span>    <span class="literal">False</span></span><br><span class="line"><span class="number">2001</span><span class="number">-09</span><span class="number">-04</span>    <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+
+<p>然后，以此为索引，获取所有符合条件的数据行：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.loc[(df[<span class="string">'close'</span>] - df[<span class="string">'open'</span>]) / df[<span class="string">'open'</span>] &gt; <span class="number">0.03</span>]</span><br></pre></td></tr></table></figure>
+
+<p>同样，因为结果太长，我只截取前几行数据：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">	open	close	high	low	volume	code</span><br><span class="line">date						</span><br><span class="line"><span class="number">2001</span><span class="number">-08</span><span class="number">-27</span>	<span class="number">5.392</span>	<span class="number">5.554</span>	<span class="number">5.902</span>	<span class="number">5.132</span>	<span class="number">406318.00</span>	<span class="number">600519</span></span><br><span class="line"><span class="number">2001</span><span class="number">-08</span><span class="number">-28</span>	<span class="number">5.467</span>	<span class="number">5.759</span>	<span class="number">5.781</span>	<span class="number">5.407</span>	<span class="number">129647.79</span>	<span class="number">600519</span></span><br><span class="line"><span class="number">2001</span><span class="number">-09</span><span class="number">-10</span>	<span class="number">5.531</span>	<span class="number">5.734</span>	<span class="number">5.757</span>	<span class="number">5.470</span>	<span class="number">18878.89</span>	<span class="number">600519</span></span><br><span class="line"><span class="number">2001</span><span class="number">-12</span><span class="number">-21</span>	<span class="number">5.421</span>	<span class="number">5.604</span>	<span class="number">5.620</span>	<span class="number">5.421</span>	<span class="number">8135.04</span>	<span class="number">600519</span></span><br><span class="line"><span class="number">2002</span><span class="number">-01</span><span class="number">-18</span>	<span class="number">5.437</span>	<span class="number">5.726</span>	<span class="number">5.762</span>	<span class="number">5.421</span>	<span class="number">32262.08</span>	<span class="number">600519</span></span><br></pre></td></tr></table></figure>
+
+<p>最后使用 index 属性取索引，即可获取到需求中的获取该股票所有收盘价格比开盘价格上涨 3% 以上的日期：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.loc[(df[<span class="string">'close'</span>] - df[<span class="string">'open'</span>]) / df[<span class="string">'open'</span>] &gt; <span class="number">0.03</span>].index</span><br></pre></td></tr></table></figure>
+
+<p>结果就是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">DatetimeIndex([<span class="string">'2001-08-27'</span>, <span class="string">'2001-08-28'</span>, <span class="string">'2001-09-10'</span>, <span class="string">'2001-12-21'</span>,</span><br><span class="line">               <span class="string">'2002-01-18'</span>, <span class="string">'2002-01-31'</span>, <span class="string">'2003-01-14'</span>, <span class="string">'2003-10-29'</span>,</span><br><span class="line">               <span class="string">'2004-01-05'</span>, <span class="string">'2004-01-14'</span>,</span><br><span class="line">               ...</span><br><span class="line">               <span class="string">'2019-05-10'</span>, <span class="string">'2019-05-15'</span>, <span class="string">'2019-06-11'</span>, <span class="string">'2019-06-20'</span>,</span><br><span class="line">               <span class="string">'2019-09-12'</span>, <span class="string">'2019-09-18'</span>, <span class="string">'2020-02-11'</span>, <span class="string">'2020-03-02'</span>,</span><br><span class="line">               <span class="string">'2020-03-05'</span>, <span class="string">'2020-03-10'</span>],</span><br><span class="line">              dtype=<span class="string">'datetime64[ns]'</span>, name=<span class="string">'date'</span>, length=<span class="number">307</span>, freq=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+
+<h4 id="该股票所有开盘比前日收盘跌幅超过-2-的日期"><a href="#该股票所有开盘比前日收盘跌幅超过-2-的日期" class="headerlink" title="该股票所有开盘比前日收盘跌幅超过 2% 的日期"></a>该股票所有开盘比前日收盘跌幅超过 2% 的日期</h4><p>需求：求出该股票所有开盘价格比前日收盘价格跌幅超过 2% 的日期。</p>
+<p>分析：计算公式应该是 <code>(今日开盘价 - 昨日收盘价) / 昨日收盘价</code>，要让这个结果小于 <code>-0.02</code>。</p>
+<p>Series 之间的运算都是建立在索引相同的数据之上的。在这个例子中就是，某一个天的数据只能和当天的数据进行计算。</p>
+<p>可问题是，需求要去要用当天的开盘价格和前日的收盘价格作比较。这时，我们可以用到 shift 方法。参数为正数时，数据整体下移指定的行数；参数为负时，则向上移动指定的行数。</p>
+<p>我们先看正常的输盘价格的前五条数据：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df[<span class="string">'close'</span>].head()</span><br></pre></td></tr></table></figure>
+
+<p>结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">date</span><br><span class="line"><span class="number">2001</span><span class="number">-08</span><span class="number">-27</span>    <span class="number">5.554</span></span><br><span class="line"><span class="number">2001</span><span class="number">-08</span><span class="number">-28</span>    <span class="number">5.759</span></span><br><span class="line"><span class="number">2001</span><span class="number">-08</span><span class="number">-29</span>    <span class="number">5.684</span></span><br><span class="line"><span class="number">2001</span><span class="number">-08</span><span class="number">-30</span>    <span class="number">5.796</span></span><br><span class="line"><span class="number">2001</span><span class="number">-08</span><span class="number">-31</span>    <span class="number">5.782</span></span><br><span class="line">Name: close, dtype: float64</span><br></pre></td></tr></table></figure>
+
+<p>使用 shift 方法下移一行：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df[<span class="string">'close'</span>].shift(<span class="number">1</span>).head()</span><br></pre></td></tr></table></figure>
+
+<p>结果就成了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">date</span><br><span class="line"><span class="number">2001</span><span class="number">-08</span><span class="number">-27</span>      NaN</span><br><span class="line"><span class="number">2001</span><span class="number">-08</span><span class="number">-28</span>    <span class="number">5.554</span></span><br><span class="line"><span class="number">2001</span><span class="number">-08</span><span class="number">-29</span>    <span class="number">5.759</span></span><br><span class="line"><span class="number">2001</span><span class="number">-08</span><span class="number">-30</span>    <span class="number">5.684</span></span><br><span class="line"><span class="number">2001</span><span class="number">-08</span><span class="number">-31</span>    <span class="number">5.796</span></span><br><span class="line">Name: close, dtype: float64</span><br></pre></td></tr></table></figure>
+
+<p>数据整体下移一位，第一行因为没有数据，就成了 NaN。我们后面会学到数据的清洗将会处理这些空的数据。这里无视它即可，不影响我们的运算。</p>
+<p>我们通过 shift 方法，把前一天的数据放到了和当天相同的行里面。这样，就可以完成今天的开盘价和昨天的收盘价的计算了。</p>
+<p>首先通过公式，判断当天的开盘价是否较前一日的收盘价下跌幅度超过 2%：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(df[<span class="string">'open'</span>] - df[<span class="string">'close'</span>].shift(<span class="number">1</span>)) / df[<span class="string">'close'</span>].shift(<span class="number">1</span>) &lt; <span class="number">-0.02</span></span><br></pre></td></tr></table></figure>
+
+<p>得到一系列的布尔值（茅台股很强劲，跌幅很大的数据不多）：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">date</span><br><span class="line"><span class="number">2001</span><span class="number">-08</span><span class="number">-27</span>    <span class="literal">False</span></span><br><span class="line"><span class="number">2001</span><span class="number">-08</span><span class="number">-28</span>    <span class="literal">False</span></span><br><span class="line"><span class="number">2001</span><span class="number">-08</span><span class="number">-29</span>    <span class="literal">False</span></span><br><span class="line"><span class="number">2001</span><span class="number">-08</span><span class="number">-30</span>    <span class="literal">False</span></span><br><span class="line"><span class="number">2001</span><span class="number">-08</span><span class="number">-31</span>    <span class="literal">False</span></span><br><span class="line"><span class="number">2001</span><span class="number">-09</span><span class="number">-03</span>    <span class="literal">False</span></span><br><span class="line"><span class="number">2001</span><span class="number">-09</span><span class="number">-04</span>    <span class="literal">False</span></span><br><span class="line"><span class="number">2001</span><span class="number">-09</span><span class="number">-05</span>    <span class="literal">False</span></span><br><span class="line"><span class="number">2001</span><span class="number">-09</span><span class="number">-06</span>    <span class="literal">False</span></span><br><span class="line"><span class="number">2001</span><span class="number">-09</span><span class="number">-07</span>    <span class="literal">False</span></span><br><span class="line"><span class="number">2001</span><span class="number">-09</span><span class="number">-10</span>    <span class="literal">False</span></span><br><span class="line"><span class="number">2001</span><span class="number">-09</span><span class="number">-11</span>    <span class="literal">False</span></span><br><span class="line"><span class="number">2001</span><span class="number">-09</span><span class="number">-12</span>     <span class="literal">True</span></span><br><span class="line"><span class="number">2001</span><span class="number">-09</span><span class="number">-13</span>    <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+
+<p>然后，把符合条件的数据筛选出来：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.loc[(df[<span class="string">'open'</span>] - df[<span class="string">'close'</span>].shift(<span class="number">1</span>)) / df[<span class="string">'close'</span>].shift(<span class="number">1</span>) &lt; <span class="number">-0.02</span>]</span><br></pre></td></tr></table></figure>
+
+<p>还是，数据量太大，我只截取前几行：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">	open	close	high	low	volume	code</span><br><span class="line">date						</span><br><span class="line"><span class="number">2001</span><span class="number">-09</span><span class="number">-12</span>	<span class="number">5.520</span>	<span class="number">5.621</span>	<span class="number">5.656</span>	<span class="number">5.515</span>	<span class="number">25045.19</span>	<span class="number">600519</span></span><br><span class="line"><span class="number">2002</span><span class="number">-06</span><span class="number">-26</span>	<span class="number">5.824</span>	<span class="number">5.757</span>	<span class="number">5.843</span>	<span class="number">5.712</span>	<span class="number">15423.00</span>	<span class="number">600519</span></span><br><span class="line"><span class="number">2002</span><span class="number">-12</span><span class="number">-13</span>	<span class="number">4.508</span>	<span class="number">4.628</span>	<span class="number">4.670</span>	<span class="number">4.508</span>	<span class="number">2223.10</span>	<span class="number">600519</span></span><br><span class="line"><span class="number">2004</span><span class="number">-07</span><span class="number">-01</span>	<span class="number">6.357</span>	<span class="number">6.792</span>	<span class="number">6.810</span>	<span class="number">6.355</span>	<span class="number">2781.62</span>	<span class="number">600519</span></span><br><span class="line"><span class="number">2004</span><span class="number">-10</span><span class="number">-29</span>	<span class="number">9.658</span>	<span class="number">9.899</span>	<span class="number">9.986</span>	<span class="number">9.658</span>	<span class="number">14363.14</span>	<span class="number">600519</span></span><br><span class="line"><span class="number">2006</span><span class="number">-08</span><span class="number">-21</span>	<span class="number">26.888</span>	<span class="number">27.632</span>	<span class="number">27.651</span>	<span class="number">26.807</span>	<span class="number">7293.21</span>	<span class="number">600519</span></span><br><span class="line"><span class="number">2006</span><span class="number">-08</span><span class="number">-23</span>	<span class="number">27.401</span>	<span class="number">27.789</span>	<span class="number">27.958</span>	<span class="number">27.401</span>	<span class="number">21056.23</span>	<span class="number">600519</span></span><br></pre></td></tr></table></figure>
+
+<p>然后，取索引，就得到最终的结果了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.loc[(df[<span class="string">'open'</span>] - df[<span class="string">'close'</span>].shift(<span class="number">1</span>)) / df[<span class="string">'close'</span>].shift(<span class="number">1</span>) &lt; <span class="number">-0.02</span>].index</span><br></pre></td></tr></table></figure>
+
+<p>最终的结果，茅台股票所有开盘价较前日收盘价跌幅超过 2% 的日期（可以见到，2008 年的金融危机对茅台股价冲击比较大）：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">DatetimeIndex([<span class="string">'2001-09-12'</span>, <span class="string">'2002-06-26'</span>, <span class="string">'2002-12-13'</span>, <span class="string">'2004-07-01'</span>,</span><br><span class="line">               <span class="string">'2004-10-29'</span>, <span class="string">'2006-08-21'</span>, <span class="string">'2006-08-23'</span>, <span class="string">'2007-01-25'</span>,</span><br><span class="line">               <span class="string">'2007-02-01'</span>, <span class="string">'2007-02-06'</span>, <span class="string">'2007-03-19'</span>, <span class="string">'2007-05-21'</span>,</span><br><span class="line">               <span class="string">'2007-05-30'</span>, <span class="string">'2007-06-05'</span>, <span class="string">'2007-07-27'</span>, <span class="string">'2007-09-05'</span>,</span><br><span class="line">               <span class="string">'2007-09-10'</span>, <span class="string">'2008-03-13'</span>, <span class="string">'2008-03-17'</span>, <span class="string">'2008-03-25'</span>,</span><br><span class="line">               <span class="string">'2008-03-27'</span>, <span class="string">'2008-04-22'</span>, <span class="string">'2008-04-23'</span>, <span class="string">'2008-04-29'</span>,</span><br><span class="line">               <span class="string">'2008-05-13'</span>, <span class="string">'2008-06-10'</span>, <span class="string">'2008-06-13'</span>, <span class="string">'2008-06-24'</span>,</span><br><span class="line">               <span class="string">'2008-06-27'</span>, <span class="string">'2008-08-11'</span>, <span class="string">'2008-08-19'</span>, <span class="string">'2008-09-23'</span>,</span><br><span class="line">               <span class="string">'2008-10-10'</span>, <span class="string">'2008-10-15'</span>, <span class="string">'2008-10-16'</span>, <span class="string">'2008-10-20'</span>,</span><br><span class="line">               <span class="string">'2008-10-23'</span>, <span class="string">'2008-10-27'</span>, <span class="string">'2008-11-06'</span>, <span class="string">'2008-11-12'</span>,</span><br><span class="line">               <span class="string">'2008-11-20'</span>, <span class="string">'2008-11-21'</span>, <span class="string">'2008-12-02'</span>, <span class="string">'2009-02-27'</span>,</span><br><span class="line">               <span class="string">'2009-03-25'</span>, <span class="string">'2009-08-13'</span>, <span class="string">'2010-04-26'</span>, <span class="string">'2010-04-30'</span>,</span><br><span class="line">               <span class="string">'2011-08-05'</span>, <span class="string">'2012-03-27'</span>, <span class="string">'2012-08-10'</span>, <span class="string">'2012-11-22'</span>,</span><br><span class="line">               <span class="string">'2012-12-04'</span>, <span class="string">'2012-12-24'</span>, <span class="string">'2013-01-16'</span>, <span class="string">'2013-01-25'</span>,</span><br><span class="line">               <span class="string">'2013-09-02'</span>, <span class="string">'2014-04-25'</span>, <span class="string">'2015-01-19'</span>, <span class="string">'2015-05-25'</span>,</span><br><span class="line">               <span class="string">'2015-07-03'</span>, <span class="string">'2015-07-08'</span>, <span class="string">'2015-07-13'</span>, <span class="string">'2015-08-24'</span>,</span><br><span class="line">               <span class="string">'2015-09-02'</span>, <span class="string">'2015-09-15'</span>, <span class="string">'2017-11-17'</span>, <span class="string">'2018-02-06'</span>,</span><br><span class="line">               <span class="string">'2018-02-09'</span>, <span class="string">'2018-03-23'</span>, <span class="string">'2018-03-28'</span>, <span class="string">'2018-07-11'</span>,</span><br><span class="line">               <span class="string">'2018-10-11'</span>, <span class="string">'2018-10-24'</span>, <span class="string">'2018-10-25'</span>, <span class="string">'2018-10-29'</span>,</span><br><span class="line">               <span class="string">'2018-10-30'</span>, <span class="string">'2019-05-06'</span>, <span class="string">'2019-05-08'</span>, <span class="string">'2019-10-16'</span>,</span><br><span class="line">               <span class="string">'2020-01-02'</span>, <span class="string">'2020-02-03'</span>, <span class="string">'2020-03-13'</span>, <span class="string">'2020-03-23'</span>],</span><br><span class="line">              dtype=<span class="string">'datetime64[ns]'</span>, name=<span class="string">'date'</span>, freq=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+
+<h4 id="月初买股票，年底卖股票，计算收益"><a href="#月初买股票，年底卖股票，计算收益" class="headerlink" title="月初买股票，年底卖股票，计算收益"></a>月初买股票，年底卖股票，计算收益</h4><p>问题：假如我从 2010 年 1 月 1 日开始，每月第一个交易日买入 1 手股票，每年最后一个交易日卖出所有股票，到今天为止，我的收益如何？</p>
+<p>分析：</p>
+<ol>
+<li>将数据从 2010 切到 2020 年</li>
+<li>买股票：<ul>
+<li>一个完整的年，需要买 12 次股票（12 手）</li>
+<li>一手股票为一百支</li>
+</ul>
+</li>
+<li>卖股票：<ul>
+<li>一个完整的年，需要卖出1次股票（1200 支）</li>
+</ul>
+</li>
+<li>买卖股票的单价：<ul>
+<li>以当天的收盘价买卖</li>
+</ul>
+</li>
+<li>在 2020 年只能买入 4 手股票，无法卖出。需要将剩余的股票价值按照最后一个交易日的收盘价计算到总收益中。</li>
+</ol>
+<p>首先，切取时间从 2010 年至今的所有数据。因为索引是时间类型，我们可以直接使用年份切取：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">new_df = df[<span class="string">'2010'</span>:]</span><br><span class="line">new_df</span><br></pre></td></tr></table></figure>
+
+<p>切片后的数据为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">	open	close	high	low	volume	code</span><br><span class="line">date						</span><br><span class="line"><span class="number">2010</span><span class="number">-01</span><span class="number">-04</span>	<span class="number">109.760</span>	<span class="number">108.446</span>	<span class="number">109.760</span>	<span class="number">108.044</span>	<span class="number">44304.88</span>	<span class="number">600519</span></span><br><span class="line"><span class="number">2010</span><span class="number">-01</span><span class="number">-05</span>	<span class="number">109.116</span>	<span class="number">108.127</span>	<span class="number">109.441</span>	<span class="number">107.846</span>	<span class="number">31513.18</span>	<span class="number">600519</span></span><br><span class="line"><span class="number">2010</span><span class="number">-01</span><span class="number">-06</span>	<span class="number">107.840</span>	<span class="number">106.417</span>	<span class="number">108.165</span>	<span class="number">106.129</span>	<span class="number">39889.03</span>	<span class="number">600519</span></span><br><span class="line">...	...	...	...	...	...	...</span><br><span class="line"><span class="number">2020</span><span class="number">-03</span><span class="number">-30</span>	<span class="number">1060.250</span>	<span class="number">1072.000</span>	<span class="number">1077.000</span>	<span class="number">1057.000</span>	<span class="number">30687.00</span>	<span class="number">600519</span></span><br><span class="line"><span class="number">2020</span><span class="number">-03</span><span class="number">-31</span>	<span class="number">1082.000</span>	<span class="number">1111.000</span>	<span class="number">1115.000</span>	<span class="number">1081.800</span>	<span class="number">47984.00</span>	<span class="number">600519</span></span><br><span class="line"><span class="number">2020</span><span class="number">-04</span><span class="number">-01</span>	<span class="number">1117.000</span>	<span class="number">1103.000</span>	<span class="number">1129.000</span>	<span class="number">1103.000</span>	<span class="number">33205.00</span>	<span class="number">600519</span></span><br></pre></td></tr></table></figure>
+
+<p>然后，我们要计算买入股票的总花费。因为我们只会在每月的第一个交易日买入股票，所以只需找到这些交易日的收盘价，即可计算买入股票的总花费。</p>
+<p>如何能找到每月的第一个交易日呢？</p>
+<p>我们可以使用 resample 方法，对数据进行重新取样，让它们以月份分组，然后我们提取每组的第一行数据，就是每月第一个交易日的数据了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 数据的重新取样（根据指定条件在df中取出指定的数据）</span></span><br><span class="line">df_monthly = new_df.resample(<span class="string">'M'</span>).first()</span><br><span class="line">df_monthly.head()</span><br></pre></td></tr></table></figure>
+
+<p>取样的结果如果看索引的话，似乎不太对劲：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">	open	close	high	low	volume	code</span><br><span class="line">date						</span><br><span class="line"><span class="number">2010</span><span class="number">-01</span><span class="number">-31</span>	<span class="number">109.760</span>	<span class="number">108.446</span>	<span class="number">109.760</span>	<span class="number">108.044</span>	<span class="number">44304.88</span>	<span class="number">600519</span></span><br><span class="line"><span class="number">2010</span><span class="number">-02</span><span class="number">-28</span>	<span class="number">107.769</span>	<span class="number">107.776</span>	<span class="number">108.216</span>	<span class="number">106.576</span>	<span class="number">29655.94</span>	<span class="number">600519</span></span><br><span class="line"><span class="number">2010</span><span class="number">-03</span><span class="number">-31</span>	<span class="number">106.219</span>	<span class="number">106.085</span>	<span class="number">106.857</span>	<span class="number">105.925</span>	<span class="number">21734.74</span>	<span class="number">600519</span></span><br><span class="line"><span class="number">2010</span><span class="number">-04</span><span class="number">-30</span>	<span class="number">101.324</span>	<span class="number">102.141</span>	<span class="number">102.422</span>	<span class="number">101.311</span>	<span class="number">23980.83</span>	<span class="number">600519</span></span><br><span class="line"><span class="number">2010</span><span class="number">-05</span><span class="number">-31</span>	<span class="number">81.676</span>	<span class="number">82.091</span>	<span class="number">82.678</span>	<span class="number">80.974</span>	<span class="number">23975.16</span>	<span class="number">600519</span></span><br></pre></td></tr></table></figure>
+
+<p>索引是每月的最后一天，而非第一个交易日！这是 resample 的 bug，不必理会。如果观察数据可以发现，每一行的数据都是每月第一个交易日的数据。我们其实已经成功取到了数据。</p>
+<p>然后，我们只需要找到每月第一个交易日（每月的第一行数据）的收盘价，乘以 100 则表示买入了 1 手股票。根据乘法分配律，每只股票的收盘价乘以 100 再求和与先求和再乘以 100 的结果是一样的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 收盘价为单价买入股票</span></span><br><span class="line">cost_money = df_monthly[<span class="string">'close'</span>].sum() * <span class="number">100</span></span><br><span class="line">cost_money    <span class="comment"># 4232833.300000001</span></span><br></pre></td></tr></table></figure>
+
+<p>花费的钱数已经计算出来，接下来可以计算卖出股票的收入了。</p>
+<p>我们每年的最后一个交易日会卖出股票。每年会买入 12 手，总共 1200 支股票，以每年最后一个交易日的收盘价卖出。我们可以以年份为单位，重新取样，拿到每年最后一个数据：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">new_df.resample(<span class="string">'A'</span>).last()</span><br></pre></td></tr></table></figure>
+
+<p>那取到的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">	open	close	high	low	volume	code</span><br><span class="line">date						</span><br><span class="line"><span class="number">2010</span><span class="number">-12</span><span class="number">-31</span>	<span class="number">117.103</span>	<span class="number">118.469</span>	<span class="number">118.701</span>	<span class="number">116.620</span>	<span class="number">46084.0</span>	<span class="number">600519</span></span><br><span class="line"><span class="number">2011</span><span class="number">-12</span><span class="number">-31</span>	<span class="number">138.039</span>	<span class="number">138.468</span>	<span class="number">139.600</span>	<span class="number">136.105</span>	<span class="number">29460.0</span>	<span class="number">600519</span></span><br><span class="line"><span class="number">2012</span><span class="number">-12</span><span class="number">-31</span>	<span class="number">155.208</span>	<span class="number">152.087</span>	<span class="number">156.292</span>	<span class="number">150.144</span>	<span class="number">51914.0</span>	<span class="number">600519</span></span><br><span class="line"><span class="number">2013</span><span class="number">-12</span><span class="number">-31</span>	<span class="number">93.188</span>	<span class="number">96.480</span>	<span class="number">97.179</span>	<span class="number">92.061</span>	<span class="number">57546.0</span>	<span class="number">600519</span></span><br><span class="line"><span class="number">2014</span><span class="number">-12</span><span class="number">-31</span>	<span class="number">157.642</span>	<span class="number">161.056</span>	<span class="number">161.379</span>	<span class="number">157.132</span>	<span class="number">46269.0</span>	<span class="number">600519</span></span><br><span class="line"><span class="number">2015</span><span class="number">-12</span><span class="number">-31</span>	<span class="number">207.487</span>	<span class="number">207.458</span>	<span class="number">208.704</span>	<span class="number">207.106</span>	<span class="number">19673.0</span>	<span class="number">600519</span></span><br><span class="line"><span class="number">2016</span><span class="number">-12</span><span class="number">-31</span>	<span class="number">317.239</span>	<span class="number">324.563</span>	<span class="number">325.670</span>	<span class="number">317.239</span>	<span class="number">34687.0</span>	<span class="number">600519</span></span><br><span class="line"><span class="number">2017</span><span class="number">-12</span><span class="number">-31</span>	<span class="number">707.948</span>	<span class="number">687.725</span>	<span class="number">716.329</span>	<span class="number">681.918</span>	<span class="number">76038.0</span>	<span class="number">600519</span></span><br><span class="line"><span class="number">2018</span><span class="number">-12</span><span class="number">-31</span>	<span class="number">563.300</span>	<span class="number">590.010</span>	<span class="number">596.400</span>	<span class="number">560.000</span>	<span class="number">63678.0</span>	<span class="number">600519</span></span><br><span class="line"><span class="number">2019</span><span class="number">-12</span><span class="number">-31</span>	<span class="number">1183.000</span>	<span class="number">1183.000</span>	<span class="number">1188.000</span>	<span class="number">1176.510</span>	<span class="number">22588.0</span>	<span class="number">600519</span></span><br><span class="line"><span class="number">2020</span><span class="number">-12</span><span class="number">-31</span>	<span class="number">1117.000</span>	<span class="number">1103.000</span>	<span class="number">1129.000</span>	<span class="number">1103.000</span>	<span class="number">33205.0</span>	<span class="number">600519</span></span><br></pre></td></tr></table></figure>
+
+<p>有一点要注意的是，今年（2020 年）尚未到最后一个交易日，所以今年买入的股票是不会卖出的。所以今年的数据要排除出去：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df_yearly = new_df.resample(<span class="string">'A'</span>).last()[:<span class="number">-1</span>]</span><br><span class="line">df_yearly</span><br></pre></td></tr></table></figure>
+
+<p>结果中就没有今年的数据了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">	open	close	high	low	volume	code</span><br><span class="line">date						</span><br><span class="line"><span class="number">2010</span><span class="number">-12</span><span class="number">-31</span>	<span class="number">117.103</span>	<span class="number">118.469</span>	<span class="number">118.701</span>	<span class="number">116.620</span>	<span class="number">46084.0</span>	<span class="number">600519</span></span><br><span class="line"><span class="number">2011</span><span class="number">-12</span><span class="number">-31</span>	<span class="number">138.039</span>	<span class="number">138.468</span>	<span class="number">139.600</span>	<span class="number">136.105</span>	<span class="number">29460.0</span>	<span class="number">600519</span></span><br><span class="line"><span class="number">2012</span><span class="number">-12</span><span class="number">-31</span>	<span class="number">155.208</span>	<span class="number">152.087</span>	<span class="number">156.292</span>	<span class="number">150.144</span>	<span class="number">51914.0</span>	<span class="number">600519</span></span><br><span class="line"><span class="number">2013</span><span class="number">-12</span><span class="number">-31</span>	<span class="number">93.188</span>	<span class="number">96.480</span>	<span class="number">97.179</span>	<span class="number">92.061</span>	<span class="number">57546.0</span>	<span class="number">600519</span></span><br><span class="line"><span class="number">2014</span><span class="number">-12</span><span class="number">-31</span>	<span class="number">157.642</span>	<span class="number">161.056</span>	<span class="number">161.379</span>	<span class="number">157.132</span>	<span class="number">46269.0</span>	<span class="number">600519</span></span><br><span class="line"><span class="number">2015</span><span class="number">-12</span><span class="number">-31</span>	<span class="number">207.487</span>	<span class="number">207.458</span>	<span class="number">208.704</span>	<span class="number">207.106</span>	<span class="number">19673.0</span>	<span class="number">600519</span></span><br><span class="line"><span class="number">2016</span><span class="number">-12</span><span class="number">-31</span>	<span class="number">317.239</span>	<span class="number">324.563</span>	<span class="number">325.670</span>	<span class="number">317.239</span>	<span class="number">34687.0</span>	<span class="number">600519</span></span><br><span class="line"><span class="number">2017</span><span class="number">-12</span><span class="number">-31</span>	<span class="number">707.948</span>	<span class="number">687.725</span>	<span class="number">716.329</span>	<span class="number">681.918</span>	<span class="number">76038.0</span>	<span class="number">600519</span></span><br><span class="line"><span class="number">2018</span><span class="number">-12</span><span class="number">-31</span>	<span class="number">563.300</span>	<span class="number">590.010</span>	<span class="number">596.400</span>	<span class="number">560.000</span>	<span class="number">63678.0</span>	<span class="number">600519</span></span><br><span class="line"><span class="number">2019</span><span class="number">-12</span><span class="number">-31</span>	<span class="number">1183.000</span>	<span class="number">1183.000</span>	<span class="number">1188.000</span>	<span class="number">1176.510</span>	<span class="number">22588.0</span>	<span class="number">600519</span></span><br></pre></td></tr></table></figure>
+
+<p>将每年最后一个交易日的收盘价乘以 1200，即是当年的卖出收入。把这些收入加和，即可得到这些年卖出股票的总收入。根据乘法分配律，我们可以用所有收盘价的和乘以 1200 得到同样的结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">recv_money = df_yearly[<span class="string">'close'</span>].sum() * <span class="number">1200</span></span><br><span class="line">recv_money    <span class="comment"># 4391179.2</span></span><br></pre></td></tr></table></figure>
+
+<p>总的买入花费和卖出收入已经计算完毕，我们还需要计算当前持有股份的价值。</p>
+<p>今年已经过去 4 个月，只需要将今年最后一个交易日的收盘价乘以 400 即可得到持有股份的总价值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hold_money = new_df[<span class="string">'close'</span>][<span class="number">-1</span>] * <span class="number">400</span></span><br><span class="line">hold_money    <span class="comment"># 441200.0</span></span><br></pre></td></tr></table></figure>
+
+<p>最后，使用公式 <code>当前持有股票价值 + 卖出股票总收入 - 买入股票总花费</code> 即可计算出需求中的总收益：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 总收益</span></span><br><span class="line">recv_money + hold_money - cost_money</span><br></pre></td></tr></table></figure>
+
+<p>这个数值是：<code>599545.8999999994</code></p>
+<p>可见，即便不用任何技巧，买茅台股票也能赚好多钱。</p>
+<h2 id="双均线策略制定"><a href="#双均线策略制定" class="headerlink" title="双均线策略制定"></a>双均线策略制定</h2><p>双均线是一个比较简单的股票买卖策略，通过建立 m 天移动平均线，n 天移动平均线，则两条均线必有交点。若 m&gt;n，n 天平均线“上穿越”m 天均线则为买入点，反之为卖出点。</p>
+<h3 id="数据准备"><a href="#数据准备" class="headerlink" title="数据准备"></a>数据准备</h3><p>这次我们使用平安银行的股票来进行分析。首先还是使用 tushare 来获取平安银行的历史数据，然后进行数据的持久化，接着读取数据（真实的案例不必需要这两部，这里是在练习），清楚不必要的列，修改数据类型，设置行索引：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">data = ts.get_k_data(code=<span class="string">'000001'</span>, start=<span class="string">'1900-01-01'</span>)    <span class="comment"># 从网络接口获取数据</span></span><br><span class="line">data.to_csv(<span class="string">'pingan.csv'</span>)    <span class="comment"># 将数据持久化存储</span></span><br><span class="line">df = pd.read_csv(<span class="string">'pingan.csv'</span>)    <span class="comment"># 读取文件中的数据</span></span><br><span class="line">df.drop(<span class="string">'Unnamed: 0'</span>, axis=<span class="number">1</span>, inplace=<span class="literal">True</span>)    <span class="comment"># 删除隐式索引列</span></span><br><span class="line">df[<span class="string">'date'</span>] = pd.to_datetime(df[<span class="string">'date'</span>])    <span class="comment"># 将date列的数据类型更换为时间类型</span></span><br><span class="line">df.set_index(<span class="string">'date'</span>, inplace=<span class="literal">True</span>)    <span class="comment"># 将date列设置为索引</span></span><br><span class="line">df.info()    <span class="comment"># 查看数据类型</span></span><br><span class="line">df.head()    <span class="comment"># 查看前五行数据</span></span><br></pre></td></tr></table></figure>
+
+<p>数据类型为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">pandas</span>.<span class="title">core</span>.<span class="title">frame</span>.<span class="title">DataFrame</span>'&gt;</span></span><br><span class="line"><span class="class"><span class="title">DatetimeIndex</span>:</span> <span class="number">6967</span> entries, <span class="number">1991</span><span class="number">-01</span><span class="number">-02</span> to <span class="number">2020</span><span class="number">-04</span><span class="number">-01</span></span><br><span class="line">Data columns (total <span class="number">6</span> columns):</span><br><span class="line">open      <span class="number">6967</span> non-null float64</span><br><span class="line">close     <span class="number">6967</span> non-null float64</span><br><span class="line">high      <span class="number">6967</span> non-null float64</span><br><span class="line">low       <span class="number">6967</span> non-null float64</span><br><span class="line">volume    <span class="number">6967</span> non-null float64</span><br><span class="line">code      <span class="number">6967</span> non-null int64</span><br><span class="line">dtypes: float64(<span class="number">5</span>), int64(<span class="number">1</span>)</span><br><span class="line">memory usage: <span class="number">381.0</span> KB</span><br></pre></td></tr></table></figure>
+
+<p>前五行的数据为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">	open	close	high	low	volume	code</span><br><span class="line">date						</span><br><span class="line"><span class="number">1991</span><span class="number">-01</span><span class="number">-02</span>	<span class="number">0.185</span>	<span class="number">0.188</span>	<span class="number">0.188</span>	<span class="number">0.185</span>	<span class="number">759.00</span>	<span class="number">1</span></span><br><span class="line"><span class="number">1991</span><span class="number">-01</span><span class="number">-03</span>	<span class="number">0.429</span>	<span class="number">0.429</span>	<span class="number">0.429</span>	<span class="number">0.429</span>	<span class="number">212.40</span>	<span class="number">1</span></span><br><span class="line"><span class="number">1991</span><span class="number">-01</span><span class="number">-04</span>	<span class="number">0.428</span>	<span class="number">0.428</span>	<span class="number">0.428</span>	<span class="number">0.428</span>	<span class="number">167.90</span>	<span class="number">1</span></span><br><span class="line"><span class="number">1991</span><span class="number">-01</span><span class="number">-05</span>	<span class="number">0.426</span>	<span class="number">0.426</span>	<span class="number">0.426</span>	<span class="number">0.426</span>	<span class="number">131.50</span>	<span class="number">1</span></span><br><span class="line"><span class="number">1991</span><span class="number">-01</span><span class="number">-07</span>	<span class="number">0.426</span>	<span class="number">0.426</span>	<span class="number">0.426</span>	<span class="number">0.426</span>	<span class="number">161.36</span>	<span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="5-日均线和-30-日均线"><a href="#5-日均线和-30-日均线" class="headerlink" title="5 日均线和 30 日均线"></a>5 日均线和 30 日均线</h3><p>需求：计算该股票历史数据的 5 日均线和 30 日均线。</p>
+<p>什么是均线？</p>
+<p>对于每一个交易日，都可以计算出前N天的移动平均值，然后把这些移动平均值连起来，成为一条线，就叫做N日移动平均线。移动平均线常用线有 5 天、10 天、30 天、60 天、120 天和 240 天的指标。</p>
+<ul>
+<li>5 天和 10 天的是短线操作的参照指标，称做日均线指标；</li>
+<li>30 天和 60 天的是中期均线指标，称做季均线指标；</li>
+<li>120 天和 240 天的是长期均线指标，称做年均线指标。</li>
+</ul>
+<p>均线计算方法：<code>MA = (C1 + C2 + C3 +...+ Cn) / N</code>。其中，C 为某日收盘价，N 为移动平均周期（天数）</p>
+<p>对于某一天来说，5 日均线就是之前 4 天的价格之和加上今天的价格，然后除以 5。30 日均线道理相同。</p>
+<p>要计算 5 日均线，我们就需要获取前 4 天的数据。如果使用循环就太麻烦。DataFrame 为我们提供了 rolling 方法，这个方法可以将指定个数的数组组合，然后进行聚合运算。</p>
+<p>比如 <code>rolling(5)</code> 的运算操作可以用下面的表格表示：</p>
+<table>
+<thead>
+<tr>
+<th align="center">索引</th>
+<th align="center">0</th>
+<th align="center">1</th>
+<th align="center">2</th>
+<th align="center">3</th>
+<th align="center">4</th>
+<th align="center">5</th>
+<th align="center">6</th>
+<th align="center">7</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">rolling(5)</td>
+<td align="center">NaN</td>
+<td align="center">NaN</td>
+<td align="center">NaN</td>
+<td align="center">NaN</td>
+<td align="center">01234</td>
+<td align="center">12345</td>
+<td align="center">23456</td>
+<td align="center">34567</td>
+</tr>
+<tr>
+<td align="center">平均值</td>
+<td align="center">NaN</td>
+<td align="center">NaN</td>
+<td align="center">NaN</td>
+<td align="center">NaN</td>
+<td align="center">2</td>
+<td align="center">3</td>
+<td align="center">4</td>
+<td align="center">5</td>
+</tr>
+</tbody></table>
+<p>我们可以通过 rolling 方法来计算出 5 日均值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ma5 = df[<span class="string">'close'</span>].rolling(<span class="number">5</span>).mean()</span><br><span class="line">ma5</span><br></pre></td></tr></table></figure>
+
+<p>前四个元素为 NaN，因为它们凑不齐 5 天，所以 5 日均值对于前四天而言是没有意义的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">date</span><br><span class="line"><span class="number">1991</span><span class="number">-01</span><span class="number">-02</span>        NaN</span><br><span class="line"><span class="number">1991</span><span class="number">-01</span><span class="number">-03</span>        NaN</span><br><span class="line"><span class="number">1991</span><span class="number">-01</span><span class="number">-04</span>        NaN</span><br><span class="line"><span class="number">1991</span><span class="number">-01</span><span class="number">-05</span>        NaN</span><br><span class="line"><span class="number">1991</span><span class="number">-01</span><span class="number">-07</span>     <span class="number">0.3794</span></span><br><span class="line"><span class="number">1991</span><span class="number">-01</span><span class="number">-08</span>     <span class="number">0.4266</span></span><br><span class="line"><span class="number">1991</span><span class="number">-01</span><span class="number">-09</span>     <span class="number">0.4252</span></span><br><span class="line"><span class="number">1991</span><span class="number">-01</span><span class="number">-10</span>     <span class="number">0.4236</span></span><br><span class="line"><span class="number">1991</span><span class="number">-01</span><span class="number">-11</span>     <span class="number">0.4220</span></span><br><span class="line"><span class="number">1991</span><span class="number">-01</span><span class="number">-12</span>     <span class="number">0.4200</span></span><br><span class="line"><span class="number">1991</span><span class="number">-01</span><span class="number">-14</span>     <span class="number">0.4178</span></span><br></pre></td></tr></table></figure>
+
+<p>同样方法，我们还可以求出 30 日均值，同样，前 29 天将会是 NaN：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ma30 = df.rolling(<span class="number">30</span>).mean()</span><br><span class="line">ma30</span><br></pre></td></tr></table></figure>
+
+<p>有了 5 日均值和 30 日均值，我们可以用这些数据来画曲线：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line">plt.plot(ma5[<span class="number">300</span>:<span class="number">600</span>], label=<span class="string">'ma5'</span>, c=<span class="string">'red'</span>)</span><br><span class="line">plt.plot(ma30[<span class="number">300</span>:<span class="number">600</span>], label=<span class="string">'ma30'</span>, c=<span class="string">'blue'</span>)</span><br><span class="line">plt.legend()</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
+
+<p>画出来的曲线如下：</p>
+
+
+<h3 id="金叉和死叉"><a href="#金叉和死叉" class="headerlink" title="金叉和死叉"></a>金叉和死叉</h3><p>我们发现，5 日均线和 30 日均线会有很多的交叉点，这些交叉点有其特有的名称：金叉和死叉。</p>
+<p>股票分析技术中的金叉和死叉，可以简单解释为：</p>
+<ul>
+<li>分析指标中的两根线，一根为短时间内的指标线，另一根为较长时间的指标线；</li>
+<li>如果短时间的指标线方向拐头向上，并且穿过了较长时间的指标线，这种状态叫“金叉”；</li>
+<li>如果短时间的指标线方向拐头向下，并且穿过了较长时间的指标线，这种状态叫“死叉”；</li>
+<li>一般情况下，出现金叉后，操作趋向买入；死叉则趋向卖出。当然，金叉和死叉只是分析指标之一，要和其他很多指标配合使用，才能增加操作的准确性。</li>
+</ul>
+<p>需求：分析输出所有金叉日期和死叉日期。</p>
+<p>不难看出，在金叉的左侧，30 日均值要高于 5 日均值，金叉的右侧，30 日均值要低于 5 日均值，死叉则刚好反过来。那么我们就可以这样来找到金叉和死叉的位置：</p>
+<ul>
+<li>30 日均值从高于 5 日均值变成低于 5 日均值的位置为金叉</li>
+<li>30 日均值从低于 5 日均值变成高于 5 日均值的位置为死叉</li>
+</ul>
+<p>比如，下面的表格表示了金叉和死叉的位置（数据为凭空捏造）：</p>
+<table>
+<thead>
+<tr>
+<th>索引</th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th><span style="color: orange">3</span></th>
+<th>4</th>
+<th>5</th>
+<th><span style="color: red">6</span></th>
+<th>7</th>
+<th>8</th>
+<th><span style="color: orange">9</span></th>
+<th>10</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ma30 &gt; ma5</td>
+<td>T</td>
+<td>T</td>
+<td>T</td>
+<td><span style="color: orange">F</span></td>
+<td>F</td>
+<td>F</td>
+<td><span style="color: red">T</span></td>
+<td>T</td>
+<td>T</td>
+<td><span style="color: orange">F</span></td>
+<td>F</td>
+</tr>
+<tr>
+<td>金叉/死叉</td>
+<td></td>
+<td></td>
+<td></td>
+<td><span style="color: orange">金</span></td>
+<td></td>
+<td></td>
+<td><span style="color: red">死</span></td>
+<td></td>
+<td></td>
+<td><span style="color: orange">金</span></td>
+<td></td>
+</tr>
+</tbody></table>
+<p>那么如何来求出金叉和死叉的位置呢？</p>
+<p>我们不妨令 <code>s1 = ma30 &gt; ma5</code>，s2 为 s1 取反的结果，即 <code>s2 = ~s1</code>。s1 和 s2 的值在下表中表示：</p>
+<table>
+<thead>
+<tr>
+<th>索引</th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th><span style="color: orange">3</span></th>
+<th>4</th>
+<th>5</th>
+<th><span style="color: red">6</span></th>
+<th>7</th>
+<th>8</th>
+<th><span style="color: orange">9</span></th>
+<th>10</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>s1</td>
+<td>T</td>
+<td>T</td>
+<td>T</td>
+<td><span style="color: orange">F</span></td>
+<td>F</td>
+<td>F</td>
+<td><span style="color: red">T</span></td>
+<td>T</td>
+<td>T</td>
+<td><span style="color: orange">F</span></td>
+<td>F</td>
+</tr>
+<tr>
+<td>s2</td>
+<td>F</td>
+<td>F</td>
+<td>F</td>
+<td><span style="color: orange">T</span></td>
+<td>T</td>
+<td>T</td>
+<td><span style="color: red">F</span></td>
+<td>F</td>
+<td>F</td>
+<td><span style="color: orange">T</span></td>
+<td>T</td>
+</tr>
+</tbody></table>
+<p>现在似乎还是无法轻易计算金叉和死叉的位置。不过，如果我们将 s2 整体向后移动一位，就像下面这样：</p>
+<table>
+<thead>
+<tr>
+<th>索引</th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th><span style="color: orange">3</span></th>
+<th>4</th>
+<th>5</th>
+<th><span style="color: red">6</span></th>
+<th>7</th>
+<th>8</th>
+<th><span style="color: orange">9</span></th>
+<th>10</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>s1</td>
+<td>T</td>
+<td>T</td>
+<td>T</td>
+<td><span style="color: orange">F</span></td>
+<td>F</td>
+<td>F</td>
+<td><span style="color: red">T</span></td>
+<td>T</td>
+<td>T</td>
+<td><span style="color: orange">F</span></td>
+<td>F</td>
+</tr>
+<tr>
+<td>s2.shift(1)</td>
+<td></td>
+<td>F</td>
+<td>F</td>
+<td>F</td>
+<td>T</td>
+<td>T</td>
+<td>T</td>
+<td>F</td>
+<td>F</td>
+<td>F</td>
+<td>T</td>
+</tr>
+<tr>
+<td>s2</td>
+<td>F</td>
+<td>F</td>
+<td>F</td>
+<td><span style="color: orange">T</span></td>
+<td>T</td>
+<td>T</td>
+<td><span style="color: red">F</span></td>
+<td>F</td>
+<td>F</td>
+<td><span style="color: orange">T</span></td>
+<td>T</td>
+</tr>
+</tbody></table>
+<p>注意看金叉和死叉的位置。我们发现，普通位置上，s1 和 s2.shift(1) 的值一定是相反的，但是在金叉和死叉的位置上，两个值相同了。如果两个值同为 False，则该位置为金叉；如果同为 True，则该位置为死叉。</p>
+<p>我们可以通过与操作，得到同为 True 的位置，也就是死叉；通过或非（先或操作，然后取反）操作，得到同为 False 的位置，也就是金叉。操作结果如下表所示：</p>
+<table>
+<thead>
+<tr>
+<th>索引</th>
+<th>0</th>
+<th>1</th>
+<th>2</th>
+<th><span style="color: orange">3</span></th>
+<th>4</th>
+<th>5</th>
+<th><span style="color: red">6</span></th>
+<th>7</th>
+<th>8</th>
+<th><span style="color: orange">9</span></th>
+<th>10</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>s1</td>
+<td>T</td>
+<td>T</td>
+<td>T</td>
+<td><span style="color: orange">F</span></td>
+<td>F</td>
+<td>F</td>
+<td><span style="color: red">T</span></td>
+<td>T</td>
+<td>T</td>
+<td><span style="color: orange">F</span></td>
+<td>F</td>
+</tr>
+<tr>
+<td>s2.shift(1)</td>
+<td></td>
+<td>F</td>
+<td>F</td>
+<td>F</td>
+<td>T</td>
+<td>T</td>
+<td>T</td>
+<td>F</td>
+<td>F</td>
+<td>F</td>
+<td>T</td>
+</tr>
+<tr>
+<td>s2</td>
+<td>F</td>
+<td>F</td>
+<td>F</td>
+<td><span style="color: orange">T</span></td>
+<td>T</td>
+<td>T</td>
+<td><span style="color: red">F</span></td>
+<td>F</td>
+<td>F</td>
+<td><span style="color: orange">T</span></td>
+<td>T</td>
+</tr>
+<tr>
+<td>s1 &amp; s2.shift(1)</td>
+<td></td>
+<td>F</td>
+<td>F</td>
+<td>F</td>
+<td>F</td>
+<td>F</td>
+<td><span style="color: red">T</span></td>
+<td>F</td>
+<td>F</td>
+<td>F</td>
+<td>F</td>
+</tr>
+<tr>
+<td>~(s1 | s2.shift(1))</td>
+<td></td>
+<td>F</td>
+<td>F</td>
+<td><span style="color: orange">T</span></td>
+<td>F</td>
+<td>F</td>
+<td>F</td>
+<td>F</td>
+<td>F</td>
+<td><span style="color: orange">T</span></td>
+<td>F</td>
+</tr>
+</tbody></table>
+<p>运算结果成功找到了金叉和死叉的位置，然后我们就可以通过布尔值索引找到金叉和死叉所在的行了。</p>
+
+
+<p>接下来我们开始操作吧！</p>
+<p>首先我们来判断一下每个交易日的 30 日均值是否高于 5 日均值，也就是求出 s1：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s1 = ma5[<span class="number">30</span>:] &lt; ma30[<span class="number">30</span>:]    <span class="comment"># 切片是为了舍弃空值</span></span><br><span class="line">s1</span><br></pre></td></tr></table></figure>
+
+<p>s1 的部分结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">date</span><br><span class="line"><span class="number">1991</span><span class="number">-02</span><span class="number">-06</span>     <span class="literal">True</span></span><br><span class="line"><span class="number">1991</span><span class="number">-02</span><span class="number">-07</span>     <span class="literal">True</span></span><br><span class="line"><span class="number">1991</span><span class="number">-02</span><span class="number">-08</span>     <span class="literal">True</span></span><br><span class="line"><span class="number">1991</span><span class="number">-02</span><span class="number">-09</span>     <span class="literal">True</span></span><br><span class="line"><span class="number">1991</span><span class="number">-02</span><span class="number">-11</span>     <span class="literal">True</span></span><br><span class="line"><span class="number">1991</span><span class="number">-02</span><span class="number">-12</span>    <span class="literal">False</span>    <span class="comment"># 金叉</span></span><br><span class="line"><span class="number">1991</span><span class="number">-02</span><span class="number">-13</span>    <span class="literal">False</span></span><br><span class="line"><span class="number">1991</span><span class="number">-02</span><span class="number">-22</span>    <span class="literal">False</span></span><br><span class="line">...</span><br><span class="line"><span class="number">1991</span><span class="number">-03</span><span class="number">-05</span>    <span class="literal">False</span></span><br><span class="line"><span class="number">1991</span><span class="number">-03</span><span class="number">-06</span>    <span class="literal">False</span></span><br><span class="line"><span class="number">1991</span><span class="number">-03</span><span class="number">-07</span>    <span class="literal">False</span></span><br><span class="line"><span class="number">1991</span><span class="number">-03</span><span class="number">-08</span>    <span class="literal">False</span></span><br><span class="line"><span class="number">1991</span><span class="number">-03</span><span class="number">-09</span>    <span class="literal">False</span></span><br><span class="line"><span class="number">1991</span><span class="number">-03</span><span class="number">-11</span>     <span class="literal">True</span>    <span class="comment"># 死叉</span></span><br><span class="line"><span class="number">1991</span><span class="number">-03</span><span class="number">-12</span>     <span class="literal">True</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>然后，s2 为 s1 取反的结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s2 = ~s1</span><br><span class="line">s2</span><br></pre></td></tr></table></figure>
+
+<p>死叉日期：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">death_date = df[<span class="number">30</span>:].loc[s1 &amp; s2.shift(<span class="number">1</span>)].index</span><br><span class="line">death_date</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果成功找到死叉的位置：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">DatetimeIndex([<span class="string">'1991-03-11'</span>, <span class="string">'1991-11-28'</span>, <span class="string">'1992-01-17'</span>, <span class="string">'1992-06-05'</span>,</span><br><span class="line">               <span class="string">'1992-08-17'</span>, <span class="string">'1992-10-21'</span>, <span class="string">'1993-03-23'</span>, <span class="string">'1993-05-04'</span>,</span><br><span class="line">               <span class="string">'1993-08-25'</span>, <span class="string">'1993-11-29'</span>,</span><br><span class="line">               ...</span><br><span class="line">               <span class="string">'2018-08-16'</span>, <span class="string">'2018-10-16'</span>, <span class="string">'2018-11-13'</span>, <span class="string">'2019-03-28'</span>,</span><br><span class="line">               <span class="string">'2019-05-08'</span>, <span class="string">'2019-08-06'</span>, <span class="string">'2019-08-30'</span>, <span class="string">'2019-09-18'</span>,</span><br><span class="line">               <span class="string">'2019-11-13'</span>, <span class="string">'2020-01-21'</span>],</span><br><span class="line">              dtype=<span class="string">'datetime64[ns]'</span>, name=<span class="string">'date'</span>, length=<span class="number">153</span>, freq=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+
+<p>金叉日期：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">golden_date = df[<span class="number">30</span>:].loc[~(s1 | s2.shift(<span class="number">1</span>))].index</span><br><span class="line">golden_date</span><br></pre></td></tr></table></figure>
+
+<p>金叉日期也成功被找到：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">DatetimeIndex([<span class="string">'1991-02-12'</span>, <span class="string">'1991-10-03'</span>, <span class="string">'1991-12-27'</span>, <span class="string">'1992-01-30'</span>,</span><br><span class="line">               <span class="string">'1992-07-03'</span>, <span class="string">'1992-09-15'</span>, <span class="string">'1992-12-02'</span>, <span class="string">'1993-04-09'</span>,</span><br><span class="line">               <span class="string">'1993-08-02'</span>, <span class="string">'1993-11-10'</span>,</span><br><span class="line">               ...</span><br><span class="line">               <span class="string">'2018-07-25'</span>, <span class="string">'2018-08-23'</span>, <span class="string">'2018-10-18'</span>, <span class="string">'2019-01-14'</span>,</span><br><span class="line">               <span class="string">'2019-04-01'</span>, <span class="string">'2019-06-14'</span>, <span class="string">'2019-08-12'</span>, <span class="string">'2019-09-05'</span>,</span><br><span class="line">               <span class="string">'2019-09-20'</span>, <span class="string">'2019-12-17'</span>],</span><br><span class="line">              dtype=<span class="string">'datetime64[ns]'</span>, name=<span class="string">'date'</span>, length=<span class="number">153</span>, freq=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="按照金叉炒股，收益如何？"><a href="#按照金叉炒股，收益如何？" class="headerlink" title="按照金叉炒股，收益如何？"></a>按照金叉炒股，收益如何？</h3><p>问题：如果我从假如我从 2010 年 1 月 1 日开始，初始资金为 100000 元。在金叉处尽量买入，死叉处全部卖出，则到今天为止，我的炒股收益率如何？</p>
+<p>分析：</p>
+<ul>
+<li>买卖股票的单价使用开盘价</li>
+<li>买卖股票的时机</li>
+<li>最终手里会有剩余的股票没有卖出去<ul>
+<li>会有。如果最后一个为金叉，则买入股票。估量剩余股票的价值计算到总收益。</li>
+<li>剩余股票的单价就是用最后一天的收盘价。</li>
+</ul>
+</li>
+</ul>
+<p>首先，分别以金叉日期和死叉日期创建 Series，金叉日期对应的值为 1，死叉日期对应的值为 0：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建一个Series，sr1存储的value值全部为1，索引为金叉日期</span></span><br><span class="line">sr1 = Series(data=<span class="number">1</span>, index=golden_date)</span><br><span class="line"><span class="comment"># sr2的value值为0，索引为死叉日期</span></span><br><span class="line">sr2 = Series(data=<span class="number">0</span>, index=death_date)</span><br></pre></td></tr></table></figure>
+
+<p>然后，将两个 Series 合并到一起，并以索引（时间）进行排序：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将sr1和sr2这两个Series中的数据整合到一起</span></span><br><span class="line">s = sr1.append(sr2)</span><br><span class="line">s.sort_index(inplace=<span class="literal">True</span>)</span><br><span class="line">s</span><br></pre></td></tr></table></figure>
+
+<p>排序后的 Series 为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">date</span><br><span class="line"><span class="number">1991</span><span class="number">-02</span><span class="number">-12</span>    <span class="number">1</span></span><br><span class="line"><span class="number">1991</span><span class="number">-03</span><span class="number">-11</span>    <span class="number">0</span></span><br><span class="line"><span class="number">1991</span><span class="number">-10</span><span class="number">-03</span>    <span class="number">1</span></span><br><span class="line"><span class="number">1991</span><span class="number">-11</span><span class="number">-28</span>    <span class="number">0</span></span><br><span class="line"><span class="number">1991</span><span class="number">-12</span><span class="number">-27</span>    <span class="number">1</span></span><br><span class="line"><span class="number">1992</span><span class="number">-01</span><span class="number">-17</span>    <span class="number">0</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>金叉和死叉交替出现，因为金叉后面必定是死叉，死叉后面必定是金叉。</p>
+<p>数据中的 1 表示的时间为金叉时间，0 表示的时间为死叉时间。</p>
+<p>因为问题要求是 2010 年以来，所以我们要对数据进行切片截取：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">new_s = s[<span class="string">'2010'</span>:]</span><br><span class="line">new_s</span><br></pre></td></tr></table></figure>
+
+<p>就拿到了 2010 年以来的所有数据：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">date</span><br><span class="line"><span class="number">2010</span><span class="number">-02</span><span class="number">-22</span>    <span class="number">1</span></span><br><span class="line"><span class="number">2010</span><span class="number">-04</span><span class="number">-09</span>    <span class="number">0</span></span><br><span class="line"><span class="number">2010</span><span class="number">-06</span><span class="number">-23</span>    <span class="number">1</span></span><br><span class="line"><span class="number">2010</span><span class="number">-09</span><span class="number">-10</span>    <span class="number">0</span></span><br><span class="line"><span class="number">2010</span><span class="number">-10</span><span class="number">-13</span>    <span class="number">1</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>然后，通过循环 new_s 中的数据，在金叉时买入股票，在死叉时卖出股票，即可计算总收益了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">START_MONEY = <span class="number">100000</span>    <span class="comment"># 本金，不可变</span></span><br><span class="line">money = START_MONEY    <span class="comment"># 现金总金额，可变，买卖股票从money中进行加减操作</span></span><br><span class="line">hold = <span class="number">0</span>    <span class="comment"># 持有股票的数量（支）</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(len(new_s)):</span><br><span class="line">    <span class="keyword">if</span> new_s[i]:    <span class="comment"># 金叉的值为1，如果是金叉的话，需要买入股票</span></span><br><span class="line">        price = df.loc[new_s.index[i]][<span class="string">'close'</span>]    <span class="comment"># 买入价格，以当日收盘价买入</span></span><br><span class="line">        hand = money // (price * <span class="number">100</span>)    <span class="comment"># 剩余的钱共可以买的手数。股票只能整手买，也就是100的倍数支</span></span><br><span class="line">        hold = hand * <span class="number">100</span></span><br><span class="line">        money -= hold * price</span><br><span class="line">    <span class="keyword">else</span>:    <span class="comment"># 死叉的值为0，如果是死叉，将卖出全部股票</span></span><br><span class="line">        price = df.loc[new_s.index[i]][<span class="string">'close'</span>]    <span class="comment"># 卖出价格，以当日收盘价卖出</span></span><br><span class="line">        money += price * hold</span><br><span class="line">        hold = <span class="number">0</span></span><br><span class="line"><span class="comment"># 剩余股票的价值</span></span><br><span class="line">hold_money = hold * df[<span class="string">'close'</span>][<span class="number">-1</span>]</span><br><span class="line">print(<span class="string">'总收益：'</span>, money + hold_money - START_MONEY)</span><br></pre></td></tr></table></figure>
+
+<p>最终计算得到的总结过为：<code>127010.79999999996</code></p>
+<p>还有一个很有趣的现象，如果把买入和卖出的价格换成开盘价格，这个数值会翻将近两番，为：<code>331508.3</code></p>
+<p>原因可能是开盘时跟接近金叉和死叉的位置吧。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"># Python</a>
+              <a href="/tags/Anaconda/" rel="tag"># Anaconda</a>
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" rel="tag"># 数据分析</a>
+              <a href="/tags/Pandas/" rel="tag"># Pandas</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/data-analysis/pandas-basic/" rel="prev" title="Pandas 的基础操作">
+      <i class="fa fa-chevron-left"></i> Pandas 的基础操作
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/data-analysis/pandas-data-cleaning/" rel="next" title="基于 Pandas 的数据清洗">
+      基于 Pandas 的数据清洗 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本的股票数据分析"><span class="nav-number">1.</span> <span class="nav-text">基本的股票数据分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#股票数据的持久化操作"><span class="nav-number">1.1.</span> <span class="nav-text">股票数据的持久化操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#股票数据预处理"><span class="nav-number">1.2.</span> <span class="nav-text">股票数据预处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#简单的股票数据分析"><span class="nav-number">1.3.</span> <span class="nav-text">简单的股票数据分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#该股票所有收盘比开盘上涨-3-以上的日期"><span class="nav-number">1.3.1.</span> <span class="nav-text">该股票所有收盘比开盘上涨 3% 以上的日期</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#该股票所有开盘比前日收盘跌幅超过-2-的日期"><span class="nav-number">1.3.2.</span> <span class="nav-text">该股票所有开盘比前日收盘跌幅超过 2% 的日期</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#月初买股票，年底卖股票，计算收益"><span class="nav-number">1.3.3.</span> <span class="nav-text">月初买股票，年底卖股票，计算收益</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#双均线策略制定"><span class="nav-number">2.</span> <span class="nav-text">双均线策略制定</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数据准备"><span class="nav-number">2.1.</span> <span class="nav-text">数据准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-日均线和-30-日均线"><span class="nav-number">2.2.</span> <span class="nav-text">5 日均线和 30 日均线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#金叉和死叉"><span class="nav-number">2.3.</span> <span class="nav-text">金叉和死叉</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#按照金叉炒股，收益如何？"><span class="nav-number">2.4.</span> <span class="nav-text">按照金叉炒股，收益如何？</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="刘硕"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">刘硕</p>
+  <div class="site-description" itemprop="description">不成为自己讨厌的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">296</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">50</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:liushuo432@outlook.com" title="E-Mail → mailto:liushuo432@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/2436055290" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;2436055290" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://wpa.qq.com/msgrd?v=3&uin=1696146913&site=qq&menu=yes" title="QQ → http:&#x2F;&#x2F;wpa.qq.com&#x2F;msgrd?v&#x3D;3&amp;uin&#x3D;1696146913&amp;site&#x3D;qq&amp;menu&#x3D;yes" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-fw fa-rss"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备20001451号 </a>
+      <img src="/images/beian_icon.png" style="display: inline-block;"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=21142102000063" rel="noopener" target="_blank">辽公网安备 21142102000063号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘硕</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">1.7m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">51:01</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.2" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'Ga2II3wuJmHX3GiNHm9TmI97-gzGzoHsz',
+      appKey     : 'esGYJQepdYLHf07E1VMsP3RK',
+      placeholder: "o(*￣▽￣*)ブ来说点什么吧...（填上邮箱可以收到回复提醒）",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : true,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+  <script type="text/javascript" src="/js/love.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/Epsilon2.1.model.json"},"display":{"superSample":2,"width":200,"height":400,"position":"left","hOffset":-30,"vOffset":-40},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>

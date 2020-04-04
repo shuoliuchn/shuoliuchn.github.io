@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://sliu.vip/"/>
-  <updated>2020-04-01T17:35:38.617Z</updated>
+  <updated>2020-04-04T10:23:53.443Z</updated>
   <id>https://sliu.vip/</id>
   
   <author>
@@ -17,48 +17,110 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>pandas 的基础操作</title>
-    <link href="https://sliu.vip/data-analysis/pandas-basic/"/>
-    <id>https://sliu.vip/data-analysis/pandas-basic/</id>
-    <published>2020-04-01T17:35:37.205Z</published>
-    <updated>2020-04-01T17:35:38.617Z</updated>
+    <title>基于 Pandas 的数据清洗</title>
+    <link href="https://sliu.vip/data-analysis/pandas-data-cleaning/"/>
+    <id>https://sliu.vip/data-analysis/pandas-data-cleaning/</id>
+    <published>2020-04-03T17:43:21.769Z</published>
+    <updated>2020-04-04T10:23:53.443Z</updated>
     
     <summary type="html">
     
-      
-      
-        
-        
-          
-        
-      
+      我们进行数据分析时，得到的原始数据往往会有一些不合理的地方。比如，因为取样原因可能出现一些空值，重复取样可能会有重复数据，取样错误可能会有异常数据，等等。这些不合理的数据是会影响我们数据分析的准确性的。而明显不合理的数据往往占少数，所以一般我们对其处理的方式是直接删除。
     
     </summary>
     
     
+      <category term="数据分析" scheme="https://sliu.vip/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/"/>
+    
+    
+      <category term="Python" scheme="https://sliu.vip/tags/Python/"/>
+    
+      <category term="Anaconda" scheme="https://sliu.vip/tags/Anaconda/"/>
+    
+      <category term="数据分析" scheme="https://sliu.vip/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/"/>
+    
+      <category term="Pandas" scheme="https://sliu.vip/tags/Pandas/"/>
     
   </entry>
   
   <entry>
-    <title>numpy 的基本使用</title>
-    <link href="https://sliu.vip/data-analysis/numpy-basic/"/>
-    <id>https://sliu.vip/data-analysis/numpy-basic/</id>
-    <published>2020-04-01T17:35:37.198Z</published>
-    <updated>2020-04-01T17:35:38.615Z</updated>
+    <title>DataFrame 基础操作巩固 - 股票分析</title>
+    <link href="https://sliu.vip/data-analysis/stock-analysis/"/>
+    <id>https://sliu.vip/data-analysis/stock-analysis/</id>
+    <published>2020-04-02T17:49:49.787Z</published>
+    <updated>2020-04-04T10:23:53.439Z</updated>
     
     <summary type="html">
     
-      
-      
-        
-        
-          
-        
-      
+      DataFrame 是一个十分强大的数据分析工具，功能很多，一时半会儿学不完。与其枯燥地学习每一个方法，不如结合实际项目应用，一边解决问题，一边学习方法。这样能加深理解，也不至于太乏味。数据分析的一个很重要的应用领域，就是金融量化。我们今天以金融量化中的一种方法，双均值法，来学习 DataFrame 的操作。
     
     </summary>
     
     
+      <category term="数据分析" scheme="https://sliu.vip/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/"/>
+    
+    
+      <category term="Python" scheme="https://sliu.vip/tags/Python/"/>
+    
+      <category term="Anaconda" scheme="https://sliu.vip/tags/Anaconda/"/>
+    
+      <category term="数据分析" scheme="https://sliu.vip/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/"/>
+    
+      <category term="Pandas" scheme="https://sliu.vip/tags/Pandas/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Pandas 的基础操作</title>
+    <link href="https://sliu.vip/data-analysis/pandas-basic/"/>
+    <id>https://sliu.vip/data-analysis/pandas-basic/</id>
+    <published>2020-04-01T17:35:37.205Z</published>
+    <updated>2020-04-04T10:23:53.433Z</updated>
+    
+    <summary type="html">
+    
+      NumPy 主要用来帮助我们处理的是数值型的数据，当然在数据分析中除了数值型的数据还有好多其他类型的数据（字符串，时间序列）， Pandas 就可以帮我们很好地处理除了数值型的其他数据！
+    
+    </summary>
+    
+    
+      <category term="数据分析" scheme="https://sliu.vip/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/"/>
+    
+    
+      <category term="Python" scheme="https://sliu.vip/tags/Python/"/>
+    
+      <category term="Anaconda" scheme="https://sliu.vip/tags/Anaconda/"/>
+    
+      <category term="数据分析" scheme="https://sliu.vip/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/"/>
+    
+      <category term="Pandas" scheme="https://sliu.vip/tags/Pandas/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>NumPy 的基本使用</title>
+    <link href="https://sliu.vip/data-analysis/numpy-basic/"/>
+    <id>https://sliu.vip/data-analysis/numpy-basic/</id>
+    <published>2020-04-01T17:35:37.198Z</published>
+    <updated>2020-04-04T10:23:53.428Z</updated>
+    
+    <summary type="html">
+    
+      NumPy（Numerical Python）是 Python 语言中做科学计算的基础库。重在于数值计算，也是大部分 Python 科学计算库的基础，多用于在大型、多维数组上执行的数值运算。
+    
+    </summary>
+    
+    
+      <category term="数据分析" scheme="https://sliu.vip/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/"/>
+    
+    
+      <category term="Python" scheme="https://sliu.vip/tags/Python/"/>
+    
+      <category term="Anaconda" scheme="https://sliu.vip/tags/Anaconda/"/>
+    
+      <category term="数据分析" scheme="https://sliu.vip/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/"/>
+    
+      <category term="NumPy" scheme="https://sliu.vip/tags/NumPy/"/>
     
   </entry>
   
@@ -67,21 +129,23 @@
     <link href="https://sliu.vip/data-analysis/data-analysis-abc/"/>
     <id>https://sliu.vip/data-analysis/data-analysis-abc/</id>
     <published>2020-04-01T17:35:37.192Z</published>
-    <updated>2020-04-01T17:35:38.613Z</updated>
+    <updated>2020-04-04T10:23:53.422Z</updated>
     
     <summary type="html">
     
-      
-      
-        
-        
-          
-        
-      
+      我们爬虫可以爬取到大量的数据，公司日常运营，也会产生很多数据。这些数据单独放在那里，并没有什么作用。我们需要对这些数据进行整理归纳和分析，从数据中提取到我们想要的信息，这样才能让这些数据体现出它们应有的价值来。
     
     </summary>
     
     
+      <category term="数据分析" scheme="https://sliu.vip/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/"/>
+    
+    
+      <category term="Python" scheme="https://sliu.vip/tags/Python/"/>
+    
+      <category term="Anaconda" scheme="https://sliu.vip/tags/Anaconda/"/>
+    
+      <category term="数据分析" scheme="https://sliu.vip/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/"/>
     
   </entry>
   
@@ -459,58 +523,6 @@
       <category term="requests" scheme="https://sliu.vip/tags/requests/"/>
     
       <category term="并发编程" scheme="https://sliu.vip/tags/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8B/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>scrapy 框架的基本用法</title>
-    <link href="https://sliu.vip/crawler/scrapy-basic/"/>
-    <id>https://sliu.vip/crawler/scrapy-basic/</id>
-    <published>2020-03-29T16:05:29.344Z</published>
-    <updated>2020-03-31T17:23:50.239Z</updated>
-    
-    <summary type="html">
-    
-      所谓的框架，其实就是一个被集成了很多功能且具有很强通用性的一个项目模板。我们写爬虫代码，需要经常写一些请求发送、数据解析、存储数据的代码。重复写代码当然不是一个好事情。同时，如果我们想要对爬虫代码进行优化，又要付出很大精力写很多代码才行。有时候，受限于自身水平，麻麻烦烦写好的优化代码效率仍然不让人满意。于是，scrapy 应运而生。
-    
-    </summary>
-    
-    
-      <category term="爬虫" scheme="https://sliu.vip/categories/%E7%88%AC%E8%99%AB/"/>
-    
-    
-      <category term="Python" scheme="https://sliu.vip/tags/Python/"/>
-    
-      <category term="爬虫" scheme="https://sliu.vip/tags/%E7%88%AC%E8%99%AB/"/>
-    
-      <category term="scrapy" scheme="https://sliu.vip/tags/scrapy/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>JS 解密和混淆破解</title>
-    <link href="https://sliu.vip/crawler/js-decode/"/>
-    <id>https://sliu.vip/crawler/js-decode/</id>
-    <published>2020-03-29T16:05:29.299Z</published>
-    <updated>2020-04-01T17:35:38.540Z</updated>
-    
-    <summary type="html">
-    
-      我们已经学到很多反爬机制以及相应的反反爬策略。是用那些手段，其实以及完全可以完成绝大多数的爬虫任务。但是，还是有极个别的情况下，会出现诸如 JS 加密和 JS 混淆之类的高深反爬机制。这里就以中国空气质量在线检测平台为例，介绍 JS 加密和 JS 混淆的实现和破解方法。
-    
-    </summary>
-    
-    
-      <category term="爬虫" scheme="https://sliu.vip/categories/%E7%88%AC%E8%99%AB/"/>
-    
-    
-      <category term="Python" scheme="https://sliu.vip/tags/Python/"/>
-    
-      <category term="Anaconda" scheme="https://sliu.vip/tags/Anaconda/"/>
-    
-      <category term="爬虫" scheme="https://sliu.vip/tags/%E7%88%AC%E8%99%AB/"/>
-    
-      <category term="requests" scheme="https://sliu.vip/tags/requests/"/>
     
   </entry>
   
