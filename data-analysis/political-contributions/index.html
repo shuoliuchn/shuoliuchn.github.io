@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="Tu5vqPaUb8svfkPx5eetJFD84ciQCcWVXNatdsWtj9Q">
+  <meta name="baidu-site-verification" content="baidu_verify_FBq9PG4BBb">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"appID":"PXY1Z6GHKT","apiKey":"eb82f2e78e3053f26aa408e9caa96d93","indexName":"blog","hits":{"per_page":10},"labels":{"input_placeholder":"要查点什么(✿◡‿◡)","hits_empty":"没有找到任何关于 ${query} 的结果╥﹏╥...","hits_stats":"搜索到 ${hits} 条记录，用时 ${time} ms o(*￣▽￣*)ブ"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="众所周知，美国大选是一个非常耗钱的事情。每个总统参加竞选时，都需要大量的经费。这些经费，几乎不会由候选人自己出，它们往往来自于政治献金。通过对政治献金数据的分析，练习一下 Pandas 的各种方法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2012 美国大选献金项目数据分析">
+<meta property="og:url" content="https://sliu.vip/data-analysis/political-contributions/index.html">
+<meta property="og:site_name" content="刘硕的技术查阅手册">
+<meta property="og:description" content="众所周知，美国大选是一个非常耗钱的事情。每个总统参加竞选时，都需要大量的经费。这些经费，几乎不会由候选人自己出，它们往往来自于政治献金。通过对政治献金数据的分析，练习一下 Pandas 的各种方法。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-04-06T17:44:28.573Z">
+<meta property="article:modified_time" content="2020-04-08T04:29:27.392Z">
+<meta property="article:author" content="刘硕">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="Anaconda">
+<meta property="article:tag" content="数据分析">
+<meta property="article:tag" content="Pandas">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://sliu.vip/data-analysis/political-contributions/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>2012 美国大选献金项目数据分析 | 刘硕的技术查阅手册</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f14f123935d6183fdd06f8f1c4bc378f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="刘硕的技术查阅手册" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">刘硕的技术查阅手册</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">Python 全栈开发学习笔记</h1>
+      
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-toc">
+
+    <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+  
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/data-analysis/political-contributions/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          2012 美国大选献金项目数据分析
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-04-07 01:44:28" itemprop="dateCreated datePublished" datetime="2020-04-07T01:44:28+08:00">2020-04-07</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-08 12:29:27" itemprop="dateModified" datetime="2020-04-08T12:29:27+08:00">2020-04-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" itemprop="url" rel="index"><span itemprop="name">数据分析</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/data-analysis/political-contributions/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/data-analysis/political-contributions/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>9.2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>17 分钟</span>
+            </span>
+            <div class="post-description">众所周知，美国大选是一个非常耗钱的事情。每个总统参加竞选时，都需要大量的经费。这些经费，几乎不会由候选人自己出，它们往往来自于政治献金。通过对政治献金数据的分析，练习一下 Pandas 的各种方法。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>众所周知，美国大选是一个非常耗钱的事情。每个总统参加竞选时，都需要大量的经费。这些经费，几乎不会由候选人自己出，它们往往来自于政治献金。</p>
+<p>美国法律要求，政治献金数据必须公开透明。于是，我们有了可以分析的数据。</p>
+<p>需求：</p>
+<ul>
+<li>加载数据</li>
+<li>查看数据的基本信息</li>
+<li>指定数据截取，将如下字段的数据进行提取，其他数据舍弃<ul>
+<li>cand_nm：候选人姓名</li>
+<li>contbr_nm：捐赠人姓名</li>
+<li>contbr_st：捐赠人所在州</li>
+<li>contbr_employer：捐赠人所在公司</li>
+<li>contbr_occupation：捐赠人职业</li>
+<li>contb_receipt_amt：捐赠数额（美元）</li>
+<li>contb_receipt_dt：捐款的日期</li>
+</ul>
+</li>
+<li>对新数据进行总览，查看是否存在缺失数据</li>
+<li>用统计学指标快速描述数值型属性的概要</li>
+<li>空值处理。可能因为忘记填写或者保密等等原因，相关字段出现了空值，将其填充为 NOT PROVIDE</li>
+<li>异常值处理。将捐款金额 &lt;= 0 的数据删除</li>
+<li>新建一列为各个候选人所在党派 party</li>
+<li>查看 party 这一列中有哪些不同的元素</li>
+<li>统计 party 列中各个元素出现次数</li>
+<li>查看各个党派收到的政治献金总数 contb_receipt_amt</li>
+<li>查看具体每天各个党派收到的政治献金总数 contb_receipt_amt</li>
+<li>将表中日期格式转换为 <code>&#39;yyyy-mm-dd&#39;</code></li>
+<li>查看老兵（捐献者职业）DISABLED VETERAN 主要支持谁</li>
+</ul>
+<p>在开始之前，导入各种需要的模块：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">from</span> pandas <span class="keyword">import</span> Series, DataFrame</span><br></pre></td></tr></table></figure>
+
+<p>加载数据。数据存储在文本文件中，直接用 read_csv 读取即可：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">df = pd.read_csv(<span class="string">'data/usa_election.txt'</span>)</span><br><span class="line">df.head()</span><br></pre></td></tr></table></figure>
+
+<p>前五条数据为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">	cmte_id	cand_id	cand_nm	contbr_nm	contbr_city	contbr_st	contbr_zip	contbr_employer	contbr_occupation	contb_receipt_amt	contb_receipt_dt	receipt_desc	memo_cd	memo_text	form_tp	file_num</span><br><span class="line"><span class="number">0</span>	C00410118	P20002978	Bachmann, Michelle	HARVEY, WILLIAM	MOBILE	AL	<span class="number">3.6601e+08</span>	RETIRED	RETIRED	<span class="number">250.0</span>	<span class="number">20</span>-JUN<span class="number">-11</span>	NaN	NaN	NaN	SA17A	<span class="number">736166</span></span><br><span class="line"><span class="number">1</span>	C00410118	P20002978	Bachmann, Michelle	HARVEY, WILLIAM	MOBILE	AL	<span class="number">3.6601e+08</span>	RETIRED	RETIRED	<span class="number">50.0</span>	<span class="number">23</span>-JUN<span class="number">-11</span>	NaN	NaN	NaN	SA17A	<span class="number">736166</span></span><br><span class="line"><span class="number">2</span>	C00410118	P20002978	Bachmann, Michelle	SMITH, LANIER	LANETT	AL	<span class="number">3.68633e+08</span>	INFORMATION REQUESTED	INFORMATION REQUESTED	<span class="number">250.0</span>	<span class="number">05</span>-JUL<span class="number">-11</span>	NaN	NaN	NaN	SA17A	<span class="number">749073</span></span><br><span class="line"><span class="number">3</span>	C00410118	P20002978	Bachmann, Michelle	BLEVINS, DARONDA	PIGGOTT	AR	<span class="number">7.24548e+08</span>	NONE	RETIRED	<span class="number">250.0</span>	<span class="number">01</span>-AUG<span class="number">-11</span>	NaN	NaN	NaN	SA17A	<span class="number">749073</span></span><br><span class="line"><span class="number">4</span>	C00410118	P20002978	Bachmann, Michelle	WARDENBURG, HAROLD	HOT SPRINGS NATION	AR	<span class="number">7.19016e+08</span>	NONE	RETIRED	<span class="number">300.0</span>	<span class="number">20</span>-JUN<span class="number">-11</span>	NaN	NaN	NaN	SA17A	<span class="number">736166</span></span><br></pre></td></tr></table></figure>
+
+<p>查看数据的基本信息，调用 info 即可搞定：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df.info()</span><br></pre></td></tr></table></figure>
+
+<p>数据信息拿到。我们可以分析出来，总共有 536041 条数据，有些列是含有空值的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">pandas</span>.<span class="title">core</span>.<span class="title">frame</span>.<span class="title">DataFrame</span>'&gt;</span></span><br><span class="line"><span class="class"><span class="title">RangeIndex</span>:</span> <span class="number">536041</span> entries, <span class="number">0</span> to <span class="number">536040</span></span><br><span class="line">Data columns (total <span class="number">16</span> columns):</span><br><span class="line">cmte_id              <span class="number">536041</span> non-null object</span><br><span class="line">cand_id              <span class="number">536041</span> non-null object</span><br><span class="line">cand_nm              <span class="number">536041</span> non-null object</span><br><span class="line">contbr_nm            <span class="number">536041</span> non-null object</span><br><span class="line">contbr_city          <span class="number">536026</span> non-null object</span><br><span class="line">contbr_st            <span class="number">536040</span> non-null object</span><br><span class="line">contbr_zip           <span class="number">535973</span> non-null object</span><br><span class="line">contbr_employer      <span class="number">525088</span> non-null object</span><br><span class="line">contbr_occupation    <span class="number">530520</span> non-null object</span><br><span class="line">contb_receipt_amt    <span class="number">536041</span> non-null float64</span><br><span class="line">contb_receipt_dt     <span class="number">536041</span> non-null object</span><br><span class="line">receipt_desc         <span class="number">8479</span> non-null object</span><br><span class="line">memo_cd              <span class="number">49718</span> non-null object</span><br><span class="line">memo_text            <span class="number">52740</span> non-null object</span><br><span class="line">form_tp              <span class="number">536041</span> non-null object</span><br><span class="line">file_num             <span class="number">536041</span> non-null int64</span><br><span class="line">dtypes: float64(<span class="number">1</span>), int64(<span class="number">1</span>), object(<span class="number">14</span>)</span><br><span class="line">memory usage: <span class="number">65.4</span>+ MB</span><br></pre></td></tr></table></figure>
+
+<p>指定数据截取，将指定字段的数据进行提取，其他数据舍弃。注意提取数据的时候，内部是一个列表：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">data = df[[<span class="string">'cand_nm'</span>, <span class="string">'contbr_nm'</span>, <span class="string">'contbr_st'</span>, <span class="string">'contbr_employer'</span>, <span class="string">'contbr_occupation'</span>, <span class="string">'contb_receipt_amt'</span>, <span class="string">'contb_receipt_dt'</span>]]</span><br><span class="line">data.head()</span><br></pre></td></tr></table></figure>
+
+<p>截取后的前五条数据为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">	cand_nm	contbr_nm	contbr_st	contbr_employer	contbr_occupation	contb_receipt_amt	contb_receipt_dt</span><br><span class="line"><span class="number">0</span>	Bachmann, Michelle	HARVEY, WILLIAM	AL	RETIRED	RETIRED	<span class="number">250.0</span>	<span class="number">20</span>-JUN<span class="number">-11</span></span><br><span class="line"><span class="number">1</span>	Bachmann, Michelle	HARVEY, WILLIAM	AL	RETIRED	RETIRED	<span class="number">50.0</span>	<span class="number">23</span>-JUN<span class="number">-11</span></span><br><span class="line"><span class="number">2</span>	Bachmann, Michelle	SMITH, LANIER	AL	INFORMATION REQUESTED	INFORMATION REQUESTED	<span class="number">250.0</span>	<span class="number">05</span>-JUL<span class="number">-11</span></span><br><span class="line"><span class="number">3</span>	Bachmann, Michelle	BLEVINS, DARONDA	AR	NONE	RETIRED	<span class="number">250.0</span>	<span class="number">01</span>-AUG<span class="number">-11</span></span><br><span class="line"><span class="number">4</span>	Bachmann, Michelle	WARDENBURG, HAROLD	AR	NONE	RETIRED	<span class="number">300.0</span>	<span class="number">20</span>-JUN<span class="number">-11</span></span><br></pre></td></tr></table></figure>
+
+<p>对新数据进行总览，查看是否存在缺失数据</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data.info()</span><br></pre></td></tr></table></figure>
+
+<p>除了捐助者和被捐助者，其余列都有空值存在：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">pandas</span>.<span class="title">core</span>.<span class="title">frame</span>.<span class="title">DataFrame</span>'&gt;</span></span><br><span class="line"><span class="class"><span class="title">RangeIndex</span>:</span> <span class="number">536041</span> entries, <span class="number">0</span> to <span class="number">536040</span></span><br><span class="line">Data columns (total <span class="number">7</span> columns):</span><br><span class="line">cand_nm              <span class="number">536041</span> non-null object</span><br><span class="line">contbr_nm            <span class="number">536041</span> non-null object</span><br><span class="line">contbr_st            <span class="number">536040</span> non-null object</span><br><span class="line">contbr_employer      <span class="number">525088</span> non-null object</span><br><span class="line">contbr_occupation    <span class="number">530520</span> non-null object</span><br><span class="line">contb_receipt_amt    <span class="number">536041</span> non-null float64</span><br><span class="line">contb_receipt_dt     <span class="number">536041</span> non-null object</span><br><span class="line">dtypes: float64(<span class="number">1</span>), object(<span class="number">6</span>)</span><br><span class="line">memory usage: <span class="number">28.6</span>+ MB</span><br></pre></td></tr></table></figure>
+
+<p>用统计学指标快速描述数值型属性的概要</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data.describe()</span><br></pre></td></tr></table></figure>
+
+<p>因为只有献金金额是数值型数据，所以结果中只有现金金额这一列：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">	contb_receipt_amt</span><br><span class="line">count	<span class="number">5.360410e+05</span></span><br><span class="line">mean	<span class="number">3.750373e+02</span></span><br><span class="line">std	<span class="number">3.564436e+03</span></span><br><span class="line">min	<span class="number">-3.080000e+04</span></span><br><span class="line"><span class="number">25</span>%	<span class="number">5.000000e+01</span></span><br><span class="line"><span class="number">50</span>%	<span class="number">1.000000e+02</span></span><br><span class="line"><span class="number">75</span>%	<span class="number">2.500000e+02</span></span><br><span class="line">max	<span class="number">1.944042e+06</span></span><br></pre></td></tr></table></figure>
+
+<p>空值处理。可能因为忘记填写或者保密等等原因，相关字段出现了空值，将其填充为 NOT PROVIDE</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">data.fillna(<span class="string">'NOT PROVIDE'</span>, inplace=<span class="literal">True</span>)</span><br><span class="line">data.info()</span><br></pre></td></tr></table></figure>
+
+<p>然后就可以看到，数据中已经没有空值了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">pandas</span>.<span class="title">core</span>.<span class="title">frame</span>.<span class="title">DataFrame</span>'&gt;</span></span><br><span class="line"><span class="class"><span class="title">RangeIndex</span>:</span> <span class="number">536041</span> entries, <span class="number">0</span> to <span class="number">536040</span></span><br><span class="line">Data columns (total <span class="number">7</span> columns):</span><br><span class="line">cand_nm              <span class="number">536041</span> non-null object</span><br><span class="line">contbr_nm            <span class="number">536041</span> non-null object</span><br><span class="line">contbr_st            <span class="number">536041</span> non-null object</span><br><span class="line">contbr_employer      <span class="number">536041</span> non-null object</span><br><span class="line">contbr_occupation    <span class="number">536041</span> non-null object</span><br><span class="line">contb_receipt_amt    <span class="number">536041</span> non-null float64</span><br><span class="line">contb_receipt_dt     <span class="number">536041</span> non-null object</span><br><span class="line">dtypes: float64(<span class="number">1</span>), object(<span class="number">6</span>)</span><br><span class="line">memory usage: <span class="number">28.6</span>+ MB</span><br></pre></td></tr></table></figure>
+
+<p>异常值处理。将捐款金额 &lt;= 0 的数据删除：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">data = data.loc[data[<span class="string">'contb_receipt_amt'</span>] &gt; <span class="number">0</span>]</span><br><span class="line">data.describe()</span><br></pre></td></tr></table></figure>
+
+<p>从统计数据中可以看出，最小值也是大于 0 的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">	contb_receipt_amt</span><br><span class="line">count	<span class="number">5.303140e+05</span></span><br><span class="line">mean	<span class="number">3.931043e+02</span></span><br><span class="line">std	<span class="number">3.576869e+03</span></span><br><span class="line">min	<span class="number">1.000000e-02</span></span><br><span class="line"><span class="number">25</span>%	<span class="number">5.000000e+01</span></span><br><span class="line"><span class="number">50</span>%	<span class="number">1.000000e+02</span></span><br><span class="line"><span class="number">75</span>%	<span class="number">2.500000e+02</span></span><br><span class="line">max	<span class="number">1.944042e+06</span></span><br></pre></td></tr></table></figure>
+
+<p>新建一列为各个候选人所在党派 party，使用映射可以实现：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">dic = &#123;</span><br><span class="line">    <span class="string">'Bachmann, Michelle'</span>: <span class="string">'Republican'</span>,</span><br><span class="line">    <span class="string">'Romney, Mitt'</span>: <span class="string">'Republican'</span>,</span><br><span class="line">    <span class="string">'Obama, Barack'</span>: <span class="string">'Democrat'</span>,</span><br><span class="line">    <span class="string">"Roemer, Charles E. 'Buddy' III"</span>: <span class="string">'Reform'</span>,</span><br><span class="line">    <span class="string">'Pawlenty, Timothy'</span>: <span class="string">'Republican'</span>,</span><br><span class="line">    <span class="string">'Johnson, Gary Earl'</span>: <span class="string">'Libertarian'</span>,</span><br><span class="line">    <span class="string">'Paul, Ron'</span>: <span class="string">'Republican'</span>,</span><br><span class="line">    <span class="string">'Santorum, Rick'</span>: <span class="string">'Republican'</span>,</span><br><span class="line">    <span class="string">'Cain, Herman'</span>: <span class="string">'Republican'</span>,</span><br><span class="line">    <span class="string">'Gingrich, Newt'</span>: <span class="string">'Republican'</span>,</span><br><span class="line">    <span class="string">'McCotter, Thaddeus G'</span>: <span class="string">'Republican'</span>,</span><br><span class="line">    <span class="string">'Huntsman, Jon'</span>: <span class="string">'Republican'</span>,</span><br><span class="line">    <span class="string">'Perry, Rick'</span>: <span class="string">'Republican'</span>,</span><br><span class="line">&#125;</span><br><span class="line">data[<span class="string">'party'</span>] = data[<span class="string">'cand_nm'</span>].map(dic)</span><br><span class="line">data.head()</span><br></pre></td></tr></table></figure>
+
+<p>数据中的前五行为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">	cand_nm	contbr_nm	contbr_st	contbr_employer	contbr_occupation	contb_receipt_amt	contb_receipt_dt	party</span><br><span class="line"><span class="number">0</span>	Bachmann, Michelle	HARVEY, WILLIAM	AL	RETIRED	RETIRED	<span class="number">250.0</span>	<span class="number">20</span>-JUN<span class="number">-11</span>	Republican</span><br><span class="line"><span class="number">1</span>	Bachmann, Michelle	HARVEY, WILLIAM	AL	RETIRED	RETIRED	<span class="number">50.0</span>	<span class="number">23</span>-JUN<span class="number">-11</span>	Republican</span><br><span class="line"><span class="number">2</span>	Bachmann, Michelle	SMITH, LANIER	AL	INFORMATION REQUESTED	INFORMATION REQUESTED	<span class="number">250.0</span>	<span class="number">05</span>-JUL<span class="number">-11</span>	Republican</span><br><span class="line"><span class="number">3</span>	Bachmann, Michelle	BLEVINS, DARONDA	AR	NONE	RETIRED	<span class="number">250.0</span>	<span class="number">01</span>-AUG<span class="number">-11</span>	Republican</span><br><span class="line"><span class="number">4</span>	Bachmann, Michelle	WARDENBURG, HAROLD	AR	NONE	RETIRED	<span class="number">300.0</span>	<span class="number">20</span>-JUN<span class="number">-11</span>	Republican</span><br></pre></td></tr></table></figure>
+
+<p>查看 party 这一列中有哪些不同的元素</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data[<span class="string">'party'</span>].unique()</span><br></pre></td></tr></table></figure>
+
+<p>候选人来自的党派有：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">array([<span class="string">'Republican'</span>, <span class="string">'Democrat'</span>, <span class="string">'Reform'</span>, <span class="string">'Libertarian'</span>], dtype=object)</span><br></pre></td></tr></table></figure>
+
+<p>统计 party 列中各个元素出现次数。一般情况下，只有能够接收到足够献金的党派胜选的概率才会更大：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data[<span class="string">'party'</span>].value_counts()</span><br></pre></td></tr></table></figure>
+
+<p>毫无疑问，民主和共和两党收到的献金是最多的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Democrat       <span class="number">289999</span></span><br><span class="line">Republican     <span class="number">234300</span></span><br><span class="line">Reform           <span class="number">5313</span></span><br><span class="line">Libertarian       <span class="number">702</span></span><br><span class="line">Name: party, dtype: int64</span><br></pre></td></tr></table></figure>
+
+<p>查看各个党派收到的政治献金总数 contb_receipt_amt</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data.groupby(<span class="string">'party'</span>)[<span class="string">'contb_receipt_amt'</span>].sum()</span><br></pre></td></tr></table></figure>
+
+<p>各党派收到献金的总数为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">party</span><br><span class="line">Democrat       <span class="number">8.259441e+07</span></span><br><span class="line">Libertarian    <span class="number">4.132769e+05</span></span><br><span class="line">Reform         <span class="number">3.429658e+05</span></span><br><span class="line">Republican     <span class="number">1.251181e+08</span></span><br><span class="line">Name: contb_receipt_amt, dtype: float64</span><br></pre></td></tr></table></figure>
+
+<p>查看具体每天各个党派收到的政治献金总数 contb_receipt_amt</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data.groupby(by = [<span class="string">'contb_receipt_dt'</span>, <span class="string">'party'</span>])[<span class="string">'contb_receipt_amt'</span>].sum()</span><br></pre></td></tr></table></figure>
+
+<p>各党派每天收到的献金总数为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">contb_receipt_dt  party      </span><br><span class="line"><span class="number">01</span>-APR<span class="number">-11</span>         Reform              <span class="number">50.00</span></span><br><span class="line">                  Republican       <span class="number">12635.00</span></span><br><span class="line"><span class="number">01</span>-AUG<span class="number">-11</span>         Democrat        <span class="number">182198.00</span></span><br><span class="line">                  Libertarian       <span class="number">1000.00</span></span><br><span class="line">                  Reform            <span class="number">1847.00</span></span><br><span class="line">                  Republican      <span class="number">268903.02</span></span><br><span class="line"><span class="number">01</span>-DEC<span class="number">-11</span>         Democrat        <span class="number">651982.82</span></span><br><span class="line">                  Libertarian        <span class="number">725.00</span></span><br><span class="line">                  Reform             <span class="number">875.00</span></span><br><span class="line">                  Republican      <span class="number">505255.96</span></span><br><span class="line"><span class="number">01</span>-FEB<span class="number">-11</span>         Republican         <span class="number">250.00</span></span><br><span class="line"><span class="number">01</span>-JAN<span class="number">-11</span>         Republican        <span class="number">8600.00</span></span><br><span class="line"><span class="number">01</span>-JAN<span class="number">-12</span>         Democrat         <span class="number">74303.80</span></span><br><span class="line">                  Reform             <span class="number">515.00</span></span><br><span class="line">                  Republican       <span class="number">76804.72</span></span><br><span class="line"><span class="number">01</span>-JUL<span class="number">-11</span>         Democrat        <span class="number">175364.00</span></span><br><span class="line">                  Libertarian       <span class="number">2000.00</span></span><br><span class="line">                  Reform             <span class="number">100.00</span></span><br><span class="line">                  Republican      <span class="number">125973.72</span></span><br><span class="line"><span class="number">01</span>-JUN<span class="number">-11</span>         Democrat        <span class="number">148409.00</span></span><br><span class="line">                  Libertarian        <span class="number">500.00</span></span><br><span class="line">                  Reform              <span class="number">50.00</span></span><br><span class="line">                  Republican      <span class="number">435609.20</span></span><br><span class="line"><span class="number">01</span>-MAR<span class="number">-11</span>         Republican        <span class="number">1000.00</span></span><br><span class="line"><span class="number">01</span>-MAY<span class="number">-11</span>         Democrat         <span class="number">82644.00</span></span><br><span class="line">                  Reform             <span class="number">480.00</span></span><br><span class="line">                  Republican       <span class="number">28663.87</span></span><br><span class="line"><span class="number">01</span>-NOV<span class="number">-11</span>         Democrat        <span class="number">129309.87</span></span><br><span class="line">                  Libertarian       <span class="number">3000.00</span></span><br><span class="line">                  Reform            <span class="number">1792.00</span></span><br><span class="line">                                    ...    </span><br><span class="line"><span class="number">30</span>-OCT<span class="number">-11</span>         Reform            <span class="number">3910.00</span></span><br><span class="line">                  Republican       <span class="number">46413.16</span></span><br><span class="line"><span class="number">30</span>-SEP<span class="number">-11</span>         Democrat       <span class="number">3409587.24</span></span><br><span class="line">                  Libertarian        <span class="number">550.00</span></span><br><span class="line">                  Reform            <span class="number">2050.00</span></span><br><span class="line">                  Republican     <span class="number">5094824.20</span></span><br><span class="line"><span class="number">31</span>-AUG<span class="number">-11</span>         Democrat        <span class="number">375487.44</span></span><br><span class="line">                  Libertarian      <span class="number">10750.00</span></span><br><span class="line">                  Reform             <span class="number">450.00</span></span><br><span class="line">                  Republican     <span class="number">1038330.90</span></span><br><span class="line"><span class="number">31</span>-DEC<span class="number">-11</span>         Democrat       <span class="number">3571793.57</span></span><br><span class="line">                  Reform             <span class="number">695.00</span></span><br><span class="line">                  Republican     <span class="number">1165777.72</span></span><br><span class="line"><span class="number">31</span>-JAN<span class="number">-11</span>         Republican        <span class="number">6000.00</span></span><br><span class="line"><span class="number">31</span>-JAN<span class="number">-12</span>         Democrat       <span class="number">1421887.31</span></span><br><span class="line">                  Reform             <span class="number">150.00</span></span><br><span class="line">                  Republican      <span class="number">963681.41</span></span><br><span class="line"><span class="number">31</span>-JUL<span class="number">-11</span>         Democrat         <span class="number">20305.00</span></span><br><span class="line">                  Reform            <span class="number">1066.00</span></span><br><span class="line">                  Republican       <span class="number">12781.02</span></span><br><span class="line"><span class="number">31</span>-MAR<span class="number">-11</span>         Reform             <span class="number">200.00</span></span><br><span class="line">                  Republican       <span class="number">74575.00</span></span><br><span class="line"><span class="number">31</span>-MAY<span class="number">-11</span>         Democrat        <span class="number">352005.66</span></span><br><span class="line">                  Libertarian        <span class="number">250.00</span></span><br><span class="line">                  Reform             <span class="number">100.00</span></span><br><span class="line">                  Republican      <span class="number">313839.80</span></span><br><span class="line"><span class="number">31</span>-OCT<span class="number">-11</span>         Democrat        <span class="number">216971.87</span></span><br><span class="line">                  Libertarian       <span class="number">4250.00</span></span><br><span class="line">                  Reform            <span class="number">3205.00</span></span><br><span class="line">                  Republican      <span class="number">751542.36</span></span><br><span class="line">Name: contb_receipt_amt, Length: <span class="number">1183</span>, dtype: float64</span><br></pre></td></tr></table></figure>
+
+<p>将表中日期格式转换为 <code>&#39;yyyy-mm-dd&#39;</code>，可通过运算工具实现：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">months = &#123;<span class="string">'JAN'</span>: <span class="number">1</span>, <span class="string">'FEB'</span>: <span class="number">2</span>, <span class="string">'MAR'</span>: <span class="number">3</span>, <span class="string">'APR'</span>: <span class="number">4</span>, <span class="string">'MAY'</span>: <span class="number">5</span>, <span class="string">'JUN'</span>: <span class="number">6</span>,</span><br><span class="line">          <span class="string">'JUL'</span>: <span class="number">7</span>, <span class="string">'AUG'</span>: <span class="number">8</span>, <span class="string">'SEP'</span>: <span class="number">9</span>, <span class="string">'OCT'</span>: <span class="number">10</span>, <span class="string">'NOV'</span>: <span class="number">11</span>, <span class="string">'DEC'</span>: <span class="number">12</span>&#125;</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">transfer_date</span><span class="params">(d)</span>:</span></span><br><span class="line">    day, month, year = d.split(<span class="string">'-'</span>)</span><br><span class="line">    month = months[month]</span><br><span class="line">    <span class="keyword">return</span> <span class="string">'20%s-%02d-%2s'</span> % (year, month, day)</span><br><span class="line">data[<span class="string">'contb_receipt_dt'</span>] = data[<span class="string">'contb_receipt_dt'</span>].map(transfer_date)</span><br><span class="line">data.head()</span><br></pre></td></tr></table></figure>
+
+<p>数据的前五行为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">	cand_nm	contbr_nm	contbr_st	contbr_employer	contbr_occupation	contb_receipt_amt	contb_receipt_dt	party</span><br><span class="line"><span class="number">0</span>	Bachmann, Michelle	HARVEY, WILLIAM	AL	RETIRED	RETIRED	<span class="number">250.0</span>	<span class="number">2011</span><span class="number">-06</span><span class="number">-20</span>	Republican</span><br><span class="line"><span class="number">1</span>	Bachmann, Michelle	HARVEY, WILLIAM	AL	RETIRED	RETIRED	<span class="number">50.0</span>	<span class="number">2011</span><span class="number">-06</span><span class="number">-23</span>	Republican</span><br><span class="line"><span class="number">2</span>	Bachmann, Michelle	SMITH, LANIER	AL	INFORMATION REQUESTED	INFORMATION REQUESTED	<span class="number">250.0</span>	<span class="number">2011</span><span class="number">-07</span><span class="number">-05</span>	Republican</span><br><span class="line"><span class="number">3</span>	Bachmann, Michelle	BLEVINS, DARONDA	AR	NONE	RETIRED	<span class="number">250.0</span>	<span class="number">2011</span><span class="number">-08</span><span class="number">-01</span>	Republican</span><br><span class="line"><span class="number">4</span>	Bachmann, Michelle	WARDENBURG, HAROLD	AR	NONE	RETIRED	<span class="number">300.0</span>	<span class="number">2011</span><span class="number">-06</span><span class="number">-20</span>	Republican</span><br></pre></td></tr></table></figure>
+
+<p>查看老兵（捐献者职业）DISABLED VETERAN 主要支持谁。</p>
+<p>我们认为，哪个候选人接收到老兵的献金越多，老兵就越支持谁。</p>
+<p>运算分两步，首先提取出老兵对应的行数据，然后根据候选人分组，运算得到老兵给每个候选人的献金：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">old_soldier = data.loc[data[<span class="string">'contbr_occupation'</span>] == <span class="string">'DISABLED VETERAN'</span>]</span><br><span class="line">old_soldier.groupby(<span class="string">'cand_nm'</span>).groups</span><br></pre></td></tr></table></figure>
+
+<p>我们可以看到有哪些老兵给哪位候选人献金：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="string">'Cain, Herman'</span>: Int64Index([<span class="number">459440</span>, <span class="number">459447</span>, <span class="number">464508</span>], dtype=<span class="string">'int64'</span>),</span><br><span class="line"> <span class="string">'Obama, Barack'</span>: Int64Index([<span class="number">149790</span>, <span class="number">150910</span>, <span class="number">174041</span>, <span class="number">175244</span>, <span class="number">183790</span>, <span class="number">184211</span>, <span class="number">184417</span>, <span class="number">184761</span>,</span><br><span class="line">             <span class="number">185140</span>, <span class="number">185264</span>, <span class="number">186026</span>, <span class="number">186361</span>, <span class="number">194750</span>, <span class="number">205094</span>, <span class="number">210809</span>, <span class="number">210810</span>,</span><br><span class="line">             <span class="number">210811</span>, <span class="number">225948</span>, <span class="number">225954</span>, <span class="number">231074</span>, <span class="number">231773</span>, <span class="number">232434</span>, <span class="number">233434</span>, <span class="number">235014</span>,</span><br><span class="line">             <span class="number">235112</span>, <span class="number">235135</span>, <span class="number">235846</span>, <span class="number">244060</span>, <span class="number">260154</span>, <span class="number">260544</span>, <span class="number">264154</span>, <span class="number">289927</span>],</span><br><span class="line">            dtype=<span class="string">'int64'</span>),</span><br><span class="line"> <span class="string">'Paul, Ron'</span>: Int64Index([<span class="number">379163</span>, <span class="number">379537</span>, <span class="number">379555</span>, <span class="number">396211</span>, <span class="number">408043</span>, <span class="number">408743</span>, <span class="number">419163</span>, <span class="number">420332</span>,</span><br><span class="line">             <span class="number">420517</span>, <span class="number">421427</span>, <span class="number">421429</span>, <span class="number">421535</span>, <span class="number">421621</span>, <span class="number">421741</span>, <span class="number">421754</span>, <span class="number">421839</span>,</span><br><span class="line">             <span class="number">421895</span>, <span class="number">429191</span>, <span class="number">430649</span>, <span class="number">431049</span>, <span class="number">435011</span>, <span class="number">446880</span>],</span><br><span class="line">            dtype=<span class="string">'int64'</span>),</span><br><span class="line"> <span class="string">'Santorum, Rick'</span>: Int64Index([<span class="number">453659</span>, <span class="number">453660</span>, <span class="number">453661</span>], dtype=<span class="string">'int64'</span>)&#125;</span><br></pre></td></tr></table></figure>
+
+<p>对分组数据中的献金金额求和，即可得到每位候选人收到老兵献金的总额：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">old_soldier.groupby(<span class="string">'cand_nm'</span>)[<span class="string">'contb_receipt_amt'</span>].sum()</span><br></pre></td></tr></table></figure>
+
+<p>可见，奥巴马是最受老兵支持的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cand_nm</span><br><span class="line">Cain, Herman       <span class="number">300.00</span></span><br><span class="line">Obama, Barack     <span class="number">4205.00</span></span><br><span class="line">Paul, Ron         <span class="number">2425.49</span></span><br><span class="line">Santorum, Rick     <span class="number">250.00</span></span><br><span class="line">Name: contb_receipt_amt, dtype: float64</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"># Python</a>
+              <a href="/tags/Anaconda/" rel="tag"># Anaconda</a>
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" rel="tag"># 数据分析</a>
+              <a href="/tags/Pandas/" rel="tag"># Pandas</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/data-analysis/matplotlib-basic/" rel="prev" title="Matplotlib 绘图基础">
+      <i class="fa fa-chevron-left"></i> Matplotlib 绘图基础
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/data-analysis/consumption-behavior/" rel="next" title="用户消费行为分析案例">
+      用户消费行为分析案例 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="刘硕"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">刘硕</p>
+  <div class="site-description" itemprop="description">不成为自己讨厌的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">304</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">52</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:liushuo432@outlook.com" title="E-Mail → mailto:liushuo432@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/2436055290" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;2436055290" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://wpa.qq.com/msgrd?v=3&uin=1696146913&site=qq&menu=yes" title="QQ → http:&#x2F;&#x2F;wpa.qq.com&#x2F;msgrd?v&#x3D;3&amp;uin&#x3D;1696146913&amp;site&#x3D;qq&amp;menu&#x3D;yes" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-fw fa-rss"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备20001451号 </a>
+      <img src="/images/beian_icon.png" style="display: inline-block;"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=21142102000063" rel="noopener" target="_blank">辽公网安备 21142102000063号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘硕</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">1.7m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">52:45</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.2" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'Ga2II3wuJmHX3GiNHm9TmI97-gzGzoHsz',
+      appKey     : 'esGYJQepdYLHf07E1VMsP3RK',
+      placeholder: "o(*￣▽￣*)ブ来说点什么吧...（填上邮箱可以收到回复提醒）",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : true,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+  <script type="text/javascript" src="/js/love.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/Epsilon2.1.model.json"},"display":{"superSample":2,"width":200,"height":400,"position":"left","hOffset":-30,"vOffset":-40},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>

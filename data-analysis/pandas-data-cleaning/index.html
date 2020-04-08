@@ -30,7 +30,7 @@
 <meta property="og:description" content="我们进行数据分析时，得到的原始数据往往会有一些不合理的地方。比如，因为取样原因可能出现一些空值，重复取样可能会有重复数据，取样错误可能会有异常数据，等等。这些不合理的数据是会影响我们数据分析的准确性的。而明显不合理的数据往往占少数，所以一般我们对其处理的方式是直接删除。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-04-03T17:43:21.769Z">
-<meta property="article:modified_time" content="2020-04-04T10:23:53.443Z">
+<meta property="article:modified_time" content="2020-04-05T16:39:59.547Z">
 <meta property="article:author" content="刘硕">
 <meta property="article:tag" content="Python">
 <meta property="article:tag" content="Anaconda">
@@ -236,10 +236,16 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-04-04 01:43:21 / 修改时间：18:23:53" itemprop="dateCreated datePublished" datetime="2020-04-04T01:43:21+08:00">2020-04-04</time>
+              <time title="创建时间：2020-04-04 01:43:21" itemprop="dateCreated datePublished" datetime="2020-04-04T01:43:21+08:00">2020-04-04</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-06 00:39:59" itemprop="dateModified" datetime="2020-04-06T00:39:59+08:00">2020-04-06</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="fa fa-folder-o"></i>
@@ -308,7 +314,7 @@
 <p>通过 type 查看它们的类型，我们可以知道，<code>None</code> 为 NoneType 类型，而 <code>np.nan</code> 为浮点型。浮点型比 NoneType 类型好的一方面是，浮点型可以进行数学运算，而 NoneType 不行。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="literal">None</span> + <span class="number">1</span>    <span class="comment"># 报错</span></span><br><span class="line">np.nan + <span class="number">1</span>    <span class="comment"># nan</span></span><br></pre></td></tr></table></figure>
 
-<p>DataFrame 中的空值都是 <code>np.nan</code>，是可以进行数学运算的。即便如此，运算后的结果任然为空，还是没有意义的。所以我们需要对空值进行处理。</p>
+<p>DataFrame 中的空值都是 <code>np.nan</code>，是可以进行数学运算的。即便如此，运算后的结果仍然为空，还是没有意义的。所以我们需要对空值进行处理。</p>
 <p>Pandas 处理空值，主要会用到下面几个方法：</p>
 <ul>
 <li>isnull</li>
@@ -463,7 +469,10 @@
     <a href="/data-analysis/stock-analysis/" rel="prev" title="DataFrame 基础操作巩固 - 股票分析">
       <i class="fa fa-chevron-left"></i> DataFrame 基础操作巩固 - 股票分析
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/data-analysis/population-analysis/" rel="next" title="人口分析案例">
+      人口分析案例 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -540,7 +549,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">296</span>
+          <span class="site-state-item-count">304</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -553,7 +562,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">50</span>
+        <span class="site-state-item-count">52</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -609,7 +618,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">51:01</span>
+    <span title="站点阅读时长">52:45</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
   </div>

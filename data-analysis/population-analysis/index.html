@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="Tu5vqPaUb8svfkPx5eetJFD84ciQCcWVXNatdsWtj9Q">
+  <meta name="baidu-site-verification" content="baidu_verify_FBq9PG4BBb">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"appID":"PXY1Z6GHKT","apiKey":"eb82f2e78e3053f26aa408e9caa96d93","indexName":"blog","hits":{"per_page":10},"labels":{"input_placeholder":"要查点什么(✿◡‿◡)","hits_empty":"没有找到任何关于 ${query} 的结果╥﹏╥...","hits_stats":"搜索到 ${hits} 条记录，用时 ${time} ms o(*￣▽￣*)ブ"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="现有美国各州数年人口普查的数据，需要进行各种分析操作。主要用来练习一些 Pandas 的常用方法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="人口分析案例">
+<meta property="og:url" content="https://sliu.vip/data-analysis/population-analysis/index.html">
+<meta property="og:site_name" content="刘硕的技术查阅手册">
+<meta property="og:description" content="现有美国各州数年人口普查的数据，需要进行各种分析操作。主要用来练习一些 Pandas 的常用方法。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-04-05T16:39:58.197Z">
+<meta property="article:modified_time" content="2020-04-08T04:29:27.375Z">
+<meta property="article:author" content="刘硕">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="Anaconda">
+<meta property="article:tag" content="数据分析">
+<meta property="article:tag" content="Pandas">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://sliu.vip/data-analysis/population-analysis/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>人口分析案例 | 刘硕的技术查阅手册</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f14f123935d6183fdd06f8f1c4bc378f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="刘硕的技术查阅手册" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">刘硕的技术查阅手册</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">Python 全栈开发学习笔记</h1>
+      
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-toc">
+
+    <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+  
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/data-analysis/population-analysis/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          人口分析案例
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-04-06 00:39:58" itemprop="dateCreated datePublished" datetime="2020-04-06T00:39:58+08:00">2020-04-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-08 12:29:27" itemprop="dateModified" datetime="2020-04-08T12:29:27+08:00">2020-04-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" itemprop="url" rel="index"><span itemprop="name">数据分析</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/data-analysis/population-analysis/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/data-analysis/population-analysis/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>9.3k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>17 分钟</span>
+            </span>
+            <div class="post-description">现有美国各州数年人口普查的数据，需要进行各种分析操作。主要用来练习一些 Pandas 的常用方法。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="需求概述"><a href="#需求概述" class="headerlink" title="需求概述"></a>需求概述</h3><p>现有美国各州数年人口普查的数据，需要进行如下分析操作：</p>
+<ul>
+<li>导入文件，查看原始数据</li>
+<li>将人口数据和各州简称数据进行合并</li>
+<li>将合并的数据中重复的 abbreviation 列进行删除</li>
+<li>查看存在缺失数据的列</li>
+<li>找到有哪些 state/region 使得 state 的值为 NaN，进行去重操作</li>
+<li>为找到的这些 state/region 的 state 项补上正确的值，从而去除掉 state 这一列的所有 NaN</li>
+<li>合并各州面积数据 areas</li>
+<li>我们会发现 <code>area(sq.mi)</code> 这一列有缺失数据，找出是哪些行</li>
+<li>去除含有缺失数据的行</li>
+<li>找出 2010 年的全民人口数据</li>
+<li>计算各州的人口密度</li>
+<li>排序，并找出人口密度最高的州</li>
+</ul>
+<h3 id="导入文件，查看原始数据"><a href="#导入文件，查看原始数据" class="headerlink" title="导入文件，查看原始数据"></a>导入文件，查看原始数据</h3><p>首先导入需要用到的各种模块：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">from</span> pandas <span class="keyword">import</span> Series, DataFrame</span><br></pre></td></tr></table></figure>
+
+<p>三个文件都是 csv 格式，直接读取即可。</p>
+<p>首先读取的是各州简称数据 <code>state-abbrevs.csv</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">abbv = pd.read_csv(<span class="string">'state-abbrevs.csv'</span>)</span><br><span class="line">abbv.head()</span><br></pre></td></tr></table></figure>
+
+<p>前五行数据如下，数据中的 state 为州的全称，abbreviation 为州的简称：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">	state	abbreviation</span><br><span class="line"><span class="number">0</span>	Alabama	AL</span><br><span class="line"><span class="number">1</span>	Alaska	AK</span><br><span class="line"><span class="number">2</span>	Arizona	AZ</span><br><span class="line"><span class="number">3</span>	Arkansas	AR</span><br><span class="line"><span class="number">4</span>	California	CA</span><br></pre></td></tr></table></figure>
+
+<p>然后读取各州人口数据 <code>state-population.csv</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pop = pd.read_csv(<span class="string">'state-population.csv'</span>)</span><br><span class="line">pop.head()</span><br></pre></td></tr></table></figure>
+
+<p>前五行的数据如下，其中 state/region 为州的简称，ages 为年龄层次，year 为年份，population 为人口数量：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">	state/region	ages	year	population</span><br><span class="line"><span class="number">0</span>	AL	under18	<span class="number">2012</span>	<span class="number">1117489.0</span></span><br><span class="line"><span class="number">1</span>	AL	total	<span class="number">2012</span>	<span class="number">4817528.0</span></span><br><span class="line"><span class="number">2</span>	AL	under18	<span class="number">2010</span>	<span class="number">1130966.0</span></span><br><span class="line"><span class="number">3</span>	AL	total	<span class="number">2010</span>	<span class="number">4785570.0</span></span><br><span class="line"><span class="number">4</span>	AL	under18	<span class="number">2011</span>	<span class="number">1125763.0</span></span><br></pre></td></tr></table></figure>
+
+<p>还有一个文件，各州面积数据 <code>state-areas.csv</code>，需要读取：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">area = pd.read_csv(<span class="string">'state-areas.csv'</span>)</span><br><span class="line">area.head()</span><br></pre></td></tr></table></figure>
+
+<p>前五行数据如下，其中 state 是州的全称，<code>area(sq.mi)</code> 是州的面积：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">	state	area (sq. mi)</span><br><span class="line"><span class="number">0</span>	Alabama	<span class="number">52423</span></span><br><span class="line"><span class="number">1</span>	Alaska	<span class="number">656425</span></span><br><span class="line"><span class="number">2</span>	Arizona	<span class="number">114006</span></span><br><span class="line"><span class="number">3</span>	Arkansas	<span class="number">53182</span></span><br><span class="line"><span class="number">4</span>	California	<span class="number">163707</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="将人口数据和各州简称数据进行合并"><a href="#将人口数据和各州简称数据进行合并" class="headerlink" title="将人口数据和各州简称数据进行合并"></a>将人口数据和各州简称数据进行合并</h3><p>将人口数据和各州简称数据合并，只需要一条 merge 语句即可实现：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">abbv_pop = pd.merge(abbv, pop, left_on=<span class="string">'abbreviation'</span>, right_on=<span class="string">'state/region'</span>, how=<span class="string">'outer'</span>)</span><br><span class="line">abbv_pop.head()</span><br></pre></td></tr></table></figure>
+
+<p>合并后的数据前五行为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">	state	abbreviation	state/region	ages	year	population</span><br><span class="line"><span class="number">0</span>	Alabama	AL	AL	under18	<span class="number">2012</span>	<span class="number">1117489.0</span></span><br><span class="line"><span class="number">1</span>	Alabama	AL	AL	total	<span class="number">2012</span>	<span class="number">4817528.0</span></span><br><span class="line"><span class="number">2</span>	Alabama	AL	AL	under18	<span class="number">2010</span>	<span class="number">1130966.0</span></span><br><span class="line"><span class="number">3</span>	Alabama	AL	AL	total	<span class="number">2010</span>	<span class="number">4785570.0</span></span><br><span class="line"><span class="number">4</span>	Alabama	AL	AL	under18	<span class="number">2011</span>	<span class="number">1125763.0</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="将合并的数据中重复的-abbreviation-列进行删除"><a href="#将合并的数据中重复的-abbreviation-列进行删除" class="headerlink" title="将合并的数据中重复的 abbreviation 列进行删除"></a>将合并的数据中重复的 abbreviation 列进行删除</h3><p>新生成的数据表中，abbreviation 和 state/region 这两列实际上是相同的，都表示的是州名简称。我们可以将 abbreviation 列删除，只保留 state/region 即可：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">abbv_pop.drop(<span class="string">'abbreviation'</span>, axis=<span class="number">1</span>, inplace=<span class="literal">True</span>)</span><br><span class="line">abbv_pop.head()</span><br></pre></td></tr></table></figure>
+
+<p>删除掉重复列后的前五行数据为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">	state	state/region	ages	year	population</span><br><span class="line"><span class="number">0</span>	Alabama	AL	under18	<span class="number">2012</span>	<span class="number">1117489.0</span></span><br><span class="line"><span class="number">1</span>	Alabama	AL	total	<span class="number">2012</span>	<span class="number">4817528.0</span></span><br><span class="line"><span class="number">2</span>	Alabama	AL	under18	<span class="number">2010</span>	<span class="number">1130966.0</span></span><br><span class="line"><span class="number">3</span>	Alabama	AL	total	<span class="number">2010</span>	<span class="number">4785570.0</span></span><br><span class="line"><span class="number">4</span>	Alabama	AL	under18	<span class="number">2011</span>	<span class="number">1125763.0</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="查看存在缺失数据的列"><a href="#查看存在缺失数据的列" class="headerlink" title="查看存在缺失数据的列"></a>查看存在缺失数据的列</h3><p>数据表中行数很多，很难判断哪一列有空值。</p>
+<p>我们可以通过 info 方法来判断某一列是否有空值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">abbv_pop.info()</span><br></pre></td></tr></table></figure>
+
+<p>其结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">pandas</span>.<span class="title">core</span>.<span class="title">frame</span>.<span class="title">DataFrame</span>'&gt;</span></span><br><span class="line"><span class="class"><span class="title">Int64Index</span>:</span> <span class="number">2544</span> entries, <span class="number">0</span> to <span class="number">2543</span></span><br><span class="line">Data columns (total <span class="number">5</span> columns):</span><br><span class="line">state           <span class="number">2448</span> non-null object</span><br><span class="line">state/region    <span class="number">2544</span> non-null object</span><br><span class="line">ages            <span class="number">2544</span> non-null object</span><br><span class="line">year            <span class="number">2544</span> non-null int64</span><br><span class="line">population      <span class="number">2524</span> non-null float64</span><br><span class="line">dtypes: float64(<span class="number">1</span>), int64(<span class="number">1</span>), object(<span class="number">3</span>)</span><br><span class="line">memory usage: <span class="number">119.2</span>+ KB</span><br></pre></td></tr></table></figure>
+
+<p>总共 2544 条数据，除了 state 和 population 的其他列都有 2544 个非空数据。state 列中只有 2448 条非空数据，population 中有 2524 条数据，说明这两列中是含有空值的。</p>
+<p>我们也可以通过 isnull 和 any 结合使用的方式，检查哪一列中有空元素：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">abbv_pop.isnull().any(axis=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+
+<p>返回的结果如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">state            <span class="literal">True</span></span><br><span class="line">state/region    <span class="literal">False</span></span><br><span class="line">ages            <span class="literal">False</span></span><br><span class="line">year            <span class="literal">False</span></span><br><span class="line">population       <span class="literal">True</span></span><br><span class="line">dtype: bool</span><br></pre></td></tr></table></figure>
+
+<p>值为 True，意味着改行有空值；值为 False，意味着改行没有空值。我们得到的结论仍然是，state 和 population 这两列中是有空值的，其他列中没有空值。</p>
+<h3 id="找到值为-NaN-的州对应的简称，并进行去重操作"><a href="#找到值为-NaN-的州对应的简称，并进行去重操作" class="headerlink" title="找到值为 NaN 的州对应的简称，并进行去重操作"></a>找到值为 NaN 的州对应的简称，并进行去重操作</h3><p>找到有哪些 state/region 使得 state 的值为 NaN，将state中的空值对应的简称找到，对找到的简称进行去重操作。</p>
+<p>首先，我们要找到 state 中为空值的那些行。方法很简单，通过 isnull 判断是否为空，然后将得到的布尔值作为索引，将所有的空值取到即可：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">abbv_pop.loc[abbv_pop[<span class="string">'state'</span>].isnull()]</span><br></pre></td></tr></table></figure>
+
+<p>拿到的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">	state	state/region	ages	year	population</span><br><span class="line"><span class="number">2448</span>	NaN	PR	under18	<span class="number">1990</span>	NaN</span><br><span class="line"><span class="number">2449</span>	NaN	PR	total	<span class="number">1990</span>	NaN</span><br><span class="line"><span class="number">2450</span>	NaN	PR	total	<span class="number">1991</span>	NaN</span><br><span class="line">...	...	...	...	...	...</span><br><span class="line"><span class="number">2541</span>	NaN	USA	total	<span class="number">2011</span>	<span class="number">311582564.0</span></span><br><span class="line"><span class="number">2542</span>	NaN	USA	under18	<span class="number">2012</span>	<span class="number">73708179.0</span></span><br><span class="line"><span class="number">2543</span>	NaN	USA	total	<span class="number">2012</span>	<span class="number">313873685.0</span></span><br><span class="line"><span class="number">96</span> rows × <span class="number">5</span> columns</span><br></pre></td></tr></table></figure>
+
+<p>找到这些 state 为 NaN 的行之后，我们就可以找到它们对应的州名简称了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">abbv_pop.loc[abbv_pop[<span class="string">'state'</span>].isnull()][<span class="string">'state/region'</span>]</span><br></pre></td></tr></table></figure>
+
+<p>这些州的简称为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2448</span>     PR</span><br><span class="line"><span class="number">2449</span>     PR</span><br><span class="line"><span class="number">2450</span>     PR</span><br><span class="line">       ... </span><br><span class="line"><span class="number">2541</span>    USA</span><br><span class="line"><span class="number">2542</span>    USA</span><br><span class="line"><span class="number">2543</span>    USA</span><br><span class="line">Name: state/region, Length: <span class="number">96</span>, dtype: object</span><br></pre></td></tr></table></figure>
+
+<p>我们看到，这里面有大量的重复的名称，需要稍微去重一下，使用 unique 方法即可：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">abbv_pop.loc[abbv_pop[<span class="string">'state'</span>].isnull()][<span class="string">'state/region'</span>].unique()</span><br></pre></td></tr></table></figure>
+
+<p>这样，就拿到了州名为 NaN 的简称：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">array([<span class="string">'PR'</span>, <span class="string">'USA'</span>], dtype=object)</span><br></pre></td></tr></table></figure>
+
+<p>只有 PR 和 USA 是没有完整的名字的。</p>
+<h3 id="为没有完整州名的简称补充名字"><a href="#为没有完整州名的简称补充名字" class="headerlink" title="为没有完整州名的简称补充名字"></a>为没有完整州名的简称补充名字</h3><p>为找到的这些 state/region 的 state 项补上正确的值，从而去除掉 state 这一列的所有 NaN。</p>
+<p>首先，我们找到所有的 PR，然后将其全名更改为 People’s Republic。这需要分两步，找到每个 PR 的索引，然后将其替换。</p>
+<p>要找到每个 PR 的索引，只需判断内容是否为 PR，然后根据布尔值索引，拿到所有简称为 PR 的数据。最后 index 取索引即可：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pr_index = abbv_pop.loc[abbv_pop[<span class="string">'state/region'</span>] == <span class="string">'PR'</span>].index</span><br><span class="line">pr_index</span><br></pre></td></tr></table></figure>
+
+<p>这些索引为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Int64Index([<span class="number">2448</span>, <span class="number">2449</span>, <span class="number">2450</span>, <span class="number">2451</span>, <span class="number">2452</span>, <span class="number">2453</span>, <span class="number">2454</span>, <span class="number">2455</span>, <span class="number">2456</span>, <span class="number">2457</span>, <span class="number">2458</span>,</span><br><span class="line">            <span class="number">2459</span>, <span class="number">2460</span>, <span class="number">2461</span>, <span class="number">2462</span>, <span class="number">2463</span>, <span class="number">2464</span>, <span class="number">2465</span>, <span class="number">2466</span>, <span class="number">2467</span>, <span class="number">2468</span>, <span class="number">2469</span>,</span><br><span class="line">            <span class="number">2470</span>, <span class="number">2471</span>, <span class="number">2472</span>, <span class="number">2473</span>, <span class="number">2474</span>, <span class="number">2475</span>, <span class="number">2476</span>, <span class="number">2477</span>, <span class="number">2478</span>, <span class="number">2479</span>, <span class="number">2480</span>,</span><br><span class="line">            <span class="number">2481</span>, <span class="number">2482</span>, <span class="number">2483</span>, <span class="number">2484</span>, <span class="number">2485</span>, <span class="number">2486</span>, <span class="number">2487</span>, <span class="number">2488</span>, <span class="number">2489</span>, <span class="number">2490</span>, <span class="number">2491</span>,</span><br><span class="line">            <span class="number">2492</span>, <span class="number">2493</span>, <span class="number">2494</span>, <span class="number">2495</span>],</span><br><span class="line">           dtype=<span class="string">'int64'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>这时，只需将找打的空值填充成对应简称的全称即可。做法也很简单，根据索引和列名，也就是 state 定位，将其赋值为 People’s Republic 就成了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">abbv_pop.loc[pr_index, <span class="string">'state'</span>] = <span class="string">"People's Republic"</span></span><br><span class="line">abbv_pop.loc[pr_index, <span class="string">'state'</span>].head()</span><br></pre></td></tr></table></figure>
+
+<p>替换后就成了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2448</span>    People<span class="string">'s Republic</span></span><br><span class="line"><span class="string">2449    People'</span>s Republic</span><br><span class="line"><span class="number">2450</span>    People<span class="string">'s Republic</span></span><br><span class="line"><span class="string">2451    People'</span>s Republic</span><br><span class="line"><span class="number">2452</span>    People<span class="string">'s Republic</span></span><br><span class="line"><span class="string">Name: state, dtype: object</span></span><br></pre></td></tr></table></figure>
+
+<p>同样方法，我们也可以将 USA 的全称修改为 United States：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">usa_index = abbv_pop.loc[abbv_pop[<span class="string">'state/region'</span>] == <span class="string">'USA'</span>].index</span><br><span class="line">abbv_pop.loc[usa_index, <span class="string">'state'</span>] = <span class="string">'United States'</span></span><br><span class="line">abbv_pop.loc[usa_index, <span class="string">'state'</span>].head()</span><br></pre></td></tr></table></figure>
+
+<p>USA 对应的 state 就被成功修改了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2496</span>    United States</span><br><span class="line"><span class="number">2497</span>    United States</span><br><span class="line"><span class="number">2498</span>    United States</span><br><span class="line"><span class="number">2499</span>    United States</span><br><span class="line"><span class="number">2500</span>    United States</span><br><span class="line">Name: state, dtype: object</span><br></pre></td></tr></table></figure>
+
+<p>这时，再用 info 查看：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">abbv_pop.info()</span><br></pre></td></tr></table></figure>
+
+<p>可发现，state 列已经没有空值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">pandas</span>.<span class="title">core</span>.<span class="title">frame</span>.<span class="title">DataFrame</span>'&gt;</span></span><br><span class="line"><span class="class"><span class="title">Int64Index</span>:</span> <span class="number">2544</span> entries, <span class="number">0</span> to <span class="number">2543</span></span><br><span class="line">Data columns (total <span class="number">5</span> columns):</span><br><span class="line">state           <span class="number">2544</span> non-null object</span><br><span class="line">state/region    <span class="number">2544</span> non-null object</span><br><span class="line">ages            <span class="number">2544</span> non-null object</span><br><span class="line">year            <span class="number">2544</span> non-null int64</span><br><span class="line">population      <span class="number">2524</span> non-null float64</span><br><span class="line">dtypes: float64(<span class="number">1</span>), int64(<span class="number">1</span>), object(<span class="number">3</span>)</span><br><span class="line">memory usage: <span class="number">199.2</span>+ KB</span><br></pre></td></tr></table></figure>
+
+<p>使用 isnull 结合 any 查看：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">abbv_pop.isnull().any(axis=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+
+<p>得到同样的结论：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">state           <span class="literal">False</span></span><br><span class="line">state/region    <span class="literal">False</span></span><br><span class="line">ages            <span class="literal">False</span></span><br><span class="line">year            <span class="literal">False</span></span><br><span class="line">population       <span class="literal">True</span></span><br><span class="line">dtype: bool</span><br></pre></td></tr></table></figure>
+
+<h3 id="合并各州面积数据-areas"><a href="#合并各州面积数据-areas" class="headerlink" title="合并各州面积数据 areas"></a>合并各州面积数据 areas</h3><p>我们前面一直操作的是两个表，人口和州名简称表，的内容。但是我们明明读取了三张表，还有一张州面积表没有用到。这里，我们就先把州的面积合并到人口和州名表中。</p>
+<p>很简单，一条 merge 命令即可：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">abbv_pop_area = pd.merge(abbv_pop, area, on=<span class="string">'state'</span>, how=<span class="string">'outer'</span>)</span><br><span class="line">abbv_pop_area.head()</span><br></pre></td></tr></table></figure>
+
+<p>就拿到了合并后的数据：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">	state	state/region	ages	year	population	area (sq. mi)</span><br><span class="line"><span class="number">0</span>	Alabama	AL	under18	<span class="number">2012.0</span>	<span class="number">1117489.0</span>	<span class="number">52423.0</span></span><br><span class="line"><span class="number">1</span>	Alabama	AL	total	<span class="number">2012.0</span>	<span class="number">4817528.0</span>	<span class="number">52423.0</span></span><br><span class="line"><span class="number">2</span>	Alabama	AL	under18	<span class="number">2010.0</span>	<span class="number">1130966.0</span>	<span class="number">52423.0</span></span><br><span class="line"><span class="number">3</span>	Alabama	AL	total	<span class="number">2010.0</span>	<span class="number">4785570.0</span>	<span class="number">52423.0</span></span><br><span class="line"><span class="number">4</span>	Alabama	AL	under18	<span class="number">2011.0</span>	<span class="number">1125763.0</span>	<span class="number">52423.0</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="找出-area-缺失数据的行"><a href="#找出-area-缺失数据的行" class="headerlink" title="找出 area 缺失数据的行"></a>找出 area 缺失数据的行</h3><p>先查看一下，新得到的总表中，那些列含有空数据：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">abbv_pop_area.info()</span><br></pre></td></tr></table></figure>
+
+<p>info 数据为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">pandas</span>.<span class="title">core</span>.<span class="title">frame</span>.<span class="title">DataFrame</span>'&gt;</span></span><br><span class="line"><span class="class"><span class="title">Int64Index</span>:</span> <span class="number">2545</span> entries, <span class="number">0</span> to <span class="number">2544</span></span><br><span class="line">Data columns (total <span class="number">6</span> columns):</span><br><span class="line">state            <span class="number">2545</span> non-null object</span><br><span class="line">state/region     <span class="number">2544</span> non-null object</span><br><span class="line">ages             <span class="number">2544</span> non-null object</span><br><span class="line">year             <span class="number">2544</span> non-null float64</span><br><span class="line">population       <span class="number">2524</span> non-null float64</span><br><span class="line">area (sq. mi)    <span class="number">2449</span> non-null float64</span><br><span class="line">dtypes: float64(<span class="number">3</span>), object(<span class="number">3</span>)</span><br><span class="line">memory usage: <span class="number">139.2</span>+ KB</span><br></pre></td></tr></table></figure>
+
+<p>使用 isnull 和 any 查看：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">abbv_pop_area.isnull().any(axis=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+
+<p>结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">state            <span class="literal">False</span></span><br><span class="line">state/region      <span class="literal">True</span></span><br><span class="line">ages              <span class="literal">True</span></span><br><span class="line">year              <span class="literal">True</span></span><br><span class="line">population        <span class="literal">True</span></span><br><span class="line">area (sq. mi)     <span class="literal">True</span></span><br><span class="line">dtype: bool</span><br></pre></td></tr></table></figure>
+
+<p>我们会发现 <code>area(sq.mi)</code> 这一列有比较多的缺失数据，让我们找出是哪些行。</p>
+<p>这实现起来很简单啦，还是老一套，判断是否为空，根据布尔值索引，拿到数据：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">null_area = abbv_pop_area.loc[abbv_pop_area[<span class="string">'area (sq. mi)'</span>].isnull()]</span><br><span class="line">null_area.head()</span><br></pre></td></tr></table></figure>
+
+<p>成功拿到 area 为空的那些行：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">	state	state/region	ages	year	population	area (sq. mi)</span><br><span class="line"><span class="number">2448</span>	People<span class="string">'s Republic	PR	under18	1990.0	NaN	NaN</span></span><br><span class="line"><span class="string">2449	People'</span>s Republic	PR	total	<span class="number">1990.0</span>	NaN	NaN</span><br><span class="line"><span class="number">2450</span>	People<span class="string">'s Republic	PR	total	1991.0	NaN	NaN</span></span><br><span class="line"><span class="string">2451	People'</span>s Republic	PR	under18	<span class="number">1991.0</span>	NaN	NaN</span><br><span class="line"><span class="number">2452</span>	People<span class="string">'s Republic	PR	total	1993.0	NaN	NaN</span></span><br></pre></td></tr></table></figure>
+
+<p>使用 index 即可拿到这些行的索引：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">null_area_index = null_area.index</span><br><span class="line">null_area_index</span><br></pre></td></tr></table></figure>
+
+<p>area 为空的行为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">Int64Index([<span class="number">2448</span>, <span class="number">2449</span>, <span class="number">2450</span>, <span class="number">2451</span>, <span class="number">2452</span>, <span class="number">2453</span>, <span class="number">2454</span>, <span class="number">2455</span>, <span class="number">2456</span>, <span class="number">2457</span>, <span class="number">2458</span>,</span><br><span class="line">            <span class="number">2459</span>, <span class="number">2460</span>, <span class="number">2461</span>, <span class="number">2462</span>, <span class="number">2463</span>, <span class="number">2464</span>, <span class="number">2465</span>, <span class="number">2466</span>, <span class="number">2467</span>, <span class="number">2468</span>, <span class="number">2469</span>,</span><br><span class="line">            <span class="number">2470</span>, <span class="number">2471</span>, <span class="number">2472</span>, <span class="number">2473</span>, <span class="number">2474</span>, <span class="number">2475</span>, <span class="number">2476</span>, <span class="number">2477</span>, <span class="number">2478</span>, <span class="number">2479</span>, <span class="number">2480</span>,</span><br><span class="line">            <span class="number">2481</span>, <span class="number">2482</span>, <span class="number">2483</span>, <span class="number">2484</span>, <span class="number">2485</span>, <span class="number">2486</span>, <span class="number">2487</span>, <span class="number">2488</span>, <span class="number">2489</span>, <span class="number">2490</span>, <span class="number">2491</span>,</span><br><span class="line">            <span class="number">2492</span>, <span class="number">2493</span>, <span class="number">2494</span>, <span class="number">2495</span>, <span class="number">2496</span>, <span class="number">2497</span>, <span class="number">2498</span>, <span class="number">2499</span>, <span class="number">2500</span>, <span class="number">2501</span>, <span class="number">2502</span>,</span><br><span class="line">            <span class="number">2503</span>, <span class="number">2504</span>, <span class="number">2505</span>, <span class="number">2506</span>, <span class="number">2507</span>, <span class="number">2508</span>, <span class="number">2509</span>, <span class="number">2510</span>, <span class="number">2511</span>, <span class="number">2512</span>, <span class="number">2513</span>,</span><br><span class="line">            <span class="number">2514</span>, <span class="number">2515</span>, <span class="number">2516</span>, <span class="number">2517</span>, <span class="number">2518</span>, <span class="number">2519</span>, <span class="number">2520</span>, <span class="number">2521</span>, <span class="number">2522</span>, <span class="number">2523</span>, <span class="number">2524</span>,</span><br><span class="line">            <span class="number">2525</span>, <span class="number">2526</span>, <span class="number">2527</span>, <span class="number">2528</span>, <span class="number">2529</span>, <span class="number">2530</span>, <span class="number">2531</span>, <span class="number">2532</span>, <span class="number">2533</span>, <span class="number">2534</span>, <span class="number">2535</span>,</span><br><span class="line">            <span class="number">2536</span>, <span class="number">2537</span>, <span class="number">2538</span>, <span class="number">2539</span>, <span class="number">2540</span>, <span class="number">2541</span>, <span class="number">2542</span>, <span class="number">2543</span>],</span><br><span class="line">           dtype=<span class="string">'int64'</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="去除面积数据缺失的行"><a href="#去除面积数据缺失的行" class="headerlink" title="去除面积数据缺失的行"></a>去除面积数据缺失的行</h3><p>面积缺失的行索引已经找到，把它们去除十分容易，只需要 drop 即可：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">abbv_pop_area.drop(null_area_index, axis=<span class="number">0</span>, inplace=<span class="literal">True</span>)</span><br><span class="line">abbv_pop_area.info()</span><br></pre></td></tr></table></figure>
+
+<p>从 info 中可以看出，area 列已经没有空数据了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">pandas</span>.<span class="title">core</span>.<span class="title">frame</span>.<span class="title">DataFrame</span>'&gt;</span></span><br><span class="line"><span class="class"><span class="title">Int64Index</span>:</span> <span class="number">2449</span> entries, <span class="number">0</span> to <span class="number">2544</span></span><br><span class="line">Data columns (total <span class="number">6</span> columns):</span><br><span class="line">state            <span class="number">2449</span> non-null object</span><br><span class="line">state/region     <span class="number">2448</span> non-null object</span><br><span class="line">ages             <span class="number">2448</span> non-null object</span><br><span class="line">year             <span class="number">2448</span> non-null float64</span><br><span class="line">population       <span class="number">2448</span> non-null float64</span><br><span class="line">area (sq. mi)    <span class="number">2449</span> non-null float64</span><br><span class="line">dtypes: float64(<span class="number">3</span>), object(<span class="number">3</span>)</span><br><span class="line">memory usage: <span class="number">133.9</span>+ KB</span><br></pre></td></tr></table></figure>
+
+<h3 id="找出-2010-年的全民人口数据"><a href="#找出-2010-年的全民人口数据" class="headerlink" title="找出 2010 年的全民人口数据"></a>找出 2010 年的全民人口数据</h3><p>2010 年的全民人口，也就是年份为 2010，年龄段为 total 的数据。通过判断之后用布尔值索引是可以实现的。不过这里，我们还可以采用条件查询的方式，使用 query 参数进行多条件查询：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">abbv_pop_area.query(<span class="string">'year == 2010 &amp; ages == "total"'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>成功获取到 2010 年各州的全民人口数据：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">	state	state/region	ages	year	population	area (sq. mi)</span><br><span class="line"><span class="number">3</span>	Alabama	AL	total	<span class="number">2010.0</span>	<span class="number">4785570.0</span>	<span class="number">52423.0</span></span><br><span class="line"><span class="number">91</span>	Alaska	AK	total	<span class="number">2010.0</span>	<span class="number">713868.0</span>	<span class="number">656425.0</span></span><br><span class="line"><span class="number">101</span>	Arizona	AZ	total	<span class="number">2010.0</span>	<span class="number">6408790.0</span>	<span class="number">114006.0</span></span><br><span class="line">...</span><br><span class="line"><span class="number">2309</span>	West Virginia	WV	total	<span class="number">2010.0</span>	<span class="number">1854146.0</span>	<span class="number">24231.0</span></span><br><span class="line"><span class="number">2394</span>	Wisconsin	WI	total	<span class="number">2010.0</span>	<span class="number">5689060.0</span>	<span class="number">65503.0</span></span><br><span class="line"><span class="number">2405</span>	Wyoming	WY	total	<span class="number">2010.0</span>	<span class="number">564222.0</span>	<span class="number">97818.0</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="计算各州的人口密度"><a href="#计算各州的人口密度" class="headerlink" title="计算各州的人口密度"></a>计算各州的人口密度</h3><p>人口密度可以用公式 <code>总人口/面积</code> 来计算。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">abbv_pop_area[<span class="string">'population'</span>] / abbv_pop_area[<span class="string">'area (sq. mi)'</span>]</span><br></pre></td></tr></table></figure>
+
+<p>我们就得到了人口密度的数据：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0</span>       <span class="number">21.316769</span></span><br><span class="line"><span class="number">1</span>       <span class="number">91.897221</span></span><br><span class="line"><span class="number">2</span>       <span class="number">21.573851</span></span><br><span class="line">          ...    </span><br><span class="line"><span class="number">2446</span>     <span class="number">1.391135</span></span><br><span class="line"><span class="number">2447</span>     <span class="number">4.638103</span></span><br><span class="line"><span class="number">2544</span>          NaN</span><br><span class="line">Length: <span class="number">2449</span>, dtype: float64</span><br></pre></td></tr></table></figure>
+
+<p>不过我们并不希望仅仅得到这么单独一列数据。我们想要把人口密度作为一个新列，添加到汇总表中，这样更便于查看。这时，只需对汇总表指定列名，将新列数据放进去即可：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">abbv_pop_area[<span class="string">'density'</span>] = abbv_pop_area[<span class="string">'population'</span>] / abbv_pop_area[<span class="string">'area (sq. mi)'</span>]</span><br><span class="line">abbv_pop_area.head()</span><br></pre></td></tr></table></figure>
+
+<p>人口密度数据就成功被添加到汇总表中：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">	state	state/region	ages	year	population	area (sq. mi)	density</span><br><span class="line"><span class="number">0</span>	Alabama	AL	under18	<span class="number">2012.0</span>	<span class="number">1117489.0</span>	<span class="number">52423.0</span>	<span class="number">21.316769</span></span><br><span class="line"><span class="number">1</span>	Alabama	AL	total	<span class="number">2012.0</span>	<span class="number">4817528.0</span>	<span class="number">52423.0</span>	<span class="number">91.897221</span></span><br><span class="line"><span class="number">2</span>	Alabama	AL	under18	<span class="number">2010.0</span>	<span class="number">1130966.0</span>	<span class="number">52423.0</span>	<span class="number">21.573851</span></span><br><span class="line"><span class="number">3</span>	Alabama	AL	total	<span class="number">2010.0</span>	<span class="number">4785570.0</span>	<span class="number">52423.0</span>	<span class="number">91.287603</span></span><br><span class="line"><span class="number">4</span>	Alabama	AL	under18	<span class="number">2011.0</span>	<span class="number">1125763.0</span>	<span class="number">52423.0</span>	<span class="number">21.474601</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="排序，并找出人口密度最高的州"><a href="#排序，并找出人口密度最高的州" class="headerlink" title="排序，并找出人口密度最高的州"></a>排序，并找出人口密度最高的州</h3><p>是用 sort_values 方法可以对数据进行排序：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">abbv_pop_area.sort_values(by=<span class="string">'density'</span>, axis=<span class="number">0</span>, ascending=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+
+<p>参数解释：</p>
+<ul>
+<li>by，用来指定以那一行/列进行排序</li>
+<li>axis，用来指定排序的方向，0 为纵向排序，1 为横向排序</li>
+<li>ascending，用来指定是否升序，True 为升序，False 为降序</li>
+</ul>
+<p>我们就顺利拿到排序好的结果：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">	state	state/region	ages	year	population	area (sq. mi)	density</span><br><span class="line"><span class="number">391</span>	District of Columbia	DC	total	<span class="number">2013.0</span>	<span class="number">646449.0</span>	<span class="number">68.0</span>	<span class="number">9506.602941</span></span><br><span class="line"><span class="number">385</span>	District of Columbia	DC	total	<span class="number">2012.0</span>	<span class="number">633427.0</span>	<span class="number">68.0</span>	<span class="number">9315.102941</span></span><br><span class="line"><span class="number">387</span>	District of Columbia	DC	total	<span class="number">2011.0</span>	<span class="number">619624.0</span>	<span class="number">68.0</span>	<span class="number">9112.117647</span></span><br><span class="line">...	...	...	...	...	...	...	...</span><br><span class="line"><span class="number">51</span>	Alaska	AK	under18	<span class="number">1991.0</span>	<span class="number">182180.0</span>	<span class="number">656425.0</span>	<span class="number">0.277534</span></span><br><span class="line"><span class="number">49</span>	Alaska	AK	under18	<span class="number">1990.0</span>	<span class="number">177502.0</span>	<span class="number">656425.0</span>	<span class="number">0.270407</span></span><br><span class="line"><span class="number">2544</span>	Puerto Rico	NaN	NaN	NaN	NaN	<span class="number">3515.0</span>	NaN</span><br><span class="line"><span class="number">2449</span> rows × <span class="number">7</span> columns</span><br></pre></td></tr></table></figure>
+
+<p>因为是按照人口密度降序排列，所以最上面的一条数据，就是对应着人口密度最高的州：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">abbv_pop_area.sort_values(by=<span class="string">'density'</span>, axis=<span class="number">0</span>, ascending=<span class="literal">False</span>).iloc[<span class="number">0</span>][<span class="string">'state'</span>]</span><br></pre></td></tr></table></figure>
+
+<p>结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">'District of Columbia'</span></span><br></pre></td></tr></table></figure>
+
+<p>符合预期。</p>
+<p>至此，我们就完成了简单的人口数据分析。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"># Python</a>
+              <a href="/tags/Anaconda/" rel="tag"># Anaconda</a>
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" rel="tag"># 数据分析</a>
+              <a href="/tags/Pandas/" rel="tag"># Pandas</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/data-analysis/pandas-data-cleaning/" rel="prev" title="基于 Pandas 的数据清洗">
+      <i class="fa fa-chevron-left"></i> 基于 Pandas 的数据清洗
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/data-analysis/pandas-advanced/" rel="next" title="Pandas 高级操作">
+      Pandas 高级操作 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#需求概述"><span class="nav-number">1.</span> <span class="nav-text">需求概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#导入文件，查看原始数据"><span class="nav-number">2.</span> <span class="nav-text">导入文件，查看原始数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#将人口数据和各州简称数据进行合并"><span class="nav-number">3.</span> <span class="nav-text">将人口数据和各州简称数据进行合并</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#将合并的数据中重复的-abbreviation-列进行删除"><span class="nav-number">4.</span> <span class="nav-text">将合并的数据中重复的 abbreviation 列进行删除</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看存在缺失数据的列"><span class="nav-number">5.</span> <span class="nav-text">查看存在缺失数据的列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#找到值为-NaN-的州对应的简称，并进行去重操作"><span class="nav-number">6.</span> <span class="nav-text">找到值为 NaN 的州对应的简称，并进行去重操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为没有完整州名的简称补充名字"><span class="nav-number">7.</span> <span class="nav-text">为没有完整州名的简称补充名字</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#合并各州面积数据-areas"><span class="nav-number">8.</span> <span class="nav-text">合并各州面积数据 areas</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#找出-area-缺失数据的行"><span class="nav-number">9.</span> <span class="nav-text">找出 area 缺失数据的行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#去除面积数据缺失的行"><span class="nav-number">10.</span> <span class="nav-text">去除面积数据缺失的行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#找出-2010-年的全民人口数据"><span class="nav-number">11.</span> <span class="nav-text">找出 2010 年的全民人口数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#计算各州的人口密度"><span class="nav-number">12.</span> <span class="nav-text">计算各州的人口密度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#排序，并找出人口密度最高的州"><span class="nav-number">13.</span> <span class="nav-text">排序，并找出人口密度最高的州</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="刘硕"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">刘硕</p>
+  <div class="site-description" itemprop="description">不成为自己讨厌的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">304</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">52</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:liushuo432@outlook.com" title="E-Mail → mailto:liushuo432@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/2436055290" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;2436055290" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://wpa.qq.com/msgrd?v=3&uin=1696146913&site=qq&menu=yes" title="QQ → http:&#x2F;&#x2F;wpa.qq.com&#x2F;msgrd?v&#x3D;3&amp;uin&#x3D;1696146913&amp;site&#x3D;qq&amp;menu&#x3D;yes" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-fw fa-rss"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备20001451号 </a>
+      <img src="/images/beian_icon.png" style="display: inline-block;"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=21142102000063" rel="noopener" target="_blank">辽公网安备 21142102000063号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘硕</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">1.7m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">52:45</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.2" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'Ga2II3wuJmHX3GiNHm9TmI97-gzGzoHsz',
+      appKey     : 'esGYJQepdYLHf07E1VMsP3RK',
+      placeholder: "o(*￣▽￣*)ブ来说点什么吧...（填上邮箱可以收到回复提醒）",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : true,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+  <script type="text/javascript" src="/js/love.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/Epsilon2.1.model.json"},"display":{"superSample":2,"width":200,"height":400,"position":"left","hOffset":-30,"vOffset":-40},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>

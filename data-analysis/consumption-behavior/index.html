@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="Tu5vqPaUb8svfkPx5eetJFD84ciQCcWVXNatdsWtj9Q">
+  <meta name="baidu-site-verification" content="baidu_verify_FBq9PG4BBb">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"appID":"PXY1Z6GHKT","apiKey":"eb82f2e78e3053f26aa408e9caa96d93","indexName":"blog","hits":{"per_page":10},"labels":{"input_placeholder":"要查点什么(✿◡‿◡)","hits_empty":"没有找到任何关于 ${query} 的结果╥﹏╥...","hits_stats":"搜索到 ${hits} 条记录，用时 ${time} ms o(*￣▽￣*)ブ"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="电商平台每天都会产生大量的用户购买商品的消费行为数据。通过分析这些数据，我们可以了解电商的运营情况，用户的消费规律等信息。有了这些信息，我们可以完善平台建设，预测用户的消费行为，从而提高用户体验。这个案例将综合使用我们数据分析的各种模块。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用户消费行为分析案例">
+<meta property="og:url" content="https://sliu.vip/data-analysis/consumption-behavior/index.html">
+<meta property="og:site_name" content="刘硕的技术查阅手册">
+<meta property="og:description" content="电商平台每天都会产生大量的用户购买商品的消费行为数据。通过分析这些数据，我们可以了解电商的运营情况，用户的消费规律等信息。有了这些信息，我们可以完善平台建设，预测用户的消费行为，从而提高用户体验。这个案例将综合使用我们数据分析的各种模块。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-04-07T17:13:27.347Z">
+<meta property="article:modified_time" content="2020-04-08T04:29:27.397Z">
+<meta property="article:author" content="刘硕">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="Anaconda">
+<meta property="article:tag" content="数据分析">
+<meta property="article:tag" content="NumPy">
+<meta property="article:tag" content="Pandas">
+<meta property="article:tag" content="Matplotlib">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://sliu.vip/data-analysis/consumption-behavior/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>用户消费行为分析案例 | 刘硕的技术查阅手册</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f14f123935d6183fdd06f8f1c4bc378f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="刘硕的技术查阅手册" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">刘硕的技术查阅手册</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">Python 全栈开发学习笔记</h1>
+      
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-toc">
+
+    <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+  
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/data-analysis/consumption-behavior/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          用户消费行为分析案例
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-04-08 01:13:27 / 修改时间：12:29:27" itemprop="dateCreated datePublished" datetime="2020-04-08T01:13:27+08:00">2020-04-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" itemprop="url" rel="index"><span itemprop="name">数据分析</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/data-analysis/consumption-behavior/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/data-analysis/consumption-behavior/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>13k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>24 分钟</span>
+            </span>
+            <div class="post-description">电商平台每天都会产生大量的用户购买商品的消费行为数据。通过分析这些数据，我们可以了解电商的运营情况，用户的消费规律等信息。有了这些信息，我们可以完善平台建设，预测用户的消费行为，从而提高用户体验。这个案例将综合使用我们数据分析的各种模块。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>电商平台每天都会产生大量的用户购买商品的消费行为数据。通过分析这些数据，我们可以了解电商的运营情况，用户的消费规律等信息。有了这些信息，我们可以完善平台建设，预测用户的消费行为，从而提高用户体验。</p>
+<p>首先导入数据分析三剑客模块：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">from</span> pandas <span class="keyword">import</span> Series, DataFrame</span><br></pre></td></tr></table></figure>
+
+<h2 id="数据类型处理"><a href="#数据类型处理" class="headerlink" title="数据类型处理"></a>数据类型处理</h2><h3 id="数据加载"><a href="#数据加载" class="headerlink" title="数据加载"></a>数据加载</h3><p>数据以文本形式保存在 <code>CDNOW_master.txt</code> 中，其中每一列的字段名称及含义为：</p>
+<ul>
+<li>user_id：用户 ID</li>
+<li>order_dt：购买日期</li>
+<li>order_product：购买产品的数量</li>
+<li>order_amount：购买金额</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">data = pd.read_csv(<span class="string">'CDNOW_master.txt'</span>, header=<span class="literal">None</span>, sep=<span class="string">'\s+'</span>, names=[<span class="string">'user_id'</span>, <span class="string">'order_dt'</span>, <span class="string">'order_product'</span>, <span class="string">'order_amount'</span>])</span><br><span class="line">data.head()</span><br></pre></td></tr></table></figure>
+
+<p>要注意，这里面的数据之间以不同数目的空格分隔，所以 sep 不能写死了，而是要写成正则。另外，因为没有表头，所以要设置 header 为 None。</p>
+<p>生成的数据前五行为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">	user_id	order_dt	order_product	order_amount</span><br><span class="line"><span class="number">0</span>	<span class="number">1</span>	<span class="number">19970101</span>	<span class="number">1</span>	<span class="number">11.77</span></span><br><span class="line"><span class="number">1</span>	<span class="number">2</span>	<span class="number">19970112</span>	<span class="number">1</span>	<span class="number">12.00</span></span><br><span class="line"><span class="number">2</span>	<span class="number">2</span>	<span class="number">19970112</span>	<span class="number">5</span>	<span class="number">77.00</span></span><br><span class="line"><span class="number">3</span>	<span class="number">3</span>	<span class="number">19970102</span>	<span class="number">2</span>	<span class="number">20.76</span></span><br><span class="line"><span class="number">4</span>	<span class="number">3</span>	<span class="number">19970330</span>	<span class="number">2</span>	<span class="number">20.76</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="观察数据"><a href="#观察数据" class="headerlink" title="观察数据"></a>观察数据</h3><p>查看数据的数据类型，并查看数据中是否存储在缺失值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data.info()</span><br></pre></td></tr></table></figure>
+
+<p>数据全都为数值（整数或浮点数），且没有缺失数据：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">pandas</span>.<span class="title">core</span>.<span class="title">frame</span>.<span class="title">DataFrame</span>'&gt;</span></span><br><span class="line"><span class="class"><span class="title">RangeIndex</span>:</span> <span class="number">69659</span> entries, <span class="number">0</span> to <span class="number">69658</span></span><br><span class="line">Data columns (total <span class="number">4</span> columns):</span><br><span class="line">user_id          <span class="number">69659</span> non-null int64</span><br><span class="line">order_dt         <span class="number">69659</span> non-null int64</span><br><span class="line">order_product    <span class="number">69659</span> non-null int64</span><br><span class="line">order_amount     <span class="number">69659</span> non-null float64</span><br><span class="line">dtypes: float64(<span class="number">1</span>), int64(<span class="number">3</span>)</span><br><span class="line">memory usage: <span class="number">2.1</span> MB</span><br></pre></td></tr></table></figure>
+
+<p>将 order_dt 转换成时间类型：</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">data</span>['order_dt'] = pd.to_datetime(<span class="title">data</span>['<span class="title">order_dt'</span>], <span class="title">format</span>='%<span class="type">Y</span>%<span class="title">m</span>%<span class="title">d'</span>)</span></span><br><span class="line"><span class="class"><span class="keyword">data</span>.head()</span></span><br></pre></td></tr></table></figure>
+
+<p>to_datetime 转换的时间显示格式会到毫秒，我们只需要精确到天即可，format 就是用来指定输出的格式的：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">	user_id	order_dt	order_product	order_amount</span><br><span class="line"><span class="number">0</span>	<span class="number">1</span>	<span class="number">1997</span><span class="number">-01</span><span class="number">-01</span>	<span class="number">1</span>	<span class="number">11.77</span></span><br><span class="line"><span class="number">1</span>	<span class="number">2</span>	<span class="number">1997</span><span class="number">-01</span><span class="number">-12</span>	<span class="number">1</span>	<span class="number">12.00</span></span><br><span class="line"><span class="number">2</span>	<span class="number">2</span>	<span class="number">1997</span><span class="number">-01</span><span class="number">-12</span>	<span class="number">5</span>	<span class="number">77.00</span></span><br><span class="line"><span class="number">3</span>	<span class="number">3</span>	<span class="number">1997</span><span class="number">-01</span><span class="number">-02</span>	<span class="number">2</span>	<span class="number">20.76</span></span><br><span class="line"><span class="number">4</span>	<span class="number">3</span>	<span class="number">1997</span><span class="number">-03</span><span class="number">-30</span>	<span class="number">2</span>	<span class="number">20.76</span></span><br></pre></td></tr></table></figure>
+
+<p>查看 data 的信息：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data.info()</span><br></pre></td></tr></table></figure>
+
+<p>order_dt 列已经成了时间类型：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">pandas</span>.<span class="title">core</span>.<span class="title">frame</span>.<span class="title">DataFrame</span>'&gt;</span></span><br><span class="line"><span class="class"><span class="title">RangeIndex</span>:</span> <span class="number">69659</span> entries, <span class="number">0</span> to <span class="number">69658</span></span><br><span class="line">Data columns (total <span class="number">4</span> columns):</span><br><span class="line">user_id          <span class="number">69659</span> non-null int64</span><br><span class="line">order_dt         <span class="number">69659</span> non-null datetime64[ns]</span><br><span class="line">order_product    <span class="number">69659</span> non-null int64</span><br><span class="line">order_amount     <span class="number">69659</span> non-null float64</span><br><span class="line">dtypes: datetime64[ns](<span class="number">1</span>), float64(<span class="number">1</span>), int64(<span class="number">2</span>)</span><br><span class="line">memory usage: <span class="number">2.1</span> MB</span><br></pre></td></tr></table></figure>
+
+<p>查看数据的统计描述</p>
+<ul>
+<li>计算所有用户购买商品的平均数量</li>
+<li>计算所有用户购买商品的平均花费</li>
+</ul>
+<p>只需要使用 describe 方法，即可查看这些常用的统计信息：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data.describe()</span><br></pre></td></tr></table></figure>
+
+<p>相应的统计信息为，平均数量为 2.41，平均花费为 35.89：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">	user_id	order_product	order_amount</span><br><span class="line">count	<span class="number">69659.000000</span>	<span class="number">69659.000000</span>	<span class="number">69659.000000</span></span><br><span class="line">mean	<span class="number">11470.854592</span>	<span class="number">2.410040</span>	<span class="number">35.893648</span></span><br><span class="line">std	<span class="number">6819.904848</span>	<span class="number">2.333924</span>	<span class="number">36.281942</span></span><br><span class="line">min	<span class="number">1.000000</span>	<span class="number">1.000000</span>	<span class="number">0.000000</span></span><br><span class="line"><span class="number">25</span>%	<span class="number">5506.000000</span>	<span class="number">1.000000</span>	<span class="number">14.490000</span></span><br><span class="line"><span class="number">50</span>%	<span class="number">11410.000000</span>	<span class="number">2.000000</span>	<span class="number">25.980000</span></span><br><span class="line"><span class="number">75</span>%	<span class="number">17273.000000</span>	<span class="number">3.000000</span>	<span class="number">43.700000</span></span><br><span class="line">max	<span class="number">23570.000000</span>	<span class="number">99.000000</span>	<span class="number">1286.010000</span></span><br></pre></td></tr></table></figure>
+
+<p>在源数据中添加一列表示月份，可以通过 <code>astype(&#39;datetime64[M]&#39;)</code> 方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">data[<span class="string">'order_month'</span>] = data[<span class="string">'order_dt'</span>].values.astype(<span class="string">'datetime64[M]'</span>)</span><br><span class="line">data.head()</span><br></pre></td></tr></table></figure>
+
+<p>values 不一定需要，但是不加的话有可能会报错。</p>
+<p>新的数据前五行为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">	user_id	order_dt	order_product	order_amount	order_month</span><br><span class="line"><span class="number">0</span>	<span class="number">1</span>	<span class="number">1997</span><span class="number">-01</span><span class="number">-01</span>	<span class="number">1</span>	<span class="number">11.77</span>	<span class="number">1997</span><span class="number">-01</span><span class="number">-01</span></span><br><span class="line"><span class="number">1</span>	<span class="number">2</span>	<span class="number">1997</span><span class="number">-01</span><span class="number">-12</span>	<span class="number">1</span>	<span class="number">12.00</span>	<span class="number">1997</span><span class="number">-01</span><span class="number">-01</span></span><br><span class="line"><span class="number">2</span>	<span class="number">2</span>	<span class="number">1997</span><span class="number">-01</span><span class="number">-12</span>	<span class="number">5</span>	<span class="number">77.00</span>	<span class="number">1997</span><span class="number">-01</span><span class="number">-01</span></span><br><span class="line"><span class="number">3</span>	<span class="number">3</span>	<span class="number">1997</span><span class="number">-01</span><span class="number">-02</span>	<span class="number">2</span>	<span class="number">20.76</span>	<span class="number">1997</span><span class="number">-01</span><span class="number">-01</span></span><br><span class="line"><span class="number">4</span>	<span class="number">3</span>	<span class="number">1997</span><span class="number">-03</span><span class="number">-30</span>	<span class="number">2</span>	<span class="number">20.76</span>	<span class="number">1997</span><span class="number">-03</span><span class="number">-01</span></span><br></pre></td></tr></table></figure>
+
+<p>虽然月份的数据后面都跟了个 1 号，但不影响后续的计算。</p>
+<h2 id="按月数据分析"><a href="#按月数据分析" class="headerlink" title="按月数据分析"></a>按月数据分析</h2><p>所有用户每月花费的总金额，绘制曲线图展示</p>
+<p>首先拿到数据，只需要对月份进行分组，然后就可得到每月所有用户的总花费了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data.groupby(<span class="string">'order_month'</span>)[<span class="string">'order_amount'</span>].sum()</span><br></pre></td></tr></table></figure>
+
+<p>数据如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">order_month</span><br><span class="line"><span class="number">1997</span><span class="number">-01</span><span class="number">-01</span>    <span class="number">299060.17</span></span><br><span class="line"><span class="number">1997</span><span class="number">-02</span><span class="number">-01</span>    <span class="number">379590.03</span></span><br><span class="line"><span class="number">1997</span><span class="number">-03</span><span class="number">-01</span>    <span class="number">393155.27</span></span><br><span class="line"><span class="number">1997</span><span class="number">-04</span><span class="number">-01</span>    <span class="number">142824.49</span></span><br><span class="line"><span class="number">1997</span><span class="number">-05</span><span class="number">-01</span>    <span class="number">107933.30</span></span><br><span class="line"><span class="number">1997</span><span class="number">-06</span><span class="number">-01</span>    <span class="number">108395.87</span></span><br><span class="line"><span class="number">1997</span><span class="number">-07</span><span class="number">-01</span>    <span class="number">122078.88</span></span><br><span class="line"><span class="number">1997</span><span class="number">-08</span><span class="number">-01</span>     <span class="number">88367.69</span></span><br><span class="line"><span class="number">1997</span><span class="number">-09</span><span class="number">-01</span>     <span class="number">81948.80</span></span><br><span class="line"><span class="number">1997</span><span class="number">-10</span><span class="number">-01</span>     <span class="number">89780.77</span></span><br><span class="line"><span class="number">1997</span><span class="number">-11</span><span class="number">-01</span>    <span class="number">115448.64</span></span><br><span class="line"><span class="number">1997</span><span class="number">-12</span><span class="number">-01</span>     <span class="number">95577.35</span></span><br><span class="line"><span class="number">1998</span><span class="number">-01</span><span class="number">-01</span>     <span class="number">76756.78</span></span><br><span class="line"><span class="number">1998</span><span class="number">-02</span><span class="number">-01</span>     <span class="number">77096.96</span></span><br><span class="line"><span class="number">1998</span><span class="number">-03</span><span class="number">-01</span>    <span class="number">108970.15</span></span><br><span class="line"><span class="number">1998</span><span class="number">-04</span><span class="number">-01</span>     <span class="number">66231.52</span></span><br><span class="line"><span class="number">1998</span><span class="number">-05</span><span class="number">-01</span>     <span class="number">70989.66</span></span><br><span class="line"><span class="number">1998</span><span class="number">-06</span><span class="number">-01</span>     <span class="number">76109.30</span></span><br><span class="line">Name: order_amount, dtype: float64</span><br></pre></td></tr></table></figure>
+
+<p>我们可以直接使用 Pandas 绘制线型图：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data.groupby(<span class="string">'order_month'</span>)[<span class="string">'order_amount'</span>].sum().plot()</span><br></pre></td></tr></table></figure>
+
+<p>绘制出了图像：</p>
+
+
+<p>我们也可以通过 Matplotlib 绘制图像：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">plt.figure(figsize=(<span class="number">8</span>, <span class="number">8</span>))</span><br><span class="line">plt.plot(data.groupby(<span class="string">'order_month'</span>)[<span class="string">'order_amount'</span>].sum())</span><br><span class="line">plt.xlabel(<span class="string">'order_month'</span>)</span><br><span class="line">plt.ylabel(<span class="string">'order_amount'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>图像为：</p>
+
+
+<p>从图像中可以看出，1997 年 1 到 3 月是这个电商平台的巅峰时期。但是貌似经营不善，或者因为前期有很大补贴，后期补贴减少优惠力度降低，1997 年 3 月以后，用户的消费行为急剧下降，最后稳定在一个水平上下。</p>
+<p>所有用户每月的产品购买量，计算方法跟花费总金额是相似的，只是要计算的是商品数量了而已：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">plt.figure(figsize=(<span class="number">8</span>, <span class="number">8</span>))</span><br><span class="line">plt.plot(data.groupby(<span class="string">'order_month'</span>)[<span class="string">'order_product'</span>].sum())</span><br><span class="line">plt.xlabel(<span class="string">'order_month'</span>)</span><br><span class="line">plt.ylabel(<span class="string">'order_product'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>图形和总金额的十分相似：</p>
+
+
+<p>所有用户每月的消费总次数。每一条数据即为一次消费，只需查询每月有多少条数据即可：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data.groupby(<span class="string">'order_month'</span>)[<span class="string">'user_id'</span>].count()</span><br></pre></td></tr></table></figure>
+
+<p>得到的数据为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">order_month</span><br><span class="line"><span class="number">1997</span><span class="number">-01</span><span class="number">-01</span>     <span class="number">8928</span></span><br><span class="line"><span class="number">1997</span><span class="number">-02</span><span class="number">-01</span>    <span class="number">11272</span></span><br><span class="line"><span class="number">1997</span><span class="number">-03</span><span class="number">-01</span>    <span class="number">11598</span></span><br><span class="line"><span class="number">1997</span><span class="number">-04</span><span class="number">-01</span>     <span class="number">3781</span></span><br><span class="line"><span class="number">1997</span><span class="number">-05</span><span class="number">-01</span>     <span class="number">2895</span></span><br><span class="line"><span class="number">1997</span><span class="number">-06</span><span class="number">-01</span>     <span class="number">3054</span></span><br><span class="line"><span class="number">1997</span><span class="number">-07</span><span class="number">-01</span>     <span class="number">2942</span></span><br><span class="line"><span class="number">1997</span><span class="number">-08</span><span class="number">-01</span>     <span class="number">2320</span></span><br><span class="line"><span class="number">1997</span><span class="number">-09</span><span class="number">-01</span>     <span class="number">2296</span></span><br><span class="line"><span class="number">1997</span><span class="number">-10</span><span class="number">-01</span>     <span class="number">2562</span></span><br><span class="line"><span class="number">1997</span><span class="number">-11</span><span class="number">-01</span>     <span class="number">2750</span></span><br><span class="line"><span class="number">1997</span><span class="number">-12</span><span class="number">-01</span>     <span class="number">2504</span></span><br><span class="line"><span class="number">1998</span><span class="number">-01</span><span class="number">-01</span>     <span class="number">2032</span></span><br><span class="line"><span class="number">1998</span><span class="number">-02</span><span class="number">-01</span>     <span class="number">2026</span></span><br><span class="line"><span class="number">1998</span><span class="number">-03</span><span class="number">-01</span>     <span class="number">2793</span></span><br><span class="line"><span class="number">1998</span><span class="number">-04</span><span class="number">-01</span>     <span class="number">1878</span></span><br><span class="line"><span class="number">1998</span><span class="number">-05</span><span class="number">-01</span>     <span class="number">1985</span></span><br><span class="line"><span class="number">1998</span><span class="number">-06</span><span class="number">-01</span>     <span class="number">2043</span></span><br><span class="line">Name: user_id, dtype: int64</span><br></pre></td></tr></table></figure>
+
+<p>统计每月的消费人数。这个注意不能用消费时间统计，因为存在某个用户当天多次消费的情况。我们需要统计每个月有多少个独立的用户购买了商品：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data.groupby(<span class="string">'order_month'</span>)[<span class="string">'user_id'</span>].nunique()</span><br></pre></td></tr></table></figure>
+
+<p>每月消费人数的数据为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">order_month</span><br><span class="line"><span class="number">1997</span><span class="number">-01</span><span class="number">-01</span>    <span class="number">7846</span></span><br><span class="line"><span class="number">1997</span><span class="number">-02</span><span class="number">-01</span>    <span class="number">9633</span></span><br><span class="line"><span class="number">1997</span><span class="number">-03</span><span class="number">-01</span>    <span class="number">9524</span></span><br><span class="line"><span class="number">1997</span><span class="number">-04</span><span class="number">-01</span>    <span class="number">2822</span></span><br><span class="line"><span class="number">1997</span><span class="number">-05</span><span class="number">-01</span>    <span class="number">2214</span></span><br><span class="line"><span class="number">1997</span><span class="number">-06</span><span class="number">-01</span>    <span class="number">2339</span></span><br><span class="line"><span class="number">1997</span><span class="number">-07</span><span class="number">-01</span>    <span class="number">2180</span></span><br><span class="line"><span class="number">1997</span><span class="number">-08</span><span class="number">-01</span>    <span class="number">1772</span></span><br><span class="line"><span class="number">1997</span><span class="number">-09</span><span class="number">-01</span>    <span class="number">1739</span></span><br><span class="line"><span class="number">1997</span><span class="number">-10</span><span class="number">-01</span>    <span class="number">1839</span></span><br><span class="line"><span class="number">1997</span><span class="number">-11</span><span class="number">-01</span>    <span class="number">2028</span></span><br><span class="line"><span class="number">1997</span><span class="number">-12</span><span class="number">-01</span>    <span class="number">1864</span></span><br><span class="line"><span class="number">1998</span><span class="number">-01</span><span class="number">-01</span>    <span class="number">1537</span></span><br><span class="line"><span class="number">1998</span><span class="number">-02</span><span class="number">-01</span>    <span class="number">1551</span></span><br><span class="line"><span class="number">1998</span><span class="number">-03</span><span class="number">-01</span>    <span class="number">2060</span></span><br><span class="line"><span class="number">1998</span><span class="number">-04</span><span class="number">-01</span>    <span class="number">1437</span></span><br><span class="line"><span class="number">1998</span><span class="number">-05</span><span class="number">-01</span>    <span class="number">1488</span></span><br><span class="line"><span class="number">1998</span><span class="number">-06</span><span class="number">-01</span>    <span class="number">1506</span></span><br><span class="line">Name: user_id, dtype: int64</span><br></pre></td></tr></table></figure>
+
+<h2 id="用户个体消费数据分析"><a href="#用户个体消费数据分析" class="headerlink" title="用户个体消费数据分析"></a>用户个体消费数据分析</h2><p>所有用户消费总金额和消费总购买量的统计描述：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">data[<span class="string">'order_amount'</span>].sum()    <span class="comment"># 2500315.6300000004 消费总金额</span></span><br><span class="line">data[<span class="string">'order_product'</span>].sum()    <span class="comment"># 167881 总购买量</span></span><br></pre></td></tr></table></figure>
+
+<p>各个用户消费金额和消费产品数量的散点图：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">user_total = data.groupby(<span class="string">'user_id'</span>).sum()</span><br><span class="line">plt.figure(figsize=(<span class="number">8</span>, <span class="number">8</span>))</span><br><span class="line">plt.scatter(user_total[<span class="string">'order_product'</span>], user_total[<span class="string">'order_amount'</span>])</span><br><span class="line">plt.xlabel(<span class="string">'product'</span>)</span><br><span class="line">plt.ylabel(<span class="string">'amount'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>画出来的散点图为：</p>
+
+
+<p>各个用户消费总金额的直方分布图（消费金额在 1000 之内的分布）：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">plt.hist(data.groupby(<span class="string">'user_id'</span>).sum().query(<span class="string">'order_amount &lt;= 1000'</span>)[<span class="string">'order_amount'</span>], bins=<span class="number">50</span>)</span><br></pre></td></tr></table></figure>
+
+<p>画出的直方图为：</p>
+
+
+<p>各个用户消费的总数量的直方分布图（消费商品的数量在 100 次之内的分布）：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">plt.hist(data.groupby(<span class="string">'user_id'</span>).sum().query(<span class="string">'order_product &lt;= 100'</span>)[<span class="string">'order_product'</span>], bins=<span class="number">30</span>)</span><br></pre></td></tr></table></figure>
+
+<p>画出来的直方图为：</p>
+
+
+<h2 id="用户消费行为分析"><a href="#用户消费行为分析" class="headerlink" title="用户消费行为分析"></a>用户消费行为分析</h2><h3 id="用户消费时间统计"><a href="#用户消费时间统计" class="headerlink" title="用户消费时间统计"></a>用户消费时间统计</h3><p>用户第一次消费的月份分布，和人数统计，绘制线形图。</p>
+<p>用户第一次消费的时间是该用户消费时间的最小值，因为可能很多用户都会在同一个月份买东西，可以通过 unique 去重：</p>
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">data</span>.groupby('<span class="title">user_id'</span>)['order_month'].min().unique()</span></span><br></pre></td></tr></table></figure>
+
+<p>就得到了消费的月份：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">array([<span class="string">'1997-01-01T00:00:00.000000000'</span>, <span class="string">'1997-02-01T00:00:00.000000000'</span>,</span><br><span class="line">       <span class="string">'1997-03-01T00:00:00.000000000'</span>], dtype=<span class="string">'datetime64[ns]'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>我们也可以统计每月第一次购买的人数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data.groupby(<span class="string">'user_id'</span>)[<span class="string">'order_month'</span>].min().value_counts()</span><br></pre></td></tr></table></figure>
+
+<p>每月第一次购买的人数数据为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1997</span><span class="number">-02</span><span class="number">-01</span>    <span class="number">8476</span></span><br><span class="line"><span class="number">1997</span><span class="number">-01</span><span class="number">-01</span>    <span class="number">7846</span></span><br><span class="line"><span class="number">1997</span><span class="number">-03</span><span class="number">-01</span>    <span class="number">7248</span></span><br><span class="line">Name: order_month, dtype: int64</span><br></pre></td></tr></table></figure>
+
+<p>可以画出线形图：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data.groupby(<span class="string">'user_id'</span>)[<span class="string">'order_month'</span>].min().value_counts().plot()</span><br></pre></td></tr></table></figure>
+
+<p>图像就是这样的：</p>
+
+
+<p>用户最后一次消费的时间分布，和人数统计，并绘制线形图。</p>
+<p>这个跟第一次的数据很相似了，只需要把时间的最小值换成最大值即可。</p>
+<p>首先看最后一次消费的时间分布：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data.groupby(<span class="string">'user_id'</span>)[<span class="string">'order_month'</span>].max().unique()</span><br></pre></td></tr></table></figure>
+
+<p>用户最后一次购买的时间分布就很分散了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">array([<span class="string">'1997-01-01T00:00:00.000000000'</span>, <span class="string">'1998-05-01T00:00:00.000000000'</span>,</span><br><span class="line">       <span class="string">'1997-12-01T00:00:00.000000000'</span>, <span class="string">'1998-01-01T00:00:00.000000000'</span>,</span><br><span class="line">       <span class="string">'1998-03-01T00:00:00.000000000'</span>, <span class="string">'1998-06-01T00:00:00.000000000'</span>,</span><br><span class="line">       <span class="string">'1998-02-01T00:00:00.000000000'</span>, <span class="string">'1997-09-01T00:00:00.000000000'</span>,</span><br><span class="line">       <span class="string">'1997-06-01T00:00:00.000000000'</span>, <span class="string">'1997-03-01T00:00:00.000000000'</span>,</span><br><span class="line">       <span class="string">'1998-04-01T00:00:00.000000000'</span>, <span class="string">'1997-02-01T00:00:00.000000000'</span>,</span><br><span class="line">       <span class="string">'1997-11-01T00:00:00.000000000'</span>, <span class="string">'1997-10-01T00:00:00.000000000'</span>,</span><br><span class="line">       <span class="string">'1997-04-01T00:00:00.000000000'</span>, <span class="string">'1997-05-01T00:00:00.000000000'</span>,</span><br><span class="line">       <span class="string">'1997-08-01T00:00:00.000000000'</span>, <span class="string">'1997-07-01T00:00:00.000000000'</span>],</span><br><span class="line">      dtype=<span class="string">'datetime64[ns]'</span>)</span><br></pre></td></tr></table></figure>
+
+<p>类似地，我们也可以求出每月最后一次消费的用户数目：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data.groupby(<span class="string">'user_id'</span>)[<span class="string">'order_month'</span>].max().value_counts()</span><br></pre></td></tr></table></figure>
+
+<p>每个月份，最后一次购买的用户数目为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1997</span><span class="number">-02</span><span class="number">-01</span>    <span class="number">4912</span></span><br><span class="line"><span class="number">1997</span><span class="number">-03</span><span class="number">-01</span>    <span class="number">4478</span></span><br><span class="line"><span class="number">1997</span><span class="number">-01</span><span class="number">-01</span>    <span class="number">4192</span></span><br><span class="line"><span class="number">1998</span><span class="number">-06</span><span class="number">-01</span>    <span class="number">1506</span></span><br><span class="line"><span class="number">1998</span><span class="number">-05</span><span class="number">-01</span>    <span class="number">1042</span></span><br><span class="line"><span class="number">1998</span><span class="number">-03</span><span class="number">-01</span>     <span class="number">993</span></span><br><span class="line"><span class="number">1998</span><span class="number">-04</span><span class="number">-01</span>     <span class="number">769</span></span><br><span class="line"><span class="number">1997</span><span class="number">-04</span><span class="number">-01</span>     <span class="number">677</span></span><br><span class="line"><span class="number">1997</span><span class="number">-12</span><span class="number">-01</span>     <span class="number">620</span></span><br><span class="line"><span class="number">1997</span><span class="number">-11</span><span class="number">-01</span>     <span class="number">609</span></span><br><span class="line"><span class="number">1998</span><span class="number">-02</span><span class="number">-01</span>     <span class="number">550</span></span><br><span class="line"><span class="number">1998</span><span class="number">-01</span><span class="number">-01</span>     <span class="number">514</span></span><br><span class="line"><span class="number">1997</span><span class="number">-06</span><span class="number">-01</span>     <span class="number">499</span></span><br><span class="line"><span class="number">1997</span><span class="number">-07</span><span class="number">-01</span>     <span class="number">493</span></span><br><span class="line"><span class="number">1997</span><span class="number">-05</span><span class="number">-01</span>     <span class="number">480</span></span><br><span class="line"><span class="number">1997</span><span class="number">-10</span><span class="number">-01</span>     <span class="number">455</span></span><br><span class="line"><span class="number">1997</span><span class="number">-09</span><span class="number">-01</span>     <span class="number">397</span></span><br><span class="line"><span class="number">1997</span><span class="number">-08</span><span class="number">-01</span>     <span class="number">384</span></span><br><span class="line">Name: order_month, dtype: int64</span><br></pre></td></tr></table></figure>
+
+<p>我们也可以画出线形图：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data.groupby(<span class="string">'user_id'</span>)[<span class="string">'order_month'</span>].max().value_counts().plot()</span><br></pre></td></tr></table></figure>
+
+<p>线形图为：</p>
+
+
+<h3 id="新老客户的占比"><a href="#新老客户的占比" class="headerlink" title="新老客户的占比"></a>新老客户的占比</h3><p>我们认为，仅消费一次的用户为新用户，消费多次的用户为老用户</p>
+<p>分析出每一个用户的第一个消费和最后一次消费的时间。</p>
+<p>我们可以通过 <code>agg([&#39;func1&#39;,&#39;func2&#39;])</code> 方法对分组后的结果进行指定多种形式的聚合：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">first_last_dt = data.groupby(<span class="string">'user_id'</span>)[<span class="string">'order_dt'</span>].agg([<span class="string">'min'</span>, <span class="string">'max'</span>])</span><br><span class="line">first_last_dt.head()</span><br></pre></td></tr></table></figure>
+
+<p>用户首次和最后一次消费的时间数据前五条为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">	min	max</span><br><span class="line">user_id		</span><br><span class="line"><span class="number">1</span>	<span class="number">1997</span><span class="number">-01</span><span class="number">-01</span>	<span class="number">1997</span><span class="number">-01</span><span class="number">-01</span></span><br><span class="line"><span class="number">2</span>	<span class="number">1997</span><span class="number">-01</span><span class="number">-12</span>	<span class="number">1997</span><span class="number">-01</span><span class="number">-12</span></span><br><span class="line"><span class="number">3</span>	<span class="number">1997</span><span class="number">-01</span><span class="number">-02</span>	<span class="number">1998</span><span class="number">-05</span><span class="number">-28</span></span><br><span class="line"><span class="number">4</span>	<span class="number">1997</span><span class="number">-01</span><span class="number">-01</span>	<span class="number">1997</span><span class="number">-12</span><span class="number">-12</span></span><br><span class="line"><span class="number">5</span>	<span class="number">1997</span><span class="number">-01</span><span class="number">-01</span>	<span class="number">1998</span><span class="number">-01</span><span class="number">-03</span></span><br></pre></td></tr></table></figure>
+
+<p>分析出新老客户的消费比例。</p>
+<p>如果该用户第一次消费的时间等于最后一次消费的时间，说明他只消费了一次，我们就认为他是新用户；如果用户第一次消费的时间不等于最后一次消费的时间，则说明他消费了多次，我们认为他是老用户。根据这个性质，我们就可以计算出新用户和老用户的数量，进而计算出新老客户的比例了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(first_last_dt[<span class="string">'min'</span>] == first_last_dt[<span class="string">'max'</span>]).value_counts()</span><br></pre></td></tr></table></figure>
+
+<p>根据刚刚的分析，结果中 True 的数目为新用户的数目，False 的数目为老用户的数目：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="literal">True</span>     <span class="number">12054</span></span><br><span class="line"><span class="literal">False</span>    <span class="number">11516</span></span><br><span class="line">dtype: int64</span><br></pre></td></tr></table></figure>
+
+<p>比例也就一目了然。</p>
+<h3 id="用户分层"><a href="#用户分层" class="headerlink" title="用户分层"></a>用户分层</h3><p>分析得出每个用户的总购买量和总消费金额以及最近一次消费的时间的表格 rfm</p>
+<p>RFM 模型设计：</p>
+<ul>
+<li>R 表示客户最近一次交易时间的间隔。<ul>
+<li><code>/ np.timedelta64(1, &#39;D&#39;)</code>：去除时间单位 days</li>
+</ul>
+</li>
+<li>F 表示客户购买商品的总数量。F 值越大，表示客户交易越频繁，反之则表示客户交易不够活跃。</li>
+<li>M 表示客户交易的金额。M 值越大，表示客户价值越高，反之则表示客户价值越低。</li>
+<li>将 R，F，M 作用到 rfm 表中</li>
+</ul>
+<p>总数量和总金额很容易计算到。因为数据比较简单，除了 user_id，只有商品数量和消费金额是数值型数据，所以得到的结果我们甚至不需要索引取列：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rfm = data.groupby(<span class="string">'user_id'</span>).sum()</span><br><span class="line">rfm.head()</span><br></pre></td></tr></table></figure>
+
+<p>直接拿到每个用户购买商品总数目和交易总金额：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">	order_product	order_amount</span><br><span class="line">user_id		</span><br><span class="line"><span class="number">1</span>	<span class="number">1</span>	<span class="number">11.77</span></span><br><span class="line"><span class="number">2</span>	<span class="number">6</span>	<span class="number">89.00</span></span><br><span class="line"><span class="number">3</span>	<span class="number">16</span>	<span class="number">156.46</span></span><br><span class="line"><span class="number">4</span>	<span class="number">7</span>	<span class="number">100.50</span></span><br><span class="line"><span class="number">5</span>	<span class="number">29</span>	<span class="number">385.61</span></span><br></pre></td></tr></table></figure>
+
+<p>至于最近一次时间间隔，我们可以通过所有数据中的最有一次交易减去每个人的最后一次交易时间得到，而每个人的最后一次交易时间，可以通过他的所有交易时间的最大值获取：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rfm[<span class="string">'order_dt'</span>] = (data[<span class="string">'order_dt'</span>].max() - data.groupby(<span class="string">'user_id'</span>)[<span class="string">'order_dt'</span>].max()) / np.timedelta64(<span class="number">1</span>, <span class="string">'D'</span>)</span><br><span class="line">rfm.head()</span><br></pre></td></tr></table></figure>
+
+<p>rmf 数据为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">	order_product	order_amount	order_dt</span><br><span class="line">user_id			</span><br><span class="line"><span class="number">1</span>	<span class="number">1</span>	<span class="number">11.77</span>	<span class="number">545.0</span></span><br><span class="line"><span class="number">2</span>	<span class="number">6</span>	<span class="number">89.00</span>	<span class="number">534.0</span></span><br><span class="line"><span class="number">3</span>	<span class="number">16</span>	<span class="number">156.46</span>	<span class="number">33.0</span></span><br><span class="line"><span class="number">4</span>	<span class="number">7</span>	<span class="number">100.50</span>	<span class="number">200.0</span></span><br><span class="line"><span class="number">5</span>	<span class="number">29</span>	<span class="number">385.61</span>	<span class="number">178.0</span></span><br></pre></td></tr></table></figure>
+
+<p>将列索引规范为 RFM：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rfm.columns = [<span class="string">'F'</span>, <span class="string">'M'</span>, <span class="string">'R'</span>]</span><br><span class="line">rfm.head()</span><br></pre></td></tr></table></figure>
+
+<p>规范的 RFM 数据前五行为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">	F	M	R</span><br><span class="line">user_id			</span><br><span class="line"><span class="number">1</span>	<span class="number">1</span>	<span class="number">11.77</span>	<span class="number">545.0</span></span><br><span class="line"><span class="number">2</span>	<span class="number">6</span>	<span class="number">89.00</span>	<span class="number">534.0</span></span><br><span class="line"><span class="number">3</span>	<span class="number">16</span>	<span class="number">156.46</span>	<span class="number">33.0</span></span><br><span class="line"><span class="number">4</span>	<span class="number">7</span>	<span class="number">100.50</span>	<span class="number">200.0</span></span><br><span class="line"><span class="number">5</span>	<span class="number">29</span>	<span class="number">385.61</span>	<span class="number">178.0</span></span><br></pre></td></tr></table></figure>
+
+<p>根据价值分层，可将用户分为如下几类：</p>
+<ul>
+<li>重要价值客户</li>
+<li>重要保持客户</li>
+<li>重要挽留客户</li>
+<li>重要发展客户</li>
+<li>一般价值客户</li>
+<li>一般保持客户</li>
+<li>一般挽留客户</li>
+<li>一般发展客户</li>
+</ul>
+<p>使用已有的分层模型即可通过 rfm_func 算法函数计算出客户价值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># rfm分层算法</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">rfm_func</span><span class="params">(x)</span>:</span>    <span class="comment"># -6.122656	-94.310426	177.778362 ==&gt;'0','0','1'</span></span><br><span class="line">    <span class="comment"># 存储存储的是三个字符串形式的0或者1</span></span><br><span class="line">    level = x.map(<span class="keyword">lambda</span> x :<span class="string">'1'</span> <span class="keyword">if</span> x &gt;= <span class="number">0</span> <span class="keyword">else</span> <span class="string">'0'</span>)</span><br><span class="line">    label = level[<span class="string">'R'</span>] + level.F + level.M    <span class="comment"># '100'</span></span><br><span class="line">    </span><br><span class="line">    d = &#123;</span><br><span class="line">        <span class="string">'111'</span>:<span class="string">'重要价值客户'</span>,</span><br><span class="line">        <span class="string">'011'</span>:<span class="string">'重要保持客户'</span>,</span><br><span class="line">        <span class="string">'101'</span>:<span class="string">'重要挽留客户'</span>,</span><br><span class="line">        <span class="string">'001'</span>:<span class="string">'重要发展客户'</span>,</span><br><span class="line">        <span class="string">'110'</span>:<span class="string">'一般价值客户'</span>,</span><br><span class="line">        <span class="string">'010'</span>:<span class="string">'一般保持客户'</span>,</span><br><span class="line">        <span class="string">'100'</span>:<span class="string">'一般挽留客户'</span>,</span><br><span class="line">        <span class="string">'000'</span>:<span class="string">'一般发展客户'</span></span><br><span class="line">    &#125;</span><br><span class="line">    result = d[label]    <span class="comment"># d['100']</span></span><br><span class="line">    <span class="comment"># result= '一般挽留客户'</span></span><br><span class="line">    <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+
+<p>只需要将我们 rfm 数据的每一层数据通过运算工具传递到 rmf 分层算法函数中，即可获得该层用户的价值，将价值整合到 rmf 数据中即可。在传递之前，还要给每一个数据减去该列的均值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rfm[<span class="string">'label'</span>] = rfm.apply(<span class="keyword">lambda</span> x: x - x.mean(), axis=<span class="number">0</span>).apply(rfm_func, axis=<span class="number">1</span>)</span><br><span class="line">rfm.head()</span><br></pre></td></tr></table></figure>
+
+<p>我们就得到了每个客户的价值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">	F	M	R	label</span><br><span class="line">user_id				</span><br><span class="line"><span class="number">1</span>	<span class="number">1</span>	<span class="number">11.77</span>	<span class="number">545.0</span>	一般挽留客户</span><br><span class="line"><span class="number">2</span>	<span class="number">6</span>	<span class="number">89.00</span>	<span class="number">534.0</span>	一般挽留客户</span><br><span class="line"><span class="number">3</span>	<span class="number">16</span>	<span class="number">156.46</span>	<span class="number">33.0</span>	重要保持客户</span><br><span class="line"><span class="number">4</span>	<span class="number">7</span>	<span class="number">100.50</span>	<span class="number">200.0</span>	一般发展客户</span><br><span class="line"><span class="number">5</span>	<span class="number">29</span>	<span class="number">385.61</span>	<span class="number">178.0</span>	重要保持客户</span><br></pre></td></tr></table></figure>
+
+<h2 id="用户的生命周期"><a href="#用户的生命周期" class="headerlink" title="用户的生命周期"></a>用户的生命周期</h2><p>用户的生命周期就是将用户划分为活跃用户和其他用户。</p>
+<p>统计每个用户在所有时间内的消费次数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data.pivot_table(index=<span class="string">'user_id'</span>, values=<span class="string">'order_dt'</span>, aggfunc=<span class="string">'count'</span>).head()</span><br></pre></td></tr></table></figure>
+
+<p>前五条数据为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">	order_dt</span><br><span class="line">user_id	</span><br><span class="line"><span class="number">1</span>	<span class="number">1</span></span><br><span class="line"><span class="number">2</span>	<span class="number">2</span></span><br><span class="line"><span class="number">3</span>	<span class="number">6</span></span><br><span class="line"><span class="number">4</span>	<span class="number">4</span></span><br><span class="line"><span class="number">5</span>	<span class="number">11</span></span><br></pre></td></tr></table></figure>
+
+<p>统计每个用户每个月的消费次数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">monthly_order = data.pivot_table(index=<span class="string">'user_id'</span>, values=<span class="string">'order_dt'</span>, aggfunc=<span class="string">'count'</span>, columns=<span class="string">'order_month'</span>, fill_value=<span class="number">0</span>)</span><br><span class="line">monthly_order.head()</span><br></pre></td></tr></table></figure>
+
+<p>得到的数据为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">order_month	<span class="number">1997</span><span class="number">-01</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>	<span class="number">1997</span><span class="number">-02</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>	<span class="number">1997</span><span class="number">-03</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>	<span class="number">1997</span><span class="number">-04</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>	<span class="number">1997</span><span class="number">-05</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>	<span class="number">1997</span><span class="number">-06</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>	<span class="number">1997</span><span class="number">-07</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>	<span class="number">1997</span><span class="number">-08</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>	<span class="number">1997</span><span class="number">-09</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>	<span class="number">1997</span><span class="number">-10</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>	<span class="number">1997</span><span class="number">-11</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>	<span class="number">1997</span><span class="number">-12</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>	<span class="number">1998</span><span class="number">-01</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>	<span class="number">1998</span><span class="number">-02</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>	<span class="number">1998</span><span class="number">-03</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>	<span class="number">1998</span><span class="number">-04</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>	<span class="number">1998</span><span class="number">-05</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>	<span class="number">1998</span><span class="number">-06</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span></span><br><span class="line">user_id																		</span><br><span class="line"><span class="number">1</span>	<span class="number">1</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span></span><br><span class="line"><span class="number">2</span>	<span class="number">2</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span></span><br><span class="line"><span class="number">3</span>	<span class="number">1</span>	<span class="number">0</span>	<span class="number">1</span>	<span class="number">1</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">2</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">1</span>	<span class="number">0</span></span><br><span class="line"><span class="number">4</span>	<span class="number">2</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">1</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">1</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span></span><br><span class="line"><span class="number">5</span>	<span class="number">2</span>	<span class="number">1</span>	<span class="number">0</span>	<span class="number">1</span>	<span class="number">1</span>	<span class="number">1</span>	<span class="number">1</span>	<span class="number">0</span>	<span class="number">1</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">2</span>	<span class="number">1</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<p>统计每个用户每个月是否消费，消费记录为 1 否则记录为 0。</p>
+<p>知识点：DataFrame 的 apply 和 applymap 的区别</p>
+<ul>
+<li>applymap：返回 df</li>
+<li>将函数做用于 DataFrame 中的所有元素（elements）</li>
+<li>apply：返回 Series</li>
+<li>apply() 将一个函数作用于 DataFrame 中的每个行或者列</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">purchase_status = monthly_order.applymap(<span class="keyword">lambda</span> x: int(bool(x)))</span><br><span class="line">purchase_status.head()</span><br></pre></td></tr></table></figure>
+
+<p>用户当月是否消费的数据为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">order_month	<span class="number">1997</span><span class="number">-01</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>	<span class="number">1997</span><span class="number">-02</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>	<span class="number">1997</span><span class="number">-03</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>	<span class="number">1997</span><span class="number">-04</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>	<span class="number">1997</span><span class="number">-05</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>	<span class="number">1997</span><span class="number">-06</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>	<span class="number">1997</span><span class="number">-07</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>	<span class="number">1997</span><span class="number">-08</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>	<span class="number">1997</span><span class="number">-09</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>	<span class="number">1997</span><span class="number">-10</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>	<span class="number">1997</span><span class="number">-11</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>	<span class="number">1997</span><span class="number">-12</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>	<span class="number">1998</span><span class="number">-01</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>	<span class="number">1998</span><span class="number">-02</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>	<span class="number">1998</span><span class="number">-03</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>	<span class="number">1998</span><span class="number">-04</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>	<span class="number">1998</span><span class="number">-05</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>	<span class="number">1998</span><span class="number">-06</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span></span><br><span class="line">user_id																		</span><br><span class="line"><span class="number">1</span>	<span class="number">1</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span></span><br><span class="line"><span class="number">2</span>	<span class="number">1</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span></span><br><span class="line"><span class="number">3</span>	<span class="number">1</span>	<span class="number">0</span>	<span class="number">1</span>	<span class="number">1</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">1</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">1</span>	<span class="number">0</span></span><br><span class="line"><span class="number">4</span>	<span class="number">1</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">1</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">1</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span></span><br><span class="line"><span class="number">5</span>	<span class="number">1</span>	<span class="number">1</span>	<span class="number">0</span>	<span class="number">1</span>	<span class="number">1</span>	<span class="number">1</span>	<span class="number">1</span>	<span class="number">0</span>	<span class="number">1</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">1</span>	<span class="number">1</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span>	<span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<p>将用户按照每一个月份分成：</p>
+<ul>
+<li>unreg：观望用户（前两月没买，第三个月才第一次买,则用户前两个月为观望用户）</li>
+<li>unactive：首月购买后，后序月份没有购买则在没有购买的月份中该用户的为非活跃用户</li>
+<li>new：当前月就进行首次购买的用户在当前月为新用户</li>
+<li>active：连续月份购买的用户在这些月中为活跃用户</li>
+<li>return：购买之后间隔 n 月再次购买的第一个月份为该月份的回头客</li>
+</ul>
+<p>我们可以使用用户的活跃度算法来计算该月份的用户状态：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 固定算法</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">active_status</span><span class="params">(data)</span>:</span>    <span class="comment"># purchase_status表中的一行数据（某一个用户在不同月份的消费行为）</span></span><br><span class="line">    status = []    <span class="comment"># 某个用户每一个月的活跃度</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">18</span>):</span><br><span class="line">        </span><br><span class="line">        <span class="comment"># 若本月没有消费</span></span><br><span class="line">        <span class="keyword">if</span> data[i] == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">if</span> len(status) &gt; <span class="number">0</span>:</span><br><span class="line">                <span class="keyword">if</span> status[i<span class="number">-1</span>] == <span class="string">'unreg'</span>:</span><br><span class="line">                    status.append(<span class="string">'unreg'</span>)</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    status.append(<span class="string">'unactive'</span>)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                status.append(<span class="string">'unreg'</span>)</span><br><span class="line">                    </span><br><span class="line">        <span class="comment"># 若本月消费</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">if</span> len(status) == <span class="number">0</span>:</span><br><span class="line">                status.append(<span class="string">'new'</span>)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">if</span> status[i<span class="number">-1</span>] == <span class="string">'unactive'</span>:</span><br><span class="line">                    status.append(<span class="string">'return'</span>)</span><br><span class="line">                <span class="keyword">elif</span> status[i<span class="number">-1</span>] == <span class="string">'unreg'</span>:</span><br><span class="line">                    status.append(<span class="string">'new'</span>)</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    status.append(<span class="string">'active'</span>)</span><br><span class="line">    <span class="keyword">return</span> status</span><br></pre></td></tr></table></figure>
+
+<p>将 <code>purchase_status</code> 中的原始数据 0 和 1 修改为 new，unactive……，返回新的 df 叫做 <code>new_purchase_status</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">new_purchase_status = purchase_status.apply(active_status, axis=<span class="number">1</span>)</span><br><span class="line">new_purchase_status.head()</span><br></pre></td></tr></table></figure>
+
+<p>我们就得到了用户的活跃状态数据：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">order_month	<span class="number">1997</span><span class="number">-01</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>	<span class="number">1997</span><span class="number">-02</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>	<span class="number">1997</span><span class="number">-03</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>	<span class="number">1997</span><span class="number">-04</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>	<span class="number">1997</span><span class="number">-05</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>	<span class="number">1997</span><span class="number">-06</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>	<span class="number">1997</span><span class="number">-07</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>	<span class="number">1997</span><span class="number">-08</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>	<span class="number">1997</span><span class="number">-09</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>	<span class="number">1997</span><span class="number">-10</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>	<span class="number">1997</span><span class="number">-11</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>	<span class="number">1997</span><span class="number">-12</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>	<span class="number">1998</span><span class="number">-01</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>	<span class="number">1998</span><span class="number">-02</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>	<span class="number">1998</span><span class="number">-03</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>	<span class="number">1998</span><span class="number">-04</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>	<span class="number">1998</span><span class="number">-05</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>	<span class="number">1998</span><span class="number">-06</span><span class="number">-01</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span></span><br><span class="line">user_id																		</span><br><span class="line"><span class="number">1</span>	new	unactive	unactive	unactive	unactive	unactive	unactive	unactive	unactive	unactive	unactive	unactive	unactive	unactive	unactive	unactive	unactive	unactive</span><br><span class="line"><span class="number">2</span>	new	unactive	unactive	unactive	unactive	unactive	unactive	unactive	unactive	unactive	unactive	unactive	unactive	unactive	unactive	unactive	unactive	unactive</span><br><span class="line"><span class="number">3</span>	new	unactive	<span class="keyword">return</span>	active	unactive	unactive	unactive	unactive	unactive	unactive	<span class="keyword">return</span>	unactive	unactive	unactive	unactive	unactive	<span class="keyword">return</span>	unactive</span><br><span class="line"><span class="number">4</span>	new	unactive	unactive	unactive	unactive	unactive	unactive	<span class="keyword">return</span>	unactive	unactive	unactive	<span class="keyword">return</span>	unactive	unactive	unactive	unactive	unactive	unactive</span><br><span class="line"><span class="number">5</span>	new	active	unactive	<span class="keyword">return</span>	active	active	active	unactive	<span class="keyword">return</span>	unactive	unactive	<span class="keyword">return</span>	active	unactive	unactive	unactive	unactive	unactive</span><br></pre></td></tr></table></figure>
+
+<p>每月【不同活跃】用户的计数，转置进行最终结果的查看：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">new_purchase_status.apply(<span class="keyword">lambda</span> x: x.value_counts(), axis=<span class="number">0</span>).fillna(<span class="number">0</span>).T</span><br></pre></td></tr></table></figure>
+
+<p>最终的每月用户活跃计数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">	active	new	<span class="keyword">return</span>	unactive	unreg</span><br><span class="line">order_month					</span><br><span class="line"><span class="number">1997</span><span class="number">-01</span><span class="number">-01</span>	<span class="number">0.0</span>	<span class="number">7846.0</span>	<span class="number">0.0</span>	<span class="number">0.0</span>	<span class="number">15724.0</span></span><br><span class="line"><span class="number">1997</span><span class="number">-02</span><span class="number">-01</span>	<span class="number">1157.0</span>	<span class="number">8476.0</span>	<span class="number">0.0</span>	<span class="number">6689.0</span>	<span class="number">7248.0</span></span><br><span class="line"><span class="number">1997</span><span class="number">-03</span><span class="number">-01</span>	<span class="number">1681.0</span>	<span class="number">7248.0</span>	<span class="number">595.0</span>	<span class="number">14046.0</span>	<span class="number">0.0</span></span><br><span class="line"><span class="number">1997</span><span class="number">-04</span><span class="number">-01</span>	<span class="number">1773.0</span>	<span class="number">0.0</span>	<span class="number">1049.0</span>	<span class="number">20748.0</span>	<span class="number">0.0</span></span><br><span class="line"><span class="number">1997</span><span class="number">-05</span><span class="number">-01</span>	<span class="number">852.0</span>	<span class="number">0.0</span>	<span class="number">1362.0</span>	<span class="number">21356.0</span>	<span class="number">0.0</span></span><br><span class="line"><span class="number">1997</span><span class="number">-06</span><span class="number">-01</span>	<span class="number">747.0</span>	<span class="number">0.0</span>	<span class="number">1592.0</span>	<span class="number">21231.0</span>	<span class="number">0.0</span></span><br><span class="line"><span class="number">1997</span><span class="number">-07</span><span class="number">-01</span>	<span class="number">746.0</span>	<span class="number">0.0</span>	<span class="number">1434.0</span>	<span class="number">21390.0</span>	<span class="number">0.0</span></span><br><span class="line"><span class="number">1997</span><span class="number">-08</span><span class="number">-01</span>	<span class="number">604.0</span>	<span class="number">0.0</span>	<span class="number">1168.0</span>	<span class="number">21798.0</span>	<span class="number">0.0</span></span><br><span class="line"><span class="number">1997</span><span class="number">-09</span><span class="number">-01</span>	<span class="number">528.0</span>	<span class="number">0.0</span>	<span class="number">1211.0</span>	<span class="number">21831.0</span>	<span class="number">0.0</span></span><br><span class="line"><span class="number">1997</span><span class="number">-10</span><span class="number">-01</span>	<span class="number">532.0</span>	<span class="number">0.0</span>	<span class="number">1307.0</span>	<span class="number">21731.0</span>	<span class="number">0.0</span></span><br><span class="line"><span class="number">1997</span><span class="number">-11</span><span class="number">-01</span>	<span class="number">624.0</span>	<span class="number">0.0</span>	<span class="number">1404.0</span>	<span class="number">21542.0</span>	<span class="number">0.0</span></span><br><span class="line"><span class="number">1997</span><span class="number">-12</span><span class="number">-01</span>	<span class="number">632.0</span>	<span class="number">0.0</span>	<span class="number">1232.0</span>	<span class="number">21706.0</span>	<span class="number">0.0</span></span><br><span class="line"><span class="number">1998</span><span class="number">-01</span><span class="number">-01</span>	<span class="number">512.0</span>	<span class="number">0.0</span>	<span class="number">1025.0</span>	<span class="number">22033.0</span>	<span class="number">0.0</span></span><br><span class="line"><span class="number">1998</span><span class="number">-02</span><span class="number">-01</span>	<span class="number">472.0</span>	<span class="number">0.0</span>	<span class="number">1079.0</span>	<span class="number">22019.0</span>	<span class="number">0.0</span></span><br><span class="line"><span class="number">1998</span><span class="number">-03</span><span class="number">-01</span>	<span class="number">571.0</span>	<span class="number">0.0</span>	<span class="number">1489.0</span>	<span class="number">21510.0</span>	<span class="number">0.0</span></span><br><span class="line"><span class="number">1998</span><span class="number">-04</span><span class="number">-01</span>	<span class="number">518.0</span>	<span class="number">0.0</span>	<span class="number">919.0</span>	<span class="number">22133.0</span>	<span class="number">0.0</span></span><br><span class="line"><span class="number">1998</span><span class="number">-05</span><span class="number">-01</span>	<span class="number">459.0</span>	<span class="number">0.0</span>	<span class="number">1029.0</span>	<span class="number">22082.0</span>	<span class="number">0.0</span></span><br><span class="line"><span class="number">1998</span><span class="number">-06</span><span class="number">-01</span>	<span class="number">446.0</span>	<span class="number">0.0</span>	<span class="number">1060.0</span>	<span class="number">22064.0</span>	<span class="number">0.0</span></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"># Python</a>
+              <a href="/tags/Anaconda/" rel="tag"># Anaconda</a>
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90/" rel="tag"># 数据分析</a>
+              <a href="/tags/NumPy/" rel="tag"># NumPy</a>
+              <a href="/tags/Pandas/" rel="tag"># Pandas</a>
+              <a href="/tags/Matplotlib/" rel="tag"># Matplotlib</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/data-analysis/political-contributions/" rel="prev" title="2012 美国大选献金项目数据分析">
+      <i class="fa fa-chevron-left"></i> 2012 美国大选献金项目数据分析
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/data-analysis/data-analysis-summary/" rel="next" title="数据分析总结">
+      数据分析总结 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#数据类型处理"><span class="nav-number">1.</span> <span class="nav-text">数据类型处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#数据加载"><span class="nav-number">1.1.</span> <span class="nav-text">数据加载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#观察数据"><span class="nav-number">1.2.</span> <span class="nav-text">观察数据</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#按月数据分析"><span class="nav-number">2.</span> <span class="nav-text">按月数据分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用户个体消费数据分析"><span class="nav-number">3.</span> <span class="nav-text">用户个体消费数据分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用户消费行为分析"><span class="nav-number">4.</span> <span class="nav-text">用户消费行为分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#用户消费时间统计"><span class="nav-number">4.1.</span> <span class="nav-text">用户消费时间统计</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#新老客户的占比"><span class="nav-number">4.2.</span> <span class="nav-text">新老客户的占比</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用户分层"><span class="nav-number">4.3.</span> <span class="nav-text">用户分层</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#用户的生命周期"><span class="nav-number">5.</span> <span class="nav-text">用户的生命周期</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="刘硕"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">刘硕</p>
+  <div class="site-description" itemprop="description">不成为自己讨厌的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">304</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">52</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:liushuo432@outlook.com" title="E-Mail → mailto:liushuo432@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/2436055290" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;2436055290" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://wpa.qq.com/msgrd?v=3&uin=1696146913&site=qq&menu=yes" title="QQ → http:&#x2F;&#x2F;wpa.qq.com&#x2F;msgrd?v&#x3D;3&amp;uin&#x3D;1696146913&amp;site&#x3D;qq&amp;menu&#x3D;yes" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-fw fa-rss"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备20001451号 </a>
+      <img src="/images/beian_icon.png" style="display: inline-block;"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=21142102000063" rel="noopener" target="_blank">辽公网安备 21142102000063号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘硕</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">1.7m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">52:45</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.2" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'Ga2II3wuJmHX3GiNHm9TmI97-gzGzoHsz',
+      appKey     : 'esGYJQepdYLHf07E1VMsP3RK',
+      placeholder: "o(*￣▽￣*)ブ来说点什么吧...（填上邮箱可以收到回复提醒）",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : true,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+  <script type="text/javascript" src="/js/love.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/Epsilon2.1.model.json"},"display":{"superSample":2,"width":200,"height":400,"position":"left","hOffset":-30,"vOffset":-40},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>
