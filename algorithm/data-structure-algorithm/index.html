@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="Tu5vqPaUb8svfkPx5eetJFD84ciQCcWVXNatdsWtj9Q">
+  <meta name="baidu-site-verification" content="baidu_verify_FBq9PG4BBb">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"appID":"PXY1Z6GHKT","apiKey":"eb82f2e78e3053f26aa408e9caa96d93","indexName":"blog","hits":{"per_page":10},"labels":{"input_placeholder":"要查点什么(✿◡‿◡)","hits_empty":"没有找到任何关于 ${query} 的结果╥﹏╥...","hits_stats":"搜索到 ${hits} 条记录，用时 ${time} ms o(*￣▽￣*)ブ"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="数据结构和算法思想的通用性异常的强大，在任何语言中都被使用，它们将会是我们编码生涯中伴随我们最长久利器（左膀右臂）。有一定经验的程序员最终拼的就是算法和数据结构。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据结构和算法概述">
+<meta property="og:url" content="https://sliu.vip/algorithm/data-structure-algorithm/index.html">
+<meta property="og:site_name" content="刘硕的技术查阅手册">
+<meta property="og:description" content="数据结构和算法思想的通用性异常的强大，在任何语言中都被使用，它们将会是我们编码生涯中伴随我们最长久利器（左膀右臂）。有一定经验的程序员最终拼的就是算法和数据结构。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-04-08T17:23:26.555Z">
+<meta property="article:modified_time" content="2020-04-09T07:48:06.825Z">
+<meta property="article:author" content="刘硕">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="算法">
+<meta property="article:tag" content="数据结构">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://sliu.vip/algorithm/data-structure-algorithm/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>数据结构和算法概述 | 刘硕的技术查阅手册</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f14f123935d6183fdd06f8f1c4bc378f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="刘硕的技术查阅手册" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">刘硕的技术查阅手册</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">Python 全栈开发学习笔记</h1>
+      
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-toc">
+
+    <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+  
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/algorithm/data-structure-algorithm/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          数据结构和算法概述
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-04-09 01:23:26 / 修改时间：15:48:06" itemprop="dateCreated datePublished" datetime="2020-04-09T01:23:26+08:00">2020-04-09</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">数据结构和算法</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/algorithm/data-structure-algorithm/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/algorithm/data-structure-algorithm/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>2.2k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>4 分钟</span>
+            </span>
+            <div class="post-description">数据结构和算法思想的通用性异常的强大，在任何语言中都被使用，它们将会是我们编码生涯中伴随我们最长久利器（左膀右臂）。有一定经验的程序员最终拼的就是算法和数据结构。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="计算机科学概述"><a href="#计算机科学概述" class="headerlink" title="计算机科学概述"></a>计算机科学概述</h3><p>首先明确的一点就是计算机科学不仅仅是对计算机的研究。虽然计算机在科学发展的过程中发挥了重大的作用，但是它只是一个工具，一个没有灵魂的工具而已。</p>
+<p>所谓的计算机科学实际上是对问题、解决问题以及解决问题的过程中产生产生的解决方案的研究。例如给定一个问题，计算机科学家的目标是开发一个算法来处理该问题，最终得到该问题的解、或者最优解。所以说计算机科学也可以被认为是对算法的研究。因此我们也可以感受到，所谓的算法就是对问题进行处理且求解的一种实现思路或者思想。</p>
+<h3 id="形象化地理解算法"><a href="#形象化地理解算法" class="headerlink" title="形象化地理解算法"></a>形象化地理解算法</h3><p>一个常胜将军在作战之前都会进行战略的制定，目的是为了能够在最短的时间切成本消耗最低的情况下获取最终的胜利。如果将编码作为战场，则程序员就是这场战役的指挥官，你如何可以将你的程序可以在最短且消耗资源最小的情况下获取最终的执行结果呢？算法就是我们的策略！</p>
+<h3 id="学习数据结构和算法的意义"><a href="#学习数据结构和算法的意义" class="headerlink" title="学习数据结构和算法的意义"></a>学习数据结构和算法的意义</h3><p>数据结构和算法思想的通用性异常的强大，在任何语言中都被使用，它们将会是我们编码生涯中伴随我们最长久利器（左膀右臂）。有一定经验的程序员最终拼的就是算法和数据结构。</p>
+<p>数据结构和算法思想也可以帮助我们拓展和历练编码的思维，可以让我们更好的融入到编程世界的角角落落。</p>
+<h3 id="算法分析概述"><a href="#算法分析概述" class="headerlink" title="算法分析概述"></a>算法分析概述</h3><p>刚接触编程的学生经常会将自己编写的程序和别人的程序做比对，获取在比对的过程中会发现双方编写的程序很相似但又各不相同。那么就会出现一个有趣的现象：两组程序都是用来解决同一个问题的，但是两组程序看起来又各不相同，哪一组程序更好呢？</p>
+<ul>
+<li><code>a+b+c = 1000</code>，<code>a**2 + b**2 = c**2</code>（a，b，c 均为自然数），求出 a，b，c 可能的组合。</li>
+</ul>
+<p>方法一：三层循环</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> a <span class="keyword">in</span> range(<span class="number">0</span>, <span class="number">1001</span>):</span><br><span class="line">    <span class="keyword">for</span> b <span class="keyword">in</span> range(<span class="number">0</span>, <span class="number">1001</span>):</span><br><span class="line">        <span class="keyword">for</span> c <span class="keyword">in</span> range(<span class="number">0</span>, <span class="number">1001</span>):</span><br><span class="line">            <span class="keyword">if</span> a + b + c == <span class="number">1000</span> <span class="keyword">and</span> a**<span class="number">2</span> + b**<span class="number">2</span> == c**<span class="number">2</span>:</span><br><span class="line">                print(a, b, c)</span><br></pre></td></tr></table></figure>
+
+<p>方法二：两层循环</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> a <span class="keyword">in</span> range(<span class="number">0</span>, <span class="number">1001</span>):</span><br><span class="line">    <span class="keyword">for</span> b <span class="keyword">in</span> range(<span class="number">0</span>, <span class="number">1001</span>):</span><br><span class="line">        c = <span class="number">1000</span> - a - b</span><br><span class="line">        <span class="keyword">if</span> c &gt;= <span class="number">0</span> <span class="keyword">and</span> a**<span class="number">2</span> + b**<span class="number">2</span> == c**<span class="number">2</span>:</span><br><span class="line">                print(a, b, c)</span><br></pre></td></tr></table></figure>
+
+<h3 id="评判程序优劣的方法"><a href="#评判程序优劣的方法" class="headerlink" title="评判程序优劣的方法"></a>评判程序优劣的方法</h3><p>分别运行上面的两组代码。我们发现，方法二很快就运算除了结果，而方法一运行了好一会儿才把所有的解求出来。我们可以说，方法二的运行效率要高于方法一。</p>
+<p>我们评定程序优劣的方式有这么几种：</p>
+<ul>
+<li>消耗计算机资源和执行效率（不推荐，无法直观表现）</li>
+<li>计算算法执行的耗时（适当推荐，因为会受机器和执行环境的影响）</li>
+<li>时间复杂度（推荐）</li>
+</ul>
+<h3 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h3><p>评判规则：量化算法执行的操作/执行步骤的数量</p>
+<p>最重要的项：时间复杂度表达式中最有意义的项</p>
+<p>大 O 记法：就是使用时间复杂度衡量算法好坏的表现形式。</p>
+<ul>
+<li><code>O(最重要的项)</code></li>
+</ul>
+<p>观察下面的代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sumOfN</span><span class="params">(n)</span>:</span></span><br><span class="line">    theSum = <span class="number">0</span>    <span class="comment"># 1</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,n+<span class="number">1</span>):</span><br><span class="line">        theSum = theSum + i   <span class="comment"># n</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> theSum    <span class="comment"># 1</span></span><br><span class="line">print(sumOfN(<span class="number">10</span>))</span><br></pre></td></tr></table></figure>
+
+<p>这个函数最开始初始化需要一步，循环 n 次需要 n 步，返回值还需要 1 步，总共需要 $n + 2$ 步。只取最有意义的一项，可知上面代码的时间复杂度为 $O(n)$。</p>
+<p>计算下列代码的时间复杂度：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">a=<span class="number">5</span></span><br><span class="line">b=<span class="number">6</span></span><br><span class="line">c=<span class="number">10</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(n):</span><br><span class="line">   <span class="keyword">for</span> j <span class="keyword">in</span> range(n):</span><br><span class="line">      x = i * i</span><br><span class="line">      y = j * j</span><br><span class="line">      z = i * j</span><br><span class="line"><span class="keyword">for</span> k <span class="keyword">in</span> range(n):</span><br><span class="line">   w = a*k + <span class="number">45</span></span><br><span class="line">   v = b*b</span><br><span class="line">d = <span class="number">33</span></span><br></pre></td></tr></table></figure>
+
+<p>不难看出，这几行代码总共需要 $3+3n^2+2n+1$ 步，只保留最有意义的那一项，其时间复杂度为 $O(n^2)$。</p>
+<p>常见的时间复杂度有：</p>
+<ul>
+<li>$O(1)$ &lt; $O(log\space n)$ &lt; $O(n)$ &lt; $O(nlog\space n)$ &lt; $O(n^2)$ &lt; $O(n^3)$ &lt; $O(2^n)$ &lt; $O(n!)$ &lt; $O(n^n)$</li>
+</ul>
+<h3 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h3><p>概念：对于数据（基本类型的数据 int，float，char）的组织方式就被称作为数据结构。数据结构解决的就是一组数据如何进行保存，保存形式是怎样的。</p>
+<p>案例： 需要存储一些学生的学生信息（name，score），那么这些数据应该如何组织呢？查询某一个具体学生的时间复杂度是什么呢？（三种组织方式）</p>
+<p>方式一，列表套字典：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[&#123;</span><br><span class="line">    <span class="string">'name'</span>: <span class="string">'xxx'</span>,</span><br><span class="line">    <span class="string">'score'</span>: <span class="string">'xxx'</span></span><br><span class="line">&#125;,&#123;</span><br><span class="line">    <span class="string">'name'</span>: <span class="string">'xxx'</span>,</span><br><span class="line">    <span class="string">'score'</span>: <span class="string">'xxx'</span></span><br><span class="line">&#125;,&#123;</span><br><span class="line">    <span class="string">'name'</span>: <span class="string">'xxx'</span>,</span><br><span class="line">    <span class="string">'score'</span>: <span class="string">'xxx'</span></span><br><span class="line">&#125;]</span><br></pre></td></tr></table></figure>
+
+<p>方式二，列表套元组：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">    (<span class="string">'name'</span>, <span class="string">'score'</span>),</span><br><span class="line">    (<span class="string">'name'</span>, <span class="string">'score'</span>),</span><br><span class="line">    (<span class="string">'name'</span>, <span class="string">'score'</span>)</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<p>方式三，字典套字典：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="string">'zhangsan'</span>: &#123;<span class="string">'score'</span>: <span class="string">'xxx'</span>&#125;,</span><br><span class="line">    <span class="string">'lisi'</span>: &#123;<span class="string">'score'</span>: <span class="string">'xxx'</span>&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>三种组织形式基于查询的时间复杂度分别是多少？</p>
+<p>时间复杂度一般都是基于最坏的情况的。列表套字典和列表套元组的两种结构基于查询的时间复杂度都为 $O(n)$，而字典套字典的结构基于查询的时间复杂度则为 $O(1)$。</p>
+<p>我们看到，使用不同的形式组织数据，在基于查询时的时间复杂度是不一样的。</p>
+<p>算法是为了解决实际问题而设计的，数据结构是算法需要处理问题的载体，二者联系机密。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"># Python</a>
+              <a href="/tags/%E7%AE%97%E6%B3%95/" rel="tag"># 算法</a>
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag"># 数据结构</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/algorithm/stack/" rel="prev" title="栈">
+      <i class="fa fa-chevron-left"></i> 栈
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/algorithm/queue/" rel="next" title="队列">
+      队列 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#计算机科学概述"><span class="nav-number">1.</span> <span class="nav-text">计算机科学概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#形象化地理解算法"><span class="nav-number">2.</span> <span class="nav-text">形象化地理解算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#学习数据结构和算法的意义"><span class="nav-number">3.</span> <span class="nav-text">学习数据结构和算法的意义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#算法分析概述"><span class="nav-number">4.</span> <span class="nav-text">算法分析概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#评判程序优劣的方法"><span class="nav-number">5.</span> <span class="nav-text">评判程序优劣的方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#时间复杂度"><span class="nav-number">6.</span> <span class="nav-text">时间复杂度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据结构"><span class="nav-number">7.</span> <span class="nav-text">数据结构</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="刘硕"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">刘硕</p>
+  <div class="site-description" itemprop="description">不成为自己讨厌的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">309</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:liushuo432@outlook.com" title="E-Mail → mailto:liushuo432@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/2436055290" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;2436055290" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://wpa.qq.com/msgrd?v=3&uin=1696146913&site=qq&menu=yes" title="QQ → http:&#x2F;&#x2F;wpa.qq.com&#x2F;msgrd?v&#x3D;3&amp;uin&#x3D;1696146913&amp;site&#x3D;qq&amp;menu&#x3D;yes" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-fw fa-rss"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备20001451号 </a>
+      <img src="/images/beian_icon.png" style="display: inline-block;"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=21142102000063" rel="noopener" target="_blank">辽公网安备 21142102000063号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘硕</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">1.8m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">53:10</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.2" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'Ga2II3wuJmHX3GiNHm9TmI97-gzGzoHsz',
+      appKey     : 'esGYJQepdYLHf07E1VMsP3RK',
+      placeholder: "o(*￣▽￣*)ブ来说点什么吧...（填上邮箱可以收到回复提醒）",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : true,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+  <script type="text/javascript" src="/js/love.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/Epsilon2.1.model.json"},"display":{"superSample":2,"width":200,"height":400,"position":"left","hOffset":-30,"vOffset":-40},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>

@@ -44,8 +44,19 @@
 <meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-dijkstra/1586251064073.png">
 <meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-dijkstra/1586253462316.png">
 <meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-dijkstra/1586253515948.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-dijkstra/1586321386244.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-dijkstra/1586321487829.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-dijkstra/1586321763008.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-dijkstra/1586322029813.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-dijkstra/1586322321142.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-dijkstra/1586322516600.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-dijkstra/1586325482703.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-dijkstra/1586325605771.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-dijkstra/1586325753029.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-dijkstra/1586326041396.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-dijkstra/1586326390586.png">
 <meta property="article:published_time" content="2020-03-31T16:56:16.182Z">
-<meta property="article:modified_time" content="2020-04-07T17:13:28.820Z">
+<meta property="article:modified_time" content="2020-04-08T17:23:28.520Z">
 <meta property="article:author" content="刘硕">
 <meta property="article:tag" content="Python">
 <meta property="article:tag" content="算法">
@@ -259,7 +270,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-08 01:13:28" itemprop="dateModified" datetime="2020-04-08T01:13:28+08:00">2020-04-08</time>
+                <time title="修改时间：2020-04-09 01:23:28" itemprop="dateModified" datetime="2020-04-09T01:23:28+08:00">2020-04-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -298,14 +309,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.3k</span>
+              <span>2.9k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
+              <span>5 分钟</span>
             </span>
             <div class="post-description">狄克斯特拉算法用来找到加权图中的最短路径。 广度优先搜索可以找到段数最少的路径，但是如果我们要找到用时最少的路径，就要使用狄克斯特拉算法（Dijkstra's Algorithm）。</div>
 
@@ -391,7 +402,61 @@
 <p>无向图意味着两个节点都指向对方，本质上也是一个环。</p>
 <img src="/notes/grokking-algorithms-dijkstra/1586253515948.png" class="" width="1586253515948">
 
-<p>在无向图中，每条边都是一个环。狄克斯特拉算法只适用于有向无环图（directed acyclic graph，DAG）。</p>
+<p>在无向图中，每条边都是一个环。狄克斯特拉算法只适用于<strong>有向无环图</strong>（directed acyclic graph，DAG）。</p>
+<h3 id="示例：乐谱换钢琴"><a href="#示例：乐谱换钢琴" class="headerlink" title="示例：乐谱换钢琴"></a>示例：乐谱换钢琴</h3><p>Rama 想要用一本乐谱换钢琴。</p>
+<p>Alex 说：“这是我最喜欢的乐队 Destroyer 的海报，我愿意拿它换你的乐谱。如果你再加 5 美元，还可拿乐谱换我这张稀有的 Rick Astley 黑胶唱片。”</p>
+<p>Amy 说：“哇，我听说这张黑胶唱片里有首非常好听的歌曲，我愿意拿我的吉他和架子鼓换这张海报和黑胶唱片。”</p>
+<p>Beethoven 惊呼：“我一直想要吉他，我愿意拿我的钢琴换 Amy 的吉他或架子鼓。”</p>
+<p>太好了！只要再花一点点钱，Rama 就能拿乐谱换架钢琴。现在他需要确定的是，如何花最少的钱实现这个目标。我们来绘制一个图，列出大家的交换意愿。</p>
+<img src="/notes/grokking-algorithms-dijkstra/1586321386244.png" class="" width="1586321386244">
+
+<p>这个图中的节点是大家愿意拿出来交换的东西，边的权重是交换时需要额外加多少钱。比如，拿海报换吉他需要额外加 30 美元，拿黑胶唱片换吉他需要额外加 15 美元。</p>
+<p>Rana 需要确定采用哪种路径将乐谱换成钢琴时需要支付的额外费用最少。为此，可以使用狄克斯特拉算法！</p>
+<p>别忘了，狄克斯特拉算法包含四个步骤。在这个示例中，我们将完成所有这些步骤，因此我们也将计算最终路径。</p>
+<p>动手之前，我们先做些准备工作：创建一个表格，在其中列出每个节点的开销。这里的开销指的是达到节点需要额外支付多少钱。</p>
+<img src="/notes/grokking-algorithms-dijkstra/1586321487829.png" class="" width="1586321487829">
+
+<p>在执行狄克斯特拉算法的过程中，我们将不断更新这个表。</p>
+<p>为计算最终路径，还需在这个表中添加表示父节点的列。</p>
+<img src="/notes/grokking-algorithms-dijkstra/1586321763008.png" class="" width="1586321763008">
+
+<p>第一步：找出最便宜的节点。在这里，换海报最便宜，不需要支付额外的费用。</p>
+<p>还有更便宜的换海报的途径吗？这一点非常重要，决定了狄克斯特拉算法是否能够为我们找到花费最少的方法。Rama 能够通过一系列交换得到海报，还能额外得到钱吗？</p>
+<p>答案是不能，因为海报是 Rama 能够到达的最便宜的节点，没法再便宜了。下面提供了另一种思考角度。假设你要从家里去单位。</p>
+<img src="/notes/grokking-algorithms-dijkstra/1586322029813.png" class="" width="1586322029813">
+
+<p>如果你走经过学校的路，到学校需要 2 分钟。如果走经过停车场的路，到停车场需要 6 分钟。</p>
+<p>如果经停车场前往学校，能不能将时间缩短到少于 2 分钟呢？不可能，因为只前往停车场就需要 6 分钟。</p>
+<p>另一方面，有没有能更快到达停车场的路呢？有。</p>
+<img src="/notes/grokking-algorithms-dijkstra/1586322321142.png" class="" width="1586322321142">
+
+<p>这就是狄克斯特拉算法背后的关键理念：找出图中最便宜的节点，并确保没有到该节点的更便宜的路径！</p>
+<p>第二步：计算前往该节点（也就是海报）的各个邻居的开销。</p>
+<img src="/notes/grokking-algorithms-dijkstra/1586322516600.png" class="" width="1586322516600">
+
+<p>现在的表中更新了低音吉他和架子鼓的开销。这些开销是用海报交换它们时需要支付的额外费用，因此父节点为海报。这意味着，要到达低音吉他，需要沿从海报出发的边前行，对架子鼓来说亦如此。</p>
+<p>再次执行第一步：下一个最便宜的节点是黑胶唱片——需要额外支付 5 美元。</p>
+<p>再次执行第二步：更新黑胶唱片的各个邻居的开销。</p>
+<img src="/notes/grokking-algorithms-dijkstra/1586325482703.png" class="" width="1586325482703">
+
+<p>我们更新了架子鼓和吉他的开销！这意味着经“黑胶唱片”前往“架子鼓”和“吉他”的开销更低，因此我们将这些乐器的父节点改成了黑胶唱片。</p>
+<p>再次重复。下一个最便宜的是吉他，我们接下来就要更新吉他的邻居的开销。</p>
+<img src="/notes/grokking-algorithms-dijkstra/1586325605771.png" class="" width="1586325605771">
+
+<p>最后，对最后一个节点，架子鼓，进行同样的处理。</p>
+<img src="/notes/grokking-algorithms-dijkstra/1586325753029.png" class="" width="1586325753029">
+
+<p>如果用架子鼓换钢琴，Rama 需要额外支付的费用更少。因此，采用最便宜的交换路径时，Rama 需要额外支付 35 美元。</p>
+<p>现在我们要确定最终的路径。当前，我们已经知道最短路径的开销为 35 美元，但如何确定这条路径呢？为此，先找出钢琴的父节点。</p>
+<img src="/notes/grokking-algorithms-dijkstra/1586326041396.png" class="" width="1586326041396">
+
+<p>钢琴的父节点为架子鼓，架子鼓的父节点为黑胶唱片，黑胶唱片的父节点为乐谱。通过沿父节点回溯，我们就找到了完整的交换路径。</p>
+<img src="/notes/grokking-algorithms-dijkstra/1586326390586.png" class="" width="1586326390586">
+
+<p>前面使用的都是术语最短路径的字面意思：计算两点或两人之间的最短路径。但希望这个示例让你明白，最短路径指的并不一定是物理距离，也可能是让某种度量指标最小。</p>
+<p>在这个示例中，最短路径指的是 Rama 想要额外支付的费用最少。这都要归功于狄克斯特拉！</p>
+<h3 id="负权边"><a href="#负权边" class="headerlink" title="负权边"></a>负权边</h3><p>前面的例子中，所有的权重都是正的。如果有一个边的权重为负，会怎么样呢？</p>
+<p>假设黑胶唱片不是Alex的，而是 Sarah的，且 Sarah愿意用黑胶唱片和7美元换海报。换句话说，换得Alex的海报后，Rama用它来换 Sarah的黑胶唱片时，不但不用支付额外的费用，还可得7美元。对于这种情况，如何在图中表示出来呢？</p>
 
     </div>
 
@@ -479,7 +544,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#狄克斯特拉算法的使用思路"><span class="nav-number">1.</span> <span class="nav-text">狄克斯特拉算法的使用思路</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#狄克斯特拉算法流程小结"><span class="nav-number">1.1.</span> <span class="nav-text">狄克斯特拉算法流程小结</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#术语"><span class="nav-number">2.</span> <span class="nav-text">术语</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#狄克斯特拉算法的使用思路"><span class="nav-number">1.</span> <span class="nav-text">狄克斯特拉算法的使用思路</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#狄克斯特拉算法流程小结"><span class="nav-number">1.1.</span> <span class="nav-text">狄克斯特拉算法流程小结</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#术语"><span class="nav-number">2.</span> <span class="nav-text">术语</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#示例：乐谱换钢琴"><span class="nav-number">3.</span> <span class="nav-text">示例：乐谱换钢琴</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#负权边"><span class="nav-number">4.</span> <span class="nav-text">负权边</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -495,20 +560,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">304</span>
+          <span class="site-state-item-count">309</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-count">16</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">52</span>
+        <span class="site-state-item-count">53</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -559,12 +624,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">1.7m</span>
+    <span title="站点总字数">1.8m</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">52:45</span>
+    <span title="站点阅读时长">53:10</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
   </div>
