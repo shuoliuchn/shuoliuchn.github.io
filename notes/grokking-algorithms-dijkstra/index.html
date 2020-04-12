@@ -55,8 +55,16 @@
 <meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-dijkstra/1586325753029.png">
 <meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-dijkstra/1586326041396.png">
 <meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-dijkstra/1586326390586.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-dijkstra/1586414179140.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-dijkstra/1586414427973.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-dijkstra/1586414468509.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-dijkstra/1586414540900.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-dijkstra/1586414591327.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-dijkstra/1586414866088.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-dijkstra/1586414897663.png">
+<meta property="og:image" content="https://sliu.vip/notes/grokking-algorithms-dijkstra/1586414960559.png">
 <meta property="article:published_time" content="2020-03-31T16:56:16.182Z">
-<meta property="article:modified_time" content="2020-04-08T17:23:28.520Z">
+<meta property="article:modified_time" content="2020-04-12T16:32:25.820Z">
 <meta property="article:author" content="刘硕">
 <meta property="article:tag" content="Python">
 <meta property="article:tag" content="算法">
@@ -270,7 +278,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-04-09 01:23:28" itemprop="dateModified" datetime="2020-04-09T01:23:28+08:00">2020-04-09</time>
+                <time title="修改时间：2020-04-13 00:32:25" itemprop="dateModified" datetime="2020-04-13T00:32:25+08:00">2020-04-13</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -309,14 +317,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>2.9k</span>
+              <span>3.6k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>5 分钟</span>
+              <span>6 分钟</span>
             </span>
             <div class="post-description">狄克斯特拉算法用来找到加权图中的最短路径。 广度优先搜索可以找到段数最少的路径，但是如果我们要找到用时最少的路径，就要使用狄克斯特拉算法（Dijkstra's Algorithm）。</div>
 
@@ -456,7 +464,34 @@
 <p>前面使用的都是术语最短路径的字面意思：计算两点或两人之间的最短路径。但希望这个示例让你明白，最短路径指的并不一定是物理距离，也可能是让某种度量指标最小。</p>
 <p>在这个示例中，最短路径指的是 Rama 想要额外支付的费用最少。这都要归功于狄克斯特拉！</p>
 <h3 id="负权边"><a href="#负权边" class="headerlink" title="负权边"></a>负权边</h3><p>前面的例子中，所有的权重都是正的。如果有一个边的权重为负，会怎么样呢？</p>
-<p>假设黑胶唱片不是Alex的，而是 Sarah的，且 Sarah愿意用黑胶唱片和7美元换海报。换句话说，换得Alex的海报后，Rama用它来换 Sarah的黑胶唱片时，不但不用支付额外的费用，还可得7美元。对于这种情况，如何在图中表示出来呢？</p>
+<p>假设黑胶唱片不是 Alex 的，而是 Sarah 的，且 Sarah 愿意用黑胶唱片和 7 美元换海报。换句话说，换得 Alex 的海报后，Rama 用它来换 Sarah 的黑胶唱片时，不但不用支付额外的费用，还可得 7 美元。对于这种情况，如何在图中表示出来呢？</p>
+<img src="/notes/grokking-algorithms-dijkstra/1586414179140.png" class="" width="1586414179140">
+
+<p>从黑胶唱片到海报的边的权重为负！即这种交换让 Rama 能够得到 7 美元。现在，Rama 有两种获得海报的方式。</p>
+<img src="/notes/grokking-algorithms-dijkstra/1586414427973.png" class="" width="1586414427973">
+
+<p>第二种方式更划算——Rama 可赚 2 美元！你可能还记得，Rama 可以用海报换架子鼓，但现在有两种换得架子鼓的方式。</p>
+<img src="/notes/grokking-algorithms-dijkstra/1586414468509.png" class="" width="1586414468509">
+
+<p>第二种方式的开销少 2 美元，他应采取这种方式。</p>
+<p>然而，如果我们对这图运行狄克斯特拉算法，Rama 将选择错误的路径—更长的那条路径。如果有负权边，就不能使用狄克斯特拉算法。因为负权边会导致这种算法不管用。</p>
+<p>下面来看看对这个图执行狄克斯特拉算法的情况。首先，创建开销表。</p>
+<img src="/notes/grokking-algorithms-dijkstra/1586414540900.png" class="" width="1586414540900">
+
+<p>接下来，找出开销最低的节点，并更新其邻居的开销。在这里，开销最低的节点是海报。根据狄克斯特拉算法，没有比不支付任何费用获得海报更便宜的方式。（但其实这并不对！）无论如何，我们来更新其邻居的开销。</p>
+<img src="/notes/grokking-algorithms-dijkstra/1586414591327.png" class="" width="1586414591327">
+
+<p>现在，架子鼓的开销变成了 35 美元。<br>我们来找出最便宜的未处理节点，也就是黑胶唱片。</p>
+<img src="/notes/grokking-algorithms-dijkstra/1586414866088.png" class="" width="1586414866088">
+
+<p>更新黑胶唱片邻居节点。</p>
+<img src="/notes/grokking-algorithms-dijkstra/1586414897663.png" class="" width="1586414897663">
+
+<p>海报节点已处理过，这里却更新了它的开销。这是一个危险信号：节点一旦被处理，就意味着没有前往该节点的更便宜途径。但我们刚才却找到了前往海报节点的更便宜途径！</p>
+<p>架子鼓没有任何邻居，因此算法到此结束，最终开销如下。</p>
+<img src="/notes/grokking-algorithms-dijkstra/1586414960559.png" class="" width="1586414960559">
+
+<p>换得架子鼓的开销为 35 美元。但我们知道其实还有一种交换方式只需 33 美元，但狄克斯特拉算法没有找到。这是因为狄克斯特拉算法这样假设：对于处理过的海报节点，没有前往该节点的更短路径。这种假设仅在没有负权边时才成立。因此，不能将狄克斯特拉算法用于包含负权边的图。在包含负权边的图中，要找出最短路径，可使用另一种算法——贝尔曼 · 福德算法（Bellman-Ford algorithm）。</p>
 
     </div>
 
@@ -560,7 +595,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">309</span>
+          <span class="site-state-item-count">316</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -624,12 +659,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">1.8m</span>
+    <span title="站点总字数">1.9m</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">53:10</span>
+    <span title="站点阅读时长">57:01</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
   </div>
