@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="Tu5vqPaUb8svfkPx5eetJFD84ciQCcWVXNatdsWtj9Q">
+  <meta name="baidu-site-verification" content="baidu_verify_FBq9PG4BBb">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"appID":"PXY1Z6GHKT","apiKey":"eb82f2e78e3053f26aa408e9caa96d93","indexName":"blog","hits":{"per_page":10},"labels":{"input_placeholder":"要查点什么(✿◡‿◡)","hits_empty":"没有找到任何关于 ${query} 的结果╥﹏╥...","hits_stats":"搜索到 ${hits} 条记录，用时 ${time} ms o(*￣▽￣*)ブ"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="样本数据中的特征有可能会存在缺失值，重复值，异常值等等，于是我们就需要对特征中的相关的噪点数据进行处理。处理数据的目的就是为了营造出一个更纯净的样本集，让模型基于这组数据可以有更好的预测能力。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="特征工程">
+<meta property="og:url" content="https://sliu.vip/machine-learning/feature-engineering/index.html">
+<meta property="og:site_name" content="刘硕的技术查阅手册">
+<meta property="og:description" content="样本数据中的特征有可能会存在缺失值，重复值，异常值等等，于是我们就需要对特征中的相关的噪点数据进行处理。处理数据的目的就是为了营造出一个更纯净的样本集，让模型基于这组数据可以有更好的预测能力。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sliu.vip/machine-learning/feature-engineering/normalizeexcerisx.png">
+<meta property="og:image" content="https://sliu.vip/machine-learning/feature-engineering/normalizeexcerisxmap.png">
+<meta property="og:image" content="https://sliu.vip/machine-learning/feature-engineering/sanweizhuihu.png">
+<meta property="article:published_time" content="2020-04-13T17:09:21.997Z">
+<meta property="article:modified_time" content="2020-04-19T16:56:16.920Z">
+<meta property="article:author" content="刘硕">
+<meta property="article:tag" content="Python">
+<meta property="article:tag" content="Anaconda">
+<meta property="article:tag" content="机器学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sliu.vip/machine-learning/feature-engineering/normalizeexcerisx.png">
+
+<link rel="canonical" href="https://sliu.vip/machine-learning/feature-engineering/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>特征工程 | 刘硕的技术查阅手册</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f14f123935d6183fdd06f8f1c4bc378f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="刘硕的技术查阅手册" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">刘硕的技术查阅手册</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">Python 全栈开发学习笔记</h1>
+      
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-toc">
+
+    <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+  
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/machine-learning/feature-engineering/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          特征工程
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-04-14 01:09:21" itemprop="dateCreated datePublished" datetime="2020-04-14T01:09:21+08:00">2020-04-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-04-20 00:56:16" itemprop="dateModified" datetime="2020-04-20T00:56:16+08:00">2020-04-20</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">机器学习</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/machine-learning/feature-engineering/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/machine-learning/feature-engineering/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>12k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>21 分钟</span>
+            </span>
+            <div class="post-description">样本数据中的特征有可能会存在缺失值，重复值，异常值等等，于是我们就需要对特征中的相关的噪点数据进行处理。处理数据的目的就是为了营造出一个更纯净的样本集，让模型基于这组数据可以有更好的预测能力。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="特征工程概述"><a href="#特征工程概述" class="headerlink" title="特征工程概述"></a>特征工程概述</h2><p>样本数据中的特征有可能会存在缺失值，重复值，异常值等等，于是我们就需要对特征中的相关的噪点数据进行处理。处理数据的目的就是为了营造出一个更纯净的样本集，让模型基于这组数据可以有更好的预测能力。当然特征工程不是单单只是处理上述操作！</p>
+<p>比如 AlphaGo 学习的数据中既有棋谱，又有食谱还有歌词，那么一些干扰的数据绝对会影响 AlphaGo 的学习。我们就需要通过一些处理手段，将这些没有意义的干扰数据清除掉。这就是特征工程的意义。</p>
+<p>样本数据往往有两个：特征数据和目标数据。</p>
+<p>特征工程是将原始数据转换为更好的代表预测模型的潜在问题的特征的过程，从而提高对未知数据预测的准确性。</p>
+<p>特征工程的意义在于，它会直接影响模型预测的结果，而且一般都是积极的影响。</p>
+<p>我们可以使用 sk-learn 工具实现特征工程。</p>
+<p>sklean 介绍：</p>
+<ul>
+<li>sklearn 是 Python 语言中的机器学习工具，包含了很多知名的机器学习算法的实现，其文档完善，容易上手</li>
+<li>Anaconda 中继承了 sklearn 模块，无需手动安装</li>
+<li>功能：<ul>
+<li>分类模型</li>
+<li>回归模型</li>
+<li>聚类模型</li>
+<li>特征工程</li>
+</ul>
+</li>
+</ul>
+<h2 id="特征抽取"><a href="#特征抽取" class="headerlink" title="特征抽取"></a>特征抽取</h2><p>我们所采集到样本中的特征数据往往很多时候为字符串或者其他类型的数据。然而我们知道电脑只可以识别二进制数值型的数据，如果把字符串给电脑，电脑是看不懂的。如果机器学习学习的数据不是数值型的数据，它是识别不了的。</p>
+<p>因此我们需要对数据进行特征抽取，将非数值型的数据转换成计算机更容易处理的数值型数据。</p>
+<p>特征值化就是将非数值型的特征转换为数值型的特征。</p>
+<p>首先，我们演示一下特征抽取的实例，将字符串转换成数字：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.feature_extraction.text <span class="keyword">import</span> CountVectorizer</span><br><span class="line">vectorizer = CountVectorizer()</span><br><span class="line">res = vectorizer.fit_transform([<span class="string">'lift is short,i love python'</span>,<span class="string">'lift is too long,i hate python'</span>])</span><br><span class="line">print(res.toarray())</span><br></pre></td></tr></table></figure>
+
+<p>返回的结果是一个数组类型的数据，每个元素都是数字：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[[<span class="number">0</span> <span class="number">1</span> <span class="number">1</span> <span class="number">0</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">0</span>]</span><br><span class="line"> [<span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">0</span> <span class="number">1</span> <span class="number">0</span> <span class="number">1</span>]]</span><br></pre></td></tr></table></figure>
+
+<p>从演示结果我们可以得出结论：特征抽取对文本等数据进行特征值化。特征值化是为了让机器更好的理解数据。</p>
+<h3 id="字典特征抽取"><a href="#字典特征抽取" class="headerlink" title="字典特征抽取"></a>字典特征抽取</h3><p>作用：对字典数据进行特征值化</p>
+<p>API：<code>from sklearn.feature_extraction import DictVectorizer</code></p>
+<ul>
+<li><code>fit_transform(X)</code>：X 为字典或者包含字典的迭代器，返回值为 sparse 矩阵</li>
+<li><code>inverse_transform(X)</code>：X 为 sparse 矩阵或者 array 数组，返回值为转换之前的数据格式</li>
+<li><code>transform(X)</code>：按照原先的标准转换</li>
+<li><code>get_feature_names()</code>：返回类别名称</li>
+</ul>
+<p>字典特征值提取实例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.feature_extraction <span class="keyword">import</span> DictVectorizer</span><br><span class="line">alist = [</span><br><span class="line">            &#123;<span class="string">'city'</span>: <span class="string">'BeiJing'</span>, <span class="string">'temp'</span>: <span class="number">33</span>&#125;,</span><br><span class="line">            &#123;<span class="string">'city'</span>: <span class="string">'GZ'</span>, <span class="string">'temp'</span>: <span class="number">42</span>&#125;,</span><br><span class="line">            &#123;<span class="string">'city'</span>: <span class="string">'SH'</span>, <span class="string">'temp'</span>: <span class="number">40</span>&#125;</span><br><span class="line">        ]</span><br><span class="line">d = DictVectorizer()    <span class="comment"># 实例化工具对象</span></span><br><span class="line">result = d.fit_transform(alist)    <span class="comment"># 使用工具将字典中的非数值型数据转换数值型的数据</span></span><br><span class="line">print(d.get_feature_names())</span><br><span class="line">print(result)    <span class="comment"># result是一个sparse矩阵</span></span><br></pre></td></tr></table></figure>
+
+<p>返回的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'city=BeiJing'</span>, <span class="string">'city=GZ'</span>, <span class="string">'city=SH'</span>, <span class="string">'temp'</span>]</span><br><span class="line">  (<span class="number">0</span>, <span class="number">0</span>)	<span class="number">1.0</span></span><br><span class="line">  (<span class="number">0</span>, <span class="number">3</span>)	<span class="number">33.0</span></span><br><span class="line">  (<span class="number">1</span>, <span class="number">1</span>)	<span class="number">1.0</span></span><br><span class="line">  (<span class="number">1</span>, <span class="number">3</span>)	<span class="number">42.0</span></span><br><span class="line">  (<span class="number">2</span>, <span class="number">2</span>)	<span class="number">1.0</span></span><br><span class="line">  (<span class="number">2</span>, <span class="number">3</span>)	<span class="number">40.0</span></span><br></pre></td></tr></table></figure>
+
+<p><code>get_feature_names()</code> 的作用是返回类别名称。</p>
+<p>fit_transform 方法默认返回的数据类型是 sparse 矩阵，也就是上面返回的结果。相信如果没有了解过这种结构的数据的话，应该是看不懂的，更不会相信这东西会是一个矩阵。</p>
+<p>事实上，sparse 矩阵就是一个变相的数组或者列表，目的是为了节省内存。每一行左侧的元组代表的是数组的坐标，指代的是该数据位于矩阵中的位置，即 <code>(行, 列)</code>。右面的数据代表的是该位置携带的数据。如果数据为 0，默认不会保存。对于存在很多 0 的矩阵，使用 sparse 会节省空间。</p>
+<p>在 DictVectorizer 类的构造方法中中设定 <code>sparse=False</code> 则返回的就不是 sparse 矩阵，而是一个数组。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.feature_extraction <span class="keyword">import</span> DictVectorizer</span><br><span class="line">alist = [</span><br><span class="line">            &#123;<span class="string">'city'</span>: <span class="string">'BeiJing'</span>, <span class="string">'temp'</span>: <span class="number">33</span>&#125;,</span><br><span class="line">            &#123;<span class="string">'city'</span>: <span class="string">'GZ'</span>, <span class="string">'temp'</span>: <span class="number">42</span>&#125;,</span><br><span class="line">            &#123;<span class="string">'city'</span>: <span class="string">'SH'</span>, <span class="string">'temp'</span>: <span class="number">40</span>&#125;</span><br><span class="line">        ]</span><br><span class="line">d = DictVectorizer(sparse=<span class="literal">False</span>)    <span class="comment"># 指定spasrse参数为False，返回值将会是数组</span></span><br><span class="line">result = d.fit_transform(alist)</span><br><span class="line">print(d.get_feature_names())</span><br><span class="line">print(result)</span><br></pre></td></tr></table></figure>
+
+<p>返回的数据就成了一个数组，看起来也更加直观，更加像矩阵了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'city=BeiJing'</span>, <span class="string">'city=GZ'</span>, <span class="string">'city=SH'</span>, <span class="string">'temp'</span>]</span><br><span class="line">[[ <span class="number">1.</span>  <span class="number">0.</span>  <span class="number">0.</span> <span class="number">33.</span>]</span><br><span class="line"> [ <span class="number">0.</span>  <span class="number">1.</span>  <span class="number">0.</span> <span class="number">42.</span>]</span><br><span class="line"> [ <span class="number">0.</span>  <span class="number">0.</span>  <span class="number">1.</span> <span class="number">40.</span>]]</span><br></pre></td></tr></table></figure>
+
+<h3 id="特征值化和-One-Hot-编码"><a href="#特征值化和-One-Hot-编码" class="headerlink" title="特征值化和 One-Hot 编码"></a>特征值化和 One-Hot 编码</h3><p>至此，我们实现了将字典数据的特征值化处理。所谓特征值化，就是将特征中非数值型的数据转换成数值型的数据。</p>
+<p>最终数据里面的 0 和 1 这种的编码方式我们称之为 One-Hot 编码。</p>
+
+
+<p>为什么需要 One-Hot 编码呢？因为特征抽取主要目的就是对非数值型的数据进行特征值化！如果现在需要对下图中的 human 和 alien 进行手动特征值化 Alien 为 4，human 为1 。则 1 和 4 有没有优先级或者权重大小之分呢？</p>
+
+
+<p>为了让每个数据的权重和优先级保持一致，我们采用 One-Hot 编码，让所有数据的特征值都是 1，就不会有权重的问题了。</p>
+
+
+<h3 id="基于-Pandas-实现-One-Hot-编码"><a href="#基于-Pandas-实现-One-Hot-编码" class="headerlink" title="基于 Pandas 实现 One-Hot 编码"></a>基于 Pandas 实现 One-Hot 编码</h3><p>Pandas 的 <code>pd.get_dummies(df[&#39;col&#39;])</code> 方法可以实现对 DataFrame 某一列的特征值化处理。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line">df = pd.DataFrame([</span><br><span class="line">    [<span class="string">'green'</span>, <span class="string">'M'</span>, <span class="number">20</span>, <span class="string">'class1'</span>],</span><br><span class="line">    [<span class="string">'red'</span>, <span class="string">'L'</span>, <span class="number">21</span>, <span class="string">'class2'</span>],</span><br><span class="line">    [<span class="string">'blue'</span>, <span class="string">'XL'</span>,<span class="number">30</span>, <span class="string">'class3'</span>]</span><br><span class="line">])</span><br><span class="line">df.columns = [<span class="string">'color'</span>, <span class="string">'size'</span>, <span class="string">'weight'</span>, <span class="string">'class label'</span>]</span><br><span class="line">df1 = pd.get_dummies(df[<span class="string">'color'</span>])</span><br><span class="line">pd.concat((df, df1), axis=<span class="number">1</span>).drop(labels=<span class="string">'color'</span>, axis=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<p>返回的结果就是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">	size	weight	<span class="class"><span class="keyword">class</span> <span class="title">label</span>	<span class="title">blue</span>	<span class="title">green</span>	<span class="title">red</span></span></span><br><span class="line"><span class="class">0	<span class="title">M</span>	20	<span class="title">class1</span>	0	1	0</span></span><br><span class="line"><span class="class">1	<span class="title">L</span>	21	<span class="title">class2</span>	0	0	1</span></span><br><span class="line"><span class="class">2	<span class="title">XL</span>	30	<span class="title">class3</span>	1	0	0</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="文本特征抽取"><a href="#文本特征抽取" class="headerlink" title="文本特征抽取"></a>文本特征抽取</h3><p>作用：对文本数据进行特征值化</p>
+<p>API：<code>from sklearn.feature_extraction.text import CountVectorizer</code></p>
+<ul>
+<li><code>fit_transform(X)</code>：X 为文本或者包含文本字符串的可迭代对象，返回sparse矩阵</li>
+<li><code>inverse_transform(X)</code>：X 为 array 数组或者 sparse 矩阵，返回转换之前的格式数据</li>
+<li><code>get_feature_names()</code>：获取特征名</li>
+<li><code>toarray()</code>：将 sparse 矩阵换成数组</li>
+</ul>
+<p>文本特征抽取示例代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.feature_extraction.text <span class="keyword">import</span> CountVectorizer</span><br><span class="line">text_list = [<span class="string">'left is is short i love python'</span>,<span class="string">'left is too long,i hate python'</span>]</span><br><span class="line">c = CountVectorizer()</span><br><span class="line">result = c.fit_transform(text_list)</span><br><span class="line"><span class="comment"># 使用toarray方法将sparse矩阵转换成数组</span></span><br><span class="line">arr_res = result.toarray()</span><br><span class="line">print(c.get_feature_names())    <span class="comment"># 从文本中提取出来的非数值型的特征数据</span></span><br><span class="line">print(arr_res)</span><br><span class="line"><span class="comment"># 注意：单字符的单词和符号不做特征抽取</span></span><br></pre></td></tr></table></figure>
+
+<p>提取出来的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'hate'</span>, <span class="string">'is'</span>, <span class="string">'left'</span>, <span class="string">'long'</span>, <span class="string">'love'</span>, <span class="string">'python'</span>, <span class="string">'short'</span>, <span class="string">'too'</span>]</span><br><span class="line">[[<span class="number">0</span> <span class="number">2</span> <span class="number">1</span> <span class="number">0</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">0</span>]</span><br><span class="line"> [<span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">0</span> <span class="number">1</span> <span class="number">0</span> <span class="number">1</span>]]</span><br></pre></td></tr></table></figure>
+
+<p>每个数字指代的是对应的单词在本条字符串中出现的次数。单词以空格和符号分隔，单个的字符和符号不会被统计。因为单个字符往往不会对机器学习的结果造成很大影响，将其省略会节省很多空间和计算量。</p>
+<h3 id="中文文本特征值抽取"><a href="#中文文本特征值抽取" class="headerlink" title="中文文本特征值抽取"></a>中文文本特征值抽取</h3><p>首先，对有标点符号的中文文本进行特征抽取：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.feature_extraction.text <span class="keyword">import</span> CountVectorizer</span><br><span class="line">text_list = [<span class="string">'我喜欢你的鼻子眼睛'</span>,<span class="string">'我想你了，你有没有也在想我呢？'</span>]</span><br><span class="line">c = CountVectorizer()</span><br><span class="line">result = c.fit_transform(text_list)</span><br><span class="line">arr_res = result.toarray()</span><br><span class="line">print(c.get_feature_names())</span><br><span class="line">print(arr_res)</span><br></pre></td></tr></table></figure>
+
+<p>返回的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'你有没有也在想我呢'</span>, <span class="string">'我喜欢你的鼻子眼睛'</span>, <span class="string">'我想你了'</span>]</span><br><span class="line">[[<span class="number">0</span> <span class="number">1</span> <span class="number">0</span>]</span><br><span class="line"> [<span class="number">1</span> <span class="number">0</span> <span class="number">1</span>]]</span><br></pre></td></tr></table></figure>
+
+<p>我们看到，中文文本还是以字符分隔，而不是以我们的词语进行分割。</p>
+<p>接下来我们尝试对有标点符合且有空格分隔的中文文本进行特征处理：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.feature_extraction.text <span class="keyword">import</span> CountVectorizer</span><br><span class="line">text_list = [<span class="string">'我 喜欢你,的鼻子-眼睛'</span>,<span class="string">'我-想你-了，你-有没有,也在 想我呢？'</span>]</span><br><span class="line">c = CountVectorizer()</span><br><span class="line">result = c.fit_transform(text_list)</span><br><span class="line">arr_res = result.toarray()</span><br><span class="line">print(c.get_feature_names())</span><br><span class="line">print(arr_res)</span><br></pre></td></tr></table></figure>
+
+<p>返回的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'也在'</span>, <span class="string">'喜欢你'</span>, <span class="string">'想你'</span>, <span class="string">'想我呢'</span>, <span class="string">'有没有'</span>, <span class="string">'的鼻子'</span>, <span class="string">'眼睛'</span>]</span><br><span class="line">[[<span class="number">0</span> <span class="number">1</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">1</span> <span class="number">1</span>]</span><br><span class="line"> [<span class="number">1</span> <span class="number">0</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">0</span> <span class="number">0</span>]]</span><br></pre></td></tr></table></figure>
+
+<p>我们看到，词语是以空格和符号进行分隔的，而且单个的中文和符号都是没有被统计的。</p>
+<p>现在的问题是，我们知道，中文的写作习惯就是一句话连起来写，不会在词语之间加上空格和符号。这样统计中文的词语就是一件相对不容易的事情。</p>
+<p>目前 CountVectorizer 只可以对有标点符号和用分隔符对应的文本进行特征抽取，显然这是满足不了我们日常需求的，因为在自然语言处理中，我们是需要将一段中文文本中相关的词语，成语，形容词……都要进行抽取的。</p>
+<p>这时，我们就可以用到 jieba 模块，对每个句子进行分词处理。</p>
+<p>jieba 分词需要额外安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install jieba</span><br></pre></td></tr></table></figure>
+
+<p>jieba 模块的使用方法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> jieba</span><br><span class="line">text = <span class="string">'我喜欢你的鼻子眼睛，我想你了，你有没有也在想我呢？'</span></span><br><span class="line">jb = jieba.cut(text)    <span class="comment"># 分词结果，分词结果需要转成list才可以显示</span></span><br><span class="line">jb_list = list(jb)</span><br><span class="line">print(jb_list)</span><br></pre></td></tr></table></figure>
+
+<p>分词的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'我'</span>, <span class="string">'喜欢'</span>, <span class="string">'你'</span>, <span class="string">'的'</span>, <span class="string">'鼻子眼睛'</span>, <span class="string">'，'</span>, <span class="string">'我'</span>, <span class="string">'想'</span>, <span class="string">'你'</span>, <span class="string">'了'</span>, <span class="string">'，'</span>, <span class="string">'你'</span>, <span class="string">'有没有'</span>, <span class="string">'也'</span>, <span class="string">'在'</span>, <span class="string">'想'</span>, <span class="string">'我'</span>, <span class="string">'呢'</span>, <span class="string">'？'</span>]</span><br></pre></td></tr></table></figure>
+
+<p>中文句子以词语为单位被拆分开了，后面我们只需要使用符号将其拼接成新字符串即可使用 sklearn 对其进行特征提取了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用jieba分词 + CountVectorizer工具类实现对文本数据的特征抽取</span></span><br><span class="line"><span class="keyword">import</span> jieba</span><br><span class="line"><span class="keyword">from</span> sklearn.feature_extraction.text <span class="keyword">import</span> CountVectorizer</span><br><span class="line">text = <span class="string">'我喜欢你的鼻子眼睛，我想你了，你有没有也在想我呢？'</span></span><br><span class="line">jb = jieba.cut(text)</span><br><span class="line">new_text = <span class="string">'-'</span>.join(list(jb))</span><br><span class="line">print(new_text)    <span class="comment"># 分词后的结果，结果中每一个词都使用了分隔符进行分割</span></span><br><span class="line">c = CountVectorizer()</span><br><span class="line">result = c.fit_transform([new_text])    <span class="comment"># 字符串需要放在可迭代的容器中</span></span><br><span class="line">arr_res = result.toarray()</span><br><span class="line">print(c.get_feature_names())</span><br><span class="line">print(arr_res)</span><br></pre></td></tr></table></figure>
+
+<p>提取到的特征值结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">我-喜欢-你-的-鼻子眼睛-，-我-想-你-了-，-你-有没有-也-在-想-我-呢-？</span><br><span class="line">[<span class="string">'喜欢'</span>, <span class="string">'有没有'</span>, <span class="string">'鼻子眼睛'</span>]</span><br><span class="line">[[<span class="number">1</span> <span class="number">1</span> <span class="number">1</span>]]</span><br></pre></td></tr></table></figure>
+
+<p>因为上面的词语中，有很多的单个字符的词语和符号。这些词语和符号会默认被忽略掉。</p>
+<p>我们可以随便再找一个词语较多的句子进行测试：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> jieba</span><br><span class="line"><span class="keyword">from</span> sklearn.feature_extraction.text <span class="keyword">import</span> CountVectorizer</span><br><span class="line">text = <span class="string">'从“遭遇战”到“阻击战”，从“重中之重”到“人民战争”，从“头等大事”到“全面胜利”……观势、谋局、落子，总书记在亲自指挥这场人民战争的过程中，很多对策、措施与中国古代兵家思想高度契合。央视网《人民领袖》栏目推出系列特稿《习近平战“疫”兵法》，与您一同领悟其中精髓。'</span></span><br><span class="line">jb = jieba.cut(text)</span><br><span class="line">new_text = <span class="string">'-'</span>.join(jb)</span><br><span class="line">print(new_text)</span><br><span class="line">c = CountVectorizer()</span><br><span class="line">result = c.fit_transform([new_text])</span><br><span class="line">arr_res = result.toarray()</span><br><span class="line">print(c.get_feature_names())</span><br><span class="line">print(arr_res)</span><br></pre></td></tr></table></figure>
+
+<p>文本特征抽取的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">从-“-遭遇战-”-到-“-阻击战-”-，-从-“-重中之重-”-到-“-人民战争-”-，-从-“-头等大事-”-到-“-全面-胜利-”-…-…-观势-、-谋局-、-落子-，-总书记-在-亲自-指挥-这场-人民战争-的-过程-中-，-很多-对策-、-措施-与-中国-古代-兵家-思想-高度-契合-。-央视网-《-人民-领袖-》-栏目-推出-系列-特稿-《-习近平-战-“-疫-”-兵法-》-，-与-您-一同-领悟-其中-精髓-。</span><br><span class="line">[<span class="string">'一同'</span>, <span class="string">'中国'</span>, <span class="string">'习近平'</span>, <span class="string">'亲自'</span>, <span class="string">'人民'</span>, <span class="string">'人民战争'</span>, <span class="string">'全面'</span>, <span class="string">'兵家'</span>, <span class="string">'兵法'</span>, <span class="string">'其中'</span>, <span class="string">'古代'</span>, <span class="string">'央视网'</span>, <span class="string">'头等大事'</span>, <span class="string">'契合'</span>, <span class="string">'对策'</span>, <span class="string">'很多'</span>, <span class="string">'思想'</span>, <span class="string">'总书记'</span>, <span class="string">'指挥'</span>, <span class="string">'推出'</span>, <span class="string">'措施'</span>, <span class="string">'栏目'</span>, <span class="string">'特稿'</span>, <span class="string">'精髓'</span>, <span class="string">'系列'</span>, <span class="string">'胜利'</span>, <span class="string">'落子'</span>, <span class="string">'观势'</span>, <span class="string">'谋局'</span>, <span class="string">'过程'</span>, <span class="string">'这场'</span>, <span class="string">'遭遇战'</span>, <span class="string">'重中之重'</span>, <span class="string">'阻击战'</span>, <span class="string">'领悟'</span>, <span class="string">'领袖'</span>, <span class="string">'高度'</span>]</span><br><span class="line">[[<span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">2</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span> <span class="number">1</span></span><br><span class="line">  <span class="number">1</span>]]</span><br></pre></td></tr></table></figure>
+
+<p>就抽取到很多词语了。</p>
+<h2 id="特征的预处理：对数值型的数据进行处理"><a href="#特征的预处理：对数值型的数据进行处理" class="headerlink" title="特征的预处理：对数值型的数据进行处理"></a>特征的预处理：对数值型的数据进行处理</h2><h3 id="归一化处理"><a href="#归一化处理" class="headerlink" title="归一化处理"></a>归一化处理</h3><p>案例分析：</p>
+<img src="/machine-learning/feature-engineering/normalizeexcerisx.png" class="" title="normalizeexcerisx">
+
+<p>无量纲化：</p>
+<ul>
+<li>在机器学习算法实践中，我们往往有着将不同规格的数据转换到同一规格，或不同分布的数据转换到某个特定分布的需求这种需求统称为将数据“无量纲化”。譬如梯度和矩阵为核心的算法中，譬如逻辑回归，支持向量机，神经网络，无量纲化可以加快求解速度;而在距离类模型，譬如K近邻，K-Means聚类中，无量纲化可以帮我们提升模型精度，避免某一个取值范围特别大的特征对距离计算造成影响。(一个特例是决策树和树的集成算法们，对决策 树我们不需要无量纲化，决策树可以把任意数据都处理得很好。)</li>
+<li>那么预处理就是用来实现无量纲化的方式。</li>
+</ul>
+<p>含义：特征抽取后我们就可以获取对应的数值型的样本数据啦，然后就可以进行数据的预处理了。</p>
+<p>概念：通过特定的统计方法（数学方法），将数据转换成算法要求的数据</p>
+<p>方式：</p>
+<ul>
+<li>归一化</li>
+<li>标准化</li>
+</ul>
+<p>归一化的实现：</p>
+<img src="/machine-learning/feature-engineering/normalizeexcerisxmap.png" class="" title="normalizeexcerisxmap">
+
+<p>归一化后的数据服从正态分布。</p>
+<p>API：<code>from sklearn.preprocessing import MinMaxScaler</code></p>
+<ul>
+<li>参数：feature_range 表示缩放范围，通常使用默认的 <code>(0,1)</code></li>
+</ul>
+<p>作用：使得某一个特征对最终结果不会造成很大的影响</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> MinMaxScaler</span><br><span class="line">data = np.array(</span><br><span class="line">    [[<span class="number">90</span>, <span class="number">2</span>, <span class="number">10</span>, <span class="number">40</span>],</span><br><span class="line">     [<span class="number">60</span>, <span class="number">5</span>, <span class="number">15</span>, <span class="number">45</span>],</span><br><span class="line">     [<span class="number">73</span>, <span class="number">3</span>, <span class="number">13</span>, <span class="number">45</span>]]</span><br><span class="line">)</span><br><span class="line">mm = MinMaxScaler()</span><br><span class="line">result = mm.fit_transform(data)</span><br><span class="line">result</span><br></pre></td></tr></table></figure>
+
+<p>得到的新数组就是归一化的了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">array([[<span class="number">1.</span>        , <span class="number">0.</span>        , <span class="number">0.</span>        , <span class="number">0.</span>        ],</span><br><span class="line">       [<span class="number">0.</span>        , <span class="number">1.</span>        , <span class="number">1.</span>        , <span class="number">1.</span>        ],</span><br><span class="line">       [<span class="number">0.43333333</span>, <span class="number">0.33333333</span>, <span class="number">0.6</span>       , <span class="number">1.</span>        ]])</span><br></pre></td></tr></table></figure>
+
+<p>我们可以通过 inverse_transform 方法将归一化的数组转化回原数组：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mm.inverse_transform(result)</span><br></pre></td></tr></table></figure>
+
+<p>就得到了原来的数组：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">array([[<span class="number">90.</span>,  <span class="number">2.</span>, <span class="number">10.</span>, <span class="number">40.</span>],</span><br><span class="line">       [<span class="number">60.</span>,  <span class="number">5.</span>, <span class="number">15.</span>, <span class="number">45.</span>],</span><br><span class="line">       [<span class="number">73.</span>,  <span class="number">3.</span>, <span class="number">13.</span>, <span class="number">45.</span>]])</span><br></pre></td></tr></table></figure>
+
+<h3 id="标准化处理"><a href="#标准化处理" class="headerlink" title="标准化处理"></a>标准化处理</h3><p>如果数据中存在的异常值比较多，会对结果造成什么样的影响？</p>
+<p>结合着归一化计算的公式可知，异常值对原始特征中的最大值和最小值的影响很大，因此也会影响对归一化之后的值。这个也是归一化的一个弊端，无法很好的处理异常值。</p>
+<p>在特定场景下最大值和最小值是变化的，另外最大最小值很容易受到异常值的影响，所以这种归一化的方式具有一定的局限性。因此引出了一种更好的方式叫做：标准化。</p>
+<p>标准化的处理就是，当数据按均值中心化后，再按标准差缩放，数据就会服从为均值为 0，方差为 1 的正态分布(即标准正态分布)。而这个过程，就叫做数据标准化（Standardization，又称 Z-score normalization），公式如下：</p>
+
+
+<p>从公式中可以看出，由于平均值和标准差的引入，稀释了异常值对结果的影响。</p>
+<p>处理后，每列所有的数据都聚集在均值为 0，标准差为 1 范围附近</p>
+<p>标准化 API：<code>from sklearn.preprocessing import StandardScaler</code></p>
+<ul>
+<li><code>fit_transform(X)</code>：对 X 进行标准化</li>
+<li><code>mean_</code>：均值</li>
+<li><code>var_</code>：方差</li>
+</ul>
+<p>标准化处理示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> StandardScaler</span><br><span class="line">data = np.array(</span><br><span class="line">    [[<span class="number">90</span>, <span class="number">2</span>, <span class="number">10</span>, <span class="number">40</span>],</span><br><span class="line">     [<span class="number">60</span>, <span class="number">5</span>, <span class="number">15</span>, <span class="number">45</span>],</span><br><span class="line">     [<span class="number">73</span>, <span class="number">3</span>, <span class="number">13</span>, <span class="number">45</span>]]</span><br><span class="line">)</span><br><span class="line">ss = StandardScaler()</span><br><span class="line">result = ss.fit_transform(data)</span><br><span class="line">result</span><br></pre></td></tr></table></figure>
+
+<p>得到标准化处理的结果为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">array([[ <span class="number">1.27540458</span>, <span class="number">-1.06904497</span>, <span class="number">-1.29777137</span>, <span class="number">-1.41421356</span>],</span><br><span class="line">       [<span class="number">-1.16685951</span>,  <span class="number">1.33630621</span>,  <span class="number">1.13554995</span>,  <span class="number">0.70710678</span>],</span><br><span class="line">       [<span class="number">-0.10854507</span>, <span class="number">-0.26726124</span>,  <span class="number">0.16222142</span>,  <span class="number">0.70710678</span>]])</span><br></pre></td></tr></table></figure>
+
+<p>同样，我们还可以通过 inverse_transform 方法将标准化的数据转换回原数据：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ss.inverse_transform(result)</span><br></pre></td></tr></table></figure>
+
+<p>就得到了原始数据：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">array([[<span class="number">90.</span>,  <span class="number">2.</span>, <span class="number">10.</span>, <span class="number">40.</span>],</span><br><span class="line">       [<span class="number">60.</span>,  <span class="number">5.</span>, <span class="number">15.</span>, <span class="number">45.</span>],</span><br><span class="line">       [<span class="number">73.</span>,  <span class="number">3.</span>, <span class="number">13.</span>, <span class="number">45.</span>]])</span><br></pre></td></tr></table></figure>
+
+<h3 id="归一化和标准化小结"><a href="#归一化和标准化小结" class="headerlink" title="归一化和标准化小结"></a>归一化和标准化小结</h3><p>归一化和标准化的特点：</p>
+<ul>
+<li>对于归一化来说，如果出现了异常值则会响应特征的最大最小值，那么最终结果会受到比较大影响</li>
+<li>对于标准化来说，如果出现异常点，由于具有一定的数据量，少量的异常点对于平均值的影响并不大，从而标准差改变比较少。</li>
+</ul>
+<p>总结来说：</p>
+<ul>
+<li>归一化<ul>
+<li>优点：计算复杂度较低。</li>
+<li>缺点：对异常值过于敏感。</li>
+</ul>
+</li>
+<li>标准化<ul>
+<li>优点：对异常值不敏感</li>
+<li>缺点：计算复杂度较高于归一化</li>
+</ul>
+</li>
+<li>使用：先使用归一化，效果不好换成标准化</li>
+</ul>
+<p>StandardScaler 和 MinMaxScaler 选哪个?</p>
+<ul>
+<li>看情况。大多数机器学习算法中，会选择 StandardScaler 来进行特征缩放，因为 MinMaxScaler 对异常值非常敏感。</li>
+<li>建议先试试看 StandardScaler，效果不好换 MinMaxScaler。</li>
+<li>拓展：在 PCA，聚类，逻辑回归，支持向量机，神经网络这些算法中，StandardScaler 往往是最好的选择。 MinMaxScaler 在不涉及距离度量、梯度、协方差计算以及数据需要被压缩到特定区间时使用广泛，比如数字图像处理中量化像素强度时，都会使用 MinMaxScaler 将数据压缩于 <code>[0,1]</code> 区间之中。</li>
+</ul>
+<h2 id="特征选择"><a href="#特征选择" class="headerlink" title="特征选择"></a>特征选择</h2><p>原始的特征中会有相关度较高的特征会造成特征冗余，或者会有一些偏执特征，会形成噪点特征。特征选择，就是从特征中选择出有意义对模型有帮助的特征作为最终的机器学习输入的数据。</p>
+<p>切记：</p>
+<ul>
+<li>在做特征选择之前，有三件非常重要的事:跟数据提供者联系，跟数据提供者沟通，跟数据提供者开会。</li>
+<li>一定要抓住给你提供数据的人，尤其是理解业务和数据含义的人，跟他们聊一段时间。技术能够让模型起飞，前提是你和业务人员一样理解数据。所以特征选择的第一步，其实是根据我们的目标，用业务常识来选择特征。</li>
+</ul>
+<p>特征选择的原因：</p>
+<ul>
+<li>冗余：部分特征的相关度高，容易消耗计算机的性能，比如楼房的高度和层数</li>
+<li>噪点：部分特征对预测结果有偏执影响，该特征与预测结果直接几乎没有联系，比如买房者的身高对房价的预测</li>
+</ul>
+<p>我们可以人为对不相关的特征进行主观舍弃实现特征多选择。</p>
+<p>当然了，在真正的数据应用领域，比如金融，医疗，电商，我们的数据特征非常多，且不是十分明显。那如果遇见极端情况，我们无法依赖对业务的理解来选择特征，该怎么办呢?</p>
+<p>在已有特征和对应预测结果的基础上，使用相关的工具过滤掉一些无用或权重较低的特征</p>
+<p>选择特征使用的工具：</p>
+<ul>
+<li>Filter（过滤式）：主要讨论</li>
+<li>Embedded（嵌入式）：决策树模型会自己选择出对其重要的特征。后期在讲解模型的时候会补充</li>
+<li>PCA 降维</li>
+</ul>
+<h3 id="Filter-过滤式（方差过滤）"><a href="#Filter-过滤式（方差过滤）" class="headerlink" title="Filter 过滤式（方差过滤）"></a>Filter 过滤式（方差过滤）</h3><p>原理：这是通过特征本身的方差来筛选特征的类。比如一个特征本身的方差很小，就表示样本在这个特征上基本没有差异，可能特征中的大多数值都一样，甚至整个特征的取值都相同，那这个特征对于样本区分没有什么作用。所以无论接下来的特征工程要做什么，都要优先消除方差为0或者方差极低的特征。</p>
+<p>API：<code>from sklearn.feature_selection import VarianceThreshold</code></p>
+<ul>
+<li><code>VarianceThreshold(threshold=x)</code>：threshold 参数用来指定方差的阈值，删除所有方差低于 x 的特征，默认值为 0 表示保留所有方差为非 0 的特征</li>
+<li><code>fit_transform(X)</code>：X 为特征</li>
+</ul>
+<p>方差过滤示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> sklearn.feature_selection <span class="keyword">import</span> VarianceThreshold</span><br><span class="line">data = np.array(</span><br><span class="line">    [[<span class="number">90</span>, <span class="number">2</span>, <span class="number">10</span>, <span class="number">40</span>],</span><br><span class="line">     [<span class="number">60</span>, <span class="number">5</span>, <span class="number">15</span>, <span class="number">45</span>],</span><br><span class="line">     [<span class="number">73</span>, <span class="number">3</span>, <span class="number">13</span>, <span class="number">45</span>]]</span><br><span class="line">)</span><br><span class="line">vt = VarianceThreshold(threshold=<span class="number">5</span>)</span><br><span class="line">vt.fit_transform(data)</span><br></pre></td></tr></table></figure>
+
+<p>所有超过方差阈值的列都被舍弃了：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">array([[<span class="number">90</span>, <span class="number">40</span>],</span><br><span class="line">       [<span class="number">60</span>, <span class="number">45</span>],</span><br><span class="line">       [<span class="number">73</span>, <span class="number">45</span>]])</span><br></pre></td></tr></table></figure>
+
+<p>如果将方差为0或者方差极低的特征去除后，剩余特征还有很多且模型的效果没有显著提升,则方差也可以帮助我们将特征选择 <code>一步到位</code>。留下一半的特征，那可以设定一个让特征总数减半的方差阈值，只要找到特征方差的中位数，再将这个中位数作为参数 threshold 的值输入就好了。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">VarianceThreshold(np.median(X.var(axis=<span class="number">0</span>))).fit_transform(X)</span><br></pre></td></tr></table></figure>
+
+<p>其中，X 为样本数据中的特征列</p>
+<p>完整示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> sklearn.feature_selection <span class="keyword">import</span> VarianceThreshold</span><br><span class="line">data = np.array(</span><br><span class="line">    [[<span class="number">90</span>, <span class="number">2</span>, <span class="number">10</span>, <span class="number">40</span>],</span><br><span class="line">     [<span class="number">60</span>, <span class="number">5</span>, <span class="number">15</span>, <span class="number">45</span>],</span><br><span class="line">     [<span class="number">73</span>, <span class="number">3</span>, <span class="number">13</span>, <span class="number">45</span>]]</span><br><span class="line">)</span><br><span class="line">vt = VarianceThreshold(threshold=np.median(data.var(axis=<span class="number">0</span>)))</span><br><span class="line">vt.fit_transform(data)</span><br></pre></td></tr></table></figure>
+
+<p>就保留了一半的数据列：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">array([[<span class="number">90</span>, <span class="number">40</span>],</span><br><span class="line">       [<span class="number">60</span>, <span class="number">45</span>],</span><br><span class="line">       [<span class="number">73</span>, <span class="number">45</span>]])</span><br></pre></td></tr></table></figure>
+
+<p>我们这样做了以后，对模型效果会有怎样的影响呢？</p>
+<p>下面的两张图片展现了 KNN 在方差过滤前和方差过滤后运行的效果和运行时间的对比。KNN 是 K 近邻算法中的分类算法，其原理非常简单，是利用每个样本到其他样本点的距离来判断每个样本点的相似度，然后对样本进行分类。KNN 必须遍历每个特征和每个样本，因而特征越多，KNN 的计算也就会越缓慢。由于这一段代码对比运行时间过长，所以直接贴出代码和结果。</p>
+<p>方差过滤前：</p>
+
+
+
+
+<p>方差过滤后：</p>
+
+
+<p>可以看出，对于 KNN，过滤后的效果十分明显:准确率稍有提升。平均运行时间减少了 10 分钟，特征选择过后算法的效率上升了 1/3。</p>
+<p>注意：方差过滤主要服务的对象是需要遍历特征的算法模型。过滤法的主要目的是在维持算法表现的前提下，帮助算法们降低计算成本。</p>
+<h3 id="PCA-降维（主成分分析）"><a href="#PCA-降维（主成分分析）" class="headerlink" title="PCA 降维（主成分分析）"></a>PCA 降维（主成分分析）</h3><p>PCA 降维是一种分析，简化数据集的技术。</p>
+<p>降维的维度值的就是特征的种类。</p>
+<p>思想：如何最好的对一个立体的物体用二维表示</p>
+<img src="/machine-learning/feature-engineering/sanweizhuihu.png" class="" title="sanweizhuihu">
+
+<p>显而易见，第四张二维图片可以比较好的标识一个立体三维的水壶。但是也要清楚，用一个低维度的方式去表示高维度的物体时，一定会造成一些信息的丢失。PCA 降维可以让低维度也可以能正确的表示高维度的事物，或者信息差异最小。</p>
+<p>目的：特征数量达到上百，上千的时候，考虑数据的优化。使数据维度压缩，尽可能降低源数据的维度（复杂度），损失少量信息。</p>
+<p>作用：可以削减回归分析或者聚类分析中特征的数量</p>
+<p>PCA 大致原理图：</p>
+
+
+<p>红色为原始的样本特征，为二维的特征，如果降为一维，则可以将二维分散的原始特征，映射到线段上就变成了一维特征。</p>
+<p>PCA 语法：</p>
+<ul>
+<li><code>from sklearn.decomposition import PCA</code></li>
+<li><code>pca = PCA(n_components=None)</code><ul>
+<li>n_components 可以为小数（保留特征的百分比），整数（减少到的特征数量）。默认为 None，减少一个特征。</li>
+</ul>
+</li>
+<li><code>pca.fit_transform(X)</code></li>
+</ul>
+<p>PCA 降维示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.decomposition <span class="keyword">import</span> PCA</span><br><span class="line">data = [[<span class="number">0</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">3</span>],[<span class="number">0</span>, <span class="number">3</span>, <span class="number">7</span>, <span class="number">3</span>],[<span class="number">0</span>, <span class="number">9</span>, <span class="number">6</span>, <span class="number">3</span>]]    <span class="comment"># 4维特征，4种特征</span></span><br><span class="line">pca = PCA()</span><br><span class="line">pca.fit_transform(data)</span><br></pre></td></tr></table></figure>
+
+<p>因为没有指定 n_components 参数，默认只减少一个维度：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">array([[<span class="number">-2.88362421e+00</span>, <span class="number">-1.25443227e+00</span>,  <span class="number">2.03388303e-16</span>],</span><br><span class="line">       [<span class="number">-1.45140588e+00</span>,  <span class="number">1.56492061e+00</span>,  <span class="number">2.03388303e-16</span>],</span><br><span class="line">       [ <span class="number">4.33503009e+00</span>, <span class="number">-3.10488337e-01</span>,  <span class="number">2.03388303e-16</span>]])</span><br></pre></td></tr></table></figure>
+
+<p>我们也可以指定 n_components 参数，限定减少到的维度数目：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.decomposition <span class="keyword">import</span> PCA</span><br><span class="line">data = [[<span class="number">0</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">3</span>],[<span class="number">0</span>, <span class="number">3</span>, <span class="number">7</span>, <span class="number">3</span>],[<span class="number">0</span>, <span class="number">9</span>, <span class="number">6</span>, <span class="number">3</span>]]</span><br><span class="line">pca = PCA(n_components=<span class="number">2</span>)</span><br><span class="line">pca.fit_transform(data)</span><br></pre></td></tr></table></figure>
+
+<p>就只保留了两个特征：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">array([[<span class="number">-2.88362421</span>, <span class="number">-1.25443227</span>],</span><br><span class="line">       [<span class="number">-1.45140588</span>,  <span class="number">1.56492061</span>],</span><br><span class="line">       [ <span class="number">4.33503009</span>, <span class="number">-0.31048834</span>]])</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Python/" rel="tag"># Python</a>
+              <a href="/tags/Anaconda/" rel="tag"># Anaconda</a>
+              <a href="/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/" rel="tag"># 机器学习</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/algorithm/binary-tree/" rel="prev" title="二叉树">
+      <i class="fa fa-chevron-left"></i> 二叉树
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/machine-learning/ml-abstract/" rel="next" title="机器学习概述">
+      机器学习概述 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#特征工程概述"><span class="nav-number">1.</span> <span class="nav-text">特征工程概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#特征抽取"><span class="nav-number">2.</span> <span class="nav-text">特征抽取</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#字典特征抽取"><span class="nav-number">2.1.</span> <span class="nav-text">字典特征抽取</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#特征值化和-One-Hot-编码"><span class="nav-number">2.2.</span> <span class="nav-text">特征值化和 One-Hot 编码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基于-Pandas-实现-One-Hot-编码"><span class="nav-number">2.3.</span> <span class="nav-text">基于 Pandas 实现 One-Hot 编码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文本特征抽取"><span class="nav-number">2.4.</span> <span class="nav-text">文本特征抽取</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#中文文本特征值抽取"><span class="nav-number">2.5.</span> <span class="nav-text">中文文本特征值抽取</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#特征的预处理：对数值型的数据进行处理"><span class="nav-number">3.</span> <span class="nav-text">特征的预处理：对数值型的数据进行处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#归一化处理"><span class="nav-number">3.1.</span> <span class="nav-text">归一化处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#标准化处理"><span class="nav-number">3.2.</span> <span class="nav-text">标准化处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#归一化和标准化小结"><span class="nav-number">3.3.</span> <span class="nav-text">归一化和标准化小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#特征选择"><span class="nav-number">4.</span> <span class="nav-text">特征选择</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Filter-过滤式（方差过滤）"><span class="nav-number">4.1.</span> <span class="nav-text">Filter 过滤式（方差过滤）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PCA-降维（主成分分析）"><span class="nav-number">4.2.</span> <span class="nav-text">PCA 降维（主成分分析）</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="刘硕"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">刘硕</p>
+  <div class="site-description" itemprop="description">不成为自己讨厌的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">324</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">55</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:liushuo432@outlook.com" title="E-Mail → mailto:liushuo432@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/2436055290" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;2436055290" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://wpa.qq.com/msgrd?v=3&uin=1696146913&site=qq&menu=yes" title="QQ → http:&#x2F;&#x2F;wpa.qq.com&#x2F;msgrd?v&#x3D;3&amp;uin&#x3D;1696146913&amp;site&#x3D;qq&amp;menu&#x3D;yes" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-fw fa-rss"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备20001451号 </a>
+      <img src="/images/beian_icon.png" style="display: inline-block;"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=21142102000063" rel="noopener" target="_blank">辽公网安备 21142102000063号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘硕</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">1.9m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">58:25</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.2" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'Ga2II3wuJmHX3GiNHm9TmI97-gzGzoHsz',
+      appKey     : 'esGYJQepdYLHf07E1VMsP3RK',
+      placeholder: "o(*￣▽￣*)ブ来说点什么吧...（填上邮箱可以收到回复提醒）",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : true,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+  <script type="text/javascript" src="/js/love.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/Epsilon2.1.model.json"},"display":{"superSample":2,"width":200,"height":400,"position":"left","hOffset":-30,"vOffset":-40},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>
