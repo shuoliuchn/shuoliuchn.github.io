@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="Tu5vqPaUb8svfkPx5eetJFD84ciQCcWVXNatdsWtj9Q">
+  <meta name="baidu-site-verification" content="baidu_verify_FBq9PG4BBb">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"appID":"PXY1Z6GHKT","apiKey":"eb82f2e78e3053f26aa408e9caa96d93","indexName":"blog","hits":{"per_page":10},"labels":{"input_placeholder":"要查点什么(✿◡‿◡)","hits_empty":"没有找到任何关于 ${query} 的结果╥﹏╥...","hits_stats":"搜索到 ${hits} 条记录，用时 ${time} ms o(*￣▽￣*)ブ"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="SQL，中文全称是结构化查询语言（Structured Query Language），简称 SQL（发音：&#x2F;ˈes kjuː ˈel&#x2F;，即 &#96;S-Q-L&#96;），是一种特殊目的的编程语言，是一种数据库查询和程序设计语言，用于存取数据以及查询、更新和管理关系数据库系统关系数据库系统">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库、数据表和数据的基本操作">
+<meta property="og:url" content="https://sliu.vip/database/mysql-db-tb/index.html">
+<meta property="og:site_name" content="刘硕的技术查阅手册">
+<meta property="og:description" content="SQL，中文全称是结构化查询语言（Structured Query Language），简称 SQL（发音：&#x2F;ˈes kjuː ˈel&#x2F;，即 &#96;S-Q-L&#96;），是一种特殊目的的编程语言，是一种数据库查询和程序设计语言，用于存取数据以及查询、更新和管理关系数据库系统关系数据库系统">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-04-25T16:28:08.408Z">
+<meta property="article:modified_time" content="2020-05-01T16:42:16.216Z">
+<meta property="article:author" content="刘硕">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://sliu.vip/database/mysql-db-tb/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>数据库、数据表和数据的基本操作 | 刘硕的技术查阅手册</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f14f123935d6183fdd06f8f1c4bc378f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="刘硕的技术查阅手册" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">刘硕的技术查阅手册</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">Python 全栈开发学习笔记</h1>
+      
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-toc">
+
+    <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+  
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/database/mysql-db-tb/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          数据库、数据表和数据的基本操作
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-04-26 00:28:08" itemprop="dateCreated datePublished" datetime="2020-04-26T00:28:08+08:00">2020-04-26</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-05-02 00:42:16" itemprop="dateModified" datetime="2020-05-02T00:42:16+08:00">2020-05-02</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/database/mysql-db-tb/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/database/mysql-db-tb/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>10k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>19 分钟</span>
+            </span>
+            <div class="post-description">SQL，中文全称是结构化查询语言（Structured Query Language），简称 SQL（发音：/ˈes kjuː ˈel/，即 `S-Q-L`），是一种特殊目的的编程语言，是一种数据库查询和程序设计语言，用于存取数据以及查询、更新和管理关系数据库系统关系数据库系统</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="SQL-概述"><a href="#SQL-概述" class="headerlink" title="SQL 概述"></a>SQL 概述</h3><p>SQL，中文全称是结构化查询语言（Structured Query Language），简称 SQL（发音：/ˈes kjuː ˈel/，即 <code>S-Q-L</code>），是一种特殊目的的编程语言，是一种数据库查询和程序设计语言，用于存取数据以及查询、更新和管理关系数据库系统关系数据库系统</p>
+<p>SQL 语言主要用于存取数据、查询数据、更新数据和管理关系数据库系统。SQL 语言由 IBM 开发。SQL 语言分为 3 种类型：</p>
+<ol>
+<li>DDL 语句，数据库定义语言： 数据库、表、视图、索引、存储过程，例如 CREATE DROP ALTER</li>
+<li>DML 语句，数据库操纵语言： 插入数据 INSERT、删除数据 DELETE、更新数据 UPDATE、查询数据 SELECT</li>
+<li>DCL 语句，数据库控制语言： 例如控制用户的访问权限 GRANT、REVOKE</li>
+</ol>
+<h3 id="数据库操作"><a href="#数据库操作" class="headerlink" title="数据库操作"></a>数据库操作</h3><p>数据库，database，db，其本质上就是一个文件夹。</p>
+<p>要想查看我们都有哪些数据库，可以使用这个命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show databases;</span><br></pre></td></tr></table></figure>
+
+<p>输出的结果为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">+--------------------+</span><br><span class="line">| Database           |</span><br><span class="line">+--------------------+</span><br><span class="line">| information_schema |</span><br><span class="line">| helloworld         |</span><br><span class="line">| mysql              |</span><br><span class="line">| performance_schema |</span><br><span class="line">| public             |</span><br><span class="line">+--------------------+</span><br></pre></td></tr></table></figure>
+
+<p>如果想要创建一个数据库，可以使用命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create database 数据库名;</span><br></pre></td></tr></table></figure>
+
+<p>例如，我们创建一个名为 test 的数据库，其命令为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create database test;</span><br></pre></td></tr></table></figure>
+
+<p>回车之后，提示创建成功：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Query OK, 1 row affected (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<p>我们在数据存放的目录中，也发现新创建了一个名为 test 的文件夹。</p>
+
+
+<p>需要注意的是，我们无论如何也不可以改动 MySQL 安装目录中的文件。因为这些文件都是按照很复杂的规则编写的，文件之间的关联也很紧密。修改一个数据，有可能造成整个数据库无法正常运行，甚至会造成数据的错误和丢失。</p>
+<p>另外，创建的数据库名字中不能出现中文和特殊字符。一定要按照变量命名规范，使用数字、字母和下划线命名。</p>
+<p>如果我们需要使用一个数据库，只需要使用命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">use 数据库名;</span><br></pre></td></tr></table></figure>
+
+<p>这里的分号可以不加。在MySQL中，几乎只有use和exit、quit这三个命令后面不需要加分号了。但是稳妥起见，还是建议后面加上一个分号。</p>
+<p>例如，我们要使用刚刚创建的 test 数据库，就可以这样写：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">use test;</span><br></pre></td></tr></table></figure>
+
+<p>返回结果如下，说明成功切换到 test 数据库：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Database changed</span><br></pre></td></tr></table></figure>
+
+<p>如果想知道当前使用的是哪一个数据库，可以输入命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select database();</span><br></pre></td></tr></table></figure>
+
+<p>当前运行的数据库名顺利返回：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">+------------+</span><br><span class="line">| database() |</span><br><span class="line">+------------+</span><br><span class="line">| test       |</span><br><span class="line">+------------+</span><br></pre></td></tr></table></figure>
+
+<p>我们日后几乎不会有删除数据库的需求。删除数据库是一个非常不好的行为，所以不在这里介绍删除数据库的方法。如果一定要学习，或者真的有删除数据库的需求，可以自行搜索，还是很简单的。</p>
+<h3 id="表操作"><a href="#表操作" class="headerlink" title="表操作"></a>表操作</h3><p>表，table，本质上就是数据库中的每一个文件。</p>
+<p>创建表的方式和创建数据库极其相似，也是要用到 create 语句。不过创建表时，我们需要指定表头内容，以及其中的数据类型：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">create table 表名(</span><br><span class="line">id int,</span><br><span class="line">name char(20),</span><br><span class="line">age int);</span><br></pre></td></tr></table></figure>
+
+<p>需要注意，最后一项的后面不可以加逗号。</p>
+<p>在 MySQL 中，如果不在语句的后面加分号，就会认为命令没有完结，就还可以继续输入。多行输入可以让内容开起来更直观。</p>
+<p>上面的例子中，id、name 和 age 是表头，int的意思是，id 和 age 必须是整数。<code>char(20)</code> 的意思是，名字必须是不超过 20 位的字符串。</p>
+<p>除了 int 和 char 外，MySQL 中还有其他数据类型，我们以后会有讨论。</p>
+<p>于是，我们可以建立这样两个表：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">create table table1(</span><br><span class="line">id int,</span><br><span class="line">name char(20),</span><br><span class="line">age int);</span><br><span class="line"></span><br><span class="line">create table table2(</span><br><span class="line">id int,</span><br><span class="line">username char(20),</span><br><span class="line">password char(32));</span><br></pre></td></tr></table></figure>
+
+<p>每次创建完表格，都会有提示创建成功：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Query OK, 0 rows affected (0.04 sec)</span><br></pre></td></tr></table></figure>
+
+<p>要想查看当前数据库中都有哪些表，我们可以使用命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show tables;</span><br></pre></td></tr></table></figure>
+
+<p>我们就可以看到，我们创建的两个表就在其中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">+----------------+</span><br><span class="line">| Tables_in_test |</span><br><span class="line">+----------------+</span><br><span class="line">| table1         |</span><br><span class="line">| table2         |</span><br><span class="line">+----------------+</span><br></pre></td></tr></table></figure>
+
+<p>正如我们从前讨论的，表本质上是储存在数据库文件夹中的文件。</p>
+
+
+<p>如果有一个表，我们不想要了，删除表格是很容易的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">drop table 表名;</span><br></pre></td></tr></table></figure>
+
+<p>例如，我们想删除刚刚创建的table2，可以使用这样的命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">drop table table2;</span><br></pre></td></tr></table></figure>
+
+<p>敲下回车后，提示删除成功：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Query OK, 0 rows affected (0.01 sec)</span><br></pre></td></tr></table></figure>
+
+<p>使用<code>show tables;</code>查询，以及看不见table2：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">+----------------+</span><br><span class="line">| Tables_in_test |</span><br><span class="line">+----------------+</span><br><span class="line">| table1         |</span><br><span class="line">+----------------+</span><br></pre></td></tr></table></figure>
+
+<p>在数据库文件夹中，也不见 table2 的踪迹。</p>
+
+
+<p>删除表虽然不像删除数据库那样严重，但依然不是好习惯。除非你十分确定需要删除那个表，而且名字没有错误，否则不可以轻易使用这个命令。</p>
+<p>表格创建好之后，如果表头很长，我们或许无法记住标头的内容。可以通过这样的方法查看表结构：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">desc 表名;</span><br></pre></td></tr></table></figure>
+
+<p>desc是describe的缩写，也就是描述的意思。</p>
+<p>例如，要查看table1的表结构，可以用这个办法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">desc table1;</span><br></pre></td></tr></table></figure>
+
+<p>table1的表结构就会呈现出来：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">+-------+----------+------+-----+---------+-------+</span><br><span class="line">| Field | Type     | Null | Key | Default | Extra |</span><br><span class="line">+-------+----------+------+-----+---------+-------+</span><br><span class="line">| id    | int(11)  | YES  |     | NULL    |       |</span><br><span class="line">| name  | char(20) | YES  |     | NULL    |       |</span><br><span class="line">| age   | int(11)  | YES  |     | NULL    |       |</span><br><span class="line">+-------+----------+------+-----+---------+-------+</span><br></pre></td></tr></table></figure>
+
+<p>除此之外，我们也可以通过查看创建表的语句来查看表头信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show create table 表名;</span><br></pre></td></tr></table></figure>
+
+<p>对于table1而言，具体的命令就是：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show create table table1;</span><br></pre></td></tr></table></figure>
+
+<p>table1的创建表语句为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">+--------+--------------------------------------------------------------------------------------------------------------------------------------------------------+</span><br><span class="line">| Table  | Create Table                                                                                                                                           |</span><br><span class="line">+--------+--------------------------------------------------------------------------------------------------------------------------------------------------------+</span><br><span class="line">| table1 | CREATE TABLE &#96;table1&#96; (</span><br><span class="line">  &#96;id&#96; int(11) DEFAULT NULL,</span><br><span class="line">  &#96;name&#96; char(20) DEFAULT NULL,</span><br><span class="line">  &#96;age&#96; int(11) DEFAULT NULL</span><br><span class="line">) ENGINE&#x3D;InnoDB DEFAULT CHARSET&#x3D;utf8 |</span><br><span class="line">+--------+--------------------------------------------------------------------------------------------------------------------------------------------------------+</span><br></pre></td></tr></table></figure>
+
+<p>我们看到，查看表结构和创建表语句都可以达到查看表头信息的目的。不同的是，查看创建表语句还能看到诸如引擎、编码之类的更加详细的信息。</p>
+<h3 id="数据操作"><a href="#数据操作" class="headerlink" title="数据操作"></a>数据操作</h3><p>表中的每一行内容，就是一条数据（data）。数据库从根本上来讲，就是用来管理这些数据的。数据存放在表中，而表存放在数据库中。</p>
+<p>记住一句话：数据操作一定要指定操作的是哪一张数据表。</p>
+<p>对数据的操作，无外乎增删改查四种。接下来，我们将逐一探讨。</p>
+<h4 id="增"><a href="#增" class="headerlink" title="增"></a>增</h4><p>向表中增加数据的基本结构为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">insert into 表名 values(数据1,数据2,数据3...);</span><br></pre></td></tr></table></figure>
+
+<p>例如，我们可以向table1中插入数据。注意数据要与表头一一对应：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">insert into table1 values(1,&#39;alex&#39;,83);</span><br></pre></td></tr></table></figure>
+
+<p>回车过后，提示操作成功：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Query OK, 1 row affected, 1 warning (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<p>我们可以通过命令 <code>select * from table1</code> 查看表中的内容，此时的结果为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">+------+------+------+</span><br><span class="line">| id   | name | age  |</span><br><span class="line">+------+------+------+</span><br><span class="line">|    1 | alex |   83 |</span><br><span class="line">+------+------+------+</span><br></pre></td></tr></table></figure>
+
+<p>数据添加成功。</p>
+<p>如果我们只想输入 id 和 name 两项内容，不想输入 age。如果这样输入会报错：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">insert into table1 values (2,&#39;wusir&#39;);</span><br></pre></td></tr></table></figure>
+
+<p>报错信息为，输入的数据条数和表格的列数不匹配：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ERROR 1136 (21S01): Column count doesn&#39;t match value count at row 1</span><br></pre></td></tr></table></figure>
+
+<p>这时，我们可以在表名后面指定我们要插入的数据的标题。同样地，指定的标题数目和我们插入的数据条数要一一对应，比如这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">insert into table1(id,name) values(2,&#39;wusir&#39;);</span><br></pre></td></tr></table></figure>
+
+<p>成功插入，查看 table1 中的内容是这样的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">+------+-------+------+</span><br><span class="line">| id   | name  | age  |</span><br><span class="line">+------+-------+------+</span><br><span class="line">|    1 | alex  |   83 |</span><br><span class="line">|    2 | wusir | NULL |</span><br><span class="line">+------+-------+------+</span><br></pre></td></tr></table></figure>
+
+<p>第二行的 age 显示为 NULL，意味着本行为空。</p>
+<p>其实，我们可以一次性在 values 后面指定多条数据，批量插入，每条数据之间，需要使用逗号隔开。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">insert into table1 values(3,&#39;baoyuan&#39;,18),(4,&#39;沙河吴彦祖&#39;,16);</span><br></pre></td></tr></table></figure>
+
+<p>此时table1中的内容为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">+------+-----------------+------+</span><br><span class="line">| id   | name            | age  |</span><br><span class="line">+------+-----------------+------+</span><br><span class="line">|    1 | alex            |   83 |</span><br><span class="line">|    2 | wusir           | NULL |</span><br><span class="line">|    3 | baoyuan         |   18 |</span><br><span class="line">|    4 | 沙河吴彦祖      |   16 |</span><br><span class="line">+------+-----------------+------+</span><br></pre></td></tr></table></figure>
+
+<p>说明一点，虽然存放数据库的路径和数据库名字、表名字中不可以出现中文，<strong>但数据中是可以存放中文的</strong>。</p>
+<p>同样地，我们也可以通过指定标题的方式，只插入部分数据：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">insert into table1(id,name) values(5,&#39;baoyuan&#39;),(6,&#39;沙河吴彦祖&#39;);</span><br></pre></td></tr></table></figure>
+
+<p>成功插入后，table1 的内容为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">+------+-----------------+------+</span><br><span class="line">| id   | name            | age  |</span><br><span class="line">+------+-----------------+------+</span><br><span class="line">|    1 | alex            |   83 |</span><br><span class="line">|    2 | wusir           | NULL |</span><br><span class="line">|    3 | baoyuan         |   18 |</span><br><span class="line">|    4 | 沙河吴彦祖      |   16 |</span><br><span class="line">|    5 | baoyuan         | NULL |</span><br><span class="line">|    6 | 沙河吴彦祖      | NULL |</span><br><span class="line">+------+-----------------+------+</span><br></pre></td></tr></table></figure>
+
+<h4 id="删"><a href="#删" class="headerlink" title="删"></a>删</h4><p>有的时候，我们需要删除表格中的某些数据。删除数据的标准格式为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">delete from 表名 where 条件</span><br></pre></td></tr></table></figure>
+
+<p>注意，这里面一定要指定条件，否则的话，这个命令就是<strong>清空</strong>整个表格。</p>
+<p>对于上面的例子中，后两条命令与前面的重复，我们想要把它们都删掉。我们发现，它们的 id 都大于 4，且只有它们的 id 大于 4。于是，我们就可以用这个作为条件，把它们删除掉：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">delete from table1 where id&gt;4;</span><br></pre></td></tr></table></figure>
+
+<p>后面两条内容被成功删除：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">+------+-----------------+------+</span><br><span class="line">| id   | name            | age  |</span><br><span class="line">+------+-----------------+------+</span><br><span class="line">|    1 | alex            |   83 |</span><br><span class="line">|    2 | wusir           | NULL |</span><br><span class="line">|    3 | baoyuan         |   18 |</span><br><span class="line">|    4 | 沙河吴彦祖      |   16 |</span><br><span class="line">+------+-----------------+------+</span><br></pre></td></tr></table></figure>
+
+<h4 id="改"><a href="#改" class="headerlink" title="改"></a>改</h4><p>我们看到，第二行 wusir 的年龄我们没有指定。这就需要修改他的年龄。</p>
+<p>MySQL 标准的修改数据的方式为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">update 表名 set 字段名 &#x3D; 值 where 条件;</span><br></pre></td></tr></table></figure>
+
+<p>同样地，这里的条件是必须的。否则，该字段下的所有数据都会被修改成为新的值。</p>
+<p>如果我们想设置wusir的年纪，可以这样操作：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">update table1 set age&#x3D;35 where id&#x3D;2;</span><br></pre></td></tr></table></figure>
+
+<p>设置成功：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">+------+-----------------+------+</span><br><span class="line">| id   | name            | age  |</span><br><span class="line">+------+-----------------+------+</span><br><span class="line">|    1 | alex            |   83 |</span><br><span class="line">|    2 | wusir           |   35 |</span><br><span class="line">|    3 | baoyuan         |   18 |</span><br><span class="line">|    4 | 沙河吴彦祖      |   16 |</span><br><span class="line">+------+-----------------+------+</span><br></pre></td></tr></table></figure>
+
+<p>这里的条件不一定要指定 <code>id=2</code>，我们也可以使用 <code>name=&#39;wusir&#39;</code>。需要注意的是，字符串的 <code>&#39;wusir&#39;</code> 要用引号引起来。</p>
+<h4 id="查"><a href="#查" class="headerlink" title="查"></a>查</h4><p>表格中数据的查找我们一直都在用，其基本结构为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">selct * from 表名;</span><br></pre></td></tr></table></figure>
+
+<p>这条命令用来查看表格中所有的内容。</p>
+<p>不过对于一些列数特别多的表格来说，这种查看方式会很乱，甚至可能会乱到无法阅读。</p>
+<p>比如对于 mysql 数据库的 user 表来说，我们用这个方式查看，得到的结果会是这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">+-----------+---------+-------------------------------------------+-------------+-------------+-------------+-------------+-------------+-----------+-------------+---------------+--------------+-----------+------------+-----------------+------------+------------+--------------+------------+-----------------------+------------------+--------------+-----------------+------------------+------------------+----------------+---------------------+--------------------+------------------+------------+--------------+------------------------+----------+------------+-------------+--------------+---------------+-------------+-----------------+----------------------+-----------------------+-----------------------+------------------+</span><br><span class="line">| Host      | User    | Password                                  | Select_priv | Insert_priv | Update_priv | Delete_priv | Create_priv | Drop_priv | Reload_priv | Shutdown_priv | Process_priv | File_priv | Grant_priv | References_priv | Index_priv | Alter_priv | Show_db_priv | Super_priv | Create_tmp_table_priv | Lock_tables_priv | Execute_priv | Repl_slave_priv | Repl_client_priv | Create_view_priv | Show_view_priv | Create_routine_priv | Alter_routine_priv | Create_user_priv | Event_priv | Trigger_priv | Create_tablespace_priv | ssl_type | ssl_cipher | x509_issuer | x509_subject | max_questions | max_updates | max_connections | max_user_connections | plugin                | authentication_string | password_expired |</span><br><span class="line">+-----------+---------+-------------------------------------------+-------------+-------------+-------------+-------------+-------------+-----------+-------------+---------------+--------------+-----------+------------+-----------------+------------+------------+--------------+------------+-----------------------+------------------+--------------+-----------------+------------------+------------------+----------------+---------------------+--------------------+------------------+------------+--------------+------------------------+----------+------------+-------------+--------------+---------------+-------------+-----------------+----------------------+-----------------------+-----------------------+------------------+</span><br><span class="line">| localhost | root    | *23AE809DDACAF96AF0FD78ED04B6A265E05AA257 | Y           | Y           | Y           | Y           | Y           | Y         | Y           | Y             | Y            | Y         | Y          | Y               | Y          | Y          | Y            | Y          | Y                     | Y                | Y            | Y               | Y                | Y                | Y              | Y                   | Y                  | Y                | Y          | Y            | Y                      |          |            |             |              |             0 |           0 |               0 |                    0 | mysql_native_password |                       | N                |</span><br><span class="line">| 127.0.0.1 | root    |                                           | Y           | Y           | Y           | Y           | Y           | Y         | Y           | Y             | Y            | Y         | Y          | Y               | Y          | Y          | Y            | Y          | Y                     | Y                | Y            | Y               | Y                | Y                | Y              | Y                   | Y                  | Y                | Y          | Y            | Y                      |          |            |             |              |             0 |           0 |               0 |                    0 | mysql_native_password |                       | N                |</span><br><span class="line">| ::1       | root    |                                           | Y           | Y           | Y           | Y           | Y           | Y         | Y           | Y             | Y            | Y         | Y          | Y               | Y          | Y          | Y            | Y          | Y                     | Y                | Y            | Y               | Y                | Y                | Y              | Y                   | Y                  | Y                | Y          | Y            | Y                      |          |            |             |              |             0 |           0 |               0 |                    0 | mysql_native_password |                       | N                |</span><br><span class="line">| localhost |         |                                           | N           | N           | N           | N           | N           | N         | N           | N             | N            | N         | N          | N               | N          | N          | N            | N          | N                     | N                | N            | N               | N                | N                | N              | N                   | N                  | N                | N          | N            | N                      |          |            |             |              |             0 |           0 |               0 |                    0 | mysql_native_password | NULL                  | N                |</span><br><span class="line">| %         | guest   | *23AE809DDACAF96AF0FD78ED04B6A265E05AA257 | N           | N           | N           | N           | N           | N         | N           | N             | N            | N         | N          | N               | N          | N          | N            | N          | N                     | N                | N            | N               | N                | N                | N              | N                   | N                  | N                | N          | N            | N                      |          |            |             |              |             0 |           0 |               0 |                    0 | mysql_native_password |                       | N                |</span><br><span class="line">| %         | xianhui | *23AE809DDACAF96AF0FD78ED04B6A265E05AA257 | N           | N           | N           | N           | N           | N         | N           | N             | N            | N         | N          | N               | N          | N          | N            | N          | N                     | N                | N            | N               | N                | N                | N              | N                   | N                  | N                | N          | N            | N                      |          |            |             |              |             0 |           0 |               0 |                    0 | mysql_native_password |                       | N                |</span><br><span class="line">+-----------+---------+-------------------------------------------+-------------+-------------+-------------+-------------+-------------+-----------+-------------+---------------+--------------+-----------+------------+-----------------+------------+------------+--------------+------------+-----------------------+------------------+--------------+-----------------+------------------+------------------+----------------+---------------------+--------------------+------------------+------------+--------------+------------------------+----------+------------+-------------+--------------+---------------+-------------+-----------------+----------------------+-----------------------+-----------------------+------------------+</span><br></pre></td></tr></table></figure>
+
+<p>除非使用一个很大的显示器，我们很难看懂这一大串数据究竟是什么东西。</p>
+<p>不过如果我们只对表格中的某几列感兴趣，就可以将<code>*</code>替换成列的名字，列明之间用逗号隔开，例如我们只想查看<code>Host</code>、<code>User</code>和<code>Password</code>这三列，就可以这样查看：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select host,user,password from user;</span><br></pre></td></tr></table></figure>
+
+<p>结果就变成了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">+-----------+---------+-------------------------------------------+</span><br><span class="line">| host      | user    | password                                  |</span><br><span class="line">+-----------+---------+-------------------------------------------+</span><br><span class="line">| localhost | root    | *23AE809DDACAF96AF0FD78ED04B6A265E05AA257 |</span><br><span class="line">| 127.0.0.1 | root    |                                           |</span><br><span class="line">| ::1       | root    |                                           |</span><br><span class="line">| localhost |         |                                           |</span><br><span class="line">| %         | guest   | *23AE809DDACAF96AF0FD78ED04B6A265E05AA257 |</span><br><span class="line">| %         | xianhui | *23AE809DDACAF96AF0FD78ED04B6A265E05AA257 |</span><br><span class="line">+-----------+---------+-------------------------------------------+</span><br></pre></td></tr></table></figure>
+
+<p>看起来就简单了许多。</p>
+<p>你或许已经发现，在上面的显示中，Host、User 和 Password 的首字母都大写，而我输入的标题全部用的小写。这是因为 MySQL 的标题中是不区分大小写的。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" rel="tag"># 数据库</a>
+              <a href="/tags/MySQL/" rel="tag"># MySQL</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/database/mysql-data-type/" rel="prev" title="MySQL中的数据类型">
+      <i class="fa fa-chevron-left"></i> MySQL中的数据类型
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/linux/redis-distributed-cache/" rel="next" title="Redis 分布式缓存">
+      Redis 分布式缓存 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#SQL-概述"><span class="nav-number">1.</span> <span class="nav-text">SQL 概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据库操作"><span class="nav-number">2.</span> <span class="nav-text">数据库操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#表操作"><span class="nav-number">3.</span> <span class="nav-text">表操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#数据操作"><span class="nav-number">4.</span> <span class="nav-text">数据操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#增"><span class="nav-number">4.1.</span> <span class="nav-text">增</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删"><span class="nav-number">4.2.</span> <span class="nav-text">删</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#改"><span class="nav-number">4.3.</span> <span class="nav-text">改</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查"><span class="nav-number">4.4.</span> <span class="nav-text">查</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="刘硕"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">刘硕</p>
+  <div class="site-description" itemprop="description">不成为自己讨厌的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">342</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">55</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:liushuo432@outlook.com" title="E-Mail → mailto:liushuo432@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/2436055290" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;2436055290" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://wpa.qq.com/msgrd?v=3&uin=1696146913&site=qq&menu=yes" title="QQ → http:&#x2F;&#x2F;wpa.qq.com&#x2F;msgrd?v&#x3D;3&amp;uin&#x3D;1696146913&amp;site&#x3D;qq&amp;menu&#x3D;yes" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-fw fa-rss"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备20001451号 </a>
+      <img src="/images/beian_icon.png" style="display: inline-block;"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=21142102000063" rel="noopener" target="_blank">辽公网安备 21142102000063号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘硕</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">2m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">61:19</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.2" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'Ga2II3wuJmHX3GiNHm9TmI97-gzGzoHsz',
+      appKey     : 'esGYJQepdYLHf07E1VMsP3RK',
+      placeholder: "o(*￣▽￣*)ブ来说点什么吧...（填上邮箱可以收到回复提醒）",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : true,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+  <script type="text/javascript" src="/js/love.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/Epsilon2.1.model.json"},"display":{"superSample":2,"width":200,"height":400,"position":"left","hOffset":-30,"vOffset":-40},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>

@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="Tu5vqPaUb8svfkPx5eetJFD84ciQCcWVXNatdsWtj9Q">
+  <meta name="baidu-site-verification" content="baidu_verify_FBq9PG4BBb">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"appID":"PXY1Z6GHKT","apiKey":"eb82f2e78e3053f26aa408e9caa96d93","indexName":"blog","hits":{"per_page":10},"labels":{"input_placeholder":"要查点什么(✿◡‿◡)","hits_empty":"没有找到任何关于 ${query} 的结果╥﹏╥...","hits_stats":"搜索到 ${hits} 条记录，用时 ${time} ms o(*￣▽￣*)ブ"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="负载均衡可以采用硬件设备，也可以采用软件负载。但是商用硬件负载设备成本通常较高，所以一般情况下会采用软件负载。软件负载解决的两个核心问题是：选谁、转发，其中最著名的是 LVS。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LVS + keepalived 实现负载均衡">
+<meta property="og:url" content="https://sliu.vip/linux/lvs-keepalived-lb/index.html">
+<meta property="og:site_name" content="刘硕的技术查阅手册">
+<meta property="og:description" content="负载均衡可以采用硬件设备，也可以采用软件负载。但是商用硬件负载设备成本通常较高，所以一般情况下会采用软件负载。软件负载解决的两个核心问题是：选谁、转发，其中最著名的是 LVS。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sliu.vip/linux/lvs-keepalived-lb/lvs-nat.png">
+<meta property="og:image" content="https://sliu.vip/linux/lvs-keepalived-lb/lvs-tunl.png">
+<meta property="og:image" content="https://sliu.vip/linux/lvs-keepalived-lb/lvs-dr.png">
+<meta property="og:image" content="https://sliu.vip/linux/lvs-keepalived-lb/clip_image002.jpg">
+<meta property="og:image" content="https://sliu.vip/linux/lvs-keepalived-lb/clip_image004.jpg">
+<meta property="og:image" content="https://sliu.vip/linux/lvs-keepalived-lb/clip_image006.jpg">
+<meta property="og:image" content="https://sliu.vip/linux/lvs-keepalived-lb/clip_image008.jpg">
+<meta property="og:image" content="https://sliu.vip/linux/lvs-keepalived-lb/clip_image014.jpg">
+<meta property="og:image" content="https://sliu.vip/linux/lvs-keepalived-lb/clip_image016.jpg">
+<meta property="og:image" content="https://sliu.vip/linux/lvs-keepalived-lb/1587909051092.png">
+<meta property="og:image" content="https://sliu.vip/linux/lvs-keepalived-lb/1587909351761.png">
+<meta property="og:image" content="https://sliu.vip/linux/lvs-keepalived-lb/1587910453230.png">
+<meta property="og:image" content="https://sliu.vip/linux/lvs-keepalived-lb/1587911192915.png">
+<meta property="og:image" content="https://sliu.vip/linux/lvs-keepalived-lb/clip_image042.jpg">
+<meta property="og:image" content="https://sliu.vip/linux/lvs-keepalived-lb/clip_image050.jpg">
+<meta property="og:image" content="https://sliu.vip/linux/lvs-keepalived-lb/keepalivedswitchtest.gif">
+<meta property="og:image" content="https://sliu.vip/linux/lvs-keepalived-lb/1587913444740.png">
+<meta property="og:image" content="https://sliu.vip/linux/lvs-keepalived-lb/1587913527992.png">
+<meta property="og:image" content="https://sliu.vip/linux/lvs-keepalived-lb/clip_image069.jpg">
+<meta property="og:image" content="https://sliu.vip/linux/lvs-keepalived-lb/1587914729575.png">
+<meta property="article:published_time" content="2020-04-26T17:04:20.094Z">
+<meta property="article:modified_time" content="2020-05-01T16:42:16.229Z">
+<meta property="article:author" content="刘硕">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="运维">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sliu.vip/linux/lvs-keepalived-lb/lvs-nat.png">
+
+<link rel="canonical" href="https://sliu.vip/linux/lvs-keepalived-lb/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>LVS + keepalived 实现负载均衡 | 刘硕的技术查阅手册</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f14f123935d6183fdd06f8f1c4bc378f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="刘硕的技术查阅手册" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">刘硕的技术查阅手册</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">Python 全栈开发学习笔记</h1>
+      
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-toc">
+
+    <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+  
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/linux/lvs-keepalived-lb/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          LVS + keepalived 实现负载均衡
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-04-27 01:04:20" itemprop="dateCreated datePublished" datetime="2020-04-27T01:04:20+08:00">2020-04-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-05-02 00:42:16" itemprop="dateModified" datetime="2020-05-02T00:42:16+08:00">2020-05-02</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/linux/lvs-keepalived-lb/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/linux/lvs-keepalived-lb/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>7.1k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>13 分钟</span>
+            </span>
+            <div class="post-description">负载均衡可以采用硬件设备，也可以采用软件负载。但是商用硬件负载设备成本通常较高，所以一般情况下会采用软件负载。软件负载解决的两个核心问题是：选谁、转发，其中最著名的是 LVS。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><h3 id="负载均衡的类型"><a href="#负载均衡的类型" class="headerlink" title="负载均衡的类型"></a>负载均衡的类型</h3><p>负载均衡可以采用硬件设备，也可以采用软件负载。但是商用硬件负载设备成本通常较高，所以一般情况下会采用软件负载。</p>
+<p>软件负载解决的两个核心问题是：选谁、转发，其中最著名的是 LVS。</p>
+<h3 id="LVS-概述"><a href="#LVS-概述" class="headerlink" title="LVS 概述"></a>LVS 概述</h3><p>LVS 的英文全称是 Linux Virtual Server，即 Linux 虚拟服务器。是由章文嵩博士发起的自由软件项目，它的官方站点是 <a href="http://www.linuxvirtualserver.org" target="_blank" rel="noopener">www.linuxvirtualserver.org</a></p>
+<p>Linux 2.4 内核以后，LVS 已经是 Linux 标准内核的一部分。</p>
+<p>lvs 可以将请求分发给后端真实服务器处理</p>
+<p>有许多比较著名网站和组织都在使用 LVS 架设的集群系统，例如：Linux 的门户网站（&lt;<a href="http://www.linux.com&gt;）、向" target="_blank" rel="noopener">www.linux.com&gt;）、向</a> RealPlayer 提供音频视频服务而闻名的 Real 公司（&lt;<a href="http://www.real.com&gt;）、全球最大的开源网站（" target="_blank" rel="noopener">www.real.com&gt;）、全球最大的开源网站（</a><a href="https://sourceforge.net/" target="_blank" rel="noopener">https://sourceforge.net/</a>）等。</p>
+<p>LVS 提供了多种调度算法：</p>
+<ul>
+<li><p>轮询调度（Round-Robin Scheduling）</p>
+</li>
+<li><p>加权轮询调度（Weighted Round-Robin Scheduling）</p>
+</li>
+<li><p>最小连接调度（Least-Connection Scheduling）</p>
+</li>
+<li><p>加权最小连接调度（Weighted Least-Connection Scheduling）</p>
+</li>
+<li><p>基于局部性的最少链接（Locality-Based Least Connections   Scheduling）</p>
+</li>
+<li><p>带复制的基于局部性最少链接（Locality-Based Least  Connections with Replication Scheduling）</p>
+</li>
+<li><p>目标地址散列调度（Destination Hashing Scheduling）</p>
+</li>
+<li><p>源地址散列调度（Source Hashing Scheduling）</p>
+</li>
+<li><p>最短预期延时调度（Shortest Expected Delay Scheduling）</p>
+</li>
+<li><p>不排队调度（Never Queue Scheduling）对应: <code>rr|wrr|lc|wlc|lblc|lblcr|dh|sh|sed|nq</code></p>
+</li>
+</ul>
+<p>还有三种转发规则：</p>
+<ul>
+<li><p>NAT：简单理解，就是数据进出都通过 LVS，性能不是很好。</p>
+<img src="/linux/lvs-keepalived-lb/lvs-nat.png" class="" title="lvs-nat">
+</li>
+<li><p>TUNL：简单理解就是隧道，讲输入输出分离，但实际上效果并不显著。</p>
+<img src="/linux/lvs-keepalived-lb/lvs-tunl.png" class="" title="lvs-tunl">
+</li>
+<li><p>DR：最高效的负载均衡规则，服务器直接将数据返回给服务端，无需经过负载均衡。</p>
+<img src="/linux/lvs-keepalived-lb/lvs-dr.png" class="" title="lvs-dr">
+
+</li>
+</ul>
+<h3 id="LVS-的体系结构"><a href="#LVS-的体系结构" class="headerlink" title="LVS 的体系结构"></a>LVS 的体系结构</h3><ul>
+<li><p>最前端的负载均衡层，用 Load Balancer 表示</p>
+</li>
+<li><p>中间的服务器集群层，用 Server Array 表示</p>
+</li>
+<li><p>最底端的数据共享存储层，用 Shared Storage 表示</p>
+</li>
+</ul>
+<p>在用户看来，所有的内部应用都是透明的，用户只是在使用一个虚拟服务器提供的高性能服务</p>
+<img src="/linux/lvs-keepalived-lb/clip_image002.jpg" class="" title="clip_image002">
+
+<h3 id="Keepalived-介绍"><a href="#Keepalived-介绍" class="headerlink" title="Keepalived 介绍"></a>Keepalived 介绍</h3><p>因为所有的请求都要经过负载均衡，所以负载均衡必然是非常重要，不能挂掉，说白了就是要keep the lVS alived。</p>
+<p>我们这里的演示需要 Keepalived 提供的功能就是可以配置 2 台 LVS，一台主机，一台备机。并且检测任何一个节点是否还活着。</p>
+<h3 id="LVS-的优点"><a href="#LVS-的优点" class="headerlink" title="LVS 的优点"></a>LVS 的优点</h3><p>抗负载能力强，因为 LVS 工作方式的逻辑是非常之简单，而且工作在网络 4 层仅做请求分发之用，没有流量，所以在效率上基本不需要太过考虑。</p>
+<p>七层网络协议：应用层、表示层、会话层、传输层、网络层、链路层、物理层</p>
+<img src="/linux/lvs-keepalived-lb/clip_image004.jpg" class="" title="clip_image004">
+
+<p>有完整的双机热备方案，当节点出现故障时，LVS 会自动判别，所以系统整体是非常稳定的。</p>
+<p>基本上能支持所有应用，因为 LVS 工作在 4 层，所以它可以对几乎所有应用做负载均衡，包括 http、数据库、聊天室等等。</p>
+<img src="/linux/lvs-keepalived-lb/clip_image006.jpg" class="" title="clip_image006">
+
+<h3 id="LVS-与-Nginx-的对比"><a href="#LVS-与-Nginx-的对比" class="headerlink" title="LVS 与 Nginx 的对比"></a>LVS 与 Nginx 的对比</h3><ul>
+<li><p>负载度：LVS 优于 Nginx</p>
+</li>
+<li><p>稳定度：LVS 优于 Nginx</p>
+</li>
+<li><p>服务器性能要求：LVS 优于 Nginx</p>
+</li>
+<li><p>网络层数的效率：LVS 优于 Nginx</p>
+</li>
+<li><p>功能多少：Nginx 优于 LVS</p>
+</li>
+</ul>
+<h3 id="LVS-Keepalived-的应用场景"><a href="#LVS-Keepalived-的应用场景" class="headerlink" title="LVS + Keepalived 的应用场景"></a>LVS + Keepalived 的应用场景</h3><p>主要使用在大型网站负载均衡。</p>
+<h2 id="LVS-Keepalived-的安装和负载均衡配置"><a href="#LVS-Keepalived-的安装和负载均衡配置" class="headerlink" title="LVS + Keepalived 的安装和负载均衡配置"></a>LVS + Keepalived 的安装和负载均衡配置</h2><h3 id="软件环境"><a href="#软件环境" class="headerlink" title="软件环境"></a>软件环境</h3><p>CentOS 7（4台），这里用虚拟机演示，包括：</p>
+<ul>
+<li><p>2 台负载均衡：LVS + Keepalived（主机名分别为 node01 和 node02）</p>
+</li>
+<li><p>2 台 http 服务器（主机名分别为 node03 和 node04）</p>
+</li>
+</ul>
+<img src="/linux/lvs-keepalived-lb/clip_image008.jpg" class="" title="clip_image008">
+
+<h3 id="http-服务器安装配置（2-台）"><a href="#http-服务器安装配置（2-台）" class="headerlink" title="http 服务器安装配置（2 台）"></a>http 服务器安装配置（2 台）</h3><p>接下来的配置都是针对两台 http 服务器，也就是 node03 和 node04，进行的操作。每个操作都要对两个服务器分别进行。</p>
+<p>首先，给后 2 台服务器装 http 服务器：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install httpd</span><br></pre></td></tr></table></figure>
+
+<p>设置 http 开机自启动：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@node03 ~]<span class="comment"># systemctl enable httpd.service</span></span><br><span class="line">Created symlink from /etc/systemd/system/multi-user.target.wants/httpd.service to /usr/lib/systemd/system/httpd.service.</span><br></pre></td></tr></table></figure>
+
+<p>开启 http 服务：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl start httpd.service</span><br></pre></td></tr></table></figure>
+
+<img src="/linux/lvs-keepalived-lb/clip_image014.jpg" class="" title="clip_image014">
+
+<p>查看 http 服务状态：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl status httpd.service</span><br></pre></td></tr></table></figure>
+
+<p>运行状态为 active 说明运行正常。</p>
+<img src="/linux/lvs-keepalived-lb/clip_image016.jpg" class="" title="clip_image016">
+
+<p>如果一切顺利，此时，可以使用浏览器进行访问测试，输入两台 http 服务器的 IP 即可测试：</p>
+<img src="/linux/lvs-keepalived-lb/1587909051092.png" class="" width="1587909051092">
+
+<p>两台机器的页面是一样的，这样的话我们就无法区分究竟是哪一台 http 服务器在提供服务了。因此，我们需要定制两个页面。</p>
+<p>对于两台机器，在 <code>/var/www/html</code> 目录下，创建 <code>index.html</code> 文件，随意写内容，能够区分这两台机器即可。比如在 node03 中写入：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@node03 ~]<span class="comment"># vi /var/www/html/index.html</span></span><br><span class="line"></span><br><span class="line">node3333333333333333333</span><br></pre></td></tr></table></figure>
+
+<p>而在 node04 中写入：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@node04 ~]<span class="comment"># vi /var/www/html/index.html</span></span><br><span class="line"></span><br><span class="line">node444444444444444444</span><br></pre></td></tr></table></figure>
+
+<p>此时访问，是可以区分这两台机器的：</p>
+<img src="/linux/lvs-keepalived-lb/1587909351761.png" class="" width="1587909351761">
+
+<p>给两台机器创建 realserver 脚本配置文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/init.d/realserver</span><br></pre></td></tr></table></figure>
+
+<p>在两个配置文件中都粘贴以下内容，其中 192.168.248.100 是虚拟 IP，注意要与其他机器在一个网段，IP 不能冲突，用于后面的访问：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash  </span></span><br><span class="line"><span class="comment">#description : start realserver  </span></span><br><span class="line">SNS_VIP=192.168.248.100 </span><br><span class="line">/etc/rc.d/init.d/<span class="built_in">functions</span>  </span><br><span class="line"><span class="keyword">case</span> <span class="string">"<span class="variable">$1</span>"</span> <span class="keyword">in</span>  </span><br><span class="line">start)  </span><br><span class="line"><span class="built_in">echo</span> <span class="string">" start LVS of REALServer"</span>  </span><br><span class="line">/sbin/ifconfig lo:0 <span class="variable">$SNS_VIP</span> broadcast <span class="variable">$SNS_VIP</span> netmask 255.255.255.255 up  </span><br><span class="line"><span class="built_in">echo</span> <span class="string">"1"</span> &gt;/proc/sys/net/ipv4/conf/lo/arp_ignore  </span><br><span class="line"><span class="built_in">echo</span> <span class="string">"2"</span> &gt;/proc/sys/net/ipv4/conf/lo/arp_announce  </span><br><span class="line"><span class="built_in">echo</span> <span class="string">"1"</span> &gt;/proc/sys/net/ipv4/conf/all/arp_ignore  </span><br><span class="line"><span class="built_in">echo</span> <span class="string">"2"</span> &gt;/proc/sys/net/ipv4/conf/all/arp_announce  </span><br><span class="line">;;  </span><br><span class="line">stop)  </span><br><span class="line">/sbin/ifconfig lo:0 down  </span><br><span class="line"><span class="built_in">echo</span> <span class="string">"close LVS Directorserver"</span>  </span><br><span class="line"><span class="built_in">echo</span> <span class="string">"0"</span> &gt;/proc/sys/net/ipv4/conf/lo/arp_ignore  </span><br><span class="line"><span class="built_in">echo</span> <span class="string">"0"</span> &gt;/proc/sys/net/ipv4/conf/lo/arp_announce  </span><br><span class="line"><span class="built_in">echo</span> <span class="string">"0"</span> &gt;/proc/sys/net/ipv4/conf/all/arp_ignore  </span><br><span class="line"><span class="built_in">echo</span> <span class="string">"0"</span> &gt;/proc/sys/net/ipv4/conf/all/arp_announce  </span><br><span class="line">;;  </span><br><span class="line">*)  </span><br><span class="line"><span class="built_in">echo</span> <span class="string">"Usage: <span class="variable">$0</span> &#123;start|stop&#125;"</span>  </span><br><span class="line"><span class="built_in">exit</span> 1  </span><br><span class="line"><span class="keyword">esac</span></span><br></pre></td></tr></table></figure>
+
+<p>分别给两台机器中刚刚创建好的 realserver 文件赋予可执行权限（其实只给属主可执行权限即可）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod ugo+x /etc/init.d/realserver</span><br></pre></td></tr></table></figure>
+
+<p>分别启动两台机器的 realserver：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@node03 ~]<span class="comment"># service realserver start</span></span><br><span class="line">/etc/init.d/realserver: line 4: /etc/rc.d/init.d/<span class="built_in">functions</span>: Permission denied</span><br><span class="line"> start LVS of REALServer</span><br></pre></td></tr></table></figure>
+
+<p>ifconfig 查看，此时是多出了一块网卡：</p>
+<img src="/linux/lvs-keepalived-lb/1587910453230.png" class="" width="1587910453230">
+
+<h3 id="LVS-Keepalived安装配置（主-LVS）"><a href="#LVS-Keepalived安装配置（主-LVS）" class="headerlink" title="LVS +Keepalived安装配置（主 LVS）"></a>LVS +Keepalived安装配置（主 LVS）</h3><p>以下配置针对 node01，node02 也可以顺便配了，因为后面还是要进行相同的配置。</p>
+<p>如果系统版本是 2.4 以上，Linux 将内置 LVS。所以，我们可以先查看一下系统版本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@node01 ~]<span class="comment"># uname -a</span></span><br><span class="line">Linux node01 3.10.0-327.el7.x86_64 <span class="comment">#1 SMP Thu Nov 19 22:10:57 UTC 2015 x86_64 x86_64 x86_64 GNU/Linux</span></span><br></pre></td></tr></table></figure>
+
+<p>我的系统内核版本为 3.10.0，显然已经内置了 LVS，无需手动安装。</p>
+<p>然后使用 yum 安装 Keepalived：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install keepalived</span><br></pre></td></tr></table></figure>
+
+<p>若出现了下面的冲突报错，说明 Keepalived 和 5.5.58 版本的 MySQL 不兼容：</p>
+<img src="/linux/lvs-keepalived-lb/1587911192915.png" class="" width="1587911192915">
+
+<p>我们可以暂时将其删除。因为是通过 rpm 安装的，所以可以直接通过 rpm 卸载：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -e MySQL-server-5.5.58-1.el7.x86_64</span><br></pre></td></tr></table></figure>
+
+<p>卸载好 MySQL，可以尝试重新安装 Keepalived：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install keepalived</span><br></pre></td></tr></table></figure>
+
+<p>安装完成后，可以使用 rpm 命令查看到它的配置文件位置：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -ql keepalived</span><br></pre></td></tr></table></figure>
+
+<img src="/linux/lvs-keepalived-lb/clip_image042.jpg" class="" title="clip_image042">
+
+<p>可以猜到，Keepalived 的配置文件应该是 <code>keepalived.conf</code> 这个。先将这个配置文件清空覆盖：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; /etc/keepalived/keepalived.conf</span><br></pre></td></tr></table></figure>
+
+<p>编辑这个清空了的配置文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/keepalived/keepalived.conf</span><br></pre></td></tr></table></figure>
+
+<p>在配置文件中加入以下内容。修改 state 为 MASTER，也就是注 LVS。网卡名是虚拟网卡的名字，我这里是 ens33。然后把 VIP 设置成前面 http 服务器指定的那个 IP，我这里是 <code>192.168.248.100</code>。注意有两处需要修改 VIP 的地方。最后还要把真实 IP 修改成两个 http 服务器，也就是 node03 和 node04 的 IP：</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">global_defs</span> &#123;                       </span><br><span class="line"><span class="comment">#   notification_email &#123;             </span></span><br><span class="line"><span class="comment">#   &#125;</span></span><br><span class="line"><span class="comment">#   smtp_connect_timeout 30</span></span><br><span class="line">        <span class="attribute">router_id</span> LVS_DEVEL             </span><br><span class="line">&#125;</span><br><span class="line">vrrp_instance VI_1 &#123;            </span><br><span class="line">        <span class="attribute">state</span> MASTER             </span><br><span class="line">        interface ens33            </span><br><span class="line">        virtual_router_id <span class="number">51</span>        </span><br><span class="line">        priority <span class="number">100</span>                  </span><br><span class="line">        advert_int <span class="number">1</span>           </span><br><span class="line">        authentication &#123;        </span><br><span class="line">                <span class="attribute">auth_type</span> PASS</span><br><span class="line">                auth_pass <span class="number">1111</span></span><br><span class="line">        &#125;</span><br><span class="line">        virtual_ipaddress &#123;         </span><br><span class="line">                192.168.248.100</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="attribute">virtual_server</span> <span class="number">192.168.248.100</span> <span class="number">80</span> &#123;</span><br><span class="line">        <span class="attribute">delay_loop</span> <span class="number">6</span>           </span><br><span class="line">        lb_algo wrr            </span><br><span class="line">        lb_kind DR                          </span><br><span class="line">        nat_mask <span class="number">255.255.255.0</span>   </span><br><span class="line">        persistence_timeout <span class="number">0</span>    </span><br><span class="line">        protocol TCP                          </span><br><span class="line">        real_server <span class="number">192.168.248.141</span> <span class="number">80</span> &#123;     </span><br><span class="line">                <span class="attribute">weight</span> <span class="number">1</span>                     </span><br><span class="line">                TCP_CHECK &#123;                     </span><br><span class="line">                        <span class="attribute">connect_timeout</span> <span class="number">10</span>   </span><br><span class="line">                        nb_get_retry <span class="number">3</span></span><br><span class="line">                        delay_before_retry <span class="number">3</span></span><br><span class="line">                        connect_port <span class="number">80</span></span><br><span class="line">                &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        real_server <span class="number">192.168.248.142</span> <span class="number">80</span> &#123;</span><br><span class="line">                <span class="attribute">weight</span> <span class="number">2</span></span><br><span class="line">                TCP_CHECK &#123;</span><br><span class="line">                        <span class="attribute">connect_timeout</span> <span class="number">10</span></span><br><span class="line">                        nb_get_retry <span class="number">3</span></span><br><span class="line">                        delay_before_retry <span class="number">3</span></span><br><span class="line">                        connect_port <span class="number">80</span></span><br><span class="line">                &#125;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>启动服务：</p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@node01 ~]#<span class="built_in"> service </span>keepalived start</span><br><span class="line">Redirecting <span class="keyword">to</span> /bin/systemctl start  keepalived.service</span><br></pre></td></tr></table></figure>
+
+<p>可以查看日志信息：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tail -f /var/<span class="built_in">log</span>/messages</span><br></pre></td></tr></table></figure>
+
+<p>查看启动状态：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service keepalived status</span><br></pre></td></tr></table></figure>
+
+<img src="/linux/lvs-keepalived-lb/clip_image050.jpg" class="" title="clip_image050">
+
+<h3 id="LVS-Keepalived-负载均衡测试"><a href="#LVS-Keepalived-负载均衡测试" class="headerlink" title="LVS + Keepalived 负载均衡测试"></a>LVS + Keepalived 负载均衡测试</h3><p>转发测试，通过 VIP 进行访问，真实处理请求的不一定是哪个 http。IP 后面加一个随机数，这样避免浏览器缓存数据造成结果不准确：</p>
+<img src="/linux/lvs-keepalived-lb/keepalivedswitchtest.gif" class="" title="keepalivedswitchtest">
+
+<p>故障移除测试。关掉某台 http 服务器的 http 服务，模拟该服务器挂了。比如停掉 node3 的服务：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl stop httpd.service</span><br></pre></td></tr></table></figure>
+
+<p>此时，挂掉的机器，自动移除。使用浏览器访问虚拟的 VIP，将只能访问到 node04：</p>
+<img src="/linux/lvs-keepalived-lb/1587913444740.png" class="" width="1587913444740">
+
+<p>故障恢复自动添加测试。重新开启 node03 的服务，模拟故障恢复：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl start httpd.service</span><br></pre></td></tr></table></figure>
+
+<p>此时，可以再次访问到 node03：</p>
+<img src="/linux/lvs-keepalived-lb/1587913527992.png" class="" width="1587913527992">
+
+<h3 id="LVS-备机搭建（备-LVS）"><a href="#LVS-备机搭建（备-LVS）" class="headerlink" title="LVS 备机搭建（备 LVS）"></a>LVS 备机搭建（备 LVS）</h3><p>还是先查看一下系统版本，如果系统版本在 2.4 以上，Linux 将内置 LVS：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@node02 ~]<span class="comment"># uname -a</span></span><br><span class="line">Linux node02 3.10.0-327.el7.x86_64 <span class="comment">#1 SMP Thu Nov 19 22:10:57 UTC 2015 x86_64 x86_64 x86_64 GNU/Linux</span></span><br></pre></td></tr></table></figure>
+
+<p>当然没问题，版本足够高，系统内核已经内置了 LVS。</p>
+<p>然后安装 Keepalived：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y <span class="keyword">install</span> keepalived</span><br></pre></td></tr></table></figure>
+
+<p>若有冲突报错，删除一下 MySQL 数据库：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">rpm</span> <span class="selector-tag">-e</span> <span class="selector-tag">MySQL-server-5</span><span class="selector-class">.5</span><span class="selector-class">.58-1</span><span class="selector-class">.el7</span><span class="selector-class">.x86_64</span></span><br></pre></td></tr></table></figure>
+
+<p>再次尝试安装 Keepalived：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install keepalived</span><br></pre></td></tr></table></figure>
+
+<p>清空覆盖配置文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&gt; /etc/keepalived/keepalived.conf</span><br></pre></td></tr></table></figure>
+
+<p>编辑配置文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/keepalived/keepalived.conf</span><br></pre></td></tr></table></figure>
+
+<p>在配置文件中加入以下内容，注意修改 VIP 和每个 http 服务器的 IP：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">global_defs &#123;                       </span><br><span class="line">#   notification_email &#123;             </span><br><span class="line">#   &#125;</span><br><span class="line">#   smtp_connect_timeout 30</span><br><span class="line">        router_id LVS_DEVEL             </span><br><span class="line">&#125;</span><br><span class="line">vrrp_instance VI_1 &#123;            </span><br><span class="line">        state MASTER             </span><br><span class="line">        interface ens33            </span><br><span class="line">        virtual_router_id 51        </span><br><span class="line">        priority 100                  </span><br><span class="line">        advert_int 1           </span><br><span class="line">        authentication &#123;        </span><br><span class="line">                auth_type PASS</span><br><span class="line">                auth_pass 1111</span><br><span class="line">        &#125;</span><br><span class="line">        virtual_ipaddress &#123;         </span><br><span class="line">                192.168.248.100</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br><span class="line">virtual_server 192.168.248.100 80 &#123;</span><br><span class="line">        delay_loop 6           </span><br><span class="line">        lb_algo wrr            </span><br><span class="line">        lb_kind DR                          </span><br><span class="line">        nat_mask 255.255.255.0   </span><br><span class="line">        persistence_timeout 0    </span><br><span class="line">        protocol TCP                          </span><br><span class="line">        real_server 192.168.248.141 80 &#123;     </span><br><span class="line">                weight 1                     </span><br><span class="line">                TCP_CHECK &#123;                     </span><br><span class="line">                        connect_timeout 10   </span><br><span class="line">                        nb_get_retry 3</span><br><span class="line">                        delay_before_retry 3</span><br><span class="line">                        connect_port 80</span><br><span class="line">                &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        real_server 192.168.248.142 80 &#123;</span><br><span class="line">                weight 2</span><br><span class="line">                TCP_CHECK &#123;</span><br><span class="line">                        connect_timeout 10</span><br><span class="line">                        nb_get_retry 3</span><br><span class="line">                        delay_before_retry 3</span><br><span class="line">                        connect_port 80</span><br><span class="line">                &#125;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>启动 Keepalived 服务：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@node02 ~]<span class="comment"># service keepalived start</span></span><br><span class="line">Redirecting to /bin/systemctl start  keepalived.service</span><br></pre></td></tr></table></figure>
+
+<p>查看 keepalived 的运行状态：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service keepalived status</span><br></pre></td></tr></table></figure>
+
+<img src="/linux/lvs-keepalived-lb/clip_image069.jpg" class="" title="clip_image069">
+
+<p>查看日志：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tail -f /var/<span class="built_in">log</span>/messages</span><br></pre></td></tr></table></figure>
+
+<h3 id="LVS-主备测试"><a href="#LVS-主备测试" class="headerlink" title="LVS 主备测试"></a>LVS 主备测试</h3><p>备机自动切换测试。关闭主 LVS 服务器的 keepalived 服务，模拟主 LVS 挂掉：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@node01 ~]<span class="comment"># service keepalived stop</span></span><br><span class="line">Redirecting to /bin/systemctl stop  keepalived.service</span><br></pre></td></tr></table></figure>
+
+<p>访问浏览器VIP，还是照常工作</p>
+<img src="/linux/lvs-keepalived-lb/1587914729575.png" class="" width="1587914729575">
+
+<p>主机启动，主机自动上位：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@node01 ~]<span class="comment"># service keepalived start</span></span><br><span class="line">Redirecting to /bin/systemctl start  keepalived.service</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+              <a href="/tags/%E8%BF%90%E7%BB%B4/" rel="tag"># 运维</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/linux/redis-distributed-cache/" rel="prev" title="Redis 分布式缓存">
+      <i class="fa fa-chevron-left"></i> Redis 分布式缓存
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/linux/nginx-abc/" rel="next" title="Nginx 快速入门">
+      Nginx 快速入门 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#负载均衡的类型"><span class="nav-number">1.1.</span> <span class="nav-text">负载均衡的类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LVS-概述"><span class="nav-number">1.2.</span> <span class="nav-text">LVS 概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LVS-的体系结构"><span class="nav-number">1.3.</span> <span class="nav-text">LVS 的体系结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Keepalived-介绍"><span class="nav-number">1.4.</span> <span class="nav-text">Keepalived 介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LVS-的优点"><span class="nav-number">1.5.</span> <span class="nav-text">LVS 的优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LVS-与-Nginx-的对比"><span class="nav-number">1.6.</span> <span class="nav-text">LVS 与 Nginx 的对比</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LVS-Keepalived-的应用场景"><span class="nav-number">1.7.</span> <span class="nav-text">LVS + Keepalived 的应用场景</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LVS-Keepalived-的安装和负载均衡配置"><span class="nav-number">2.</span> <span class="nav-text">LVS + Keepalived 的安装和负载均衡配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#软件环境"><span class="nav-number">2.1.</span> <span class="nav-text">软件环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#http-服务器安装配置（2-台）"><span class="nav-number">2.2.</span> <span class="nav-text">http 服务器安装配置（2 台）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LVS-Keepalived安装配置（主-LVS）"><span class="nav-number">2.3.</span> <span class="nav-text">LVS +Keepalived安装配置（主 LVS）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LVS-Keepalived-负载均衡测试"><span class="nav-number">2.4.</span> <span class="nav-text">LVS + Keepalived 负载均衡测试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LVS-备机搭建（备-LVS）"><span class="nav-number">2.5.</span> <span class="nav-text">LVS 备机搭建（备 LVS）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LVS-主备测试"><span class="nav-number">2.6.</span> <span class="nav-text">LVS 主备测试</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="刘硕"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">刘硕</p>
+  <div class="site-description" itemprop="description">不成为自己讨厌的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">342</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">55</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:liushuo432@outlook.com" title="E-Mail → mailto:liushuo432@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/2436055290" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;2436055290" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://wpa.qq.com/msgrd?v=3&uin=1696146913&site=qq&menu=yes" title="QQ → http:&#x2F;&#x2F;wpa.qq.com&#x2F;msgrd?v&#x3D;3&amp;uin&#x3D;1696146913&amp;site&#x3D;qq&amp;menu&#x3D;yes" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-fw fa-rss"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备20001451号 </a>
+      <img src="/images/beian_icon.png" style="display: inline-block;"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=21142102000063" rel="noopener" target="_blank">辽公网安备 21142102000063号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘硕</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">2m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">61:19</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.2" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'Ga2II3wuJmHX3GiNHm9TmI97-gzGzoHsz',
+      appKey     : 'esGYJQepdYLHf07E1VMsP3RK',
+      placeholder: "o(*￣▽￣*)ブ来说点什么吧...（填上邮箱可以收到回复提醒）",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : true,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+  <script type="text/javascript" src="/js/love.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/Epsilon2.1.model.json"},"display":{"superSample":2,"width":200,"height":400,"position":"left","hOffset":-30,"vOffset":-40},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>

@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="Tu5vqPaUb8svfkPx5eetJFD84ciQCcWVXNatdsWtj9Q">
+  <meta name="baidu-site-verification" content="baidu_verify_FBq9PG4BBb">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"appID":"PXY1Z6GHKT","apiKey":"eb82f2e78e3053f26aa408e9caa96d93","indexName":"blog","hits":{"per_page":10},"labels":{"input_placeholder":"要查点什么(✿◡‿◡)","hits_empty":"没有找到任何关于 ${query} 的结果╥﹏╥...","hits_stats":"搜索到 ${hits} 条记录，用时 ${time} ms o(*￣▽￣*)ブ"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="虚拟机是有局限的。因为虚拟机需要占用很多的资源，如果服务器的性能不是很强大，依旧不能部署很多的项目。这时，容器技术横空出世，解决了这个问题。docker 是目前最流行的容器技术的实现。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Docker 初识和安装">
+<meta property="og:url" content="https://sliu.vip/linux/docker-abc-install/index.html">
+<meta property="og:site_name" content="刘硕的技术查阅手册">
+<meta property="og:description" content="虚拟机是有局限的。因为虚拟机需要占用很多的资源，如果服务器的性能不是很强大，依旧不能部署很多的项目。这时，容器技术横空出世，解决了这个问题。docker 是目前最流行的容器技术的实现。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sliu.vip/linux/docker-abc-install/clip_image018.jpg">
+<meta property="article:published_time" content="2020-05-01T15:47:01.346Z">
+<meta property="article:modified_time" content="2020-05-01T16:42:16.260Z">
+<meta property="article:author" content="刘硕">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="运维">
+<meta property="article:tag" content="Docker">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sliu.vip/linux/docker-abc-install/clip_image018.jpg">
+
+<link rel="canonical" href="https://sliu.vip/linux/docker-abc-install/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>Docker 初识和安装 | 刘硕的技术查阅手册</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f14f123935d6183fdd06f8f1c4bc378f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="刘硕的技术查阅手册" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">刘硕的技术查阅手册</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">Python 全栈开发学习笔记</h1>
+      
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-toc">
+
+    <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+  
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/linux/docker-abc-install/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          Docker 初识和安装
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-05-01 23:47:01" itemprop="dateCreated datePublished" datetime="2020-05-01T23:47:01+08:00">2020-05-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-05-02 00:42:16" itemprop="dateModified" datetime="2020-05-02T00:42:16+08:00">2020-05-02</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/linux/docker-abc-install/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/linux/docker-abc-install/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>5 分钟</span>
+            </span>
+            <div class="post-description">虚拟机是有局限的。因为虚拟机需要占用很多的资源，如果服务器的性能不是很强大，依旧不能部署很多的项目。这时，容器技术横空出世，解决了这个问题。docker 是目前最流行的容器技术的实现。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="容器技术和-docker-简介"><a href="#容器技术和-docker-简介" class="headerlink" title="容器技术和 docker 简介"></a>容器技术和 docker 简介</h2><h3 id="部署方式的演变"><a href="#部署方式的演变" class="headerlink" title="部署方式的演变"></a>部署方式的演变</h3><p>最开始的时候，大家都是在一台物理机部署各种 Application。但是每个应用程序之间依赖的环境会有差异，在同一台机器中运行可能会产生冲突。如果分多台物理机来分别执行不同任务，虽然可以避免冲突，但是需要的成本大大增加。而且单台机器只跑一个任务，会造成性能冗余，很不经济。</p>
+<p>后来有了虚拟化技术，将程序跑在不同的虚拟机中。这样每台虚拟机之间的环境相互独立，就不会有冲突。而因为应用都跑在一台机器上，所以也不需要额外购买服务器了。</p>
+<p>但是虚拟机也是有局限的。因为虚拟机需要占用很多的资源，如果服务器的性能不是很强大，依旧不能部署很多的项目。这时，容器技术横空出世，解决了这个问题。</p>
+<h3 id="容器的必要性"><a href="#容器的必要性" class="headerlink" title="容器的必要性"></a>容器的必要性</h3><p>开发人员开发一个 Application 需要各种环境，各种依赖。运维人员部署 Application 时也需要搭建各种环境。</p>
+<p>运维人员部署 Application 时也需要搭建各种环境/</p>
+<p>容器解决了开发和运维之间的矛盾</p>
+<h3 id="容器的概念"><a href="#容器的概念" class="headerlink" title="容器的概念"></a>容器的概念</h3><ul>
+<li><p>容器是对软件和其依赖的标准化打包</p>
+</li>
+<li><p>容器中的应用之间相互隔离</p>
+</li>
+<li><p>容器共享同一个OS Kernel</p>
+</li>
+<li><p>容器可以运行在很多主流操作系统上</p>
+</li>
+</ul>
+<h3 id="虚拟机与容器的区别"><a href="#虚拟机与容器的区别" class="headerlink" title="虚拟机与容器的区别"></a>虚拟机与容器的区别</h3><p>虚拟机是物理层面的隔离，容器是 Application 层面的隔离</p>
+<h3 id="docker-的概念"><a href="#docker-的概念" class="headerlink" title="docker 的概念"></a>docker 的概念</h3><p>docker 是目前最流行的容器技术的实现。</p>
+<p>2004~2008 年，Linux 已经出现了 LXC。2013 年 docker 包装了LXC。2013 年三月开源，2016 年 docker 分为企业版（ee，收费）和社区版（ce，免费）。</p>
+<h3 id="docker-的作用"><a href="#docker-的作用" class="headerlink" title="docker 的作用"></a>docker 的作用</h3><ul>
+<li><p>简化配置</p>
+</li>
+<li><p>提高效率</p>
+</li>
+</ul>
+<h3 id="docker-和-kubernates"><a href="#docker-和-kubernates" class="headerlink" title="docker 和 kubernates"></a>docker 和 kubernates</h3><ul>
+<li><p>docker 可以被 k8s 管理</p>
+</li>
+<li><p>kubernetes，简称 k8s</p>
+</li>
+</ul>
+<h3 id="DevOps"><a href="#DevOps" class="headerlink" title="DevOps"></a>DevOps</h3><p>DevOps 用来解决开发和运维间合作和沟通</p>
+<p>不仅仅依赖 docker，还需要版本管理，持续集成等</p>
+<h3 id="docker-的应用"><a href="#docker-的应用" class="headerlink" title="docker 的应用"></a>docker 的应用</h3><p>在 2015 年的 618 大促中，京东大胆启用了基于 Docker 的容器技术来承载大促的关键业务（图片展现、单品页、团购页），当时基于 Docker 容器的弹性云项目已经有近万个 Docker 容器在线上环境运行，并且经受住了大流量的考验。</p>
+<p>2016 年 618 中，弹性云项目更是担当重任，全部应用系统和大部分的 DB 服务都已经跑在 Docker 上，包括商品页面、用户订单、用户搜索、缓存、数据库，京东线上将会启动近 15 万个 Docker 容器。</p>
+<p>京东弹性计算云通过软件定义数据中心与大规模容器集群调度，实现海量计算资源的统一管理，并满足性能与效率方面的需求，提升业务自助上线效率。应用部署密度大幅提升，资源使用率提升，节约大量的硬件资源。</p>
+<h2 id="docker-环境的搭建方法"><a href="#docker-环境的搭建方法" class="headerlink" title="docker 环境的搭建方法"></a>docker 环境的搭建方法</h2><h3 id="docker-的安装介绍"><a href="#docker-的安装介绍" class="headerlink" title="docker 的安装介绍"></a>docker 的安装介绍</h3><p>docker 官网：<a href="https://docs.docker.com/" target="_blank" rel="noopener">https://docs.docker.com/</a></p>
+<p>Docker 提供了两个版本：社区版（CE）和企业版（EE）</p>
+<h3 id="docker-在-CentOS-系统上安装"><a href="#docker-在-CentOS-系统上安装" class="headerlink" title="docker 在 CentOS 系统上安装"></a>docker 在 CentOS 系统上安装</h3><p>docker 官方文档：<a href="https://docs.docker.com/install/linux/docker-ce/centos/#set-up-the-repository" target="_blank" rel="noopener">https://docs.docker.com/install/linux/docker-ce/centos/#set-up-the-repository</a></p>
+<p>首先执行下面的命令卸载要版本的 docker，防止有残留会产生冲突：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">yum remove docker \</span><br><span class="line">	docker-client \</span><br><span class="line">	docker-client-latest \</span><br><span class="line">	docker-common \</span><br><span class="line">	docker-latest \</span><br><span class="line">	docker-latest-logrotate \</span><br><span class="line">	docker-logrotate \</span><br><span class="line">	docker-selinux \</span><br><span class="line">	docker-engine-selinux \</span><br><span class="line">	docker-engine</span><br></pre></td></tr></table></figure>
+
+<p>安装可能用到的依赖：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yum install -y yum-utils \</span><br><span class="line">	device-mapper-persistent-data \</span><br><span class="line">	lvm2</span><br></pre></td></tr></table></figure>
+
+<p>添加 docker 的下载位置：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">yum-config-manager \</span><br><span class="line">	--<span class="built_in">add</span>-repo \</span><br><span class="line">	http<span class="variable">s:</span>//download.docker.<span class="keyword">com</span>/linux/centos/docker-<span class="keyword">ce</span>.repo</span><br></pre></td></tr></table></figure>
+
+<p>查询可用的 docker 版本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum list docker-ce --showduplicates | sort -r</span><br></pre></td></tr></table></figure>
+
+<p>安装指定版本的 docker，比如 18.06.1：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install docker-ce-18.06.1.ce-3.el7</span><br></pre></td></tr></table></figure>
+
+<p>开启 docker 服务：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl start docker</span><br></pre></td></tr></table></figure>
+
+<p>设置 docker 服务开机自启动：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@node01 conf]<span class="comment"># systemctl enable docker</span></span><br><span class="line">Created symlink from /etc/systemd/system/multi-user.target.wants/docker.service to /usr/lib/systemd/system/docker.service.</span><br></pre></td></tr></table></figure>
+
+<p>查看 docker 的版本：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">[root@node01 conf]<span class="comment"># docker version</span></span><br><span class="line">Client:</span><br><span class="line"> Version:           18.06.1-ce</span><br><span class="line"> API version:       1.38</span><br><span class="line"> Go version:        go1.10.3</span><br><span class="line"> Git commit:        e68fc7a</span><br><span class="line"> Built:             Tue Aug 21 17:23:03 2018</span><br><span class="line"> OS/Arch:           linux/amd64</span><br><span class="line"> Experimental:      <span class="literal">false</span></span><br><span class="line"></span><br><span class="line">Server:</span><br><span class="line"> Engine:</span><br><span class="line">  Version:          18.06.1-ce</span><br><span class="line">  API version:      1.38 (minimum version 1.12)</span><br><span class="line">  Go version:       go1.10.3</span><br><span class="line">  Git commit:       e68fc7a</span><br><span class="line">  Built:            Tue Aug 21 17:25:29 2018</span><br><span class="line">  OS/Arch:          linux/amd64</span><br><span class="line">  Experimental:     <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+
+<p>装完 docker 之后，修改如下文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/docker/daemon.json</span><br></pre></td></tr></table></figure>
+
+<p>在其中写入如下内容，配置国内镜像：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line"><span class="attr">"registry-mirrors"</span>: [</span><br><span class="line"><span class="string">"https://kfwkfulq.mirror.aliyuncs.com"</span>,</span><br><span class="line"><span class="string">"https://2lqq34jg.mirror.aliyuncs.com"</span>,</span><br><span class="line"><span class="string">"https://pee6w651.mirror.aliyuncs.com"</span>,</span><br><span class="line"><span class="string">"https://registry.docker-cn.com"</span>,</span><br><span class="line"><span class="string">"http://hub-mirror.c.163.com"</span></span><br><span class="line">],</span><br><span class="line"><span class="attr">"dns"</span>: [<span class="string">"8.8.8.8"</span>,<span class="string">"8.8.4.4"</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>加入以下内容：</p>
+<p>重启 docker 服务：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart docker</span><br></pre></td></tr></table></figure>
+
+<h3 id="docker-machine-的使用"><a href="#docker-machine-的使用" class="headerlink" title="docker-machine 的使用"></a>docker-machine 的使用</h3><p>Docker Machine 是 Docker 官方提供的一个工具，它可以帮助我们在远程的机器上安装 Docker，或者在虚拟机 host 上直接安装虚拟机并在虚拟机中安装 Docker</p>
+<p>可以通过 docker-machine 命令来管理这些虚拟机和 Docker</p>
+<h3 id="docker-playground"><a href="#docker-playground" class="headerlink" title="docker playground"></a>docker playground</h3><p>docker playground 是 docker 官方提供的在线学习测试 docker 的工具。</p>
+<p>地址：<a href="https://labs.play-with-docker.com/" target="_blank" rel="noopener">https://labs.play-with-docker.com/</a></p>
+<p>可以直接使用云端的 docker。这个服务器是公共的，但每次只能使用 4 小时。</p>
+<p>左侧点一下，就增加一个实例</p>
+<img src="/linux/docker-abc-install/clip_image018.jpg" class="" title="clip_image018">
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+              <a href="/tags/%E8%BF%90%E7%BB%B4/" rel="tag"># 运维</a>
+              <a href="/tags/Docker/" rel="tag"># Docker</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/linux/docker-image-container/" rel="prev" title="docker 的镜像和容器">
+      <i class="fa fa-chevron-left"></i> docker 的镜像和容器
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/linux/docker-compose/" rel="next" title="docker Compose 多容器部署">
+      docker Compose 多容器部署 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#容器技术和-docker-简介"><span class="nav-number">1.</span> <span class="nav-text">容器技术和 docker 简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#部署方式的演变"><span class="nav-number">1.1.</span> <span class="nav-text">部署方式的演变</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#容器的必要性"><span class="nav-number">1.2.</span> <span class="nav-text">容器的必要性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#容器的概念"><span class="nav-number">1.3.</span> <span class="nav-text">容器的概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#虚拟机与容器的区别"><span class="nav-number">1.4.</span> <span class="nav-text">虚拟机与容器的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker-的概念"><span class="nav-number">1.5.</span> <span class="nav-text">docker 的概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker-的作用"><span class="nav-number">1.6.</span> <span class="nav-text">docker 的作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker-和-kubernates"><span class="nav-number">1.7.</span> <span class="nav-text">docker 和 kubernates</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DevOps"><span class="nav-number">1.8.</span> <span class="nav-text">DevOps</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker-的应用"><span class="nav-number">1.9.</span> <span class="nav-text">docker 的应用</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#docker-环境的搭建方法"><span class="nav-number">2.</span> <span class="nav-text">docker 环境的搭建方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#docker-的安装介绍"><span class="nav-number">2.1.</span> <span class="nav-text">docker 的安装介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker-在-CentOS-系统上安装"><span class="nav-number">2.2.</span> <span class="nav-text">docker 在 CentOS 系统上安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker-machine-的使用"><span class="nav-number">2.3.</span> <span class="nav-text">docker-machine 的使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#docker-playground"><span class="nav-number">2.4.</span> <span class="nav-text">docker playground</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="刘硕"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">刘硕</p>
+  <div class="site-description" itemprop="description">不成为自己讨厌的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">342</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">55</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:liushuo432@outlook.com" title="E-Mail → mailto:liushuo432@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/2436055290" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;2436055290" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://wpa.qq.com/msgrd?v=3&uin=1696146913&site=qq&menu=yes" title="QQ → http:&#x2F;&#x2F;wpa.qq.com&#x2F;msgrd?v&#x3D;3&amp;uin&#x3D;1696146913&amp;site&#x3D;qq&amp;menu&#x3D;yes" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-fw fa-rss"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备20001451号 </a>
+      <img src="/images/beian_icon.png" style="display: inline-block;"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=21142102000063" rel="noopener" target="_blank">辽公网安备 21142102000063号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘硕</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">2m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">61:19</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.2" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'Ga2II3wuJmHX3GiNHm9TmI97-gzGzoHsz',
+      appKey     : 'esGYJQepdYLHf07E1VMsP3RK',
+      placeholder: "o(*￣▽￣*)ブ来说点什么吧...（填上邮箱可以收到回复提醒）",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : true,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+  <script type="text/javascript" src="/js/love.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/Epsilon2.1.model.json"},"display":{"superSample":2,"width":200,"height":400,"position":"left","hOffset":-30,"vOffset":-40},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>

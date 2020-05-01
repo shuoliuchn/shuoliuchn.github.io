@@ -19,7 +19,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"appID":"PXY1Z6GHKT","apiKey":"eb82f2e78e3053f26aa408e9caa96d93","indexName":"blog","hits":{"per_page":10},"labels":{"input_placeholder":"要查点什么(✿◡‿◡)","hits_empty":"没有找到任何关于 ${query} 的结果╥﹏╥...","hits_stats":"搜索到 ${hits} 条记录，用时 ${time} ms o(*￣▽￣*)ブ"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"appID":"PXY1Z6GHKT","apiKey":"eb82f2e78e3053f26aa408e9caa96d93","indexName":"blog","hits":{"per_page":10},"labels":{"input_placeholder":"要查点什么(✿◡‿◡)","hits_empty":"没有找到任何关于 ${query} 的结果╥﹏╥...","hits_stats":"搜索到 ${hits} 条记录，用时 ${time} ms o(*￣▽￣*)ブ"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="Linux 的常用命令合集，如果有命令忘记了，可以到这里看一看，回忆一下，挺好。">
@@ -32,7 +32,7 @@
 <meta property="og:image" content="https://sliu.vip/linux/common-command/1132884-20180811155113844-356770043.png">
 <meta property="og:image" content="https://sliu.vip/linux/common-command/1132884-20181122101207846-1843670285.png">
 <meta property="article:published_time" content="2020-03-13T05:53:10.810Z">
-<meta property="article:modified_time" content="2020-03-21T05:30:11.039Z">
+<meta property="article:modified_time" content="2020-04-24T17:23:34.427Z">
 <meta property="article:author" content="刘硕">
 <meta property="article:tag" content="Linux">
 <meta property="article:tag" content="运维">
@@ -246,7 +246,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-03-21 13:30:11" itemprop="dateModified" datetime="2020-03-21T13:30:11+08:00">2020-03-21</time>
+                <time title="修改时间：2020-04-25 01:23:34" itemprop="dateModified" datetime="2020-04-25T01:23:34+08:00">2020-04-25</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -285,14 +285,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>9k</span>
+              <span>10k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>16 分钟</span>
+              <span>18 分钟</span>
             </span>
             <div class="post-description">Linux 的常用命令合集，如果有命令忘记了，可以到这里看一看，回忆一下，挺好。</div>
 
@@ -307,6 +307,15 @@
       
         <h3 id="Linux-命令在线查询网站"><a href="#Linux-命令在线查询网站" class="headerlink" title="Linux 命令在线查询网站"></a>Linux 命令在线查询网站</h3><p>首先介绍一个 Linux 命令的在线查询网站，里面有几乎所有的 Linux 的命令和参数信息。基本上就是英文文档的中文翻译，很好用。</p>
 <p><a href="http://linux.51yip.com/" target="_blank" rel="noopener">http://linux.51yip.com/</a></p>
+<h3 id="查看命令的帮助文档"><a href="#查看命令的帮助文档" class="headerlink" title="查看命令的帮助文档"></a>查看命令的帮助文档</h3><p>系统命令一般都会有帮助文档，可以通过命令查看：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">man 命令</span><br><span class="line">info 命令</span><br></pre></td></tr></table></figure>
+
+<p>比如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">man ls</span><br></pre></td></tr></table></figure>
+
+<h3 id="关机和重启"><a href="#关机和重启" class="headerlink" title="关机和重启"></a>关机和重启</h3><p>直接拔电源关闭计算机是不可取的，可能会丢失数据。即便使用虚拟机，也不建议直接关闭。更好的方式是使用命令关机和重启：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">init 0    <span class="comment"># 关机</span></span><br><span class="line">shutdown -h now    <span class="comment"># 关机</span></span><br><span class="line">reboot    <span class="comment"># 重启</span></span><br><span class="line">init 6    <span class="comment"># 重启</span></span><br></pre></td></tr></table></figure>
+
 <h3 id="alias-别名"><a href="#alias-别名" class="headerlink" title="alias 别名"></a>alias 别名</h3><p>alias 命令用来给一个命令加上一个昵称，当你以后需要经常输入一个很长的命令的时候，可以创建一个别名，会让操作变得简单许多。</p>
 <p>直接输入alias，查看当前系统中已经设置了的别名：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alias</span><br></pre></td></tr></table></figure>
@@ -351,10 +360,10 @@
 <h3 id="netstat-网络状态"><a href="#netstat-网络状态" class="headerlink" title="netstat 网络状态"></a>netstat 网络状态</h3><p>netstat 命令用于显示 Linux 的网络端口情况。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">参数解释  -tunlp    显示tcp  upd 所有的socket连接信息</span></span><br><span class="line">netstat -tunlp</span><br></pre></td></tr></table></figure>
 <p>过滤出 nginx 是否存活的命令，查看 nginx 的 80 端口是否存在</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@chaogelinux tmp]# netstat -tunlp  |  grep  'nginx'</span><br><span class="line">tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN      2041/nginx: master</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost tmp]# netstat -tunlp  |  grep  'nginx'</span><br><span class="line">tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN      2041/nginx: master</span><br></pre></td></tr></table></figure>
 
 <h3 id="ps-进程状态"><a href="#ps-进程状态" class="headerlink" title="ps 进程状态"></a>ps 进程状态</h3><p>ps 命令用于检测进程情况。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ps -ef    # 列出 Linux 上所有的进程信息，以及进程 id 号等</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ps -ef    # 列出 Linux 上所有的进程信息，以及进程 id 号等</span><br><span class="line">ps -aux    # 效果跟-ef差不多</span><br></pre></td></tr></table></figure>
 
 <p>与 grep命令联用，过滤出出 vim 有关的进程：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@chaogelinux ~]# ps -ef | grep vim</span><br><span class="line">root     28692 27546  0 10:07 pts/0    00:00:00 vim 你说爱我就要喵喵喵.txt</span><br><span class="line">root     28715 28654  0 10:08 pts/1    00:00:00 grep --color=auto vim</span><br></pre></td></tr></table></figure>
@@ -385,38 +394,27 @@
 <li>v：反向选择</li>
 </ul>
 <p>过滤字符串信息：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@chaogelinux tmp]# grep -i  'all'  settings.py</span><br><span class="line">ALLOW_HOSTS=[]</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost tmp]# grep -i  'all'  settings.py</span><br><span class="line">ALLOW_HOSTS=[]</span><br></pre></td></tr></table></figure>
 
 <p>过滤掉某字符串的行：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@chaogelinux tmp]# grep -vi 'all'  settings.py</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost tmp]# grep -vi 'all'  settings.py</span><br></pre></td></tr></table></figure>
 
 <p>过滤掉空白行（支持正则）：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@chaogelinux tmp]# grep  -v '^$'  settings.py</span><br><span class="line">qweqweqweqwe</span><br><span class="line"><span class="meta">#</span><span class="bash">qweqweqweqwe</span></span><br><span class="line">ALLOW_HOSTS=[]</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost tmp]# grep  -v '^$'  settings.py</span><br><span class="line">qweqweqweqwe</span><br><span class="line"><span class="meta">#</span><span class="bash">qweqweqweqwe</span></span><br><span class="line">ALLOW_HOSTS=[]</span><br></pre></td></tr></table></figure>
 
 <p>过滤掉注释行：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@chaogelinux tmp]# grep -v '^#'  settings.py</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost tmp]# grep -v '^#'  settings.py</span><br></pre></td></tr></table></figure>
 
 <p>过滤掉，空白行和注释行，可以用管道符，多次过滤：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 1.先过滤掉空白行</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 2.再过滤掉注释行</span></span><br><span class="line">[root@chaogelinux tmp]# grep  -v '^$'  settings.py |  grep -v '^#'</span><br><span class="line">qweqweqweqwe</span><br><span class="line">ALLOW_HOSTS=[]</span><br></pre></td></tr></table></figure>
-
-<h3 id="head-和-tail"><a href="#head-和-tail" class="headerlink" title="head 和 tail"></a>head 和 tail</h3><p>head 命令用来显示文件开头一定行数的内容，默认看前 10 行；</p>
-<p>tail 命令用来显示文件末尾一定行数的内容，默认倒序看后 10 行。</p>
-<p>显示前 5 行：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">head -5 file.txt</span><br></pre></td></tr></table></figure>
-
-<p>显示后 3 行：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tail -3 file.txt</span><br></pre></td></tr></table></figure>
-
-<p>tail 命令通过使用参数 <code>-f</code> 可以实现实时监控，是 flush 刷新的意思：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tail -f  /var/log/nginx/access.log</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 1.先过滤掉空白行</span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 2.再过滤掉注释行</span></span><br><span class="line">[root@localhost tmp]# grep  -v '^$'  settings.py |  grep -v '^#'</span><br><span class="line">qweqweqweqwe</span><br><span class="line">ALLOW_HOSTS=[]</span><br></pre></td></tr></table></figure>
 
 <h3 id="scp-安全复制"><a href="#scp-安全复制" class="headerlink" title="scp 安全复制"></a>scp 安全复制</h3><p>scp 命令用于在两台 Linux 服务器之间远程传输文件，其基本语法为：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scp 待发送的文件 目标路径</span><br></pre></td></tr></table></figure>
 
-<p>案例1：把本地的某文件，发送到另一台服务器的 <code>/tmp</code> 目录下（本地的局域网机器，是能发送给远程机器的，通过路由器出去）：</p>
+<p>案例 1：把本地的某文件，发送到另一台服务器的 <code>/tmp</code> 目录下（本地的局域网机器，是能发送给远程机器的，通过路由器出去）：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">yumac: ~ yuchao$scp   ./yasuo.txt  root@123.206.16.61:/tmp/  # 发送普通的文件给远程服务器</span><br><span class="line">yasuo.txt                        100%   10     0.2KB/s   00:00</span><br><span class="line">yumac: ~ yuchao$mkdir -p lol/盖伦/大宝剑</span><br><span class="line">yumac: ~ yuchao$scp  -r  ./lol  root@123.206.16.61:/tmp/ # -r参数递归发送整个文件夹下所有内容</span><br></pre></td></tr></table></figure>
 
-<p>案例2：把远程机器的东西，给拿到我本地来</p>
+<p>案例 2：把远程机器的东西，给拿到我本地来</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">yumac: lol yuchao$scp root@123.206.16.61:/tmp/好好学习奥力给.txt  ./</span><br><span class="line">好好学习奥力给.txt               100%  384     6.6KB/s   00:00</span><br><span class="line">yumac: lol yuchao$ls</span><br><span class="line">盖伦				好好学习奥力给.txt</span><br></pre></td></tr></table></figure>
 
 <p>再举两个案例：</p>
@@ -442,15 +440,12 @@
 <h3 id="xftp-工具"><a href="#xftp-工具" class="headerlink" title="xftp 工具"></a>xftp 工具</h3><p>用于 Windows 和 Linux 之间传递大量的文件，支持断点续传。</p>
 <p>直接下载使用即可</p>
 <h3 id="du-文件夹大小"><a href="#du-文件夹大小" class="headerlink" title="du 文件夹大小"></a>du 文件夹大小</h3><p>统计文件，文件夹大小有两种方式：</p>
-<ul>
-<li><p>使用 ls 命令：</p>
+<p>使用 ls 命令：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ls -lh /tmp    # -h 参数用来给文件大小加单位</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>使用 du 命令：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">du -h  .  #显示出当前文件夹下所有内容的大小</span><br><span class="line">du -sh  .  #显示当前文件夹大小的合计  -s 显示合计  -h显示 kb MB GB的单位</span><br></pre></td></tr></table></figure>
 
-</li>
-</ul>
+<p>使用 du 命令：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">du -h  .    #显示出当前文件夹下所有内容的大小</span><br><span class="line">du -sh  .    #显示当前文件夹大小的合计  -s 显示合计  -h显示 kb MB GB的单位</span><br></pre></td></tr></table></figure>
+
 <h3 id="top-资源管理器"><a href="#top-资源管理器" class="headerlink" title="top 资源管理器"></a>top 资源管理器</h3><p>top 命令相当于 Linux 系统的任务管理器和资源管理器：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">top</span><br></pre></td></tr></table></figure>
 
@@ -469,9 +464,12 @@
 <p>lsattr 是检查文件特殊权限的命令。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">chattr +i  file  #给文件加上禁止删除的锁</span><br><span class="line">chattr -i fiel  #去掉锁</span><br><span class="line">lsattr file #显示文件的特殊权限</span><br></pre></td></tr></table></figure>
 
+<h3 id="date-查看系统时间"><a href="#date-查看系统时间" class="headerlink" title="date 查看系统时间"></a>date 查看系统时间</h3><p>可以直接输入 date 命令查看当前时间：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">date</span><br></pre></td></tr></table></figure>
+
 <h3 id="ntpdate-时间同步"><a href="#ntpdate-时间同步" class="headerlink" title="ntpdate 时间同步"></a>ntpdate 时间同步</h3><p>用于同步 Linux 系统时间的命令。</p>
 <p>服务器的时间是非常重要的，会影响到程序的正常运行，尤其是一些定时任务。</p>
-<p>可以直接输入 date 命令查看当前时间，如果不正确，使用如下命令即可时间同步：</p>
+<p>如果使用 date 命令发现系统时间不正确，使用如下命令即可时间同步：</p>
 <figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">ntpdate</span> <span class="selector-tag">-u</span> <span class="selector-tag">ntp</span><span class="selector-class">.aliyun</span><span class="selector-class">.com</span>  #和阿里的<span class="selector-tag">ntp</span>时间服务器同步，更新时间</span><br></pre></td></tr></table></figure>
 
 <p>注：这是永久修改时间的命令。</p>
@@ -726,6 +724,9 @@
 <p>Linux 系统通用查看方法：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/os-release</span><br></pre></td></tr></table></figure>
 
+<h3 id="查看系统信息"><a href="#查看系统信息" class="headerlink" title="查看系统信息"></a>查看系统信息</h3><p>查看系统详细信息：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost l1]<span class="comment"># uname -a</span></span><br><span class="line">Linux localhost.localdomain 3.10.0-327.el7.x86_64 <span class="comment">#1 SMP Thu Nov 19 22:10:57 UTC 2015 x86_64 x86_64 x86_64 GNU/Linux</span></span><br></pre></td></tr></table></figure>
+
 <h3 id="systemctl-软件启停管理"><a href="#systemctl-软件启停管理" class="headerlink" title="systemctl 软件启停管理"></a>systemctl 软件启停管理</h3><p>只要是通过 yum 安装的软件，都可以用 systemctl 系统服务管理命令，进行启停管理：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">systemctl start/stop/restart/status nginx  #分别是 启动，停止，重启，查看状态</span><br><span class="line">systemctl start nginx</span><br><span class="line">systemctl stop nginx</span><br><span class="line"></span><br><span class="line">systemctl start/stop/restart redis</span><br></pre></td></tr></table></figure>
 
@@ -819,13 +820,28 @@
 </li>
 <li><p>查看定时任务</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">crontab -l</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如果不再需要定时任务，使用命令删除：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">crontab -r</span><br></pre></td></tr></table></figure>
 
 </li>
 </ol>
 <h3 id="防火墙关闭"><a href="#防火墙关闭" class="headerlink" title="防火墙关闭"></a>防火墙关闭</h3><p>防火墙是为了保护服务器安全，运维人员会编写防火墙语句，控制服务器的流量出入。</p>
 <p>新手学习直接关闭即可，影响实验。以后的防火墙也是由运维设置，会在不影响项目正常运行的前提下保障安全，而不是系统自带防火墙那样死板。</p>
-<p>关闭防火墙服务的语句有三个，按需任选其一即可：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">iptables -F  #清空防火墙规则，重启恢复</span><br><span class="line">systemctl stop firewalld  #关闭防火墙服务，重启自启</span><br><span class="line">systemctl disable firewalld  #禁用防火墙开机自启，重启不自启</span><br></pre></td></tr></table></figure>
+<p>关闭防火墙服务的语句有如下这么几个，按需任选其一即可：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">iptables -F    <span class="comment"># 清空防火墙规则，重启恢复</span></span><br><span class="line"><span class="comment"># 注：下面的firewalld都可以写成firewalld.service</span></span><br><span class="line">systemctl stop firewalld    <span class="comment"># 关闭防火墙服务，重启自启</span></span><br><span class="line">systemctl <span class="built_in">disable</span> firewalld    <span class="comment"># 禁用防火墙开机自启，重启不自启</span></span><br></pre></td></tr></table></figure>
+
+<p>关于防火墙的其他操作还有：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">systemctl status firewalld    <span class="comment"># 查看防火墙状态</span></span><br><span class="line">systemctl <span class="built_in">enable</span> firewalld    <span class="comment"># 启用防火墙开机自启，重启自启</span></span><br><span class="line">systemctl start firewalld    <span class="comment"># 打开防火墙服务</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="关闭-se-linux"><a href="#关闭-se-linux" class="headerlink" title="关闭 se-linux"></a>关闭 se-linux</h3><p>se-linux 是 Linux 系统中的信息提示工具，很多时候也是不需要的，我们可以将其关闭掉。</p>
+<p>关闭 se-linux 需要修改它的配置文件。配置文件位于 <code>/etc/selinux/config</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/selinux/config</span><br></pre></td></tr></table></figure>
+
+<p>将文件中的 SELINUX 对应的值设置为 disabled：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># This file controls the state of SELinux on the system.</span></span><br><span class="line"><span class="comment"># SELINUX= can take one of these three values:</span></span><br><span class="line"><span class="comment">#     enforcing - SELinux security policy is enforced.</span></span><br><span class="line"><span class="comment">#     permissive - SELinux prints warnings instead of enforcing.</span></span><br><span class="line"><span class="comment">#     disabled - No SELinux policy is loaded.</span></span><br><span class="line">SELINUX=disabled</span><br><span class="line"><span class="comment"># SELINUXTYPE= can take one of three two values:</span></span><br><span class="line"><span class="comment">#     targeted - Targeted processes are protected,</span></span><br><span class="line"><span class="comment">#     minimum - Modification of targeted policy. Only selected processes are protected.</span></span><br><span class="line"><span class="comment">#     mls - Multi Level Security protection.</span></span><br><span class="line">SELINUXTYPE=targeted</span><br></pre></td></tr></table></figure>
+
+<p>保存退出。设置不会立即生效，重启后生效。</p>
 
     </div>
 
@@ -913,7 +929,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux-命令在线查询网站"><span class="nav-number">1.</span> <span class="nav-text">Linux 命令在线查询网站</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#alias-别名"><span class="nav-number">2.</span> <span class="nav-text">alias 别名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#管道符"><span class="nav-number">3.</span> <span class="nav-text">管道符 |</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#netstat-网络状态"><span class="nav-number">4.</span> <span class="nav-text">netstat 网络状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ps-进程状态"><span class="nav-number">5.</span> <span class="nav-text">ps 进程状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#kill-根据-pid-杀进程"><span class="nav-number">6.</span> <span class="nav-text">kill 根据 pid 杀进程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pkill-根据进程名杀进程"><span class="nav-number">7.</span> <span class="nav-text">pkill 根据进程名杀进程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#grep-过滤"><span class="nav-number">8.</span> <span class="nav-text">grep 过滤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#head-和-tail"><span class="nav-number">9.</span> <span class="nav-text">head 和 tail</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#scp-安全复制"><span class="nav-number">10.</span> <span class="nav-text">scp 安全复制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改-Linux-语言为中文"><span class="nav-number">11.</span> <span class="nav-text">修改 Linux 语言为中文</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lrzsz-工具"><span class="nav-number">12.</span> <span class="nav-text">lrzsz 工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#xftp-工具"><span class="nav-number">13.</span> <span class="nav-text">xftp 工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#du-文件夹大小"><span class="nav-number">14.</span> <span class="nav-text">du 文件夹大小</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#top-资源管理器"><span class="nav-number">15.</span> <span class="nav-text">top 资源管理器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#uptime-运行时间"><span class="nav-number">16.</span> <span class="nav-text">uptime 运行时间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#free-内存占用"><span class="nav-number">17.</span> <span class="nav-text">free 内存占用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#chattr-和-lsattr-权限设置"><span class="nav-number">18.</span> <span class="nav-text">chattr 和 lsattr 权限设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ntpdate-时间同步"><span class="nav-number">19.</span> <span class="nav-text">ntpdate 时间同步</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#wget-下载"><span class="nav-number">20.</span> <span class="nav-text">wget 下载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#curl-访问网址"><span class="nav-number">21.</span> <span class="nav-text">curl 访问网址</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux-的用户管理"><span class="nav-number">22.</span> <span class="nav-text">Linux 的用户管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UID-和-GID"><span class="nav-number">23.</span> <span class="nav-text">UID 和 GID</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#useradd-创建用户"><span class="nav-number">24.</span> <span class="nav-text">useradd 创建用户</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#userdel-删除用户"><span class="nav-number">25.</span> <span class="nav-text">userdel 删除用户</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#passwd-修改密码"><span class="nav-number">26.</span> <span class="nav-text">passwd 修改密码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#su-切换用户"><span class="nav-number">27.</span> <span class="nav-text">su 切换用户</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#id-产看用户信息"><span class="nav-number">28.</span> <span class="nav-text">id 产看用户信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sudo-命令"><span class="nav-number">29.</span> <span class="nav-text">sudo 命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux-的文件和目录权限"><span class="nav-number">30.</span> <span class="nav-text">Linux 的文件和目录权限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#chmod-修改文件权限"><span class="nav-number">31.</span> <span class="nav-text">chmod 修改文件权限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ln-软链接"><span class="nav-number">32.</span> <span class="nav-text">ln 软链接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tar-压缩解压缩"><span class="nav-number">33.</span> <span class="nav-text">tar 压缩解压缩</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#unzip-压缩"><span class="nav-number">34.</span> <span class="nav-text">unzip 压缩</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看系统发行版"><span class="nav-number">35.</span> <span class="nav-text">查看系统发行版</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#systemctl-软件启停管理"><span class="nav-number">36.</span> <span class="nav-text">systemctl 软件启停管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#crontab-定时任务"><span class="nav-number">37.</span> <span class="nav-text">crontab 定时任务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#防火墙关闭"><span class="nav-number">38.</span> <span class="nav-text">防火墙关闭</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux-命令在线查询网站"><span class="nav-number">1.</span> <span class="nav-text">Linux 命令在线查询网站</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看命令的帮助文档"><span class="nav-number">2.</span> <span class="nav-text">查看命令的帮助文档</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关机和重启"><span class="nav-number">3.</span> <span class="nav-text">关机和重启</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#alias-别名"><span class="nav-number">4.</span> <span class="nav-text">alias 别名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#管道符"><span class="nav-number">5.</span> <span class="nav-text">管道符 |</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#netstat-网络状态"><span class="nav-number">6.</span> <span class="nav-text">netstat 网络状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ps-进程状态"><span class="nav-number">7.</span> <span class="nav-text">ps 进程状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#kill-根据-pid-杀进程"><span class="nav-number">8.</span> <span class="nav-text">kill 根据 pid 杀进程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pkill-根据进程名杀进程"><span class="nav-number">9.</span> <span class="nav-text">pkill 根据进程名杀进程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#grep-过滤"><span class="nav-number">10.</span> <span class="nav-text">grep 过滤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#scp-安全复制"><span class="nav-number">11.</span> <span class="nav-text">scp 安全复制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改-Linux-语言为中文"><span class="nav-number">12.</span> <span class="nav-text">修改 Linux 语言为中文</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lrzsz-工具"><span class="nav-number">13.</span> <span class="nav-text">lrzsz 工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#xftp-工具"><span class="nav-number">14.</span> <span class="nav-text">xftp 工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#du-文件夹大小"><span class="nav-number">15.</span> <span class="nav-text">du 文件夹大小</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#top-资源管理器"><span class="nav-number">16.</span> <span class="nav-text">top 资源管理器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#uptime-运行时间"><span class="nav-number">17.</span> <span class="nav-text">uptime 运行时间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#free-内存占用"><span class="nav-number">18.</span> <span class="nav-text">free 内存占用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#chattr-和-lsattr-权限设置"><span class="nav-number">19.</span> <span class="nav-text">chattr 和 lsattr 权限设置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#date-查看系统时间"><span class="nav-number">20.</span> <span class="nav-text">date 查看系统时间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ntpdate-时间同步"><span class="nav-number">21.</span> <span class="nav-text">ntpdate 时间同步</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#wget-下载"><span class="nav-number">22.</span> <span class="nav-text">wget 下载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#curl-访问网址"><span class="nav-number">23.</span> <span class="nav-text">curl 访问网址</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux-的用户管理"><span class="nav-number">24.</span> <span class="nav-text">Linux 的用户管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UID-和-GID"><span class="nav-number">25.</span> <span class="nav-text">UID 和 GID</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#useradd-创建用户"><span class="nav-number">26.</span> <span class="nav-text">useradd 创建用户</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#userdel-删除用户"><span class="nav-number">27.</span> <span class="nav-text">userdel 删除用户</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#passwd-修改密码"><span class="nav-number">28.</span> <span class="nav-text">passwd 修改密码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#su-切换用户"><span class="nav-number">29.</span> <span class="nav-text">su 切换用户</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#id-产看用户信息"><span class="nav-number">30.</span> <span class="nav-text">id 产看用户信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sudo-命令"><span class="nav-number">31.</span> <span class="nav-text">sudo 命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux-的文件和目录权限"><span class="nav-number">32.</span> <span class="nav-text">Linux 的文件和目录权限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#chmod-修改文件权限"><span class="nav-number">33.</span> <span class="nav-text">chmod 修改文件权限</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ln-软链接"><span class="nav-number">34.</span> <span class="nav-text">ln 软链接</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tar-压缩解压缩"><span class="nav-number">35.</span> <span class="nav-text">tar 压缩解压缩</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#unzip-压缩"><span class="nav-number">36.</span> <span class="nav-text">unzip 压缩</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看系统发行版"><span class="nav-number">37.</span> <span class="nav-text">查看系统发行版</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看系统信息"><span class="nav-number">38.</span> <span class="nav-text">查看系统信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#systemctl-软件启停管理"><span class="nav-number">39.</span> <span class="nav-text">systemctl 软件启停管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#crontab-定时任务"><span class="nav-number">40.</span> <span class="nav-text">crontab 定时任务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#防火墙关闭"><span class="nav-number">41.</span> <span class="nav-text">防火墙关闭</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关闭-se-linux"><span class="nav-number">42.</span> <span class="nav-text">关闭 se-linux</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -929,7 +945,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">324</span>
+          <span class="site-state-item-count">342</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -993,12 +1009,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">1.9m</span>
+    <span title="站点总字数">2m</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">58:29</span>
+    <span title="站点阅读时长">61:19</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
   </div>
@@ -1042,6 +1058,8 @@
   
   <script size="300" alpha="0.2" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
   <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
 

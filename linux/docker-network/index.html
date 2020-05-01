@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="Tu5vqPaUb8svfkPx5eetJFD84ciQCcWVXNatdsWtj9Q">
+  <meta name="baidu-site-verification" content="baidu_verify_FBq9PG4BBb">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"appID":"PXY1Z6GHKT","apiKey":"eb82f2e78e3053f26aa408e9caa96d93","indexName":"blog","hits":{"per_page":10},"labels":{"input_placeholder":"要查点什么(✿◡‿◡)","hits_empty":"没有找到任何关于 ${query} 的结果╥﹏╥...","hits_stats":"搜索到 ${hits} 条记录，用时 ${time} ms o(*￣▽￣*)ブ"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="和虚拟机一样，docker 的网络也可以有多种设置模式。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="docker 的网络">
+<meta property="og:url" content="https://sliu.vip/linux/docker-network/index.html">
+<meta property="og:site_name" content="刘硕的技术查阅手册">
+<meta property="og:description" content="和虚拟机一样，docker 的网络也可以有多种设置模式。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sliu.vip/linux/docker-network/1588173757491.png">
+<meta property="og:image" content="https://sliu.vip/linux/docker-network/1588174594813.png">
+<meta property="og:image" content="https://sliu.vip/linux/docker-network/1588174675787.png">
+<meta property="og:image" content="https://sliu.vip/linux/docker-network/1588175096220.png">
+<meta property="og:image" content="https://sliu.vip/linux/docker-network/clip_image044.jpg">
+<meta property="og:image" content="https://sliu.vip/linux/docker-network/1588177779328.png">
+<meta property="og:image" content="https://sliu.vip/linux/docker-network/1588179053771.png">
+<meta property="og:image" content="https://sliu.vip/linux/docker-network/1588179195963.png">
+<meta property="article:published_time" content="2020-05-01T15:47:01.241Z">
+<meta property="article:modified_time" content="2020-05-01T16:42:16.252Z">
+<meta property="article:author" content="刘硕">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="运维">
+<meta property="article:tag" content="Docker">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sliu.vip/linux/docker-network/1588173757491.png">
+
+<link rel="canonical" href="https://sliu.vip/linux/docker-network/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>docker 的网络 | 刘硕的技术查阅手册</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f14f123935d6183fdd06f8f1c4bc378f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="刘硕的技术查阅手册" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">刘硕的技术查阅手册</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">Python 全栈开发学习笔记</h1>
+      
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-toc">
+
+    <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+  
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/linux/docker-network/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          docker 的网络
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-05-01 23:47:01" itemprop="dateCreated datePublished" datetime="2020-05-01T23:47:01+08:00">2020-05-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-05-02 00:42:16" itemprop="dateModified" datetime="2020-05-02T00:42:16+08:00">2020-05-02</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/linux/docker-network/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/linux/docker-network/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>9.4k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>17 分钟</span>
+            </span>
+            <div class="post-description">和虚拟机一样，docker 的网络也可以有多种设置模式。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="网络分类"><a href="#网络分类" class="headerlink" title="网络分类"></a>网络分类</h3><p>和虚拟机一样，docker 的网络也可以有多种设置模式。</p>
+<p>单机中各个容器之间的网络可以有：</p>
+<ul>
+<li><p>Bridge Network：相当于 VMware 的桥接，默认跑这个</p>
+</li>
+<li><p>Host Network：类似于 VM 的 NAT</p>
+</li>
+<li><p>None Network：没网</p>
+</li>
+</ul>
+<p>多机组成集群，每台计算机的 docker 容易之间的网络可以是：</p>
+<ul>
+<li>Overlay Network：集群网络</li>
+</ul>
+<p>查看网卡信息：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@node01 flask-hello-world]<span class="comment"># docker network ls</span></span><br><span class="line">NETWORK ID          NAME                DRIVER              SCOPE</span><br><span class="line">b53119ad4645        bridge              bridge              <span class="built_in">local</span></span><br><span class="line">99ed3990d07e        host                host                <span class="built_in">local</span></span><br><span class="line">06a7162d9c0b        none                null                <span class="built_in">local</span></span><br><span class="line">[root@node01 flask-hello-world]<span class="comment"># docker network inspect b53119ad4645</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="容器通信"><a href="#容器通信" class="headerlink" title="容器通信"></a>容器通信</h3><p>有时写代码时，并不知道要请求的 IP 地址，这时，我们就需要用到容器通信来解决。</p>
+<p>首先运行一个最小系统，并让它在后台一直运行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --name test1 busybox /bin/sh -c <span class="string">"while true;do sleep 3600;done"</span></span><br></pre></td></tr></table></figure>
+
+<p>再运行一个最小系统，让它链接第一个。</p>
+<p>链接类似于配置主机名和映射：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --name test2 --link test1 busybox /bin/sh -c <span class="string">"while true;do sleep 3600;done"</span></span><br></pre></td></tr></table></figure>
+
+<p>因为容器默认的网络连接方式为桥接，所以通过查看桥接网卡的详细信息，可以查看两个容器的 IP：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@node01 flask-hello-world]<span class="comment"># docker network ls</span></span><br><span class="line">NETWORK ID          NAME                DRIVER              SCOPE</span><br><span class="line">b53119ad4645        bridge              bridge              <span class="built_in">local</span></span><br><span class="line">99ed3990d07e        host                host                <span class="built_in">local</span></span><br><span class="line">06a7162d9c0b        none                null                <span class="built_in">local</span></span><br><span class="line">[root@node01 flask-hello-world]<span class="comment"># docker network inspect b53119ad4645</span></span><br></pre></td></tr></table></figure>
+
+<p> 我们能容易找到 test1 和 test2 两个容器的 IP：</p>
+<img src="/linux/docker-network/1588173757491.png" class="" width="1588173757491">
+
+<p>进入 test1 的交互模式，分别尝试使用 test2 的名字和 IP 连接 test2：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@node01 flask-hello-world]<span class="comment"># docker exec -it test1 /bin/sh</span></span><br><span class="line">/ <span class="comment"># ping test2</span></span><br><span class="line">ping: bad address <span class="string">'test2'</span></span><br><span class="line">/ <span class="comment"># ping 172.17.0.4</span></span><br><span class="line">PING 172.17.0.4 (172.17.0.4): 56 data bytes</span><br><span class="line">64 bytes from 172.17.0.4: seq=0 ttl=64 time=0.170 ms</span><br><span class="line">64 bytes from 172.17.0.4: seq=1 ttl=64 time=0.203 ms</span><br><span class="line">64 bytes from 172.17.0.4: seq=2 ttl=64 time=0.124 ms</span><br><span class="line">64 bytes from 172.17.0.4: seq=3 ttl=64 time=0.093 ms</span><br></pre></td></tr></table></figure>
+
+<p>使用 IP 可以 ping 通，但是直接使用 test2 的名字不成。因为 test1 并没有连接 test2。于是，我们无法在 test1 中直接使用 test2 的名字连接到 test2。</p>
+<p>注：ping 可能会一直连接不停，可以通过 ctrl + C 强制终止，下同。</p>
+<p>再进入到 test2 的交互模式，尝试连接 test1：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@node01 flask-hello-world]<span class="comment"># docker exec -it test2 /bin/sh</span></span><br><span class="line">/ <span class="comment"># ping test1</span></span><br><span class="line">PING test1 (172.17.0.3): 56 data bytes</span><br><span class="line">64 bytes from 172.17.0.3: seq=0 ttl=64 time=0.096 ms</span><br><span class="line">64 bytes from 172.17.0.3: seq=1 ttl=64 time=0.212 ms</span><br><span class="line">/ <span class="comment"># ping 172.17.0.3</span></span><br><span class="line">PING 172.17.0.3 (172.17.0.3): 56 data bytes</span><br><span class="line">64 bytes from 172.17.0.3: seq=0 ttl=64 time=0.089 ms</span><br><span class="line">64 bytes from 172.17.0.3: seq=1 ttl=64 time=0.134 ms</span><br></pre></td></tr></table></figure>
+
+<p>假设此时，test2 部署了项目，test1 部署了项目用的 MySQL，那么项目访问 MySQL 时，编写项目就可以不指定IP，指定成 test1，就可以通，因为是 link 了。</p>
+<h3 id="端口映射"><a href="#端口映射" class="headerlink" title="端口映射"></a>端口映射</h3><p>docker 容器运行在局域网中，我们是无法从外界访问到的。通过端口映射，可以实现外界访问 docker 容器。</p>
+<p>运行一个 Nginx：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --name web -d nginx</span><br></pre></td></tr></table></figure>
+
+<p>可以查到进程：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@node01 flask-hello-world]<span class="comment"># docker ps</span></span><br><span class="line">CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES</span><br><span class="line">a4977cc259be        nginx               <span class="string">"nginx -g 'daemon of…"</span>   52 seconds ago      Up 51 seconds       80/tcp              web</span><br></pre></td></tr></table></figure>
+
+<p>通过桥接网卡，查看到容器的 IP：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker network inspect bridge</span><br></pre></td></tr></table></figure>
+
+<img src="/linux/docker-network/1588174594813.png" class="" width="1588174594813">
+
+<p>从本机，可以访问到 Nginx 启动了的主页：</p>
+<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl <span class="string">http:</span><span class="comment">//172.17.0.2</span></span><br></pre></td></tr></table></figure>
+
+<img src="/linux/docker-network/1588174675787.png" class="" width="1588174675787">
+
+<p>此时外界是无法访问到的，CentOS 的 IP 或是容器的 IP 都不成。这个问题可以通过端口映射解决。</p>
+<p>可以通过端口映射解决</p>
+<p>停止并删除前面的容器：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@node01 flask-hello-world]<span class="comment"># docker stop web</span></span><br><span class="line">web</span><br><span class="line">[root@node01 flask-hello-world]<span class="comment"># docker rm web</span></span><br><span class="line">web</span><br></pre></td></tr></table></figure>
+
+<p>端口映射启动容器，两个 80 分别表示 CentOS 和容器的端口：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 80:80 --name web nginx</span><br></pre></td></tr></table></figure>
+
+<p>此时，外界浏览器可以通过 CentOS 的 IP，访问到容器内的内容</p>
+<img src="/linux/docker-network/1588175096220.png" class="" width="1588175096220">
+
+<h3 id="网络的-none-和-host"><a href="#网络的-none-和-host" class="headerlink" title="网络的 none 和 host"></a>网络的 none 和 host</h3><ul>
+<li><p>none 应用场景：安全性要求极高，存储绝密数据等</p>
+</li>
+<li><p>host 网络类似于 NAT</p>
+</li>
+</ul>
+<h3 id="多容器部署和应用"><a href="#多容器部署和应用" class="headerlink" title="多容器部署和应用"></a>多容器部署和应用</h3><p>可以清理下前面的容器和镜像：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker stop $(docker container ls -q)</span><br><span class="line">docker rm $(docker container ls -aq)</span><br><span class="line">docker image rm $(docker image ls -q)</span><br></pre></td></tr></table></figure>
+
+<p>接下来我们通过创建两个容器进行演示，一个用 flask 做 Web 服务，另一个 Redis 做数据存储。</p>
+<p>首先，跑起来一台 Redis：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run --name redis -d redis</span><br></pre></td></tr></table></figure>
+
+<p>查看 Redis 的运行状态：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@node01 flask-hello-world]<span class="comment"># docker ps</span></span><br><span class="line">CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES</span><br><span class="line">6d62d6f25410        redis               <span class="string">"docker-entrypoint.s…"</span>   11 seconds ago      Up 10 seconds       6379/tcp            redis</span><br></pre></td></tr></table></figure>
+
+<p>创建一个目录，在其中创建一个 py 文件并编辑：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@node01 home]<span class="comment"># mkdir flask-redis</span></span><br><span class="line">[root@node01 home]<span class="comment"># cd flask-redis</span></span><br><span class="line">[root@node01 flask-redis]<span class="comment"># vi app.py</span></span><br></pre></td></tr></table></figure>
+
+<p>在 py 文件中写入如下内容，这是一个简单的 flask 项目，可以读取何修改 Redis 的数据：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line"><span class="keyword">from</span> redis <span class="keyword">import</span> Redis</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> socket</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line">redis = Redis(host=os.environ.get(<span class="string">'REDIS_HOST'</span>, <span class="string">'127.0.0.1'</span>), port=<span class="number">6379</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route('/')</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello</span><span class="params">()</span>:</span></span><br><span class="line">    redis.incr(<span class="string">'hits'</span>)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">'Hello Container World! I have been seen %s times and my hostname is %s.\n'</span> % (redis.get(<span class="string">'hits'</span>),socket.gethostname())</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    app.run(host=<span class="string">"0.0.0.0"</span>, port=<span class="number">5000</span>, debug=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+
+<p>再编写一个 dockerfile：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi Dockerfile</span><br></pre></td></tr></table></figure>
+
+<p>在其中插入如下内容：</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> python:<span class="number">3.6</span></span><br><span class="line"><span class="keyword">LABEL</span><span class="bash"> maintaner=<span class="string">"liushuo432@outlook.com"</span></span></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> . /app</span></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="bash"> /app</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> pip install flask redis -i https://pypi.tuna.tsinghua.edu.cn/simple</span></span><br><span class="line"><span class="keyword">EXPOSE</span> <span class="number">5000</span></span><br><span class="line"><span class="keyword">CMD</span><span class="bash"> [ <span class="string">"python"</span>, <span class="string">"app.py"</span> ]</span></span><br></pre></td></tr></table></figure>
+
+<p>编译构建一个镜像：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t shuoliuchn/flask-redis .</span><br></pre></td></tr></table></figure>
+
+<p>运行构建好的镜像，因为要提供给外界访问，需要加上 <code>-p 5000:5000</code> 参数：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --name flask-redis --link redis -e REDIS_HOST=redis -p 5000:5000 shuoliuchn/flask-redis</span><br></pre></td></tr></table></figure>
+
+<p>-e 参数用来设置环境变量，而 flask 中通过读取这个环境变量来获取 Redis 服务器的 IP。</p>
+<p>成功跑起两个容器：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@node01 flask-redis]<span class="comment"># docker container ls</span></span><br><span class="line">CONTAINER ID        IMAGE                    COMMAND                  CREATED             STATUS              PORTS               NAMES</span><br><span class="line">bd99fe7b7c60        shuoliuchn/flask-redis   <span class="string">"python app.py"</span>          29 seconds ago      Up 27 seconds       5000/tcp            flask-redis</span><br><span class="line">6d62d6f25410        redis                    <span class="string">"docker-entrypoint.s…"</span>   18 minutes ago      Up 18 minutes       6379/tcp            redis</span><br></pre></td></tr></table></figure>
+
+<p>进入 flask 容器，访问运行的代码，可以看到调用了 Redis 自增：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@node01 flask-redis]<span class="comment"># docker exec -it bd99fe7b7c60 /bin/bash</span></span><br><span class="line">root@bd99fe7b7c60:/app<span class="comment"># curl 127.0.0.1:5000</span></span><br><span class="line">Hello Container World! I have been seen b<span class="string">'1'</span> <span class="built_in">times</span> and my hostname is bd99fe7b7c60.</span><br><span class="line">root@bd99fe7b7c60:/app<span class="comment"># curl 127.0.0.1:5000</span></span><br><span class="line">Hello Container World! I have been seen b<span class="string">'2'</span> <span class="built_in">times</span> and my hostname is bd99fe7b7c60.</span><br><span class="line">root@bd99fe7b7c60:/app<span class="comment"># curl 127.0.0.1:5000</span></span><br><span class="line">Hello Container World! I have been seen b<span class="string">'3'</span> <span class="built_in">times</span> and my hostname is bd99fe7b7c60.</span><br></pre></td></tr></table></figure>
+
+<h3 id="多机器多容器通信"><a href="#多机器多容器通信" class="headerlink" title="多机器多容器通信"></a>多机器多容器通信</h3><p>不同计算机中的不同容器，很可能会出现容器 IP 一样的情况。这就会导致 IP 冲突，而无法相互访问。可以加一个 etcd 去管理，防止 IP 和其他任何可能的（比如容器名）冲突</p>
+<img src="/linux/docker-network/clip_image044.jpg" class="" title="clip_image044">
+
+<p>开两台机器，把 etcd 安装包分别传到这台机器。</p>
+<img src="/linux/docker-network/1588177779328.png" class="" width="1588177779328">
+
+<p>将两台机器的 etcd 安装包都解压：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf etcd-v3.3.18-linux-amd64.tar.gz</span><br></pre></td></tr></table></figure>
+
+<p>第一台机器中，进入解压后的 etcd，运行如下，注意修改 IP（第一台机器的 IP 为 192.168.248.139，第二台为 192.168.248.140）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">nohup ./etcd --name docker-node1 --initial-advertise-peer-urls http://192.168.248.139:2380 \</span><br><span class="line">	--listen-peer-urls http://192.168.248.139:2380 \</span><br><span class="line">	--listen-client-urls http://192.168.248.139:2379,http://127.0.0.1:2379 \</span><br><span class="line">	--advertise-client-urls http://192.168.248.139:2379 \</span><br><span class="line">	--initial-cluster-token etcd-cluster \</span><br><span class="line">	--initial-cluster docker-node1=http://192.168.248.139:2380,docker-node2=http://192.168.248.140:2380 \</span><br><span class="line">	--initial-cluster-state new&amp;</span><br></pre></td></tr></table></figure>
+
+<p>同样进入第二台机器的 etcd 解压好的文件夹中，修改 IP，执行下面的代码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">nohup ./etcd --name docker-node2 --initial-advertise-peer-urls http://192.168.248.140:2380 \</span><br><span class="line">	--listen-peer-urls http://192.168.248.140:2380 \</span><br><span class="line">	--listen-client-urls http://192.168.248.140:2379,http://127.0.0.1:2379 \</span><br><span class="line">	--advertise-client-urls http://192.168.248.140:2379 \</span><br><span class="line">	--initial-cluster-token etcd-cluster \</span><br><span class="line">	--initial-cluster docker-node1=http://192.168.248.139:2380,docker-node2=http://192.168.248.140:2380 \</span><br><span class="line">	--initial-cluster-state new&amp;</span><br></pre></td></tr></table></figure>
+
+<p>etcd 会占用窗口，我们下面的操作需要新开窗口运行。</p>
+<p>查看两台机器 etcd 的健康状态（两台机器都可以查到，这里只放了其中一台的结果）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@node01 etcd-v3.3.18-linux-amd64]<span class="comment"># ./etcdctl cluster-health</span></span><br><span class="line">member 1f96f9828a1f391d is healthy: got healthy result from http://192.168.248.140:2379</span><br><span class="line">member a1b7d2585ad4bb6f is healthy: got healthy result from http://192.168.248.139:2379</span><br><span class="line">cluster is healthy</span><br></pre></td></tr></table></figure>
+
+<p>此时，停止第一台机器的 docker：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@node01 etcd-v3.3.18-linux-amd64]<span class="comment"># service docker stop</span></span><br><span class="line">Redirecting to /bin/systemctl stop  docker.service</span><br></pre></td></tr></table></figure>
+
+<p>运行被 etcd 管理的 docker，注意修改两个 IP 为第一台机器的 IP：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/bin/dockerd -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --cluster-store=etcd://192.168.248.139:2379 --cluster-advertise=192.168.248.139:2375&amp;</span><br></pre></td></tr></table></figure>
+
+<img src="/linux/docker-network/1588179053771.png" class="" width="1588179053771">
+
+<p>第二台机器一样的，停止 docker，然后运行下面的命令，要修改 IP 为第二台机器的：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">service docker stop</span><br><span class="line">/usr/bin/dockerd -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --cluster-store=etcd://192.168.248.140:2379 --cluster-advertise=192.168.248.140:2375&amp;</span><br></pre></td></tr></table></figure>
+
+ <img src="/linux/docker-network/1588179195963.png" class="" width="1588179195963">
+
+<p>注意两台主机最好不要重名，否则有可能会报错。</p>
+<p>上面搞定后，第一台机器创建个虚拟网卡。因为窗口又被占用，所以还需要新开窗口执行下面的命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@node01 ~]<span class="comment"># docker network create -d overlay demo</span></span><br><span class="line">e4df7b30c40098ab7c5c82f98a2c8ff68cc4f94dfea4e1bf16060de950e61cfc</span><br><span class="line">[root@node01 ~]<span class="comment"># docker network ls</span></span><br><span class="line">NETWORK ID          NAME                DRIVER              SCOPE</span><br><span class="line">44daf8a401be        bridge              bridge              <span class="built_in">local</span></span><br><span class="line">e4df7b30c400        demo                overlay             global</span><br><span class="line">99ed3990d07e        host                host                <span class="built_in">local</span></span><br><span class="line">06a7162d9c0b        none                null                <span class="built_in">local</span></span><br></pre></td></tr></table></figure>
+
+<p>此时，第二台也可以看到这个网络（并没有在第二台机器创建，但是却可以查看到）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@node02 ~]<span class="comment"># docker network ls</span></span><br><span class="line">NETWORK ID          NAME                DRIVER              SCOPE</span><br><span class="line">adf8954e79c2        bridge              bridge              <span class="built_in">local</span></span><br><span class="line">e4df7b30c400        demo                overlay             global</span><br><span class="line">99ed3990d07e        host                host                <span class="built_in">local</span></span><br><span class="line">06a7162d9c0b        none                null                <span class="built_in">local</span></span><br></pre></td></tr></table></figure>
+
+<p>在第一台机器上创建个容器：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --name <span class="built_in">test</span> --net demo busybox sh -c <span class="string">"while true;do sleep 3600;done"</span></span><br></pre></td></tr></table></figure>
+
+<p>此时第二台运行同样代码，会报错，显示已经存在：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@node02 ~]<span class="comment"># docker run -d --name test --net demo busybox sh -c "while true;do sleep 3600;done"</span></span><br><span class="line">Unable to find image <span class="string">'busybox:latest'</span> locally</span><br><span class="line">latest: Pulling from library/busybox</span><br><span class="line">e2334dd9fee4: Pull complete </span><br><span class="line">Digest: sha256:a8cf7ff6367c2afa2a90acd081b484cbded349a7076e7bdf37a05279f276bc12</span><br><span class="line">Status: Downloaded newer image <span class="keyword">for</span> busybox:latest</span><br><span class="line">05378667514ddd9f4fe9ac812b0b1c8479fd3f8d095876502c6700b390d9930d</span><br><span class="line">docker: Error response from daemon: endpoint with name <span class="built_in">test</span> already exists <span class="keyword">in</span> network demo.</span><br></pre></td></tr></table></figure>
+
+<p> 这样我们就成功解决了集群间 docker 机器互相不认识的情况。</p>
+<p>接下来我们再次使用 Redis 服务器和 Flask 服务器的例子进行测试。</p>
+<p>我们可以将第一台机器作为 Redis 服务器，使用 overlay 网络：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@node01 ~]<span class="comment"># docker run -d --name redis --net demo redis</span></span><br><span class="line">5ad4b62814820283ed3d62417d37275989f151bfb10cab55e3248459c752721b</span><br><span class="line">[root@node01 ~]<span class="comment"># docker container ls</span></span><br><span class="line">CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES</span><br><span class="line">5ad4b6281482        redis               <span class="string">"docker-entrypoint.s…"</span>   11 seconds ago      Up 10 seconds       6379/tcp            redis</span><br><span class="line">010ceb4d9f91        busybox             <span class="string">"sh -c 'while true;d…"</span>   22 minutes ago      Up 22 minutes                           <span class="built_in">test</span></span><br></pre></td></tr></table></figure>
+
+<p>在第二台机器中，新建一个目录，在其中创建并编辑 <code>app.py</code> 文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@node02 home]<span class="comment"># mkdir flask-redis</span></span><br><span class="line">[root@node02 home]<span class="comment"># cd flask-redis/</span></span><br><span class="line">[root@node02 flask-redis]<span class="comment"># vi app.py</span></span><br></pre></td></tr></table></figure>
+
+<p>写入如下内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">from flask import Flask</span><br><span class="line">from redis import Redis</span><br><span class="line">import os</span><br><span class="line">import socket</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line">redis = Redis(host=os.environ.get(<span class="string">'REDIS_HOST'</span>, <span class="string">'127.0.0.1'</span>), port=6379)</span><br><span class="line"></span><br><span class="line">@app.route(<span class="string">'/'</span>)</span><br><span class="line">def hello():</span><br><span class="line">    redis.incr(<span class="string">'hits'</span>)</span><br><span class="line">    <span class="built_in">return</span> <span class="string">'Hello Container World! I have been seen %s times and my hostname is %s.\n'</span> % (redis.get(<span class="string">'hits'</span>),socket.gethostname())</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    app.run(host=<span class="string">"0.0.0.0"</span>, port=5000, debug=True)</span><br></pre></td></tr></table></figure>
+
+<p>在同样目录下创建 Dockerfile，并写入如下内容：</p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">FROM</span> python:<span class="number">3.6</span></span><br><span class="line"><span class="keyword">LABEL</span><span class="bash"> maintaner=<span class="string">"liushuo432@outlook.com"</span></span></span><br><span class="line"><span class="keyword">COPY</span><span class="bash"> . /app</span></span><br><span class="line"><span class="keyword">WORKDIR</span><span class="bash"> /app</span></span><br><span class="line"><span class="keyword">RUN</span><span class="bash"> pip install flask redis -i https://pypi.tuna.tsinghua.edu.cn/simple</span></span><br><span class="line"><span class="keyword">EXPOSE</span> <span class="number">5000</span></span><br><span class="line"><span class="keyword">CMD</span><span class="bash"> [ <span class="string">"python"</span>, <span class="string">"app.py"</span> ]</span></span><br></pre></td></tr></table></figure>
+
+<p>编译 Dockerfile 生成新镜像：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker build -t shuoliuchn/flask-redis .</span><br></pre></td></tr></table></figure>
+
+<p>使用 overlay 网络运行镜像：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --name flask-redis2 --link redis --net demo -e REDIS_HOST=redis -p 5000:5000 shuoliuchn/flask-redis</span><br></pre></td></tr></table></figure>
+
+<p>进入到 flask 的交互界面，使用 curl 访问 flask：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@node02 flask-redis]<span class="comment"># docker exec -it flask-redis2 /bin/sh</span></span><br><span class="line"><span class="comment"># curl http://127.0.0.1:5000</span></span><br><span class="line">Hello Container World! I have been seen b<span class="string">'1'</span> <span class="built_in">times</span> and my hostname is 0cdf5309d786.</span><br><span class="line"><span class="comment"># curl http://127.0.0.1:5000</span></span><br><span class="line">Hello Container World! I have been seen b<span class="string">'2'</span> <span class="built_in">times</span> and my hostname is 0cdf5309d786.</span><br><span class="line"><span class="comment"># curl http://127.0.0.1:5000</span></span><br><span class="line">Hello Container World! I have been seen b<span class="string">'3'</span> <span class="built_in">times</span> and my hostname is 0cdf5309d786.</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+              <a href="/tags/%E8%BF%90%E7%BB%B4/" rel="tag"># 运维</a>
+              <a href="/tags/Docker/" rel="tag"># Docker</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/linux/docker-data-share/" rel="prev" title="docker 的持久化存储和数据共享">
+      <i class="fa fa-chevron-left"></i> docker 的持久化存储和数据共享
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/linux/docker-image-container/" rel="next" title="docker 的镜像和容器">
+      docker 的镜像和容器 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#网络分类"><span class="nav-number">1.</span> <span class="nav-text">网络分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#容器通信"><span class="nav-number">2.</span> <span class="nav-text">容器通信</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#端口映射"><span class="nav-number">3.</span> <span class="nav-text">端口映射</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#网络的-none-和-host"><span class="nav-number">4.</span> <span class="nav-text">网络的 none 和 host</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多容器部署和应用"><span class="nav-number">5.</span> <span class="nav-text">多容器部署和应用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多机器多容器通信"><span class="nav-number">6.</span> <span class="nav-text">多机器多容器通信</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="刘硕"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">刘硕</p>
+  <div class="site-description" itemprop="description">不成为自己讨厌的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">342</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">55</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:liushuo432@outlook.com" title="E-Mail → mailto:liushuo432@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/2436055290" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;2436055290" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://wpa.qq.com/msgrd?v=3&uin=1696146913&site=qq&menu=yes" title="QQ → http:&#x2F;&#x2F;wpa.qq.com&#x2F;msgrd?v&#x3D;3&amp;uin&#x3D;1696146913&amp;site&#x3D;qq&amp;menu&#x3D;yes" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-fw fa-rss"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备20001451号 </a>
+      <img src="/images/beian_icon.png" style="display: inline-block;"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=21142102000063" rel="noopener" target="_blank">辽公网安备 21142102000063号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘硕</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">2m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">61:19</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.2" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'Ga2II3wuJmHX3GiNHm9TmI97-gzGzoHsz',
+      appKey     : 'esGYJQepdYLHf07E1VMsP3RK',
+      placeholder: "o(*￣▽￣*)ブ来说点什么吧...（填上邮箱可以收到回复提醒）",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : true,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+  <script type="text/javascript" src="/js/love.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/Epsilon2.1.model.json"},"display":{"superSample":2,"width":200,"height":400,"position":"left","hOffset":-30,"vOffset":-40},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>

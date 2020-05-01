@@ -19,7 +19,7 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"appID":"PXY1Z6GHKT","apiKey":"eb82f2e78e3053f26aa408e9caa96d93","indexName":"blog","hits":{"per_page":10},"labels":{"input_placeholder":"要查点什么(✿◡‿◡)","hits_empty":"没有找到任何关于 ${query} 的结果╥﹏╥...","hits_stats":"搜索到 ${hits} 条记录，用时 ${time} ms o(*￣▽￣*)ブ"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"appID":"PXY1Z6GHKT","apiKey":"eb82f2e78e3053f26aa408e9caa96d93","indexName":"blog","hits":{"per_page":10},"labels":{"input_placeholder":"要查点什么(✿◡‿◡)","hits_empty":"没有找到任何关于 ${query} 的结果╥﹏╥...","hits_stats":"搜索到 ${hits} 条记录，用时 ${time} ms o(*￣▽￣*)ブ"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="不成为自己讨厌的人">
@@ -230,7 +230,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/function-name-space/">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/markdown/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -244,7 +244,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/python-basic/function-name-space/" class="post-title-link" itemprop="url">函数的名称空间</a>
+            <a href="/python-basic/markdown/" class="post-title-link" itemprop="url">Markdown 常用语法</a>
         </h2>
 
         <div class="post-meta">
@@ -254,7 +254,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-03-13 13:53:09" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:09+08:00">2020-03-13</time>
+              <time title="创建时间：2020-03-13 13:53:10" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:10+08:00">2020-03-13</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
@@ -282,8 +282,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/python-basic/function-name-space/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/python-basic/function-name-space/" itemprop="commentCount"></span>
+    <a title="valine" href="/python-basic/markdown/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/python-basic/markdown/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -293,14 +293,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>430</span>
+              <span>1.1k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>2 分钟</span>
             </span>
 
         </div>
@@ -312,10 +312,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>函数的名称空间有三个：内置空间、全局空间和局部空间。程序从外向内加载，从内向外取值。函数的作用域有两个：全局作用域和局部作用域。</p>
+          <p>Markdown 语法的简单介绍，都是一些常用到的 Markdown 语法。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/python-basic/function-name-space/">
+              <a class="btn" href="/python-basic/markdown/">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -339,7 +339,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/var-const-com/">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/function-name-first-class-object/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -353,7 +353,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/python-basic/var-const-com/" class="post-title-link" itemprop="url">变量、常量和注释</a>
+            <a href="/python-basic/function-name-first-class-object/" class="post-title-link" itemprop="url">函数名的第一类对象及使用</a>
         </h2>
 
         <div class="post-meta">
@@ -363,7 +363,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-03-13 13:53:09" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:09+08:00">2020-03-13</time>
+              <time title="创建时间：2020-03-13 13:53:10" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:10+08:00">2020-03-13</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
@@ -391,8 +391,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/python-basic/var-const-com/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/python-basic/var-const-com/" itemprop="commentCount"></span>
+    <a title="valine" href="/python-basic/function-name-first-class-object/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/python-basic/function-name-first-class-object/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -402,7 +402,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.6k</span>
+              <span>1.5k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -421,10 +421,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>变量的官方定义：将程序中运行的中间值，临时存储起来，以便再次使用。通俗来讲，变量就是给数据起一个昵称，方便调用。Python 中没有严格意义的常量，变量名大写，就约定是常量。注释的作用是给一些晦涩难懂的代码进行标注或解释。被注释的代码不会被执行。</p>
+          <p>函数名的第一类对象只是一种称呼，是相对于第二类对象而言的。我们目前用到的函数基本都是第一类对象。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/python-basic/var-const-com/">
+              <a class="btn" href="/python-basic/function-name-first-class-object/">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -448,7 +448,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/operator/">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/vs-code-python/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -462,7 +462,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/python-basic/operator/" class="post-title-link" itemprop="url">运算符</a>
+            <a href="/python-basic/vs-code-python/" class="post-title-link" itemprop="url">Visual Studio Code Python 环境部署</a>
         </h2>
 
         <div class="post-meta">
@@ -472,7 +472,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-03-13 13:53:09" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:09+08:00">2020-03-13</time>
+              <time title="创建时间：2020-03-13 13:53:10" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:10+08:00">2020-03-13</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
@@ -500,8 +500,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/python-basic/operator/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/python-basic/operator/" itemprop="commentCount"></span>
+    <a title="valine" href="/python-basic/vs-code-python/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/python-basic/vs-code-python/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -511,7 +511,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.1k</span>
+              <span>1.3k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -530,10 +530,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>计算机就是用来计算的，运算符越多，就意味着可进行的操作越丰富。</p>
+          <p>VS Code 部署 Python 开发环境和 Vue 开发 Vue 开发环境的过程，没啥有用的，都挺简单的。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/python-basic/operator/">
+              <a class="btn" href="/python-basic/vs-code-python/">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -557,7 +557,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/tuple/">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/index-slice/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -571,7 +571,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/python-basic/tuple/" class="post-title-link" itemprop="url">元组</a>
+            <a href="/python-basic/index-slice/" class="post-title-link" itemprop="url">索引和切片</a>
         </h2>
 
         <div class="post-meta">
@@ -581,7 +581,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-03-13 13:53:09" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:09+08:00">2020-03-13</time>
+              <time title="创建时间：2020-03-13 13:53:10" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:10+08:00">2020-03-13</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
@@ -609,8 +609,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/python-basic/tuple/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/python-basic/tuple/" itemprop="commentCount"></span>
+    <a title="valine" href="/python-basic/index-slice/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/python-basic/index-slice/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -620,7 +620,116 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>667</span>
+              <span>1.9k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>3 分钟</span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>索引又称下标，用来表示可迭代对象中的某个元素的位置。切片用来快速截取可迭代对象的一部分。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/python-basic/index-slice/">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+        
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/module/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/python-basic/module/" class="post-title-link" itemprop="url">模块</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-03-13 13:53:10" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:10+08:00">2020-03-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-03-21 13:30:10" itemprop="dateModified" datetime="2020-03-21T13:30:10+08:00">2020-03-21</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/python-basic/module/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/python-basic/module/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>803</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -639,10 +748,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>元组也是 Python 中的数据类型之一。元组的关键字是 tuple。元组的定义方法和列表极其相似，只是将中括号变成了小括号。元组是不可变数据类型，可哈希。</p>
+          <p>模块就是一个 py 文件。模块主要分为三类：内置模块（也称 Python 标准库）、第三方模块和自定义模块。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/python-basic/tuple/">
+              <a class="btn" href="/python-basic/module/">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -666,7 +775,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/lambda/">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/second-code/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -680,7 +789,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/python-basic/lambda/" class="post-title-link" itemprop="url">匿名函数</a>
+            <a href="/python-basic/second-code/" class="post-title-link" itemprop="url">二次编码</a>
         </h2>
 
         <div class="post-meta">
@@ -690,7 +799,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-03-13 13:53:09" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:09+08:00">2020-03-13</time>
+              <time title="创建时间：2020-03-13 13:53:10" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:10+08:00">2020-03-13</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
@@ -718,8 +827,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/python-basic/lambda/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/python-basic/lambda/" itemprop="commentCount"></span>
+    <a title="valine" href="/python-basic/second-code/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/python-basic/second-code/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -729,116 +838,7 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>974</span>
-            </span>
-            <span class="post-meta-item" title="阅读时长">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-clock-o"></i>
-              </span>
-                <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
-            </span>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>匿名函数的关键字是 lambda。匿名函数在高阶函数中应用十分广泛，它能极大地简化代码。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/python-basic/lambda/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-        
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/show-suffix/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.png">
-      <meta itemprop="name" content="刘硕">
-      <meta itemprop="description" content="不成为自己讨厌的人">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="刘硕的技术查阅手册">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/python-basic/show-suffix/" class="post-title-link" itemprop="url">后缀名显示方法</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-03-13 13:53:09" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:09+08:00">2020-03-13</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-03-21 13:30:10" itemprop="dateModified" datetime="2020-03-21T13:30:10+08:00">2020-03-21</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python-%E5%9F%BA%E7%A1%80/" itemprop="url" rel="index"><span itemprop="name">Python 基础</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/python-basic/show-suffix/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/python-basic/show-suffix/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-file-word-o"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>228</span>
+              <span>590</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
@@ -857,10 +857,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>由于设置原因，我们可能看不到文件的后缀名。但有时我们又要用到后缀名，就需要通过设置，让后缀名显示出来。</p>
+          <p>二次编码，用什么编码就要用什么解码</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/python-basic/show-suffix/">
+              <a class="btn" href="/python-basic/second-code/">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -884,7 +884,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/software-dev/">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/copy-deep-copy/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -898,7 +898,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/python-basic/software-dev/" class="post-title-link" itemprop="url">软件开发规范</a>
+            <a href="/python-basic/copy-deep-copy/" class="post-title-link" itemprop="url">深浅拷贝</a>
         </h2>
 
         <div class="post-meta">
@@ -908,7 +908,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-03-13 13:53:09" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:09+08:00">2020-03-13</time>
+              <time title="创建时间：2020-03-13 13:53:10" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:10+08:00">2020-03-13</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
@@ -936,8 +936,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/python-basic/software-dev/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/python-basic/software-dev/" itemprop="commentCount"></span>
+    <a title="valine" href="/python-basic/copy-deep-copy/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/python-basic/copy-deep-copy/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -947,14 +947,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>335</span>
+              <span>3.9k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>7 分钟</span>
             </span>
 
         </div>
@@ -966,10 +966,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>软件开发规范主要采取的是分文件管理的办法，主要把 Python 项目分为多个文件，放在指定文件夹中，分类管理。</p>
+          <p>同驻留机制一样，深浅拷贝在编程中的应用其实也不是很多。但是我们依然需要了解。一方面是为了避免后期开发代码时出现问题却不知道原因，另一方面也是因为面试时几乎都会问到有关深浅拷贝的问题。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/python-basic/software-dev/">
+              <a class="btn" href="/python-basic/copy-deep-copy/">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -993,7 +993,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/loop-del/">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/str/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -1007,7 +1007,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/python-basic/loop-del/" class="post-title-link" itemprop="url">循环删除的坑</a>
+            <a href="/python-basic/str/" class="post-title-link" itemprop="url">字符串方法详解</a>
         </h2>
 
         <div class="post-meta">
@@ -1017,7 +1017,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-03-13 13:53:09" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:09+08:00">2020-03-13</time>
+              <time title="创建时间：2020-03-13 13:53:10" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:10+08:00">2020-03-13</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
@@ -1045,8 +1045,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/python-basic/loop-del/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/python-basic/loop-del/" itemprop="commentCount"></span>
+    <a title="valine" href="/python-basic/str/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/python-basic/str/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -1056,14 +1056,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.1k</span>
+              <span>2.3k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
+              <span>4 分钟</span>
             </span>
 
         </div>
@@ -1075,10 +1075,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>循环删除的坑，深入理解 Python 的列表的知识，避免受伤害</p>
+          <p>因为字符串是不可变数据类型，所以字符串方法不会在字符串本身进行修改，而是将修改后的新字符串作为返回值返回。故而若要使用字符串方法，需要使用变量来接收才行。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/python-basic/loop-del/">
+              <a class="btn" href="/python-basic/str/">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1102,7 +1102,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/blog-writing/">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/hashlib/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -1116,7 +1116,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/python-basic/blog-writing/" class="post-title-link" itemprop="url">技术博客制作</a>
+            <a href="/python-basic/hashlib/" class="post-title-link" itemprop="url">hashlib 模块</a>
         </h2>
 
         <div class="post-meta">
@@ -1126,7 +1126,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-03-13 13:53:09" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:09+08:00">2020-03-13</time>
+              <time title="创建时间：2020-03-13 13:53:10" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:10+08:00">2020-03-13</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
@@ -1154,8 +1154,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/python-basic/blog-writing/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/python-basic/blog-writing/" itemprop="commentCount"></span>
+    <a title="valine" href="/python-basic/hashlib/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/python-basic/hashlib/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -1165,14 +1165,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>836</span>
+              <span>1.7k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
+              <span>3 分钟</span>
             </span>
 
         </div>
@@ -1184,10 +1184,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>写博客的小技巧，以及博客园的用法和美化方法。</p>
+          <p>hashlib 也称摘要算法或加密算法，其主要功能是对数据进行加密和校验文件的一致性。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/python-basic/blog-writing/">
+              <a class="btn" href="/python-basic/hashlib/">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1211,7 +1211,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block home" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/for-cycle/">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/python-basic/time-datetime/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.png">
@@ -1225,7 +1225,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/python-basic/for-cycle/" class="post-title-link" itemprop="url">for 循环</a>
+            <a href="/python-basic/time-datetime/" class="post-title-link" itemprop="url">time 和 datetime 模块</a>
         </h2>
 
         <div class="post-meta">
@@ -1235,7 +1235,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-03-13 13:53:09" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:09+08:00">2020-03-13</time>
+              <time title="创建时间：2020-03-13 13:53:10" itemprop="dateCreated datePublished" datetime="2020-03-13T13:53:10+08:00">2020-03-13</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
@@ -1263,8 +1263,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/python-basic/for-cycle/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/python-basic/for-cycle/" itemprop="commentCount"></span>
+    <a title="valine" href="/python-basic/time-datetime/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/python-basic/time-datetime/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -1274,14 +1274,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>801</span>
+              <span>2k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>1 分钟</span>
+              <span>4 分钟</span>
             </span>
 
         </div>
@@ -1293,10 +1293,10 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>与以死循环形式存在的 while 循环不同的是，for 循环往往以有限循环的形式存在。</p>
+          <p>time 模块，也就是时间模块，用来进行一些与时间有关的操作。datetime 是对 time 模块的封装，使用起来更方便些。</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/python-basic/for-cycle/">
+              <a class="btn" href="/python-basic/time-datetime/">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1320,7 +1320,7 @@
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/22/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/22/">22</a><span class="page-number current">23</span><a class="page-number" href="/page/24/">24</a><span class="space">&hellip;</span><a class="page-number" href="/page/33/">33</a><a class="extend next" rel="next" href="/page/24/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <a class="extend prev" rel="prev" href="/page/22/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/22/">22</a><span class="page-number current">23</span><a class="page-number" href="/page/24/">24</a><span class="space">&hellip;</span><a class="page-number" href="/page/35/">35</a><a class="extend next" rel="next" href="/page/24/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1388,7 +1388,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">324</span>
+          <span class="site-state-item-count">342</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -1452,12 +1452,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">1.9m</span>
+    <span title="站点总字数">2m</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">58:29</span>
+    <span title="站点阅读时长">61:19</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
   </div>
@@ -1501,6 +1501,8 @@
   
   <script size="300" alpha="0.2" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
   <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
 

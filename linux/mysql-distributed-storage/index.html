@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="Tu5vqPaUb8svfkPx5eetJFD84ciQCcWVXNatdsWtj9Q">
+  <meta name="baidu-site-verification" content="baidu_verify_FBq9PG4BBb">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"appID":"PXY1Z6GHKT","apiKey":"eb82f2e78e3053f26aa408e9caa96d93","indexName":"blog","hits":{"per_page":10},"labels":{"input_placeholder":"要查点什么(✿◡‿◡)","hits_empty":"没有找到任何关于 ${query} 的结果╥﹏╥...","hits_stats":"搜索到 ${hits} 条记录，用时 ${time} ms o(*￣▽￣*)ブ"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="服务器集群就是指将很多服务器集中起来一起进行同一种服务，在客户端看来就像是只有一个服务器。集群可以利用多个计算机进行并行计算从而获得很高的计算速度，也可以用多个计算机做备份，其中有任何一个机器出故障，其他机器能够顶替并正常运行，提高系统的容灾性。服务器集群处理提高系统性能，提高响应速度，还可以用作容灾备份，例如 MySQL 的主从复制与双主互备。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL 分布式存储">
+<meta property="og:url" content="https://sliu.vip/linux/mysql-distributed-storage/index.html">
+<meta property="og:site_name" content="刘硕的技术查阅手册">
+<meta property="og:description" content="服务器集群就是指将很多服务器集中起来一起进行同一种服务，在客户端看来就像是只有一个服务器。集群可以利用多个计算机进行并行计算从而获得很高的计算速度，也可以用多个计算机做备份，其中有任何一个机器出故障，其他机器能够顶替并正常运行，提高系统的容灾性。服务器集群处理提高系统性能，提高响应速度，还可以用作容灾备份，例如 MySQL 的主从复制与双主互备。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sliu.vip/linux/mysql-distributed-storage/image2.jpg">
+<meta property="og:image" content="https://sliu.vip/linux/mysql-distributed-storage/1587638530912.png">
+<meta property="article:published_time" content="2020-04-24T17:23:33.461Z">
+<meta property="article:modified_time" content="2020-05-01T16:42:16.200Z">
+<meta property="article:author" content="刘硕">
+<meta property="article:tag" content="MySQL">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="运维">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sliu.vip/linux/mysql-distributed-storage/image2.jpg">
+
+<link rel="canonical" href="https://sliu.vip/linux/mysql-distributed-storage/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>MySQL 分布式存储 | 刘硕的技术查阅手册</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f14f123935d6183fdd06f8f1c4bc378f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="刘硕的技术查阅手册" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">刘硕的技术查阅手册</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">Python 全栈开发学习笔记</h1>
+      
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-toc">
+
+    <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+  
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/linux/mysql-distributed-storage/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          MySQL 分布式存储
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-04-25 01:23:33" itemprop="dateCreated datePublished" datetime="2020-04-25T01:23:33+08:00">2020-04-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-05-02 00:42:16" itemprop="dateModified" datetime="2020-05-02T00:42:16+08:00">2020-05-02</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/linux/mysql-distributed-storage/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/linux/mysql-distributed-storage/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>6.3k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>11 分钟</span>
+            </span>
+            <div class="post-description">服务器集群就是指将很多服务器集中起来一起进行同一种服务，在客户端看来就像是只有一个服务器。集群可以利用多个计算机进行并行计算从而获得很高的计算速度，也可以用多个计算机做备份，其中有任何一个机器出故障，其他机器能够顶替并正常运行，提高系统的容灾性。服务器集群处理提高系统性能，提高响应速度，还可以用作容灾备份，例如 MySQL 的主从复制与双主互备。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="Web-架构的演变"><a href="#Web-架构的演变" class="headerlink" title="Web 架构的演变"></a>Web 架构的演变</h2><p>最基本的 Web 服务如下图所示，也就是 Web 服务和数据库在同一台计算集中。外界请求直接访问到 Web 服务器，然后服务器从数据库拿到数据，返回给客户端。</p>
+
+
+<p>对于访问量不大的情况，这种最基本最原始的架构是足够了的。但是如果访问量稍微增长一些，因为 Web 频繁查询数据库，对于效率和稳定性都是一个巨大考验。</p>
+<p>为了解决数据库的压力，我们可以将数据库独立开来，由一台服务器专门进行数据库的操作。同时，在 Web 服务器中，引入缓存机制，将使用频繁的数据缓存起来，实现快速查找，并减少数据库的压力。</p>
+
+
+<p>将数据库独立开来，并引入缓存机制，确实可以处理很大的并发量。但是如果我们的需求进一步增加，需要处理更大的并发，应该怎么办呢？</p>
+<p>或许我们可以使用多个 Web 服务器。但这又涉及到要给问题，用户如何知道自己该访问到哪一台服务器呢？</p>
+<p>为了解决这个问题，我们可以使用一台负载均衡服务器。用户访问的是负载均衡服务器，由它将用户的请求分发给不同的 Web 服务器处理数据。</p>
+<p>负载均衡可以在硬件上使用 F5 实现，也可以在软件上使用 Nginx 或 LVS 实现。</p>
+
+
+<p>像上面这种，多台服务器协同运行的情况，被称为服务器集群。</p>
+<h2 id="分布式系统理论"><a href="#分布式系统理论" class="headerlink" title="分布式系统理论"></a>分布式系统理论</h2><h3 id="集群的概念"><a href="#集群的概念" class="headerlink" title="集群的概念"></a>集群的概念</h3><p>服务器集群就是指将很多服务器集中起来一起进行同一种服务，在客户端看来就像是只有一个服务器。集群可以利用多个计算机进行并行计算从而获得很高的计算速度，也可以用多个计算机做备份，其中有任何一个机器出故障，其他机器能够顶替并正常运行，提高系统的容灾性。</p>
+<p>服务器集群处理提高系统性能，提高响应速度，还可以用作容灾备份，例如 MySQL 的主从复制与双主互备。</p>
+<h3 id="分布式系统的概念"><a href="#分布式系统的概念" class="headerlink" title="分布式系统的概念"></a>分布式系统的概念</h3><img src="/linux/mysql-distributed-storage/image2.jpg" class="" title="image2">
+
+<p>分布式系统（distributed system）是建立在网络之上的软件系统。正是因为软件的特性，所以分布式系统具有高度的内聚性和透明性。因此，网络和分布式系统之间的区别更多的在于高层软件（特别是操作系统），而不是硬件。</p>
+<p>在分布式数据库系统中，用户感觉不到数据是分布的，即用户不须知道关系是否分割、有无副本、数据存于哪个站点以及事务在哪个站点上执行等。</p>
+<h3 id="集群与分布式的区别"><a href="#集群与分布式的区别" class="headerlink" title="集群与分布式的区别"></a>集群与分布式的区别</h3><p>集群指的是将几台服务器集中在一起，实现同一业务。</p>
+<p>分布式是指将不同的业务分布在不同的地方。</p>
+<h3 id="分布式应用的业务场景"><a href="#分布式应用的业务场景" class="headerlink" title="分布式应用的业务场景"></a>分布式应用的业务场景</h3><p>分布式存储：HDFS、MySQL、Oracle</p>
+<p>分布式缓存：Redis、Memcache</p>
+<p>分布式服务：SOA、微服务</p>
+<p>分布式webServer：Tomcat、Apache</p>
+<p>分布式协调中心：Zookeeper</p>
+<p>分布式消息队列：Kafka、RabbitMQ</p>
+<p>分布式实时数据平台：Storm、Akka</p>
+<p>分布式离线数据平台：Hadoop、Spark</p>
+<p>分布式搜索：Elasticsearch、Solr</p>
+<p>分布式日志：Flume、ELK</p>
+<p>分布式容器：Docker、Kubernetes</p>
+<p>负载均衡：Nginx、LVS</p>
+<h2 id="CentOS-通过-rpm-安装-MySQL"><a href="#CentOS-通过-rpm-安装-MySQL" class="headerlink" title="CentOS 通过 rpm 安装 MySQL"></a>CentOS 通过 rpm 安装 MySQL</h2><p>rpm 类似于 Windows 的 exe 可执行文件，可以直接安装应用程序。</p>
+<p>在安装之前，我们要先卸载掉本地已有的 MariaDB 数据库，解决兼容问题：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y remove mariadb-libs-1:5.5.44-2.el7.centos.x86_64</span><br></pre></td></tr></table></figure>
+
+<p>然后，把三个用来安装 MySQL 的 rpm 文件通过 WinSCP 之类的工具，传到 CentOS 中，位置不限，找得到就成。</p>
+<img src="/linux/mysql-distributed-storage/1587638530912.png" class="" width="1587638530912">
+
+<p>切换到 rpm 包所在的位置，运行命令安装 MySQL：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -ivh MySQL-devel-5.5.58-1.el7.x86_64.rpm MySQL-client-5.5.58-1.el7.x86_64.rpm MySQL-server-5.5.58-1.el7.x86_64.rpm</span><br></pre></td></tr></table></figure>
+
+<p>启动 MySQL 服务，提示 SUCCESS 表示服务启动成功：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># service mysql start</span></span><br><span class="line">Starting MySQL.Logging to <span class="string">'/var/lib/mysql/localhost.localdomain.err'</span>.</span><br><span class="line">... SUCCESS!</span><br></pre></td></tr></table></figure>
+
+<p>我们希望每次开机的时候，MySQL 自动启动，可以设置 MySQL 服务开机自启：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chkconfig mysql on</span><br></pre></td></tr></table></figure>
+
+<p>设置 MySQL root 用户的密码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqladmin -uroot password 123</span><br></pre></td></tr></table></figure>
+
+<p>使用用户名和密码登录 MySQL 查看登陆状态即可。</p>
+<h2 id="MySQL-主从复制（冷备）"><a href="#MySQL-主从复制（冷备）" class="headerlink" title="MySQL 主从复制（冷备）"></a>MySQL 主从复制（冷备）</h2><h3 id="常见的同步方式"><a href="#常见的同步方式" class="headerlink" title="常见的同步方式"></a>常见的同步方式</h3><p>普通文件的同步</p>
+<p>常用的普通文件同步方式有：</p>
+<ul>
+<li><p>NFS 网络文件共享可同步存储数据</p>
+</li>
+<li><p>Windows 的 samba</p>
+</li>
+<li><p>Linux 定时任务</p>
+</li>
+<li><p>ftp 数据同步</p>
+</li>
+<li><p>ssh+scp 服务器远程同步</p>
+</li>
+</ul>
+<p>文件系统的同步</p>
+<ul>
+<li>drbd（基于文件系统同步），几乎同步任何业务数据</li>
+</ul>
+<p>数据库的同步</p>
+<ul>
+<li><p>MySQL 主从复制（数据同步）</p>
+</li>
+<li><p>Oracle DataGuard（甲骨文推出的一种高可用性数据库方案）</p>
+</li>
+</ul>
+<h3 id="MySQL-主从复制介绍"><a href="#MySQL-主从复制介绍" class="headerlink" title="MySQL 主从复制介绍"></a>MySQL 主从复制介绍</h3><p>主从复制需要至少两台计算机配合，如果使用的是虚拟机，可以通过复制虚拟机来模拟多台计算机的情况。复制虚拟机时，要关闭虚拟机，包括 VMware 的窗口也要关闭。否则由于虚拟机文件占用，复制可能会有问题。打开复制的虚拟机时，可能会询问是复制还是移动了虚拟机，选择复制虚拟机即可。</p>
+<p>MySQL 支持单向、双向、链式级联、实时、异步复制，在复制过程中，一台服务器充当主服务器（master），一个或多个其他服务器充当从服务器（slave）。</p>
+<p>复制可以是单向：<code>M --&gt; S</code>，也可以是双向：<code>M &lt;--&gt; M</code></p>
+<h3 id="主从复制的应用场景"><a href="#主从复制的应用场景" class="headerlink" title="主从复制的应用场景"></a>主从复制的应用场景</h3><p>主从服务器互为备份，加强数据库架构的健壮性</p>
+<p>主从服务器读写分离，分担网站压力，从服务器只处理用户的查询请求</p>
+<p>将从服务器，按照业务拆分，分担压力</p>
+<h3 id="主从复制的原理"><a href="#主从复制的原理" class="headerlink" title="主从复制的原理"></a>主从复制的原理</h3><p>MySQL 的每次操作都会记录在日志信息中。通过对这些操作的重复，可以实现对数据库操作的复制。</p>
+<ol>
+<li>Master 将改变记录到二进制日志（binary log）中</li>
+<li>Slave 将 Master 的二进制日志事件（binary log events）拷贝到它的中继日志（relay log）</li>
+<li>Slave 重做中继日志（Relay Log）中的事件，将 Master 上的改变反映到它自己的数据库中</li>
+</ol>
+<p>这些是由从库在做，所以是异步的数据同步。</p>
+<h3 id="CentOS-7-搭建-MySQL-主从复制"><a href="#CentOS-7-搭建-MySQL-主从复制" class="headerlink" title="CentOS 7 搭建 MySQL 主从复制"></a>CentOS 7 搭建 MySQL 主从复制</h3><p>首先，必须检查防火墙是否已经关闭。若防火墙处于开启状态，要先关闭。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># systemctl status firewalld</span></span><br><span class="line">● firewalld.service - firewalld - dynamic firewall daemon</span><br><span class="line">   Loaded: loaded (/usr/lib/systemd/system/firewalld.service; disabled; vendor preset: enabled)</span><br><span class="line">   Active: inactive (dead)</span><br></pre></td></tr></table></figure>
+
+<h4 id="配置主数据库的-server-id"><a href="#配置主数据库的-server-id" class="headerlink" title="配置主数据库的 server-id"></a>配置主数据库的 server-id</h4><p>复制主数据库的 MySQL 配置文件模板到 <code>/etc/my.cnf</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp /usr/share/mysql/my-medium.cnf /etc/my.cnf</span><br></pre></td></tr></table></figure>
+
+<p>因为配置中默认的 server-id 是 1，我们无需修改。重启 MySQL 服务，应用 <code>my.cnf</code> 配置：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># service mysql restart</span></span><br><span class="line">Shutting down MySQL. SUCCESS! </span><br><span class="line">Starting MySQL.. SUCCESS!</span><br></pre></td></tr></table></figure>
+
+<p>进入 MySQL，查询 <code>service_id</code>，发现是 1：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show variables like &#39;server_id&#39;;</span><br><span class="line">+---------------+-------+</span><br><span class="line">| Variable_name | Value |</span><br><span class="line">+---------------+-------+</span><br><span class="line">| server_id     | 1     |</span><br><span class="line">+---------------+-------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<h4 id="配置从数据库的-server-id"><a href="#配置从数据库的-server-id" class="headerlink" title="配置从数据库的 server-id"></a>配置从数据库的 server-id</h4><p>在从数据库所在的服务器中（注意是另一个服务器了），同样复制 MySQL 配置到 <code>/etc/my.cnf</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp /usr/share/mysql/my-medium.cnf /etc/my.cnf</span><br></pre></td></tr></table></figure>
+
+<p>编辑 <code>my.cnf</code> 文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/my.cnf</span><br></pre></td></tr></table></figure>
+
+<p>将其中的 server-id 改成 2：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">server-id</span>       = <span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<p>保存退出后，重启 MySQL 服务，应用配置：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service mysql restart</span><br></pre></td></tr></table></figure>
+
+<p>进入到数据库中，查看 server_id 变量是否改成了 2：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show variables like &#39;server_id&#39;;</span><br><span class="line">+---------------+-------+</span><br><span class="line">| Variable_name | Value |</span><br><span class="line">+---------------+-------+</span><br><span class="line">| server_id     | 2     |</span><br><span class="line">+---------------+-------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<h4 id="查看主数据库的日志信息"><a href="#查看主数据库的日志信息" class="headerlink" title="查看主数据库的日志信息"></a>查看主数据库的日志信息</h4><p>进入 MySQL 中，使用命令查看主数据库的日志文件信息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show master status;</span><br><span class="line">+------------------+----------+--------------+------------------+</span><br><span class="line">| File             | Position | Binlog_Do_DB | Binlog_Ignore_DB |</span><br><span class="line">+------------------+----------+--------------+------------------+</span><br><span class="line">| mysql-bin.000001 |      107 |              |                  |</span><br><span class="line">+------------------+----------+--------------+------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<p>记录下这个 File 和 Position 对应的值，我们稍后会用到。</p>
+<p>这个数值后续查找可能会发生更改。不过不用担心，只要我们配置好一次，以后如果更改，会自动匹配。</p>
+<h4 id="配置并启动从数据库服务"><a href="#配置并启动从数据库服务" class="headerlink" title="配置并启动从数据库服务"></a>配置并启动从数据库服务</h4><p>在从数据库服务器 MySQL 中输入如下命令，注意修改其中的配置信息</p>
+<ul>
+<li><p>IP 是主数据库 IP</p>
+</li>
+<li><p>日志文件信息，要跟上面查到的信息对应</p>
+</li>
+</ul>
+<p>把如下语句，整个粘贴到从数据库服务器的 MySQL 中执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">change master to </span><br><span class="line">master_host&#x3D;&#39;192.168.248.139&#39;,</span><br><span class="line">master_user&#x3D;&#39;root&#39;,</span><br><span class="line">master_password&#x3D;&#39;123&#39;,</span><br><span class="line">master_log_file&#x3D;&#39;mysql-bin.000001&#39;,</span><br><span class="line">master_log_pos&#x3D;107;</span><br></pre></td></tr></table></figure>
+
+<p>在从数据库的 MySQL 中启动从服务：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; start slave;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<p>使用命令查看从服务信息（结尾 <code>\G</code> 的作用是让显示的结果更清晰）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show slave status\G;</span><br></pre></td></tr></table></figure>
+
+<p>此时，虽然已经启动了从服务，但是如果主数据库中进行任何操作，从数据库中仍然不会由任何的响应。这是因为我们还没有在主数据库中授权从数据库对其进行访问。</p>
+<h4 id="主数据库授权从数据库访问"><a href="#主数据库授权从数据库访问" class="headerlink" title="主数据库授权从数据库访问"></a>主数据库授权从数据库访问</h4><p>因为从数据库没有权限，所以我们需要在主数据库中授予它权限：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grant all privileges on *.* to &#39;root&#39;@&#39;%&#39; identified by &#39;123&#39; with grant option;</span><br></pre></td></tr></table></figure>
+
+<p>刷新权限列表，使其生效：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; flush privileges;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<h4 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h4><p>在主数据库中新建一个名为 db_test 的数据库：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; create database db_test;</span><br><span class="line">Query OK, 1 row affected (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<p>在从数据库中查询，即可看到也出现了 db_test 数据库：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show databases;</span><br><span class="line">+--------------------+</span><br><span class="line">| Database           |</span><br><span class="line">+--------------------+</span><br><span class="line">| information_schema |</span><br><span class="line">| db_test            |</span><br><span class="line">| mysql              |</span><br><span class="line">| performance_schema |</span><br><span class="line">| test               |</span><br><span class="line">+--------------------+</span><br><span class="line">5 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<h3 id="主从复制存在的问题"><a href="#主从复制存在的问题" class="headerlink" title="主从复制存在的问题"></a>主从复制存在的问题</h3><p>因为是异步同步，有可能丢失极小一部分数据。比如当主数据库刚进行一些修改操作，尚未来得及备份就崩溃了。那么这部分修改是无法被记录的，也就造成了数据的丢失。</p>
+<h3 id="CentOS-7-搭建-MySQL-双主互备（热备）"><a href="#CentOS-7-搭建-MySQL-双主互备（热备）" class="headerlink" title="CentOS 7 搭建 MySQL 双主互备（热备）"></a>CentOS 7 搭建 MySQL 双主互备（热备）</h3><p>双主互备就是要保持两个数据库的状态自动同步，对任何一个数据库的操作都自动应用到另外一个数据库，始终保持两个数据库数据一致，这样做的意义是既提高了数据库的容灾性，又可以做负载均衡，可以将请求分摊到其中任何一台上，提高网站吞吐量。</p>
+<p>双主互备其实就是两个主从复制合到一起了。接下来的操作，是在上面的主从复制的基础上进行的。我们只需将原来的从数据库作为主数据库，将主数据库作为从数据库，再进行一次主从复制，即可实现双主复制。</p>
+<h4 id="查看主数据库的日志信息-1"><a href="#查看主数据库的日志信息-1" class="headerlink" title="查看主数据库的日志信息"></a>查看主数据库的日志信息</h4><p>使用命令查看主数据库的日志信息，注意，这里的主数据库是前面的从数据库，也就是 server-id 为 2 的那个数据库：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; show master status;</span><br><span class="line">+------------------+----------+--------------+------------------+</span><br><span class="line">| File             | Position | Binlog_Do_DB | Binlog_Ignore_DB |</span><br><span class="line">+------------------+----------+--------------+------------------+</span><br><span class="line">| mysql-bin.000001 |      261 |              |                  |</span><br><span class="line">+------------------+----------+--------------+------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<h4 id="配置并启动从数据库服务-1"><a href="#配置并启动从数据库服务-1" class="headerlink" title="配置并启动从数据库服务"></a>配置并启动从数据库服务</h4><p>同样地，这里的从数据库是前面的主数据库，也就是 server-id 为 1 的那个数据库。我们在这个数据库中数据下面的命令，注意修改相应的配置数据，IP 为主数据库 IP，日志信息是刚刚查到的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">change master to </span><br><span class="line">master_host&#x3D;&#39;192.168.248.140&#39;,</span><br><span class="line">master_user&#x3D;&#39;root&#39;,</span><br><span class="line">master_password&#x3D;&#39;123&#39;,</span><br><span class="line">master_log_file&#x3D;&#39;mysql-bin.000001&#39;,</span><br><span class="line">master_log_pos&#x3D;261;</span><br></pre></td></tr></table></figure>
+
+<p>启动在从数据库中从服务：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; start slave;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<h4 id="主数据库授权从数据库访问-1"><a href="#主数据库授权从数据库访问-1" class="headerlink" title="主数据库授权从数据库访问"></a>主数据库授权从数据库访问</h4><p>在主数据库中，授予从数据库访问权限：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">grant all privileges on *.* to &#39;root&#39;@&#39;%&#39; identified by &#39;123&#39; with grant option;</span><br></pre></td></tr></table></figure>
+
+<p>刷新权限表，应用授权：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; flush privileges;</span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<h4 id="测试-1"><a href="#测试-1" class="headerlink" title="测试"></a>测试</h4><p>此时，对两边的任意数据库进行操作，另一个数据库中也会有同样操作。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/MySQL/" rel="tag"># MySQL</a>
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+              <a href="/tags/%E8%BF%90%E7%BB%B4/" rel="tag"># 运维</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/machine-learning/classification-evaluation/" rel="prev" title="分类模型的评价指标">
+      <i class="fa fa-chevron-left"></i> 分类模型的评价指标
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/linux/distributed-scheduling/" rel="next" title="ZooKeeper 分布式调度">
+      ZooKeeper 分布式调度 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Web-架构的演变"><span class="nav-number">1.</span> <span class="nav-text">Web 架构的演变</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分布式系统理论"><span class="nav-number">2.</span> <span class="nav-text">分布式系统理论</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#集群的概念"><span class="nav-number">2.1.</span> <span class="nav-text">集群的概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分布式系统的概念"><span class="nav-number">2.2.</span> <span class="nav-text">分布式系统的概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#集群与分布式的区别"><span class="nav-number">2.3.</span> <span class="nav-text">集群与分布式的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分布式应用的业务场景"><span class="nav-number">2.4.</span> <span class="nav-text">分布式应用的业务场景</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CentOS-通过-rpm-安装-MySQL"><span class="nav-number">3.</span> <span class="nav-text">CentOS 通过 rpm 安装 MySQL</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL-主从复制（冷备）"><span class="nav-number">4.</span> <span class="nav-text">MySQL 主从复制（冷备）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#常见的同步方式"><span class="nav-number">4.1.</span> <span class="nav-text">常见的同步方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MySQL-主从复制介绍"><span class="nav-number">4.2.</span> <span class="nav-text">MySQL 主从复制介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#主从复制的应用场景"><span class="nav-number">4.3.</span> <span class="nav-text">主从复制的应用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#主从复制的原理"><span class="nav-number">4.4.</span> <span class="nav-text">主从复制的原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CentOS-7-搭建-MySQL-主从复制"><span class="nav-number">4.5.</span> <span class="nav-text">CentOS 7 搭建 MySQL 主从复制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#配置主数据库的-server-id"><span class="nav-number">4.5.1.</span> <span class="nav-text">配置主数据库的 server-id</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置从数据库的-server-id"><span class="nav-number">4.5.2.</span> <span class="nav-text">配置从数据库的 server-id</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查看主数据库的日志信息"><span class="nav-number">4.5.3.</span> <span class="nav-text">查看主数据库的日志信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置并启动从数据库服务"><span class="nav-number">4.5.4.</span> <span class="nav-text">配置并启动从数据库服务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#主数据库授权从数据库访问"><span class="nav-number">4.5.5.</span> <span class="nav-text">主数据库授权从数据库访问</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#测试"><span class="nav-number">4.5.6.</span> <span class="nav-text">测试</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#主从复制存在的问题"><span class="nav-number">4.6.</span> <span class="nav-text">主从复制存在的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CentOS-7-搭建-MySQL-双主互备（热备）"><span class="nav-number">4.7.</span> <span class="nav-text">CentOS 7 搭建 MySQL 双主互备（热备）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#查看主数据库的日志信息-1"><span class="nav-number">4.7.1.</span> <span class="nav-text">查看主数据库的日志信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置并启动从数据库服务-1"><span class="nav-number">4.7.2.</span> <span class="nav-text">配置并启动从数据库服务</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#主数据库授权从数据库访问-1"><span class="nav-number">4.7.3.</span> <span class="nav-text">主数据库授权从数据库访问</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#测试-1"><span class="nav-number">4.7.4.</span> <span class="nav-text">测试</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="刘硕"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">刘硕</p>
+  <div class="site-description" itemprop="description">不成为自己讨厌的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">342</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">55</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:liushuo432@outlook.com" title="E-Mail → mailto:liushuo432@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/2436055290" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;2436055290" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://wpa.qq.com/msgrd?v=3&uin=1696146913&site=qq&menu=yes" title="QQ → http:&#x2F;&#x2F;wpa.qq.com&#x2F;msgrd?v&#x3D;3&amp;uin&#x3D;1696146913&amp;site&#x3D;qq&amp;menu&#x3D;yes" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-fw fa-rss"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备20001451号 </a>
+      <img src="/images/beian_icon.png" style="display: inline-block;"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=21142102000063" rel="noopener" target="_blank">辽公网安备 21142102000063号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘硕</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">2m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">61:19</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.2" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'Ga2II3wuJmHX3GiNHm9TmI97-gzGzoHsz',
+      appKey     : 'esGYJQepdYLHf07E1VMsP3RK',
+      placeholder: "o(*￣▽￣*)ブ来说点什么吧...（填上邮箱可以收到回复提醒）",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : true,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+  <script type="text/javascript" src="/js/love.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/Epsilon2.1.model.json"},"display":{"superSample":2,"width":200,"height":400,"position":"left","hOffset":-30,"vOffset":-40},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>

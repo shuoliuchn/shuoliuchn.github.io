@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="Tu5vqPaUb8svfkPx5eetJFD84ciQCcWVXNatdsWtj9Q">
+  <meta name="baidu-site-verification" content="baidu_verify_FBq9PG4BBb">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"appID":"PXY1Z6GHKT","apiKey":"eb82f2e78e3053f26aa408e9caa96d93","indexName":"blog","hits":{"per_page":10},"labels":{"input_placeholder":"要查点什么(✿◡‿◡)","hits_empty":"没有找到任何关于 ${query} 的结果╥﹏╥...","hits_stats":"搜索到 ${hits} 条记录，用时 ${time} ms o(*￣▽￣*)ブ"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="NoSQL 的英文全称是 Not Only SQL，意即“不仅仅是 SQL”，泛指非关系型的数据库。随着互联网 web 2.0 网站的兴起，传统的关系数据库在应付 web 2.0 网站，特别是超大规模和高并发的 SNS 类型的 web 2.0 纯动态网站已经显得力不从心，暴露了很多难以克服的问题，而非关系型的数据库则由于其本身的特点得到了非常迅速的发展。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis 分布式缓存">
+<meta property="og:url" content="https://sliu.vip/linux/redis-distributed-cache/index.html">
+<meta property="og:site_name" content="刘硕的技术查阅手册">
+<meta property="og:description" content="NoSQL 的英文全称是 Not Only SQL，意即“不仅仅是 SQL”，泛指非关系型的数据库。随着互联网 web 2.0 网站的兴起，传统的关系数据库在应付 web 2.0 网站，特别是超大规模和高并发的 SNS 类型的 web 2.0 纯动态网站已经显得力不从心，暴露了很多难以克服的问题，而非关系型的数据库则由于其本身的特点得到了非常迅速的发展。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sliu.vip/linux/redis-distributed-cache/clip_image002.jpg">
+<meta property="og:image" content="https://sliu.vip/linux/redis-distributed-cache/clip_image004.jpg">
+<meta property="og:image" content="https://sliu.vip/linux/redis-distributed-cache/clip_image006.jpg">
+<meta property="og:image" content="https://sliu.vip/linux/redis-distributed-cache/clip_image008.jpg">
+<meta property="og:image" content="https://sliu.vip/linux/redis-distributed-cache/clip_image010.jpg">
+<meta property="og:image" content="https://sliu.vip/linux/redis-distributed-cache/clip_image012.jpg">
+<meta property="og:image" content="https://sliu.vip/linux/redis-distributed-cache/clip_image014.jpg">
+<meta property="og:image" content="https://sliu.vip/linux/redis-distributed-cache/clip_image016.jpg">
+<meta property="og:image" content="https://sliu.vip/linux/redis-distributed-cache/1587920473353.png">
+<meta property="og:image" content="https://sliu.vip/linux/redis-distributed-cache/1587987228660.png">
+<meta property="og:image" content="https://sliu.vip/linux/redis-distributed-cache/clip_image036.jpg">
+<meta property="og:image" content="https://sliu.vip/linux/redis-distributed-cache/1587990485660.png">
+<meta property="og:image" content="https://sliu.vip/linux/redis-distributed-cache/clip_image058.jpg">
+<meta property="og:image" content="https://sliu.vip/linux/redis-distributed-cache/clip_image060.jpg">
+<meta property="og:image" content="https://sliu.vip/linux/redis-distributed-cache/clip_image062.jpg">
+<meta property="og:image" content="https://sliu.vip/linux/redis-distributed-cache/clip_image064.jpg">
+<meta property="og:image" content="https://sliu.vip/linux/redis-distributed-cache/clip_image066.jpg">
+<meta property="og:image" content="https://sliu.vip/linux/redis-distributed-cache/clip_image068.jpg">
+<meta property="og:image" content="https://sliu.vip/linux/redis-distributed-cache/clip_image070.jpg">
+<meta property="og:image" content="https://sliu.vip/linux/redis-distributed-cache/clip_image072.jpg">
+<meta property="og:image" content="https://sliu.vip/linux/redis-distributed-cache/clip_image074.jpg">
+<meta property="og:image" content="https://sliu.vip/linux/redis-distributed-cache/clip_image076.jpg">
+<meta property="og:image" content="https://sliu.vip/linux/redis-distributed-cache/clip_image078.jpg">
+<meta property="og:image" content="https://sliu.vip/linux/redis-distributed-cache/clip_image080.jpg">
+<meta property="og:image" content="https://sliu.vip/linux/redis-distributed-cache/clip_image082.jpg">
+<meta property="og:image" content="https://sliu.vip/linux/redis-distributed-cache/clip_image084.jpg">
+<meta property="og:image" content="https://sliu.vip/linux/redis-distributed-cache/clip_image086.jpg">
+<meta property="og:image" content="https://sliu.vip/linux/redis-distributed-cache/clip_image088.jpg">
+<meta property="og:image" content="https://sliu.vip/linux/redis-distributed-cache/clip_image090.jpg">
+<meta property="og:image" content="https://sliu.vip/linux/redis-distributed-cache/clip_image092.jpg">
+<meta property="og:image" content="https://sliu.vip/linux/redis-distributed-cache/clip_image094.jpg">
+<meta property="article:published_time" content="2020-04-26T17:04:20.065Z">
+<meta property="article:modified_time" content="2020-05-01T16:42:16.221Z">
+<meta property="article:author" content="刘硕">
+<meta property="article:tag" content="Redis">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="运维">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sliu.vip/linux/redis-distributed-cache/clip_image002.jpg">
+
+<link rel="canonical" href="https://sliu.vip/linux/redis-distributed-cache/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>Redis 分布式缓存 | 刘硕的技术查阅手册</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f14f123935d6183fdd06f8f1c4bc378f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="刘硕的技术查阅手册" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">刘硕的技术查阅手册</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">Python 全栈开发学习笔记</h1>
+      
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-toc">
+
+    <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+  
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/linux/redis-distributed-cache/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          Redis 分布式缓存
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-04-27 01:04:20" itemprop="dateCreated datePublished" datetime="2020-04-27T01:04:20+08:00">2020-04-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-05-02 00:42:16" itemprop="dateModified" datetime="2020-05-02T00:42:16+08:00">2020-05-02</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/linux/redis-distributed-cache/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/linux/redis-distributed-cache/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>7k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>13 分钟</span>
+            </span>
+            <div class="post-description">NoSQL 的英文全称是 Not Only SQL，意即“不仅仅是 SQL”，泛指非关系型的数据库。随着互联网 web 2.0 网站的兴起，传统的关系数据库在应付 web 2.0 网站，特别是超大规模和高并发的 SNS 类型的 web 2.0 纯动态网站已经显得力不从心，暴露了很多难以克服的问题，而非关系型的数据库则由于其本身的特点得到了非常迅速的发展。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="NoSQL-概述"><a href="#NoSQL-概述" class="headerlink" title="NoSQL 概述"></a>NoSQL 概述</h2><h3 id="NoSQL-定义"><a href="#NoSQL-定义" class="headerlink" title="NoSQL 定义"></a>NoSQL 定义</h3><p>NoSQL 的英文全称是 Not Only SQL，意即“不仅仅是 SQL”，泛指非关系型的数据库。</p>
+<p>随着互联网 web 2.0 网站的兴起，传统的关系数据库在应付 web 2.0 网站，特别是超大规模和高并发的 SNS 类型的 web 2.0 纯动态网站已经显得力不从心，暴露了很多难以克服的问题，而非关系型的数据库则由于其本身的特点得到了非常迅速的发展。</p>
+<p>NoSQL 数据库的产生就是为了解决大规模数据集合多重数据种类带来的挑战，尤其是大数据应用难题，包括超大规模数据的存储。例如谷歌或 Facebook 每天为他们的用户收集万亿比特的数据。</p>
+<h3 id="NoSQL-的优点"><a href="#NoSQL-的优点" class="headerlink" title="NoSQL 的优点"></a>NoSQL 的优点</h3><ul>
+<li><p>易于扩展</p>
+</li>
+<li><p>大数据量高性能</p>
+</li>
+<li><p>多样灵活的数据模型</p>
+</li>
+</ul>
+<h3 id="3V-和-3-高"><a href="#3V-和-3-高" class="headerlink" title="3V 和 3 高"></a>3V 和 3 高</h3><p>大数据时代的 3V 指的是：</p>
+<ul>
+<li><p>海量 Volume</p>
+</li>
+<li><p>多样 Variety</p>
+</li>
+<li><p>实时 Velocity</p>
+</li>
+</ul>
+<p>互联网需求的 3 高指的是：</p>
+<ul>
+<li><p>高并发</p>
+</li>
+<li><p>高可扩</p>
+</li>
+<li><p>高性能</p>
+</li>
+</ul>
+<h3 id="当下-NoSQL-的经典应用"><a href="#当下-NoSQL-的经典应用" class="headerlink" title="当下 NoSQL 的经典应用"></a>当下 NoSQL 的经典应用</h3><p>当下的应用通常是 SQL 和 NoSQL 配合使用。</p>
+<p>比如淘宝的数据存储：</p>
+<ul>
+<li><p>商品基本信息：MySQL 等关系型数据库</p>
+</li>
+<li><p>商品详情，描述类：MongoDB，处理大文本</p>
+</li>
+<li><p>商品图片：Hadoop 里的 HDFS，淘宝 TFS</p>
+</li>
+<li><p>关键字：ISearch 搜索引擎，多隆自己写，蔡景现</p>
+</li>
+<li><p>商品高频信息：Redis</p>
+</li>
+</ul>
+<h3 id="NoSQL-数据模型简介"><a href="#NoSQL-数据模型简介" class="headerlink" title="NoSQL 数据模型简介"></a>NoSQL 数据模型简介</h3><p>NoSQL 的聚合模型：</p>
+<ul>
+<li><p>KV 键值</p>
+</li>
+<li><p>BSON</p>
+</li>
+<li><p>列族：顾名思义，是按列存储数据的。最大的特点是方便存储结构化和半结构化数据，方便做数据压缩，对针对某一列或者某几列的查询有非常大的 IO 优势。</p>
+</li>
+</ul>
+<img src="/linux/redis-distributed-cache/clip_image002.jpg" class="" title="clip_image002">
+
+<p>图形：</p>
+<img src="/linux/redis-distributed-cache/clip_image004.jpg" class="" title="clip_image004">
+
+<p>NoSQL 数据库的四大分类：</p>
+<ul>
+<li><p>KV键值</p>
+<ul>
+<li>新浪的 BerkeleyDB + Redis</li>
+<li>美团的 Redis + tair</li>
+<li>阿里、百度的 Memcache + Redis</li>
+</ul>
+</li>
+<li><p>文档性数据库（BSON 格式较多）</p>
+<ul>
+<li>CouchDB</li>
+<li>MongoDB</li>
+</ul>
+</li>
+<li><p>列存储数据库</p>
+<ul>
+<li>Cassandra</li>
+<li>Hbase</li>
+<li>分布式文件系统</li>
+</ul>
+</li>
+<li><p>图关系数据库</p>
+<ul>
+<li>专注于构建关系图谱</li>
+<li>Neo4J、InfoGrid</li>
+</ul>
+</li>
+</ul>
+<p>四者对比</p>
+<img src="/linux/redis-distributed-cache/clip_image006.jpg" class="" title="clip_image006">
+
+<h2 id="Redis-简介"><a href="#Redis-简介" class="headerlink" title="Redis 简介"></a>Redis 简介</h2><h3 id="Redis-概述"><a href="#Redis-概述" class="headerlink" title="Redis 概述"></a>Redis 概述</h3><p>Redis 的英文全称是 REmote DIctionary Server（远程字典服务器）</p>
+<img src="/linux/redis-distributed-cache/clip_image008.jpg" class="" title="clip_image008">
+
+<p>Redis 是完全开源免费的，用 C 语言编写，遵守 BSD 协议，是一个高性能的（key/value）分布式内存数据库，基于内存运行并支持持久化的 NoSQL 数据库，是当前最热门的 NoSQL 数据库之一，也被人们称为数据结构服务器。Redis 能满足对海量数据的读写。</p>
+<p>Redis 的键只能是字符串</p>
+<p>Redis 的值支持多种数据类型：</p>
+<ul>
+<li><p>字符串：string</p>
+</li>
+<li><p>哈希：hash</p>
+</li>
+<li><p>字符串列表：list</p>
+</li>
+<li><p>字符串集合：set</p>
+</li>
+<li><p>有序集合：zset（sorted set）</p>
+</li>
+<li><p>HyperLogLog 结构：Redis 2.8.9 版本之后才有，用来做统计的算法</p>
+</li>
+<li><p>GEO 结构：Redis 3.2 版本之后才有，是地理位置相关的数据类型</p>
+</li>
+</ul>
+<h3 id="Redis-的优点"><a href="#Redis-的优点" class="headerlink" title="Redis 的优点"></a>Redis 的优点</h3><ul>
+<li><p>高性能（Redis 读的速度是 11W 次/s,写的速度是 8.1W 次/s）</p>
+</li>
+<li><p>原子性（保证数据的准确性）</p>
+</li>
+<li><p>持久存储（两种方式 RDB/快照，AOF/日志）</p>
+</li>
+<li><p>主从结构，主机会自动将数据同步到从机，可以进行读写分离</p>
+</li>
+<li><p>从 3.0 版本开始，支持集群</p>
+</li>
+</ul>
+<h3 id="Redis-的缺点"><a href="#Redis-的缺点" class="headerlink" title="Redis 的缺点"></a>Redis 的缺点</h3><p>由于 Redis 是内存数据库，所以单台机器存储的数据量，跟机器本身的内存大小有关。虽然 Redis 本身有 key 过期策略，但是还是需要提前预估和节约内存。如果内存增长过快，需要定期删除数据。</p>
+<p>修改配置文件，进行重启，将硬盘中的数据加载进内存，时间比较久。在这个过程中，Redis 不能提供服务。</p>
+<h3 id="Redis-的应用场景"><a href="#Redis-的应用场景" class="headerlink" title="Redis 的应用场景"></a>Redis 的应用场景</h3><p>Redis 主要应用在高并发和实时请求的场景</p>
+<ul>
+<li><p>关注列表，粉丝列表</p>
+</li>
+<li><p>微博数，粉丝数</p>
+</li>
+<li><p>热门微博</p>
+</li>
+</ul>
+<h3 id="Redis-版本下载"><a href="#Redis-版本下载" class="headerlink" title="Redis 版本下载"></a>Redis 版本下载</h3><p>Redis 英文官网：<a href="https://redis.io/" target="_blank" rel="noopener">https://redis.io/</a></p>
+<p>Redis 中文官网：<a href="http://www.redis.cn/" target="_blank" rel="noopener">http://www.redis.cn/</a></p>
+<p>下载最新稳定版，如下图所示：</p>
+<img src="/linux/redis-distributed-cache/clip_image010.jpg" class="" title="clip_image010">
+
+<h2 id="Redis-安装"><a href="#Redis-安装" class="headerlink" title="Redis 安装"></a>Redis 安装</h2><h3 id="软件环境"><a href="#软件环境" class="headerlink" title="软件环境"></a>软件环境</h3><ul>
+<li><p>CentOS 7</p>
+</li>
+<li><p>redis 3.2.8</p>
+</li>
+</ul>
+<h3 id="安装准备"><a href="#安装准备" class="headerlink" title="安装准备"></a>安装准备</h3><p>首先安装一些依赖包，输入如下命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install cpp binutils glibc glibc-kernheaders glibc-common glibc-devel gcc make tcl</span><br></pre></td></tr></table></figure>
+
+<h3 id="Redis-的-Windows-版安装"><a href="#Redis-的-Windows-版安装" class="headerlink" title="Redis 的 Windows 版安装"></a>Redis 的 Windows 版安装</h3><p>下载地址：<a href="https://github.com/dmajkic/redis/downloads" target="_blank" rel="noopener">https://github.com/dmajkic/redis/downloads</a></p>
+<p>下载到的 Redis 支持 32 bit 和 64 bit。根据自己实际情况选择，将 64 bit 的内容复制到自定义盘符安装目录取名 redis。 如 <code>C:\reids</code></p>
+<p>打开一个 cmd 窗口 使用 cd 命令切换目录到 <code>C:\redis</code> 运行 <code>redis-server.exe redis.conf</code> 。</p>
+<p>如果想方便的话，可以把 Redis 的路径加到系统的环境变量里，这样就省得再输路径了。后面的那个 <code>redis.conf</code> 可以省略。如果省略，会启用默认的。输入之后，会显示如下界面：</p>
+<img src="/linux/redis-distributed-cache/clip_image012.jpg" class="" title="clip_image012">
+
+<p>这时候另启一个 cmd 窗口，原来的不要关闭，不然就无法访问服务端了。</p>
+<p>切换到 redis 目录下运行 <code>redis-cli.exe -h 127.0.0.1 -p 6379</code> 。</p>
+<p>设置键值对 set myKey abc</p>
+<p>取出键值对 get myKey</p>
+<img src="/linux/redis-distributed-cache/clip_image014.jpg" class="" title="clip_image014">
+
+<h3 id="官方的安装提示"><a href="#官方的安装提示" class="headerlink" title="官方的安装提示"></a>官方的安装提示</h3><img src="/linux/redis-distributed-cache/clip_image016.jpg" class="" title="clip_image016">
+
+<h3 id="Redis-的-Linux-版安装"><a href="#Redis-的-Linux-版安装" class="headerlink" title="Redis 的 Linux 版安装"></a>Redis 的 Linux 版安装</h3><p>上传 tar 包到 CentOS 的 <code>/usr/local</code> 目录并解压：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span></span><br><span class="line">tar -zxvf redis-3.0.4.tar.gz</span><br></pre></td></tr></table></figure>
+
+<p>进入解压好的 Redis 目录，输入 make 编译：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@node01 <span class="built_in">local</span>]<span class="comment"># cd redis-3.0.4</span></span><br><span class="line">[root@node01 redis-3.0.4]<span class="comment"># pwd</span></span><br><span class="line">/usr/<span class="built_in">local</span>/redis-3.0.4</span><br><span class="line">[root@node01 redis-3.0.4]<span class="comment"># make</span></span><br></pre></td></tr></table></figure>
+
+<p>安装 Redis：</p>
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make <span class="keyword">install</span></span><br></pre></td></tr></table></figure>
+
+<p>安装后的 Redis 命令默认在 <code>/usr/local/bin</code> 目录</p>
+<img src="/linux/redis-distributed-cache/1587920473353.png" class="" width="1587920473353">
+
+<h3 id="Redis-的服务端启动"><a href="#Redis-的服务端启动" class="headerlink" title="Redis 的服务端启动"></a>Redis 的服务端启动</h3><p>直接使用命令即可启动 Redis 服务：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-server</span><br></pre></td></tr></table></figure>
+
+<p>页面中出现经典的 Redis 的 logo，说明安装成功：</p>
+<img src="/linux/redis-distributed-cache/1587987228660.png" class="" width="1587987228660">
+
+<p>但是现在的问题是，Redis 服务会占用整个窗口。如果我们退出 Redis 服务，又无法使用 Redis。当然可以另起一个窗口，但终究不是长久之计。</p>
+<p>我们可以修改配置文件，使之可以后台运行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /usr/<span class="built_in">local</span>/redis-3.0.4/redis.conf</span><br></pre></td></tr></table></figure>
+
+<p>找到 daemonize，将其配置为 yes：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">daemonize yes</span><br></pre></td></tr></table></figure>
+
+<p>保存并退出。</p>
+<p>用修改的配置启动 Redis 服务：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-server /usr/<span class="built_in">local</span>/redis-3.0.4/redis.conf</span><br></pre></td></tr></table></figure>
+
+<p>这样启动就不会占用窗口了。查看进程，Redis 服务已经在后台运行了：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@node01 ~]<span class="comment"># ps -aux | grep redis</span></span><br><span class="line">root       2280  0.3  0.7 140908  7460 ?        Ssl  20:05   0:00 redis-server *:6379</span><br><span class="line">root       2285  0.0  0.0 112732   964 pts/0    R+   20:06   0:00 grep --color=auto redis</span><br></pre></td></tr></table></figure>
+
+<h3 id="Redis-的客户端启动"><a href="#Redis-的客户端启动" class="headerlink" title="Redis 的客户端启动"></a>Redis 的客户端启动</h3><p>Redis 的客户端只需要一条语句即可启动：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-cli</span><br></pre></td></tr></table></figure>
+
+<p>可以使用 exit 命令退出 Redis 客户端。</p>
+<img src="/linux/redis-distributed-cache/clip_image036.jpg" class="" title="clip_image036"> 
+
+<h3 id="Redis-测试"><a href="#Redis-测试" class="headerlink" title="Redis 测试"></a>Redis 测试</h3><p>输入一些常用命令，查看 Redis 是否正常运行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[root@node01 ~]<span class="comment"># redis-cli</span></span><br><span class="line">127.0.0.1:6379&gt; <span class="built_in">exit</span></span><br><span class="line">[root@node01 ~]<span class="comment"># redis-cli</span></span><br><span class="line">127.0.0.1:6379&gt; ping</span><br><span class="line">PONG</span><br><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> username root</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; get username</span><br><span class="line"><span class="string">"root"</span></span><br><span class="line">127.0.0.1:6379&gt; keys *</span><br><span class="line">1) <span class="string">"username"</span></span><br><span class="line">127.0.0.1:6379&gt; <span class="built_in">exit</span></span><br><span class="line">[root@node01 ~]<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Redis-服务端停止"><a href="#Redis-服务端停止" class="headerlink" title="Redis 服务端停止"></a>Redis 服务端停止</h3><p>使用命令终止 Redis 服务：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-cli shutdown</span><br></pre></td></tr></table></figure>
+
+<p>注意，关闭 Redis 服务端使用的方法是 redis-cli 而不是 redis-server。</p>
+<p>查看 Redis 服务的进程是否被关闭：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[<span class="symbol">root@</span>node01 ~]# ps aux | grep redis</span><br><span class="line">root       <span class="number">4624</span>  <span class="number">0.0</span>  <span class="number">0.0</span> <span class="number">112732</span>   <span class="number">964</span> pts/<span class="number">0</span>    S+   <span class="number">20</span>:<span class="number">23</span>   <span class="number">0</span>:<span class="number">00</span> grep --color=<span class="built_in">auto</span> redis</span><br></pre></td></tr></table></figure>
+
+<p>没有占用 6379 端口的 Redis 服务了，说明其已经被关闭。</p>
+<h2 id="Redis-杂项知识"><a href="#Redis-杂项知识" class="headerlink" title="Redis 杂项知识"></a>Redis 杂项知识</h2><h3 id="性能测试"><a href="#性能测试" class="headerlink" title="性能测试"></a>性能测试</h3><p>先启动服务端：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-server /usr/<span class="built_in">local</span>/redis-3.0.4/redis.conf</span><br></pre></td></tr></table></figure>
+
+<p>测试 get 和 set 的性能：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">[root@node01 ~]<span class="comment"># redis-benchmark -t get,set</span></span><br><span class="line">====== SET ======</span><br><span class="line">  100000 requests completed <span class="keyword">in</span> 1.15 seconds</span><br><span class="line">  50 parallel clients</span><br><span class="line">  3 bytes payload</span><br><span class="line">  keep alive: 1</span><br><span class="line"></span><br><span class="line">92.98% &lt;= 1 milliseconds</span><br><span class="line">98.17% &lt;= 2 milliseconds</span><br><span class="line">99.87% &lt;= 3 milliseconds</span><br><span class="line">100.00% &lt;= 3 milliseconds</span><br><span class="line">87260.03 requests per second</span><br><span class="line"></span><br><span class="line">====== GET ======</span><br><span class="line">  100000 requests completed <span class="keyword">in</span> 1.16 seconds</span><br><span class="line">  50 parallel clients</span><br><span class="line">  3 bytes payload</span><br><span class="line">  keep alive: 1</span><br><span class="line"></span><br><span class="line">93.54% &lt;= 1 milliseconds</span><br><span class="line">97.71% &lt;= 2 milliseconds</span><br><span class="line">99.89% &lt;= 3 milliseconds</span><br><span class="line">100.00% &lt;= 3 milliseconds</span><br><span class="line">86355.79 requests per second</span><br></pre></td></tr></table></figure>
+
+<h3 id="为什么-Redis-默认端口是-6379？"><a href="#为什么-Redis-默认端口是-6379？" class="headerlink" title="为什么 Redis 默认端口是 6379？"></a>为什么 Redis 默认端口是 6379？</h3><p>据说这是作者喜欢的女明星 Merz 的名字在九宫格输入法中对应的数字。</p>
+<img src="/linux/redis-distributed-cache/1587990485660.png" class="" width="1587990485660">
+
+<h3 id="Redis-的数据库"><a href="#Redis-的数据库" class="headerlink" title="Redis 的数据库"></a>Redis 的数据库</h3><p> Redis 默认有 16 个数据库，刚进入客户端时使用的是 0 号数据库</p>
+<p>可以通过 <code>select 索引</code> 的命令切换数据库：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; select 0</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; select 15</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379[15]&gt; select 16</span><br><span class="line">(error) ERR invalid DB index</span><br></pre></td></tr></table></figure>
+
+<h3 id="清空数据库"><a href="#清空数据库" class="headerlink" title="清空数据库"></a>清空数据库</h3><p>Redis 中清空数据库的方式有两个： </p>
+<ul>
+<li><p>FLUSHDB 清空当前库</p>
+</li>
+<li><p>FLUSHALL 通杀全部库</p>
+</li>
+</ul>
+<h3 id="统一密码管理"><a href="#统一密码管理" class="headerlink" title="统一密码管理"></a>统一密码管理</h3><p>16 个库都是同样密码，要么都 OK 要么一个也连接不上。</p>
+<h3 id="判断某个-key-是否存在"><a href="#判断某个-key-是否存在" class="headerlink" title="判断某个 key 是否存在"></a>判断某个 key 是否存在</h3><p>使用 exists 命令可查看某个 key 是否存在，如果存在返回 1，否则返回 0：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; EXISTS k</span><br><span class="line">(<span class="built_in">integer</span>) 0</span><br><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> k 1</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; EXISTS k</span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br></pre></td></tr></table></figure>
+
+<h3 id="将-key-移动到其他库"><a href="#将-key-移动到其他库" class="headerlink" title="将 key 移动到其他库"></a>将 key 移动到其他库</h3><p> 使用 move 命令，可以把 key 移动到其他库中：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; move k 2</span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br><span class="line">127.0.0.1:6379&gt; keys *</span><br><span class="line">(empty list or <span class="built_in">set</span>)</span><br><span class="line">127.0.0.1:6379&gt; select 2</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379[2]&gt; keys *</span><br><span class="line">1) <span class="string">"k"</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="为-key-设置过期时间"><a href="#为-key-设置过期时间" class="headerlink" title="为 key 设置过期时间"></a>为 key 设置过期时间</h3><p> 使用 expire 命令设置过期时间：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379[2]&gt; expire k 10</span><br></pre></td></tr></table></figure>
+
+<h3 id="查看-key-的过期时间"><a href="#查看-key-的过期时间" class="headerlink" title="查看 key 的过期时间"></a>查看 key 的过期时间</h3><p>使用 ttl 查看过期时间，-2 代表已经过期，-1 表示不过期</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379[2]&gt; expire k 10</span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br><span class="line">127.0.0.1:6379[2]&gt; ttl k</span><br><span class="line">(<span class="built_in">integer</span>) 6</span><br><span class="line">127.0.0.1:6379[2]&gt; ttl k</span><br><span class="line">(<span class="built_in">integer</span>) -2</span><br></pre></td></tr></table></figure>
+
+<h3 id="查看-key-的类型"><a href="#查看-key-的类型" class="headerlink" title="查看 key 的类型"></a>查看 key 的类型</h3><p>使用 type 查看 key 的类型：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379[2]&gt; <span class="built_in">set</span> k 1</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379[2]&gt; <span class="built_in">type</span> k</span><br><span class="line">string</span><br></pre></td></tr></table></figure>
+
+<h2 id="redis-conf-解析"><a href="#redis-conf-解析" class="headerlink" title="redis.conf 解析"></a>redis.conf 解析</h2><h3 id="redis-conf-的位置"><a href="#redis-conf-的位置" class="headerlink" title="redis.conf 的位置"></a>redis.conf 的位置</h3><p>redis.conf 位于解压好的安装包中：</p>
+<img src="/linux/redis-distributed-cache/clip_image058.jpg" class="" title="clip_image058">
+
+<h3 id="Units-单位"><a href="#Units-单位" class="headerlink" title="Units 单位"></a>Units 单位</h3><img src="/linux/redis-distributed-cache/clip_image060.jpg" class="" title="clip_image060">
+
+<p>Redis 配置文件，单位不区分大小写。</p>
+<h3 id="INCLUDES-包含"><a href="#INCLUDES-包含" class="headerlink" title="INCLUDES 包含"></a>INCLUDES 包含</h3><img src="/linux/redis-distributed-cache/clip_image062.jpg" class="" title="clip_image062">
+
+<p>可以加入其他自定义配置文件。</p>
+<h3 id="GENERAL-通用配置"><a href="#GENERAL-通用配置" class="headerlink" title="GENERAL 通用配置"></a>GENERAL 通用配置</h3><img src="/linux/redis-distributed-cache/clip_image064.jpg" class="" title="clip_image064">
+
+<p>一些基本设置，包括端口号，守护进程等</p>
+<h3 id="NETWORK-网络配置"><a href="#NETWORK-网络配置" class="headerlink" title="NETWORK 网络配置"></a>NETWORK 网络配置</h3><img src="/linux/redis-distributed-cache/clip_image066.jpg" class="" title="clip_image066">
+
+<p>配置一些超时时间等</p>
+<h3 id="SNAPSHOTTING-快照"><a href="#SNAPSHOTTING-快照" class="headerlink" title="SNAPSHOTTING 快照"></a>SNAPSHOTTING 快照</h3><img src="/linux/redis-distributed-cache/clip_image068.jpg" class="" title="clip_image068">
+
+<p>配置 RDB 持久化策略的位置</p>
+<h3 id="REPLICATION-复制"><a href="#REPLICATION-复制" class="headerlink" title="REPLICATION 复制"></a>REPLICATION 复制</h3><img src="/linux/redis-distributed-cache/clip_image070.jpg" class="" title="clip_image070">
+
+<p>配置主从复制的</p>
+<h3 id="SECURITY-安全"><a href="#SECURITY-安全" class="headerlink" title="SECURITY 安全"></a>SECURITY 安全</h3><img src="/linux/redis-distributed-cache/clip_image072.jpg" class="" title="clip_image072">
+
+<p>设置 Redis 的密码。</p>
+<h3 id="LIMITS-限制"><a href="#LIMITS-限制" class="headerlink" title="LIMITS 限制"></a>LIMITS 限制</h3><img src="/linux/redis-distributed-cache/clip_image074.jpg" class="" title="clip_image074">
+
+<p>做一些连接和内存等的限制</p>
+<h3 id="APPEND-ONLY-MODE-追加模式"><a href="#APPEND-ONLY-MODE-追加模式" class="headerlink" title="APPEND ONLY MODE 追加模式"></a>APPEND ONLY MODE 追加模式</h3><img src="/linux/redis-distributed-cache/clip_image076.jpg" class="" title="clip_image076">
+
+<p>配置 AOF 的位置</p>
+<h2 id="Redis-的持久化-RDB"><a href="#Redis-的持久化-RDB" class="headerlink" title="Redis 的持久化 RDB"></a>Redis 的持久化 RDB</h2><h3 id="官网介绍"><a href="#官网介绍" class="headerlink" title="官网介绍"></a>官网介绍</h3><img src="/linux/redis-distributed-cache/clip_image078.jpg" class="" title="clip_image078">
+
+<h3 id="RDB-的概念"><a href="#RDB-的概念" class="headerlink" title="RDB 的概念"></a>RDB 的概念</h3><p>Redis DataBase，在指定的时间间隔内将内存中的数据集快照写入磁盘，也就是 Snapshot 快照，它恢复时是将快照文件直接读到内存里。</p>
+<p>Redis 会单独创建一个子进程（fork）来进行持久化，会先将数据写入到一个临时文件中，待持久化过程都结束了，再用这个临时文件替换上次持久化好的文件</p>
+<p>整个过程中，主进程是不进行任何 IO 操作的，这就确保了极高的性能如果需要进行大规模数据的恢复，且对于数据恢复的完整性不是非常敏感，那 RDB 方式要比 AOF 方式更加的高效。</p>
+<p>RDB 的缺点是最后一次持久化后的数据可能丢失。</p>
+<h3 id="Fork"><a href="#Fork" class="headerlink" title="Fork"></a>Fork</h3><p>l  Fork的作用是复制一个与当前进程一样的进程。</p>
+<p>l  新进程的所有数据数值都和原进程一致，但是是一个全新的进程，并作为原进程的子进程</p>
+<h3 id="RDB-保存的是-dump-rdb-文件"><a href="#RDB-保存的是-dump-rdb-文件" class="headerlink" title="RDB 保存的是 dump.rdb 文件"></a>RDB 保存的是 dump.rdb 文件</h3><img src="/linux/redis-distributed-cache/clip_image080.jpg" class="" title="clip_image080">
+
+<h3 id="配置策略"><a href="#配置策略" class="headerlink" title="配置策略"></a>配置策略</h3><img src="/linux/redis-distributed-cache/clip_image082.jpg" class="" title="clip_image082">
+
+<h3 id="触发-RDB"><a href="#触发-RDB" class="headerlink" title="触发 RDB"></a>触发 RDB</h3><img src="/linux/redis-distributed-cache/clip_image084.jpg" class="" title="clip_image084">
+
+<h3 id="RDB-的优点"><a href="#RDB-的优点" class="headerlink" title="RDB 的优点"></a>RDB 的优点</h3><p>适合大规模的数据恢复</p>
+<p>对数据完整性和一致性要求不高</p>
+<h3 id="RDB-的缺点"><a href="#RDB-的缺点" class="headerlink" title="RDB 的缺点"></a>RDB 的缺点</h3><p>在一定间隔时间做一次备份，所以如果 Redis 意外崩溃掉的话，就会丢失最后一次快照后的所有修改。</p>
+<p>Fork 的时候，内存中的数据被克隆了一份，大致2倍的膨胀性需要考虑。</p>
+<h3 id="如何动态停止-RDB"><a href="#如何动态停止-RDB" class="headerlink" title="如何动态停止 RDB"></a>如何动态停止 RDB</h3><p>在 redis-cli 命令行中，将所有的 RDB 配置都注释掉，并加上下面这句：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">config <span class="built_in">set</span> save <span class="string">""</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Redis-的持久化-AOF"><a href="#Redis-的持久化-AOF" class="headerlink" title="Redis 的持久化 AOF"></a>Redis 的持久化 AOF</h2><h3 id="AOF-概述"><a href="#AOF-概述" class="headerlink" title="AOF 概述"></a>AOF 概述</h3><p>AOF 的全称是 append only file。它以日志的形式来记录每个写操作，将 Redis 执行过的所有写指令记录下来（读操作不记录），只许追加文件但不可以改写文件。</p>
+<p>Redis 启动之初会读取该文件重新构建数据。换言之，Redis 重启的话就根据日志文件的内容将写指令从前到后执行一次以完成数据的恢复工作。</p>
+<h3 id="AOF-保存的是-appendonly-aof-文件"><a href="#AOF-保存的是-appendonly-aof-文件" class="headerlink" title="AOF 保存的是 appendonly.aof 文件"></a>AOF 保存的是 appendonly.aof 文件</h3><img src="/linux/redis-distributed-cache/clip_image086.jpg" class="" title="clip_image086">
+
+<h3 id="配置策略-1"><a href="#配置策略-1" class="headerlink" title="配置策略"></a>配置策略</h3><img src="/linux/redis-distributed-cache/clip_image088.jpg" class="" title="clip_image088">
+
+<h3 id="触发-AOF"><a href="#触发-AOF" class="headerlink" title="触发 AOF"></a>触发 AOF</h3><p>修改配置文件的 appendonly 为 yes。如果 AOF 和 RDB 同时存在，会优先使用 AOF 策略。</p>
+<h3 id="AOF-的数据修复"><a href="#AOF-的数据修复" class="headerlink" title="AOF 的数据修复"></a>AOF 的数据修复</h3><p>如果 appendonly.aof 文件损坏，可以尝试使用命令将其修复：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-check-aof --fix appendonly.aof</span><br></pre></td></tr></table></figure>
+
+<h3 id="AOF-的优点"><a href="#AOF-的优点" class="headerlink" title="AOF 的优点"></a>AOF 的优点</h3><p>同步持久化 每次发生数据变更会被立即记录到磁盘。</p>
+<p>性能较差但数据完整性比较好。</p>
+<h3 id="AOF-的缺点"><a href="#AOF-的缺点" class="headerlink" title="AOF 的缺点"></a>AOF 的缺点</h3><p>相同数据集的数据而言 aof 文件要远大于 rdb 文件，恢复速度慢于 rdb。</p>
+<h2 id="Redis-的事务"><a href="#Redis-的事务" class="headerlink" title="Redis 的事务"></a>Redis 的事务</h2><h3 id="官网介绍-1"><a href="#官网介绍-1" class="headerlink" title="官网介绍"></a>官网介绍</h3><img src="/linux/redis-distributed-cache/clip_image090.jpg" class="" title="clip_image090">
+
+<img src="/linux/redis-distributed-cache/clip_image092.jpg" class="" title="clip_image092">
+
+<h3 id="Redis-的事务概述"><a href="#Redis-的事务概述" class="headerlink" title="Redis 的事务概述"></a>Redis 的事务概述</h3><p>Redis 的事务可以一次执行多个命令，批处理，本质是一组命令的集合。一个事务中的所有命令都会序列化，按顺序地串行化执行而不会被其它命令插入，不许加塞。</p>
+<h3 id="Redis-的事务的作用"><a href="#Redis-的事务的作用" class="headerlink" title="Redis 的事务的作用"></a>Redis 的事务的作用</h3><p>一个队列中，一次性、顺序性、排他性的执行一系列命令。</p>
+<h3 id="Redis事务的常用命令"><a href="#Redis事务的常用命令" class="headerlink" title="Redis事务的常用命令"></a>Redis事务的常用命令</h3><img src="/linux/redis-distributed-cache/clip_image094.jpg" class="" title="clip_image094">
+
+<p>Redis 事务的基本用法是以 multi 开始，以 exec 结束，在这两条命令之间写上数据库的操作：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; keys *</span><br><span class="line">(empty list or <span class="built_in">set</span>)</span><br><span class="line">127.0.0.1:6379&gt; MULTI</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> k1 1</span><br><span class="line">QUEUED</span><br><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> k2 2</span><br><span class="line">QUEUED</span><br><span class="line">127.0.0.1:6379&gt; get k1</span><br><span class="line">QUEUED</span><br><span class="line">127.0.0.1:6379&gt; EXEC</span><br><span class="line">1) OK</span><br><span class="line">2) OK</span><br><span class="line">3) <span class="string">"1"</span></span><br></pre></td></tr></table></figure>
+
+<p>如果事务中有命令出错，事务中已经执行的操作会被回滚，事务中所有事务都不执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; MULTI</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> k4 v4</span><br><span class="line">QUEUED</span><br><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> k5 v5</span><br><span class="line">QUEUED</span><br><span class="line">127.0.0.1:6379&gt; sdjflsd</span><br><span class="line">(error) ERR unknown <span class="built_in">command</span> <span class="string">'sdjflsd'</span></span><br><span class="line">127.0.0.1:6379&gt; get k2</span><br><span class="line">QUEUED</span><br><span class="line">127.0.0.1:6379&gt; EXEC</span><br><span class="line">(error) EXECABORT Transaction discarded because of previous errors.</span><br></pre></td></tr></table></figure>
+
+<p>当然，上面的也不绝对，有些小错误也是会顺利执行的：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; MULTI</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> k3 v3</span><br><span class="line">QUEUED</span><br><span class="line">127.0.0.1:6379&gt; incr k3</span><br><span class="line">QUEUED</span><br><span class="line">127.0.0.1:6379&gt; get k3</span><br><span class="line">QUEUED</span><br><span class="line">127.0.0.1:6379&gt; EXEC</span><br><span class="line">1) OK</span><br><span class="line">2) (error) ERR value is not an <span class="built_in">integer</span> or out of range</span><br><span class="line">3) <span class="string">"v3"</span></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Redis/" rel="tag"># Redis</a>
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+              <a href="/tags/%E8%BF%90%E7%BB%B4/" rel="tag"># 运维</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/database/mysql-db-tb/" rel="prev" title="数据库、数据表和数据的基本操作">
+      <i class="fa fa-chevron-left"></i> 数据库、数据表和数据的基本操作
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/linux/lvs-keepalived-lb/" rel="next" title="LVS + keepalived 实现负载均衡">
+      LVS + keepalived 实现负载均衡 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#NoSQL-概述"><span class="nav-number">1.</span> <span class="nav-text">NoSQL 概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#NoSQL-定义"><span class="nav-number">1.1.</span> <span class="nav-text">NoSQL 定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NoSQL-的优点"><span class="nav-number">1.2.</span> <span class="nav-text">NoSQL 的优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3V-和-3-高"><span class="nav-number">1.3.</span> <span class="nav-text">3V 和 3 高</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#当下-NoSQL-的经典应用"><span class="nav-number">1.4.</span> <span class="nav-text">当下 NoSQL 的经典应用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NoSQL-数据模型简介"><span class="nav-number">1.5.</span> <span class="nav-text">NoSQL 数据模型简介</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis-简介"><span class="nav-number">2.</span> <span class="nav-text">Redis 简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis-概述"><span class="nav-number">2.1.</span> <span class="nav-text">Redis 概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis-的优点"><span class="nav-number">2.2.</span> <span class="nav-text">Redis 的优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis-的缺点"><span class="nav-number">2.3.</span> <span class="nav-text">Redis 的缺点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis-的应用场景"><span class="nav-number">2.4.</span> <span class="nav-text">Redis 的应用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis-版本下载"><span class="nav-number">2.5.</span> <span class="nav-text">Redis 版本下载</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis-安装"><span class="nav-number">3.</span> <span class="nav-text">Redis 安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#软件环境"><span class="nav-number">3.1.</span> <span class="nav-text">软件环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装准备"><span class="nav-number">3.2.</span> <span class="nav-text">安装准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis-的-Windows-版安装"><span class="nav-number">3.3.</span> <span class="nav-text">Redis 的 Windows 版安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#官方的安装提示"><span class="nav-number">3.4.</span> <span class="nav-text">官方的安装提示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis-的-Linux-版安装"><span class="nav-number">3.5.</span> <span class="nav-text">Redis 的 Linux 版安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis-的服务端启动"><span class="nav-number">3.6.</span> <span class="nav-text">Redis 的服务端启动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis-的客户端启动"><span class="nav-number">3.7.</span> <span class="nav-text">Redis 的客户端启动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis-测试"><span class="nav-number">3.8.</span> <span class="nav-text">Redis 测试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis-服务端停止"><span class="nav-number">3.9.</span> <span class="nav-text">Redis 服务端停止</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis-杂项知识"><span class="nav-number">4.</span> <span class="nav-text">Redis 杂项知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#性能测试"><span class="nav-number">4.1.</span> <span class="nav-text">性能测试</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么-Redis-默认端口是-6379？"><span class="nav-number">4.2.</span> <span class="nav-text">为什么 Redis 默认端口是 6379？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis-的数据库"><span class="nav-number">4.3.</span> <span class="nav-text">Redis 的数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#清空数据库"><span class="nav-number">4.4.</span> <span class="nav-text">清空数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#统一密码管理"><span class="nav-number">4.5.</span> <span class="nav-text">统一密码管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#判断某个-key-是否存在"><span class="nav-number">4.6.</span> <span class="nav-text">判断某个 key 是否存在</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#将-key-移动到其他库"><span class="nav-number">4.7.</span> <span class="nav-text">将 key 移动到其他库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为-key-设置过期时间"><span class="nav-number">4.8.</span> <span class="nav-text">为 key 设置过期时间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看-key-的过期时间"><span class="nav-number">4.9.</span> <span class="nav-text">查看 key 的过期时间</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看-key-的类型"><span class="nav-number">4.10.</span> <span class="nav-text">查看 key 的类型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#redis-conf-解析"><span class="nav-number">5.</span> <span class="nav-text">redis.conf 解析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#redis-conf-的位置"><span class="nav-number">5.1.</span> <span class="nav-text">redis.conf 的位置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Units-单位"><span class="nav-number">5.2.</span> <span class="nav-text">Units 单位</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#INCLUDES-包含"><span class="nav-number">5.3.</span> <span class="nav-text">INCLUDES 包含</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#GENERAL-通用配置"><span class="nav-number">5.4.</span> <span class="nav-text">GENERAL 通用配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NETWORK-网络配置"><span class="nav-number">5.5.</span> <span class="nav-text">NETWORK 网络配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SNAPSHOTTING-快照"><span class="nav-number">5.6.</span> <span class="nav-text">SNAPSHOTTING 快照</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#REPLICATION-复制"><span class="nav-number">5.7.</span> <span class="nav-text">REPLICATION 复制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SECURITY-安全"><span class="nav-number">5.8.</span> <span class="nav-text">SECURITY 安全</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LIMITS-限制"><span class="nav-number">5.9.</span> <span class="nav-text">LIMITS 限制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#APPEND-ONLY-MODE-追加模式"><span class="nav-number">5.10.</span> <span class="nav-text">APPEND ONLY MODE 追加模式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis-的持久化-RDB"><span class="nav-number">6.</span> <span class="nav-text">Redis 的持久化 RDB</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#官网介绍"><span class="nav-number">6.1.</span> <span class="nav-text">官网介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RDB-的概念"><span class="nav-number">6.2.</span> <span class="nav-text">RDB 的概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Fork"><span class="nav-number">6.3.</span> <span class="nav-text">Fork</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RDB-保存的是-dump-rdb-文件"><span class="nav-number">6.4.</span> <span class="nav-text">RDB 保存的是 dump.rdb 文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置策略"><span class="nav-number">6.5.</span> <span class="nav-text">配置策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#触发-RDB"><span class="nav-number">6.6.</span> <span class="nav-text">触发 RDB</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RDB-的优点"><span class="nav-number">6.7.</span> <span class="nav-text">RDB 的优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RDB-的缺点"><span class="nav-number">6.8.</span> <span class="nav-text">RDB 的缺点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#如何动态停止-RDB"><span class="nav-number">6.9.</span> <span class="nav-text">如何动态停止 RDB</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis-的持久化-AOF"><span class="nav-number">7.</span> <span class="nav-text">Redis 的持久化 AOF</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#AOF-概述"><span class="nav-number">7.1.</span> <span class="nav-text">AOF 概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AOF-保存的是-appendonly-aof-文件"><span class="nav-number">7.2.</span> <span class="nav-text">AOF 保存的是 appendonly.aof 文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置策略-1"><span class="nav-number">7.3.</span> <span class="nav-text">配置策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#触发-AOF"><span class="nav-number">7.4.</span> <span class="nav-text">触发 AOF</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AOF-的数据修复"><span class="nav-number">7.5.</span> <span class="nav-text">AOF 的数据修复</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AOF-的优点"><span class="nav-number">7.6.</span> <span class="nav-text">AOF 的优点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AOF-的缺点"><span class="nav-number">7.7.</span> <span class="nav-text">AOF 的缺点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis-的事务"><span class="nav-number">8.</span> <span class="nav-text">Redis 的事务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#官网介绍-1"><span class="nav-number">8.1.</span> <span class="nav-text">官网介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis-的事务概述"><span class="nav-number">8.2.</span> <span class="nav-text">Redis 的事务概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis-的事务的作用"><span class="nav-number">8.3.</span> <span class="nav-text">Redis 的事务的作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis事务的常用命令"><span class="nav-number">8.4.</span> <span class="nav-text">Redis事务的常用命令</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="刘硕"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">刘硕</p>
+  <div class="site-description" itemprop="description">不成为自己讨厌的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">342</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">55</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:liushuo432@outlook.com" title="E-Mail → mailto:liushuo432@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/2436055290" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;2436055290" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://wpa.qq.com/msgrd?v=3&uin=1696146913&site=qq&menu=yes" title="QQ → http:&#x2F;&#x2F;wpa.qq.com&#x2F;msgrd?v&#x3D;3&amp;uin&#x3D;1696146913&amp;site&#x3D;qq&amp;menu&#x3D;yes" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-fw fa-rss"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备20001451号 </a>
+      <img src="/images/beian_icon.png" style="display: inline-block;"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=21142102000063" rel="noopener" target="_blank">辽公网安备 21142102000063号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘硕</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">2m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">61:19</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.2" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'Ga2II3wuJmHX3GiNHm9TmI97-gzGzoHsz',
+      appKey     : 'esGYJQepdYLHf07E1VMsP3RK',
+      placeholder: "o(*￣▽￣*)ブ来说点什么吧...（填上邮箱可以收到回复提醒）",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : true,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+  <script type="text/javascript" src="/js/love.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/Epsilon2.1.model.json"},"display":{"superSample":2,"width":200,"height":400,"position":"left","hOffset":-30,"vOffset":-40},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>

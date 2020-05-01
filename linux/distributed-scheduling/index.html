@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="google-site-verification" content="Tu5vqPaUb8svfkPx5eetJFD84ciQCcWVXNatdsWtj9Q">
+  <meta name="baidu-site-verification" content="baidu_verify_FBq9PG4BBb">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"sliu.vip","root":"/","scheme":"Mist","version":"7.7.2","exturl":false,"sidebar":{"position":"right","width":240,"display":"hide","padding":12,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":true,"lazyload":false,"pangu":true,"comments":{"style":"tabs","active":"valine","storage":true,"lazyload":false,"nav":null,"activeClass":"valine"},"algolia":{"appID":"PXY1Z6GHKT","apiKey":"eb82f2e78e3053f26aa408e9caa96d93","indexName":"blog","hits":{"per_page":10},"labels":{"input_placeholder":"要查点什么(✿◡‿◡)","hits_empty":"没有找到任何关于 ${query} 的结果╥﹏╥...","hits_stats":"搜索到 ${hits} 条记录，用时 ${time} ms o(*￣▽￣*)ブ"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="ZooKeeper 是一个高性能的分布式数据一致性解决方案，它将那些复杂的，容易出错的分布式一致性服务封装起来，构成一个高效可靠的原语集，并提供一系列简单易用的接口给用户使用。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ZooKeeper 分布式调度">
+<meta property="og:url" content="https://sliu.vip/linux/distributed-scheduling/index.html">
+<meta property="og:site_name" content="刘硕的技术查阅手册">
+<meta property="og:description" content="ZooKeeper 是一个高性能的分布式数据一致性解决方案，它将那些复杂的，容易出错的分布式一致性服务封装起来，构成一个高效可靠的原语集，并提供一系列简单易用的接口给用户使用。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://sliu.vip/linux/distributed-scheduling/image1.png">
+<meta property="og:image" content="https://sliu.vip/linux/distributed-scheduling/image3.png">
+<meta property="og:image" content="https://sliu.vip/linux/distributed-scheduling/image4.png">
+<meta property="og:image" content="https://sliu.vip/linux/distributed-scheduling/image5.png">
+<meta property="og:image" content="https://sliu.vip/linux/distributed-scheduling/image6.png">
+<meta property="og:image" content="https://sliu.vip/linux/distributed-scheduling/1587737175745.png">
+<meta property="og:image" content="https://sliu.vip/linux/distributed-scheduling/1587746521191.png">
+<meta property="og:image" content="https://sliu.vip/linux/distributed-scheduling/1587746748078.png">
+<meta property="og:image" content="https://sliu.vip/linux/distributed-scheduling/1587747172041.png">
+<meta property="article:published_time" content="2020-04-24T17:23:33.483Z">
+<meta property="article:modified_time" content="2020-05-01T16:42:16.204Z">
+<meta property="article:author" content="刘硕">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="运维">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://sliu.vip/linux/distributed-scheduling/image1.png">
+
+<link rel="canonical" href="https://sliu.vip/linux/distributed-scheduling/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>ZooKeeper 分布式调度 | 刘硕的技术查阅手册</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f14f123935d6183fdd06f8f1c4bc378f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="刘硕的技术查阅手册" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">刘硕的技术查阅手册</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <h1 class="site-subtitle" itemprop="description">Python 全栈开发学习笔记</h1>
+      
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-toc">
+
+    <a href="/toc/" rel="section"><i class="fa fa-fw fa-book"></i>总目录</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-commonweal">
+
+    <a href="/404/" rel="section"><i class="fa fa-fw fa-heartbeat"></i>公益 404</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+  
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://sliu.vip/linux/distributed-scheduling/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="刘硕">
+      <meta itemprop="description" content="不成为自己讨厌的人">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="刘硕的技术查阅手册">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          ZooKeeper 分布式调度
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-04-25 01:23:33" itemprop="dateCreated datePublished" datetime="2020-04-25T01:23:33+08:00">2020-04-25</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-05-02 00:42:16" itemprop="dateModified" datetime="2020-05-02T00:42:16+08:00">2020-05-02</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/linux/distributed-scheduling/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/linux/distributed-scheduling/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>10k</span>
+            </span>
+            <span class="post-meta-item" title="阅读时长">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-clock-o"></i>
+              </span>
+                <span class="post-meta-item-text">阅读时长 &asymp;</span>
+              <span>19 分钟</span>
+            </span>
+            <div class="post-description">ZooKeeper 是一个高性能的分布式数据一致性解决方案，它将那些复杂的，容易出错的分布式一致性服务封装起来，构成一个高效可靠的原语集，并提供一系列简单易用的接口给用户使用。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="为什么需要-ZooKeeper"><a href="#为什么需要-ZooKeeper" class="headerlink" title="为什么需要 ZooKeeper"></a>为什么需要 ZooKeeper</h3><ul>
+<li><p>大部分分布式应用需要一个主控、协调器或控制器来管理物理分布的子进程（如资源、任务分配等）</p>
+</li>
+<li><p>大部分应用需要开发私有的协调程序，缺乏一个通用的机制</p>
+</li>
+<li><p>协调程序的反复编写浪费，且难以形成通用、伸缩性好的协调器</p>
+<img src="/linux/distributed-scheduling/image1.png" class="" title="image1">
+</li>
+<li><p>协调服务</p>
+</li>
+</ul>
+<h3 id="ZooKeeper-简介"><a href="#ZooKeeper-简介" class="headerlink" title="ZooKeeper 简介"></a>ZooKeeper 简介</h3><h4 id="ZooKeeper-是什么"><a href="#ZooKeeper-是什么" class="headerlink" title="ZooKeeper 是什么"></a>ZooKeeper 是什么</h4><p>ZooKeeper 是 Google 的 Chubby 一个开源的实现，是开源的分布式协调服务。它包含一个简单的原语集，分布式应用程序可以基于它实现同步服务，配置维护和命名服务等。</p>
+<p>ZooKeeper 是一个高性能的分布式数据一致性解决方案，它将那些复杂的，容易出错的分布式一致性服务封装起来，构成一个高效可靠的原语集，并提供一系列简单易用的接口给用户使用。</p>
+<p>ZooKeeper 的选主过程采用的是 Raft 算法。Raft 算法可以参考 <a href="http://thesecretlivesofdata.com/raft/" target="_blank" rel="noopener">http://thesecretlivesofdata.com/raft/</a></p>
+<p>它的架构如下图：</p>
+<img src="/linux/distributed-scheduling/image3.png" class="" title="image3">
+
+<h4 id="ZooKeeper-能帮我们做什么"><a href="#ZooKeeper-能帮我们做什么" class="headerlink" title="ZooKeeper 能帮我们做什么"></a>ZooKeeper 能帮我们做什么</h4><ul>
+<li><p>分布式系统协调：多个节点一起完成一个动作</p>
+<ul>
+<li><p>集群管理</p>
+</li>
+<li><p>选主</p>
+</li>
+<li><p>分布式</p>
+</li>
+</ul>
+</li>
+<li><p>负载均衡，一般不用它</p>
+</li>
+</ul>
+<h4 id="ZooKeeper-的数据模型"><a href="#ZooKeeper-的数据模型" class="headerlink" title="ZooKeeper 的数据模型"></a>ZooKeeper 的数据模型</h4><ul>
+<li><p>层次化的目录结构，命名符合常规文件系统规范</p>
+</li>
+<li><p>每个节点在 ZooKeeper 中叫做 znode，并且其有一个唯一的路径标识</p>
+</li>
+<li><p>znode 中的数据可以有多个版本，比如某一个路径下存有多个数据版本，那么查询这个路径下的数据就需要带上版本</p>
+</li>
+<li><p>节点不支持部分读写，而是一次性完整读写</p>
+</li>
+</ul>
+<h4 id="ZooKeeper-的下载地址"><a href="#ZooKeeper-的下载地址" class="headerlink" title="ZooKeeper 的下载地址"></a>ZooKeeper 的下载地址</h4><p>网址：<a href="http://mirrors.cnnic.cn/apache/zookeeper/" target="_blank" rel="noopener">http://mirrors.cnnic.cn/apache/zookeeper/</a></p>
+<h3 id="ZooKeeper-基本概念"><a href="#ZooKeeper-基本概念" class="headerlink" title="ZooKeeper 基本概念"></a>ZooKeeper 基本概念</h3><h4 id="集群角色"><a href="#集群角色" class="headerlink" title="集群角色"></a>集群角色</h4><img src="/linux/distributed-scheduling/image4.png" class="" title="image4">
+
+<h4 id="ZooKeeper-节点类型"><a href="#ZooKeeper-节点类型" class="headerlink" title="ZooKeeper 节点类型"></a>ZooKeeper 节点类型</h4><p>persistent：persistent 节点不和特定的 session 绑定，不会随着创建该节点的 session 的结束而消失，而是一直存在，除非该节点被显式删除。</p>
+<p>ephemeral：ephemeral 节点是临时性的，如果创建该节点的 session 结束了，该节点就会被自动删除。ephemeral 节点不能拥有子节点，虽然 ephemeral 节点与创建它的 session 绑定，但只要该该节点没有被删除，其他 session 就可以读写该节点中关联的数据。使用 -e 参数指定创建 ephemeral 节点。</p>
+<p>sequence：严格的说，sequence 并非节点类型中的一种，sequence 节点既可以是 ephemeral 的，也可以是 persistent 的。创建 sequence 节点时，ZooKeeper server 会在指定的节点名称后加上一个数字序列，该数字序列是递增的，因此可以多次创建相同的 sequence 节点，而得到不同的节点。使用 -s 参数指定创建 sequence 节点。</p>
+<h4 id="版本"><a href="#版本" class="headerlink" title="版本"></a>版本</h4><p>Version：当前Znode的版本。</p>
+<p>Cversion：当前Znode的子节点的版本。</p>
+<p>Aversion：当前Znode的ACL（访问控制）版本。</p>
+<h4 id="watcher"><a href="#watcher" class="headerlink" title="watcher"></a>watcher</h4><p>作用于Znode节点。</p>
+<p>watcher 设置后，一旦触发一次就会失效，如果需要一直监听，就需要再次注册。</p>
+<p>多种事件通知：数据更新，子节点状态等。</p>
+<p>watcher 会监控目录节点的数据变化以及子目录的变化，一旦发送改变，则通知所有设置在这个目录节点的 watcher，从而做出相应的反应。</p>
+<img src="/linux/distributed-scheduling/image5.png" class="" title="image5">
+
+<h4 id="ZooKeeper-节点和配置常识"><a href="#ZooKeeper-节点和配置常识" class="headerlink" title="ZooKeeper 节点和配置常识"></a>ZooKeeper 节点和配置常识</h4><p>ZooKeeper 提供了创建/修改/删除节点的功能，如果父节点没有创建，子节点会创建失败。如果父节点还有子节点，父节点不可以被删除。</p>
+<p>ZooKeeper 和客户端之间以 socket 形式进行双向通讯，客户端可以主动调用服务器，服务器也可以主动向客户端推送事件。</p>
+<p>ZooKeeper 的事件有传递机制，子节点的增删改触发的事件会向上层依次传播，所有的父节点都可以收到子节点的数据变更事件，所以层次太深/子节点太多会给服务器的事件系统带来压力，节点分配要做好周密的规划。</p>
+<p>ZooKeeper 的读性能随着节点数量的提升能不断增加，但是写性能会随着节点数量的增加而降低，所以节点的数量不宜太多，一般配置成 3 个或者 5 个就可以了。</p>
+<img src="/linux/distributed-scheduling/image6.png" class="" title="image6">
+
+<h3 id="安装-ZooKeeper"><a href="#安装-ZooKeeper" class="headerlink" title="安装 ZooKeeper"></a>安装 ZooKeeper</h3><h4 id="单机版"><a href="#单机版" class="headerlink" title="单机版"></a>单机版</h4><p>单机版 ZooKeeper 就是在一台机器上安装一个 ZooKeeper。但其实单机版的 ZooKeeper 实际上是没什么意义的。但是我们只有安装了单机版的 ZooKeeper，将多个 ZooKeeper 联系起来，才能实现集群效果。安装单机版的 ZooKeeper 是一切的基础。</p>
+<p>ZooKeeper 需要依赖 JDK 环境，使用命令查看是否安装了 Java JDK：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># java -version</span></span><br><span class="line">java version <span class="string">"1.8.0_102"</span></span><br><span class="line">Java(TM) SE Runtime Environment (build 1.8.0_102-b14)</span><br><span class="line">Java HotSpot(TM) 64-Bit Server VM (build 25.102-b14, mixed mode)</span><br></pre></td></tr></table></figure>
+
+<p>能查到版本号，说明已经有了 JDK 环境。如果报错，则说明 JDK 没有正常安装。JDK 的安装方法参见： <a href="/linux/jdk-installation">解压缩包安装 JDK</a> </p>
+<p>通过 WinSCP 等工具，将 ZooKeeper 的安装包传到 CentOS 服务器。</p>
+<img src="/linux/distributed-scheduling/1587737175745.png" class="" width="1587737175745">
+
+<p>切换到 ZooKeeper 压缩包所在的位置，将其解压缩：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /usr/<span class="built_in">local</span></span><br><span class="line">tar -zxvf zookeeper-3.4.9.tar.gz</span><br></pre></td></tr></table></figure>
+
+<p>进入到解压好的文件夹中，并在里面创建一个 data 文件夹，用来存放数据：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost <span class="built_in">local</span>]<span class="comment"># cd zookeeper-3.4.9</span></span><br><span class="line">[root@localhost zookeeper-3.4.9]<span class="comment"># mkdir data</span></span><br><span class="line">[root@localhost zookeeper-3.4.9]<span class="comment"># ls</span></span><br><span class="line">bin          dist-maven       NOTICE.txt            zookeeper-3.4.9.jar.asc</span><br><span class="line">build.xml    docs             README_packaging.txt  zookeeper-3.4.9.jar.md5</span><br><span class="line">CHANGES.txt  ivysettings.xml  README.txt            zookeeper-3.4.9.jar.sha1</span><br><span class="line">conf         ivy.xml          recipes</span><br><span class="line">contrib      lib              src</span><br><span class="line">data         LICENSE.txt      zookeeper-3.4.9.jar</span><br><span class="line">[root@localhost zookeeper-3.4.9]<span class="comment"># pwd</span></span><br><span class="line">/usr/<span class="built_in">local</span>/zookeeper-3.4.9</span><br></pre></td></tr></table></figure>
+
+<p>进入 conf 目录，复制配置文件模板 <code>zoo_sample.cfg</code> 为可生效的配置文件 <code>zoo.cfg</code>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost zookeeper-3.4.9]<span class="comment"># cd conf</span></span><br><span class="line">[root@localhost conf]<span class="comment"># ls</span></span><br><span class="line">configuration.xsl  log4j.properties  zoo_sample.cfg</span><br><span class="line">[root@localhost conf]<span class="comment"># cp zoo_sample.cfg zoo.cfg</span></span><br><span class="line">[root@localhost conf]<span class="comment"># ls</span></span><br><span class="line">configuration.xsl  log4j.properties  zoo.cfg  zoo_sample.cfg</span><br></pre></td></tr></table></figure>
+
+<p>修改配置文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi zoo.cfg</span><br></pre></td></tr></table></figure>
+
+<p>将保存数据的目录修改成我们刚刚创建的 data 目录：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">dataDir</span>=/usr/local/zookeeper-<span class="number">3.4</span>.<span class="number">9</span>/data</span><br></pre></td></tr></table></figure>
+
+<p>保存退出。</p>
+<p>进入到安装目录的 bin 文件夹中，使用命令，启动 ZooKeeper，查看运行状态：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost conf]<span class="comment"># cd /usr/local/zookeeper-3.4.9/bin</span></span><br><span class="line">[root@localhost bin]<span class="comment"># pwd</span></span><br><span class="line">/usr/<span class="built_in">local</span>/zookeeper-3.4.9/bin</span><br><span class="line">[root@localhost bin]<span class="comment"># ./zkServer.sh start</span></span><br><span class="line">ZooKeeper JMX enabled by default</span><br><span class="line">Using config: /usr/<span class="built_in">local</span>/zookeeper-3.4.9/bin/../conf/zoo.cfg</span><br><span class="line">Starting zookeeper ... STARTED</span><br><span class="line">[root@localhost bin]<span class="comment"># ./zkServer.sh status</span></span><br><span class="line">ZooKeeper JMX enabled by default</span><br><span class="line">Using config: /usr/<span class="built_in">local</span>/zookeeper-3.4.9/bin/../conf/zoo.cfg</span><br><span class="line">Mode: standalone</span><br></pre></td></tr></table></figure>
+
+<p>我们看到，ZooKeeper 以单机状态，也就是 standalone 模式运行。</p>
+<p>关闭 ZooKeeper：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost bin]<span class="comment"># ./zkServer.sh stop</span></span><br><span class="line">ZooKeeper JMX enabled by default</span><br><span class="line">Using config: /usr/<span class="built_in">local</span>/zookeeper-3.4.9/bin/../conf/zoo.cfg</span><br><span class="line">Stopping zookeeper ... STOPPED</span><br></pre></td></tr></table></figure>
+
+<h4 id="伪分布式"><a href="#伪分布式" class="headerlink" title="伪分布式"></a>伪分布式</h4><p>伪分布式就是一台机器上运行多个 ZooKeeper 的情况。这里我们以一台机器运行三个 ZooKeeper 为例。</p>
+<p>首先确认没有 ZooKeeper 在运行中：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost bin]<span class="comment"># ps -aux | grep zoo</span></span><br><span class="line">root       2670  0.0  0.0 112664   960 pts/0    R+   22:36   0:00 grep --color=auto zoo</span><br></pre></td></tr></table></figure>
+
+<p>如果只查到一条结果，说明没有运行中的 ZooKeeper。查到的结果其实是查询进程本身。</p>
+<p>如果有 ZooKeeper 在运行，注意要把它终止掉。</p>
+<p>将我们刚刚配置好的单机版 ZooKeeper 复制三份，分别为 zookeeper01、zookeeper02 和 zookeeper03：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost <span class="built_in">local</span>]<span class="comment"># pwd</span></span><br><span class="line">/usr/<span class="built_in">local</span></span><br><span class="line">[root@localhost <span class="built_in">local</span>]<span class="comment"># cp -R zookeeper-3.4.9/ zookeeper01</span></span><br><span class="line">[root@localhost <span class="built_in">local</span>]<span class="comment"># cp -R zookeeper-3.4.9/ zookeeper02</span></span><br><span class="line">[root@localhost <span class="built_in">local</span>]<span class="comment"># cp -R zookeeper-3.4.9/ zookeeper03</span></span><br><span class="line">[root@localhost <span class="built_in">local</span>]<span class="comment"># ls</span></span><br><span class="line">bin    include       lib64    sbin   zookeeper01  zookeeper-3.4.9</span><br><span class="line">etc    jdk1.8.0_102  libexec  share  zookeeper02</span><br><span class="line">games  lib           python3  src    zookeeper03</span><br></pre></td></tr></table></figure>
+
+<p>给这三个 ZooKeeper 分别写一个 id：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost <span class="built_in">local</span>]<span class="comment"># echo 1 &gt;&gt; zookeeper01/data/myid</span></span><br><span class="line">[root@localhost <span class="built_in">local</span>]<span class="comment"># echo 2 &gt;&gt; zookeeper02/data/myid </span></span><br><span class="line">[root@localhost <span class="built_in">local</span>]<span class="comment"># echo 3 &gt;&gt; zookeeper03/data/myid</span></span><br></pre></td></tr></table></figure>
+
+<p>分别修改三个 ZooKeeper 的配置文件，这里以 zookeeper01 为例，其余两个将 01 改成 02 或 03 即可：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost <span class="built_in">local</span>]<span class="comment"># cd zookeeper01/conf</span></span><br><span class="line">[root@localhost conf]<span class="comment"># vi zoo.cfg</span></span><br></pre></td></tr></table></figure>
+
+<p>分别将路径修改为恰当的值，将端口号分别设置为 2181、2182 和 2183：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">dataDir</span>=/usr/local/zookeeper01/data</span><br><span class="line"><span class="comment"># the port at which the clients will connect</span></span><br><span class="line"><span class="attr">clientPort</span>=<span class="number">2181</span></span><br></pre></td></tr></table></figure>
+
+<p>并在配置文件末尾，加入如下内容，三个配置文件在末尾追加的这个内容是相同的，注意修改 IP 为恰当的。配置中的 1、2 和 3 就是我们之前指定的 id。冒号后面的两个数字分别是用来选举和通信的端口：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">server.1</span>=<span class="number">192.168</span>.<span class="number">248.139</span>:<span class="number">2881</span>:<span class="number">3881</span></span><br><span class="line"><span class="attr">server.2</span>=<span class="number">192.168</span>.<span class="number">248.139</span>:<span class="number">2882</span>:<span class="number">3882</span></span><br><span class="line"><span class="attr">server.3</span>=<span class="number">192.168</span>.<span class="number">248.139</span>:<span class="number">2883</span>:<span class="number">3883</span></span><br></pre></td></tr></table></figure>
+
+<p>修改完成后，保存退出。注意三个 ZooKeeper 的配置文件都要修改，而且注意区分。</p>
+<p>三台都配置好，就可以分别启动了。</p>
+<p>首先启动 zookeeper01，并查看运行状态。需要切换到 zookeeper01 的 bin 目录操作：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost bin]<span class="comment"># pwd</span></span><br><span class="line">/usr/<span class="built_in">local</span>/zookeeper01/bin</span><br><span class="line">[root@localhost bin]<span class="comment"># ./zkServer.sh start</span></span><br><span class="line">ZooKeeper JMX enabled by default</span><br><span class="line">Using config: /usr/<span class="built_in">local</span>/zookeeper01/bin/../conf/zoo.cfg</span><br><span class="line">Starting zookeeper ... STARTED</span><br><span class="line">[root@localhost bin]<span class="comment"># ./zkServer.sh status</span></span><br><span class="line">ZooKeeper JMX enabled by default</span><br><span class="line">Using config: /usr/<span class="built_in">local</span>/zookeeper01/bin/../conf/zoo.cfg</span><br><span class="line">Error contacting service. It is probably not running.</span><br></pre></td></tr></table></figure>
+
+<p>查看状态时出错了。这是正常的，因为目前只有一个 ZooKeeper，无法顺利进行选举。</p>
+<p>然后启动 zookeeper02，并查看运行状态，当然也要切换目录：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost bin]<span class="comment"># pwd</span></span><br><span class="line">/usr/<span class="built_in">local</span>/zookeeper02/bin</span><br><span class="line">[root@localhost bin]<span class="comment"># ./zkServer.sh start</span></span><br><span class="line">ZooKeeper JMX enabled by default</span><br><span class="line">Using config: /usr/<span class="built_in">local</span>/zookeeper02/bin/../conf/zoo.cfg</span><br><span class="line">Starting zookeeper ... STARTED</span><br><span class="line">[root@localhost bin]<span class="comment"># ./zkServer.sh status </span></span><br><span class="line">ZooKeeper JMX enabled by default</span><br><span class="line">Using config: /usr/<span class="built_in">local</span>/zookeeper02/bin/../conf/zoo.cfg</span><br><span class="line">Mode: leader</span><br></pre></td></tr></table></figure>
+
+<p>我们看到，zookeeper02 是 leader，说明运行正常，且顺利完成选举。</p>
+<p>再启动 zookeeper03，查看运行状态：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost bin]<span class="comment"># pwd</span></span><br><span class="line">/usr/<span class="built_in">local</span>/zookeeper03/bin</span><br><span class="line">[root@localhost bin]<span class="comment"># ./zkServer.sh start</span></span><br><span class="line">ZooKeeper JMX enabled by default</span><br><span class="line">Using config: /usr/<span class="built_in">local</span>/zookeeper03/bin/../conf/zoo.cfg</span><br><span class="line">Starting zookeeper ... STARTED</span><br><span class="line">[root@localhost bin]<span class="comment"># ./zkServer.sh status</span></span><br><span class="line">ZooKeeper JMX enabled by default</span><br><span class="line">Using config: /usr/<span class="built_in">local</span>/zookeeper03/bin/../conf/zoo.cfg</span><br><span class="line">Mode: follower</span><br></pre></td></tr></table></figure>
+
+<p>zookeeper03 是 follower。</p>
+<p>我们还可以再次查看 zookeeper01 的角色状态：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost bin]<span class="comment"># pwd</span></span><br><span class="line">/usr/<span class="built_in">local</span>/zookeeper01/bin</span><br><span class="line">[root@localhost bin]<span class="comment"># ./zkServer.sh status</span></span><br><span class="line">ZooKeeper JMX enabled by default</span><br><span class="line">Using config: /usr/<span class="built_in">local</span>/zookeeper01/bin/../conf/zoo.cfg</span><br><span class="line">Mode: follower</span><br></pre></td></tr></table></figure>
+
+<p>zookeeper01 此时也是 follower。</p>
+<p>至此，我们成功搭建好了伪分布式的 ZooKeeper。</p>
+<p>关闭三个 ZooKeeper：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost bin]<span class="comment"># ./zkServer.sh stop</span></span><br><span class="line">ZooKeeper JMX enabled by default</span><br><span class="line">Using config: /usr/<span class="built_in">local</span>/zookeeper01/bin/../conf/zoo.cfg</span><br><span class="line">Stopping zookeeper ... STOPPED</span><br></pre></td></tr></table></figure>
+
+<p>我这里仅以 zookeeper01 为例，其余两个也要关闭，以免影响后续操作。</p>
+<h4 id="完全分布式"><a href="#完全分布式" class="headerlink" title="完全分布式"></a>完全分布式</h4><p>这是真是项目中最常用的情况，也就是多台机器使用多个 ZooKeeper。这里以三台机器运行三个 ZooKeeper 为例。需要准备三个虚拟机，node01、node02 和 node03。将已有的虚拟机复制一份即可。</p>
+<p>首先，要对这三台主机进行一些准备工作：</p>
+<ol>
+<li><p>确保防火墙和 selinux 处于关闭状态</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost bin]<span class="comment"># systemctl status firewalld</span></span><br><span class="line">● firewalld.service - firewalld - dynamic firewall daemon</span><br><span class="line">   Loaded: loaded (/usr/lib/systemd/system/firewalld.service; disabled; vendor preset: enabled)</span><br><span class="line">   Active: inactive (dead)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>每台主机都取一个主机名，比如 node01、node02 和 node03。编辑 <code>/etc/hostname</code> 即可：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/hostname</span><br></pre></td></tr></table></figure>
+
+<p>将里面的值替换为要改为的主机名即可，注意不要有其他的空格换行等符号。</p>
+</li>
+<li><p>配置映射，修改 hosts 文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/hosts</span><br></pre></td></tr></table></figure>
+
+<p>在 hosts 文件末尾追加如下内容，注意修改 IP，三台主机的 hosts 映射配置为同样的即可：</p>
+<figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">192.168.248.139</span> node01</span><br><span class="line"><span class="number">192.168.248.140</span> node02</span><br><span class="line"><span class="number">192.168.248.141</span> node03</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>完成了前面的配置，可以将三台机器都重启一下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">reboot</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>还可以配置一个 SSH 免密登录，以 node01 这台机器为例。</p>
+<p>在 node01 中，数据命令生成密钥，一路回车默认即可：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">[root@node01 ~]<span class="comment"># ssh-keygen -t rsa</span></span><br><span class="line">Generating public/private rsa key pair.</span><br><span class="line">Enter file <span class="keyword">in</span> <span class="built_in">which</span> to save the key (/root/.ssh/id_rsa): </span><br><span class="line">Created directory <span class="string">'/root/.ssh'</span>.</span><br><span class="line">Enter passphrase (empty <span class="keyword">for</span> no passphrase): </span><br><span class="line">Enter same passphrase again: </span><br><span class="line">Your identification has been saved <span class="keyword">in</span> /root/.ssh/id_rsa.</span><br><span class="line">Your public key has been saved <span class="keyword">in</span> /root/.ssh/id_rsa.pub.</span><br><span class="line">The key fingerprint is:</span><br><span class="line">ca:04:c7:57:9c:55:2a:6b:7b:6f:31:d1:03:61:37:cc root@node01</span><br><span class="line">The key<span class="string">'s randomart image is:</span></span><br><span class="line"><span class="string">+--[ RSA 2048]----+</span></span><br><span class="line"><span class="string">|         ..o.+=o |</span></span><br><span class="line"><span class="string">|     .   .o .o.E.|</span></span><br><span class="line"><span class="string">|    . o . . . .. |</span></span><br><span class="line"><span class="string">|     o .   o  ...|</span></span><br><span class="line"><span class="string">|      . S o    ..|</span></span><br><span class="line"><span class="string">|     o . . .  o  |</span></span><br><span class="line"><span class="string">|      o   . .  o |</span></span><br><span class="line"><span class="string">|           . ..  |</span></span><br><span class="line"><span class="string">|             ..  |</span></span><br><span class="line"><span class="string">+-----------------+</span></span><br></pre></td></tr></table></figure>
+
+<p>出现图形说明密钥创建完成。</p>
+<p>然后将密钥分别传送给三台机器，注意，自己也传一份：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ssh-copy-id node01</span><br><span class="line">ssh-copy-id node02</span><br><span class="line">ssh-copy-id node03</span><br></pre></td></tr></table></figure>
+
+<p>期间可能会需要输入 yes 确认，还要输入密码。</p>
+<p>密钥传送完毕后，即可使用 SSH 免密登录到其他机器中：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh node01</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>准备工作做好了之后，我们就可以正式开始搭建完全分布式的 ZooKeeper 了。</p>
+<p>把前面演示伪分布式的三个 zookeeper 删除。然后重新复制三个单机版 ZooKeeper：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">rm -rf zookeeper01 zookeeper02 zookeeper03</span><br><span class="line">cp -R zookeeper-3.4.9/ zookeeper01</span><br><span class="line">cp -R zookeeper-3.4.9/ zookeeper02</span><br><span class="line">cp -R zookeeper-3.4.9/ zookeeper03</span><br></pre></td></tr></table></figure>
+
+<p>给三个 ZooKeeper 分别写入三个不同的 id：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@node01 <span class="built_in">local</span>]<span class="comment"># echo 1 &gt;&gt; zookeeper01/data/myid</span></span><br><span class="line">[root@node01 <span class="built_in">local</span>]<span class="comment"># echo 2 &gt;&gt; zookeeper02/data/myid</span></span><br><span class="line">[root@node01 <span class="built_in">local</span>]<span class="comment"># echo 3 &gt;&gt; zookeeper03/data/myid</span></span><br></pre></td></tr></table></figure>
+
+<p>分别修改三个 ZooKeeper 的配置文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@node01 conf]<span class="comment"># pwd</span></span><br><span class="line">/usr/<span class="built_in">local</span>/zookeeper01/conf</span><br><span class="line">[root@node01 conf]<span class="comment"># vi zoo.cfg</span></span><br></pre></td></tr></table></figure>
+
+<p>因为运行在不同机器，端口不必修改，只需修改数据存放路径即可：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">dataDir</span>=/usr/local/zookeeper01/data</span><br></pre></td></tr></table></figure>
+
+<p>并在配置文件末尾追加如下内容，指定每个 ZooKeeper 的 IP 和端口：</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">server.1</span>=node01:<span class="number">2881</span>:<span class="number">3881</span></span><br><span class="line"><span class="attr">server.2</span>=node02:<span class="number">2881</span>:<span class="number">3881</span></span><br><span class="line"><span class="attr">server.3</span>=node03:<span class="number">2881</span>:<span class="number">3881</span></span><br></pre></td></tr></table></figure>
+
+<p>对三个 ZooKeeper 都要进行上述修改。</p>
+<p>在 node01 中，使用 scp 将配置好的三个 ZK 中的两个分别传到其他两台机器中：</p>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">scp -r /usr/local/zookeeper03 root<span class="variable">@node02</span><span class="symbol">:/usr/local/zookeeper02</span></span><br><span class="line">scp -r /usr/local/zookeeper03 root<span class="variable">@node03</span><span class="symbol">:/usr/local/zookeeper03</span></span><br></pre></td></tr></table></figure>
+
+<p>分别启动三个 ZooKeeper 并查看状态，可发现三台机器一主二从正常运行，不再赘述。</p>
+<h3 id="ZooKeeper-详解"><a href="#ZooKeeper-详解" class="headerlink" title="ZooKeeper 详解"></a>ZooKeeper 详解</h3><h4 id="解压后目录结构"><a href="#解压后目录结构" class="headerlink" title="解压后目录结构"></a>解压后目录结构</h4><p>目录结构如图所示：</p>
+<img src="/linux/distributed-scheduling/1587746521191.png" class="" width="1587746521191">
+
+<p>我们用到的目录有三个：</p>
+<ul>
+<li>bin 目录用来存放执行脚本</li>
+<li>conf 存放配置文件</li>
+<li>data 目录存放数据，myid 存放 id 值</li>
+</ul>
+<h4 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h4><p>配置文件存放在 conf 目录中，其内容如图所示：</p>
+<img src="/linux/distributed-scheduling/1587746748078.png" class="" width="1587746748078">
+
+<p>配置文件模板为 <code>zoo_sample.cfg</code>。如果不存在 <code>zoo.cfg</code> 文件，将会使用默认配置；如果存在 <code>zoo.cfg</code> 文件，将会使用该文件中的配置。</p>
+<h4 id="运行脚本"><a href="#运行脚本" class="headerlink" title="运行脚本"></a>运行脚本</h4><p>脚本文件存放在 bin 目录中，内容如下：</p>
+<img src="/linux/distributed-scheduling/1587747172041.png" class="" width="1587747172041">
+
+<p>Linux 脚本以 sh 后缀，而 Windows 脚本以 cmd 后缀。</p>
+<p>最后一个 zookeeper.out 是日志文件。</p>
+<h4 id="命令行操作"><a href="#命令行操作" class="headerlink" title="命令行操作"></a>命令行操作</h4><p>命令行操作需要进入客户端进行操作。通过运行 <code>zkCli.sh</code> 脚本即可启动客户端：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./zkCli.sh</span><br></pre></td></tr></table></figure>
+
+<p>我们也可以通过指定 IP 端口，连接到其他机器的客户端：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./zkCli.sh -server node03:2181</span><br></pre></td></tr></table></figure>
+
+<p>如果不知道该用什么没关系，我们可以使用 help 命令查看帮助：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">[zk: node03:2181(CONNECTED) 0] <span class="keyword">help</span></span><br><span class="line">ZooKeeper -<span class="keyword">server</span> host:port cmd args</span><br><span class="line">        stat <span class="keyword">path</span> [watch]</span><br><span class="line">        <span class="keyword">set</span> <span class="keyword">path</span> <span class="keyword">data</span> [<span class="keyword">version</span>]</span><br><span class="line">        ls <span class="keyword">path</span> [watch]</span><br><span class="line">        delquota [-n|-b] <span class="keyword">path</span></span><br><span class="line">        ls2 <span class="keyword">path</span> [watch]</span><br><span class="line">        setAcl <span class="keyword">path</span> acl</span><br><span class="line">        setquota -n|-b val <span class="keyword">path</span></span><br><span class="line">        history </span><br><span class="line">        <span class="keyword">redo</span> cmdno</span><br><span class="line">        printwatches <span class="keyword">on</span>|<span class="keyword">off</span></span><br><span class="line">        <span class="keyword">delete</span> <span class="keyword">path</span> [<span class="keyword">version</span>]</span><br><span class="line">        <span class="keyword">sync</span> <span class="keyword">path</span></span><br><span class="line">        listquota <span class="keyword">path</span></span><br><span class="line">        rmr <span class="keyword">path</span></span><br><span class="line">        <span class="keyword">get</span> <span class="keyword">path</span> [watch]</span><br><span class="line">        <span class="keyword">create</span> [-s] [-e] <span class="keyword">path</span> <span class="keyword">data</span> acl</span><br><span class="line">        addauth scheme auth</span><br><span class="line">        quit </span><br><span class="line">        getAcl <span class="keyword">path</span></span><br><span class="line">        <span class="keyword">close</span> </span><br><span class="line">        <span class="keyword">connect</span> host:port</span><br></pre></td></tr></table></figure>
+
+<p>可以使用 ls 命令查看目录中的内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[zk: node03:2181(CONNECTED) 1] ls /</span><br><span class="line">[zookeeper]</span><br></pre></td></tr></table></figure>
+
+<p>也可以创建目录，写入内容：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[zk: node03:2181(CONNECTED) 3] create /zk data</span><br><span class="line">Created /zk</span><br></pre></td></tr></table></figure>
+
+<p>可以对此目录进行监听：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[zk: node03:2181(CONNECTED) 4] ls /zk watch</span><br><span class="line">[]</span><br></pre></td></tr></table></figure>
+
+<p>当我们修改这个目录时，将会监听到目录的变化：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[zk: node03:2181(CONNECTED) 5] create /zk/zk01 data01</span><br><span class="line"></span><br><span class="line">WATCHER::</span><br><span class="line"></span><br><span class="line">WatchedEvent state:SyncConnected <span class="built_in">type</span>:NodeChildrenChanged path:/zk</span><br><span class="line">Created /zk/zk01</span><br></pre></td></tr></table></figure>
+
+<p>这时，如果我们在另外的机器中查看，即可看到 zk 目录：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[zk: localhost:2181(CONNECTED) 2] ls /zk</span><br><span class="line">[zk01]</span><br></pre></td></tr></table></figure>
+
+<p>使用 quit 命令可退出 ZK。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+              <a href="/tags/%E8%BF%90%E7%BB%B4/" rel="tag"># 运维</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/linux/mysql-distributed-storage/" rel="prev" title="MySQL 分布式存储">
+      <i class="fa fa-chevron-left"></i> MySQL 分布式存储
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/database/mysql-client-command/" rel="next" title="MySQL 客户端命令">
+      MySQL 客户端命令 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#为什么需要-ZooKeeper"><span class="nav-number">1.</span> <span class="nav-text">为什么需要 ZooKeeper</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ZooKeeper-简介"><span class="nav-number">2.</span> <span class="nav-text">ZooKeeper 简介</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ZooKeeper-是什么"><span class="nav-number">2.1.</span> <span class="nav-text">ZooKeeper 是什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ZooKeeper-能帮我们做什么"><span class="nav-number">2.2.</span> <span class="nav-text">ZooKeeper 能帮我们做什么</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ZooKeeper-的数据模型"><span class="nav-number">2.3.</span> <span class="nav-text">ZooKeeper 的数据模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ZooKeeper-的下载地址"><span class="nav-number">2.4.</span> <span class="nav-text">ZooKeeper 的下载地址</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ZooKeeper-基本概念"><span class="nav-number">3.</span> <span class="nav-text">ZooKeeper 基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#集群角色"><span class="nav-number">3.1.</span> <span class="nav-text">集群角色</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ZooKeeper-节点类型"><span class="nav-number">3.2.</span> <span class="nav-text">ZooKeeper 节点类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#版本"><span class="nav-number">3.3.</span> <span class="nav-text">版本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#watcher"><span class="nav-number">3.4.</span> <span class="nav-text">watcher</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ZooKeeper-节点和配置常识"><span class="nav-number">3.5.</span> <span class="nav-text">ZooKeeper 节点和配置常识</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-ZooKeeper"><span class="nav-number">4.</span> <span class="nav-text">安装 ZooKeeper</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#单机版"><span class="nav-number">4.1.</span> <span class="nav-text">单机版</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#伪分布式"><span class="nav-number">4.2.</span> <span class="nav-text">伪分布式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#完全分布式"><span class="nav-number">4.3.</span> <span class="nav-text">完全分布式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ZooKeeper-详解"><span class="nav-number">5.</span> <span class="nav-text">ZooKeeper 详解</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#解压后目录结构"><span class="nav-number">5.1.</span> <span class="nav-text">解压后目录结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#配置文件"><span class="nav-number">5.2.</span> <span class="nav-text">配置文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#运行脚本"><span class="nav-number">5.3.</span> <span class="nav-text">运行脚本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#命令行操作"><span class="nav-number">5.4.</span> <span class="nav-text">命令行操作</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="刘硕"
+      src="/images/avatar.png">
+  <p class="site-author-name" itemprop="name">刘硕</p>
+  <div class="site-description" itemprop="description">不成为自己讨厌的人</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">342</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">55</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="mailto:liushuo432@outlook.com" title="E-Mail → mailto:liushuo432@outlook.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://weibo.com/u/2436055290" title="Weibo → https:&#x2F;&#x2F;weibo.com&#x2F;u&#x2F;2436055290" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://wpa.qq.com/msgrd?v=3&uin=1696146913&site=qq&menu=yes" title="QQ → http:&#x2F;&#x2F;wpa.qq.com&#x2F;msgrd?v&#x3D;3&amp;uin&#x3D;1696146913&amp;site&#x3D;qq&amp;menu&#x3D;yes" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fa fa-fw fa-rss"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">辽ICP备20001451号 </a>
+      <img src="/images/beian_icon.png" style="display: inline-block;"><a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=21142102000063" rel="noopener" target="_blank">辽公网安备 21142102000063号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘硕</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    <span title="站点总字数">2m</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">61:19</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script size="300" alpha="0.2" zIndex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/medium-zoom@1/dist/medium-zoom.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/pangu@4/dist/browser/pangu.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+  <script>
+    (function(){
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      bp.src = (curProtocol === 'https') ? 'https://zz.bdstatic.com/linksubmit/push.js' : 'http://push.zhanzhang.baidu.com/push.js';
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    })();
+  </script>
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'Ga2II3wuJmHX3GiNHm9TmI97-gzGzoHsz',
+      appKey     : 'esGYJQepdYLHf07E1VMsP3RK',
+      placeholder: "o(*￣▽￣*)ブ来说点什么吧...（填上邮箱可以收到回复提醒）",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : true,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+  <script type="text/javascript" src="/js/love.js"></script>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/Epsilon2.1.model.json"},"display":{"superSample":2,"width":200,"height":400,"position":"left","hOffset":-30,"vOffset":-40},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"tagMode":false});</script></body>
+</html>
