@@ -24,13 +24,13 @@
 
   <meta name="description" content="MySQL中的数据类型主要有五种：数值类型、字符串类型、时间类型、枚举和集合、函数。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="MySQL中的数据类型">
+<meta property="og:title" content="MySQL 中的数据类型">
 <meta property="og:url" content="https://sliu.vip/database/mysql-data-type/index.html">
 <meta property="og:site_name" content="刘硕的技术查阅手册">
 <meta property="og:description" content="MySQL中的数据类型主要有五种：数值类型、字符串类型、时间类型、枚举和集合、函数。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-04-25T16:28:08.396Z">
-<meta property="article:modified_time" content="2020-05-01T16:42:16.212Z">
+<meta property="article:modified_time" content="2020-07-06T13:56:35.540Z">
 <meta property="article:author" content="刘硕">
 <meta property="article:tag" content="数据库">
 <meta property="article:tag" content="MySQL">
@@ -48,7 +48,7 @@
   };
 </script>
 
-  <title>MySQL中的数据类型 | 刘硕的技术查阅手册</title>
+  <title>MySQL 中的数据类型 | 刘硕的技术查阅手册</title>
   
 
 
@@ -225,7 +225,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          MySQL中的数据类型
+          MySQL 中的数据类型
         </h2>
 
         <div class="post-meta">
@@ -242,7 +242,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-05-02 00:42:16" itemprop="dateModified" datetime="2020-05-02T00:42:16+08:00">2020-05-02</time>
+                <time title="修改时间：2020-07-06 21:56:35" itemprop="dateModified" datetime="2020-07-06T21:56:35+08:00">2020-07-06</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -281,14 +281,14 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>1.1k</span>
+              <span>13k</span>
             </span>
             <span class="post-meta-item" title="阅读时长">
               <span class="post-meta-item-icon">
                 <i class="fa fa-clock-o"></i>
               </span>
                 <span class="post-meta-item-text">阅读时长 &asymp;</span>
-              <span>2 分钟</span>
+              <span>23 分钟</span>
             </span>
             <div class="post-description">MySQL中的数据类型主要有五种：数值类型、字符串类型、时间类型、枚举和集合、函数。</div>
 
@@ -301,8 +301,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>MySQL中的数据类型主要有五种：数值类型、字符串类型、时间类型、枚举和集合、函数。接下来，我们将一一讨论。</p>
-<h4 id="数值类型"><a href="#数值类型" class="headerlink" title="数值类型"></a>数值类型</h4><p>数字有两种，整数和小数，而整数和小数有都会有有符号和无符号两种状态。</p>
+        <p>MySQL 中的数据类型主要有五种：数值类型、字符串类型、时间类型、枚举和集合、函数。接下来，我们将一一讨论。</p>
+<h2 id="数值类型"><a href="#数值类型" class="headerlink" title="数值类型"></a>数值类型</h2><p>数字有两种，整数和小数，而整数和小数有都会有有符号和无符号两种状态。</p>
 <p>MySQL 支持所有 SQL 标准的数据类型。这些类型包括严格数值数据类型（INTEGER、SMALLINT、DECIMAL 和 NUMERIC），以及近似数值数据类型（FLOAT、REAL 和 DOUBLE PRECISION）。</p>
 <p>关键字 INT 是 INTEGER 的同义词，关键字 DEC 是 DECIMAL 的同义词。</p>
 <p>MySQL 支持的整数类型有 TINYINT、MEDIUMINT 和 BIGINT。下面的表显示了需要的每个整数类型的存储和范围。</p>
@@ -375,6 +375,266 @@
 <td>小数值</td>
 </tr>
 </tbody></table>
+<h3 id="int-整数"><a href="#int-整数" class="headerlink" title="int 整数"></a>int 整数</h3><p>创建一个表 test_int，有两个字段，一个是普通 int 类型的 id，一个是限定宽度为 5 的 int 类型的 id2：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">create table test_int(id1 int, id2 int(5));</span><br></pre></td></tr></table></figure>
+
+<p>向 test_int 表中插入一组正常的数据，比如 <code>(1,1)</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; insert into test_int value (1,1);</span><br><span class="line">Query OK, 1 row affected (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<p>查询表中内容，没有任何异常：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from test_int;</span><br><span class="line">+------+------+</span><br><span class="line">| id1  | id2  |</span><br><span class="line">+------+------+</span><br><span class="line">|    1 |    1 |</span><br><span class="line">+------+------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<p>那么如果我们插入一条长度超过 5 的数据，结果如何呢？比如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">insert into test_int value (111111,111111);</span><br></pre></td></tr></table></figure>
+
+<p>再次查询表中的数据：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select * from test_int;</span><br><span class="line">+--------+--------+</span><br><span class="line">| id1    | id2    |</span><br><span class="line">+--------+--------+</span><br><span class="line">|      1 |      1 |</span><br><span class="line">| 111111 | 111111 |</span><br><span class="line">+--------+--------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<p>仍然正常，并没有因为 id2 的长度限制而导致数据存储的异常。</p>
+<p>原来，MySQL 中整型数字后面的长度限制，限制的是最小显示长度，存储时不受影响。</p>
+<p>接下来，我们把 id1 的字段类型改成无符号的 int 类型：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; alter table test_int modify id1 int unsigned;</span><br><span class="line">Query OK, 2 rows affected (0.11 sec)</span><br><span class="line">Records: 2  Duplicates: 0  Warnings: 0</span><br><span class="line"></span><br><span class="line">mysql&gt;  desc test_int;</span><br><span class="line">+-------+------------------+------+-----+---------+-------+</span><br><span class="line">| Field | Type             | Null | Key | Default | Extra |</span><br><span class="line">+-------+------------------+------+-----+---------+-------+</span><br><span class="line">| id1   | int(10) unsigned | YES  |     | NULL    |       |</span><br><span class="line">| id2   | int(5)           | YES  |     | NULL    |       |</span><br><span class="line">+-------+------------------+------+-----+---------+-------+</span><br><span class="line">2 rows in set (0.01 sec)</span><br></pre></td></tr></table></figure>
+
+<p>给 id1 插入一条大于 2147483647 的数据，是可以的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; insert into test_int value (2147483648,2147483647);</span><br><span class="line">Query OK, 1 row affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from test_int;</span><br><span class="line">+------------+------------+</span><br><span class="line">| id1        | id2        |</span><br><span class="line">+------------+------------+</span><br><span class="line">|          1 |          1 |</span><br><span class="line">|     111111 |     111111 |</span><br><span class="line">| 2147483648 | 2147483647 |</span><br><span class="line">+------------+------------+</span><br><span class="line">3 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<p>但是如果给 id2 插入一条大于 2147483647 的数据，会报错：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; insert into test_int value (2147483647,2147483648);</span><br><span class="line">ERROR 1264 (22003): Out of range value for column &#39;id2&#39; at row 1</span><br></pre></td></tr></table></figure>
+
+<h3 id="小数"><a href="#小数" class="headerlink" title="小数"></a>小数</h3><p><code>float(m,n)</code> 的意思是总共存 m 位，小数点占 n 位。double 和 decimal 的位数约束也是这样的。</p>
+<p>创建一个名为 test_decimal 的表，表中有三个字段，类型分别为 float、double 和 decimal，参数表示一共显示 5 位，小数部分占 2 位：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; create table test_decimal (id1 float(5,2),id2 double(5,2),id3 decimal(5,2));</span><br><span class="line">Query OK, 0 rows affected (0.04 sec)</span><br></pre></td></tr></table></figure>
+
+<p>向表中插入数据 <code>(1.23,1.23,1.23)</code>，一切正常：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; insert into test_decimal value (1.23,1.23,1.23);</span><br><span class="line">Query OK, 1 row affected (0.01 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from test_decimal;</span><br><span class="line">+------+------+------+</span><br><span class="line">| id1  | id2  | id3  |</span><br><span class="line">+------+------+------+</span><br><span class="line">| 1.23 | 1.23 | 1.23 |</span><br><span class="line">+------+------+------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<p>现在我们给三个字段都插入一条 1.234 的数据：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; insert into test_decimal value (1.234,1.234,1.234);</span><br><span class="line">Query OK, 1 row affected, 1 warning (0.01 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from test_decimal;</span><br><span class="line">+------+------+------+</span><br><span class="line">| id1  | id2  | id3  |</span><br><span class="line">+------+------+------+</span><br><span class="line">| 1.23 | 1.23 | 1.23 |</span><br><span class="line">| 1.23 | 1.23 | 1.23 |</span><br><span class="line">+------+------+------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<p>我们发现，每个字段中，最后一位的 4 都被舍弃掉了。</p>
+<p>如果插入的数据是 1.235：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; insert into test_decimal value (1.235,1.235,1.235);</span><br><span class="line">Query OK, 1 row affected, 1 warning (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from test_decimal;</span><br><span class="line">+------+------+------+</span><br><span class="line">| id1  | id2  | id3  |</span><br><span class="line">+------+------+------+</span><br><span class="line">| 1.23 | 1.23 | 1.23 |</span><br><span class="line">| 1.23 | 1.23 | 1.23 |</span><br><span class="line">| 1.24 | 1.24 | 1.24 |</span><br><span class="line">+------+------+------+</span><br><span class="line">3 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<p>这时，会向前进一位。总结起来就是，小数的保留规则是四舍五入（不是四舍六入五成双）。</p>
+<p>我们再创建一个表，取消每个字段长度的约束限制：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; create table test_decimal2 (id1 float,id2 double,id3 decimal);</span><br><span class="line">Query OK, 0 rows affected (0.04 sec)</span><br></pre></td></tr></table></figure>
+
+<p>再给每个字段插入 1.234，查看效果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; insert into test_decimal2 value (1.234,1.234,1.234);</span><br><span class="line">Query OK, 1 row affected, 1 warning (0.01 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from test_decimal2;</span><br><span class="line">+-------+-------+------+</span><br><span class="line">| id1   | id2   | id3  |</span><br><span class="line">+-------+-------+------+</span><br><span class="line">| 1.234 | 1.234 |    1 |</span><br><span class="line">+-------+-------+------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<p>我们发现，float 和 double 都正常，而 decimal 默认值是整数。</p>
+<p>当对小数位没有约束的时候，输入超长的小数，会发现 float 和 double 的区别：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; insert into test_decimal2 value (1.2355555555555555555555555555,1.2355555555555555555555555555,1.2355555555555555555555555555);</span><br><span class="line">Query OK, 1 row affected, 1 warning (0.01 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from test_decimal2;</span><br><span class="line">+---------+--------------------+------+</span><br><span class="line">| id1     | id2                | id3  |</span><br><span class="line">+---------+--------------------+------+</span><br><span class="line">|   1.234 |              1.234 |    1 |</span><br><span class="line">| 1.23556 | 1.2355555555555555 |    1 |</span><br><span class="line">+---------+--------------------+------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<p>double 的精度显然是要高于 float 的。</p>
+<h2 id="日期和时间类型"><a href="#日期和时间类型" class="headerlink" title="日期和时间类型"></a>日期和时间类型</h2><p>MySQL 中表示时间值的日期和时间类型有：DATETIME、DATE、TIMESTAMP、TIME 和 YEAR。</p>
+<p>每个时间类型有一个有效值范围和一个”零”值，当指定不合法的 MySQL 不能表示的值时使用”零”值。</p>
+<p>每种时间类型的应用场景为</p>
+<ul>
+<li>datetime：年月日时分秒，开奖时间、聊天记录、账务、打卡时间</li>
+<li>date：发工资、生日、放假、入职离职时间、入学毕业时间</li>
+<li>time：上课时间、闹铃、体育项目/计算用时</li>
+<li>year：以年为单位做统计</li>
+<li>timestamp：时间戳，能表示的时间范围有限，已经不常用了</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>大小 (字节)</th>
+<th>范围</th>
+<th>格式</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>DATE</td>
+<td>3</td>
+<td>1000-01-01/9999-12-31</td>
+<td>YYYY-MM-DD</td>
+<td>年月日</td>
+</tr>
+<tr>
+<td>TIME</td>
+<td>3</td>
+<td>‘-838:59:59’/‘838:59:59’</td>
+<td>HH:MM:SS</td>
+<td>时分秒</td>
+</tr>
+<tr>
+<td>YEAR</td>
+<td>1</td>
+<td>1901/2155</td>
+<td>YYYY</td>
+<td>年份值</td>
+</tr>
+<tr>
+<td>DATETIME</td>
+<td>8</td>
+<td>1000-01-01 00:00:00/9999-12-31 23:59:59</td>
+<td>YYYY-MM-DD HH:MM:SS</td>
+<td>年月日时分秒</td>
+</tr>
+<tr>
+<td>TIMESTAMP</td>
+<td>4</td>
+<td>1970-01-01 00:00:00/2038<br />结束时间是第 <strong>2147483647</strong> 秒，北京时间 <strong>2038-1-19 11:14:07</strong>，格林尼治时间 2038年1月19日 凌晨 03:14:07</td>
+<td>YYYYMMDD HHMMSS</td>
+<td>混合日期和时间值，时间戳</td>
+</tr>
+</tbody></table>
+<h3 id="date、time-和-datetime"><a href="#date、time-和-datetime" class="headerlink" title="date、time 和 datetime"></a>date、time 和 datetime</h3><p>创建数据表 test_datetime，表中的三个字段分别是 date、time 和 datetime 类型：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; create table test_datetime (d date, t time, dt datetime);</span><br><span class="line">Query OK, 0 rows affected (0.04 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; desc test_datetime;</span><br><span class="line">+-------+----------+------+-----+---------+-------+</span><br><span class="line">| Field | Type     | Null | Key | Default | Extra |</span><br><span class="line">+-------+----------+------+-----+---------+-------+</span><br><span class="line">| d     | date     | YES  |     | NULL    |       |</span><br><span class="line">| t     | time     | YES  |     | NULL    |       |</span><br><span class="line">| dt    | datetime | YES  |     | NULL    |       |</span><br><span class="line">+-------+----------+------+-----+---------+-------+</span><br><span class="line">3 rows in set (0.01 sec)</span><br></pre></td></tr></table></figure>
+
+<p>使用 now 函数可以获取当前时间。给三个字段都插入当前时间：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; insert into test_datetime value (now(),now(),now());</span><br><span class="line">Query OK, 1 row affected, 1 warning (0.01 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from test_datetime;</span><br><span class="line">+------------+----------+---------------------+</span><br><span class="line">| d          | t        | dt                  |</span><br><span class="line">+------------+----------+---------------------+</span><br><span class="line">| 2020-05-02 | 17:06:50 | 2020-05-02 17:06:50 |</span><br><span class="line">+------------+----------+---------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<p>date 只显示日期，time 只显示时间，datetime 会显示日期和时间。</p>
+<p>如果插入的数据为 null，也会全部显示为 null：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; insert into test_datetime value (null,null,null);</span><br><span class="line">Query OK, 1 row affected (0.01 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from test_datetime;</span><br><span class="line">+------------+----------+---------------------+</span><br><span class="line">| d          | t        | dt                  |</span><br><span class="line">+------------+----------+---------------------+</span><br><span class="line">| 2020-05-02 | 17:06:50 | 2020-05-02 17:06:50 |</span><br><span class="line">| NULL       | NULL     | NULL                |</span><br><span class="line">+------------+----------+---------------------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<p>除了使用 now，我们还可以使用如下格式插入时间，仅以 datetime 为例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; create table test_datetime2 (dt datetime);</span><br><span class="line">Query OK, 0 rows affected (0.04 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; insert into test_datetime2 value (&#39;2020-05-02 17:06:11&#39;);</span><br><span class="line">Query OK, 1 row affected (0.01 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; insert into test_datetime2 value (&#39;2020&#x2F;05&#x2F;02 17+06+11&#39;);</span><br><span class="line">Query OK, 1 row affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; insert into test_datetime2 value (&#39;20200502170611&#39;);</span><br><span class="line">Query OK, 1 row affected (0.01 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; insert into test_datetime2 value (20200502170611);</span><br><span class="line">Query OK, 1 row affected (0.01 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from test_datetime2;</span><br><span class="line">+---------------------+</span><br><span class="line">| dt                  |</span><br><span class="line">+---------------------+</span><br><span class="line">| 2020-05-02 17:06:11 |</span><br><span class="line">| 2020-05-02 17:06:11 |</span><br><span class="line">| 2020-05-02 17:06:11 |</span><br><span class="line">| 2020-05-02 17:06:11 |</span><br><span class="line">+---------------------+</span><br><span class="line">4 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<h3 id="设置时间默认值和自动更新"><a href="#设置时间默认值和自动更新" class="headerlink" title="设置时间默认值和自动更新"></a>设置时间默认值和自动更新</h3><p>再创建表时，可以给表格默认值约束和自动更新约束：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; create table test_time (id int,dt datetime not null default current_timestamp on update current_timestamp);</span><br><span class="line">Query OK, 0 rows affected (0.04 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; insert into test_time(id) value (1);</span><br><span class="line">Query OK, 1 row affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from test_time;</span><br><span class="line">+------+---------------------+</span><br><span class="line">| id   | dt                  |</span><br><span class="line">+------+---------------------+</span><br><span class="line">|    1 | 2020-05-02 17:37:19 |</span><br><span class="line">+------+---------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; update test_time set id&#x3D;2 where id&#x3D;1;</span><br><span class="line">Query OK, 1 row affected (0.01 sec)</span><br><span class="line">Rows matched: 1  Changed: 1  Warnings: 0</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from test_time;</span><br><span class="line">+------+---------------------+</span><br><span class="line">| id   | dt                  |</span><br><span class="line">+------+---------------------+</span><br><span class="line">|    2 | 2020-05-02 17:38:05 |</span><br><span class="line">+------+---------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<p>插入数据时，会默认插入当前时间。修改数据时，会更新至修改时的时间。</p>
+<h2 id="字符串类型"><a href="#字符串类型" class="headerlink" title="字符串类型"></a>字符串类型</h2><p>字符串类型包括：CHAR、VARCHAR、BINARY、VARBINARY、BLOB 和 TEXT。</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>大小</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CHAR</td>
+<td>0-255 字符</td>
+<td>定长字符串</td>
+</tr>
+<tr>
+<td>VARCHAR</td>
+<td>0-65535 字节</td>
+<td>变长字符串</td>
+</tr>
+<tr>
+<td>TINYBLOB</td>
+<td>0-255 字节</td>
+<td>不超过 255 个字符的二进制字符串</td>
+</tr>
+<tr>
+<td>TINYTEXT</td>
+<td>0-255 字节</td>
+<td>短文本字符串</td>
+</tr>
+<tr>
+<td>BLOB</td>
+<td>0-65 535 字节</td>
+<td>二进制形式的长文本数据</td>
+</tr>
+<tr>
+<td>TEXT</td>
+<td>0-65 535 字节</td>
+<td>长文本数据</td>
+</tr>
+<tr>
+<td>MEDIUMBLOB</td>
+<td>0-16 777 215 字节</td>
+<td>二进制形式的中等长度文本数据</td>
+</tr>
+<tr>
+<td>MEDIUMTEXT</td>
+<td>0-16 777 215 字节</td>
+<td>中等长度文本数据</td>
+</tr>
+<tr>
+<td>LONGBLOB</td>
+<td>0-4 294 967 295 字节</td>
+<td>二进制形式的极大文本数据</td>
+</tr>
+<tr>
+<td>LONGTEXT</td>
+<td>0-4 294 967 295 字节</td>
+<td>极大文本数据</td>
+</tr>
+</tbody></table>
+<p>常用的字符串数据类型为 char 和 varchar，它们的区别和优缺点为：</p>
+<ul>
+<li>char：<ul>
+<li>定长，最长 255 字节</li>
+<li>浪费空间</li>
+<li>存取快</li>
+</ul>
+</li>
+<li>varchar：<ul>
+<li>变长，最长 65535 字节</li>
+<li>节省空间</li>
+<li>存取慢</li>
+</ul>
+</li>
+</ul>
+<p>char 常用于存储手机号码、身份证号、用户名、密码等长度固定或需要频繁存取的数据。而 varchar 常用于存储评论、发表的微博等长度不固定的数据。</p>
+<p>创建一个名为 test_char 的数据表，表中两个字段的数据类型分别为 char 和 varchar，长度都限制为 4：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; create table test_char (c char(10),v varchar(10));</span><br><span class="line">Query OK, 0 rows affected (0.04 sec)</span><br></pre></td></tr></table></figure>
+
+<p>插入普通数据就不演示了，我们插入一个有很多空格的字符串，比如 <code>&#39;  a b  &#39;</code>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; insert into test_char value (&#39;  a b  &#39;, &#39;  a b  &#39;);</span><br><span class="line">Query OK, 1 row affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from test_char;</span><br><span class="line">+-------+---------+</span><br><span class="line">| c     | v       |</span><br><span class="line">+-------+---------+</span><br><span class="line">|   a b |   a b   |</span><br><span class="line">+-------+---------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<p>我们可以大致看到，char 的后面的空格默认是被裁剪掉了，而 varchar 不会被清除。</p>
+<p>我们计算查询结果的长度，可以验证结论：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select length(c),length(v) from test_char;</span><br><span class="line">+-----------+-----------+</span><br><span class="line">| length(c) | length(v) |</span><br><span class="line">+-----------+-----------+</span><br><span class="line">|         5 |         7 |</span><br><span class="line">+-----------+-----------+</span><br><span class="line">1 row in set (0.01 sec)</span><br></pre></td></tr></table></figure>
+
+<p>char 比 varchar 少了两个字符，就是因为 char 的结尾空格被清除了。</p>
+<p>还可以在输入内容的开头和结尾加上一个 <code>+</code>，看起来更清楚些：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; select concat(&#39;+&#39;,c,&#39;+&#39;),concat(&#39;+&#39;,v,&#39;+&#39;) from test_char;</span><br><span class="line">+-------------------+-------------------+</span><br><span class="line">| concat(&#39;+&#39;,c,&#39;+&#39;) | concat(&#39;+&#39;,v,&#39;+&#39;) |</span><br><span class="line">+-------------------+-------------------+</span><br><span class="line">| +  a b+           | +  a b  +         |</span><br><span class="line">+-------------------+-------------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<p>我们说，char 会清除掉后面的空格，而 varchar 不会，这是建立在字符串的长度不超过限制的基础上。如果字符串的长度超过 varchar 的限制，varchar 也会清楚末尾的空格，直到和限定的长度一致：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; insert into test_char value (&#39;abcdefgh     &#39;, &#39;abcdefgh     &#39;);</span><br><span class="line">Query OK, 1 row affected, 1 warning (0.01 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select c,v,length(c),length(v) from test_char;</span><br><span class="line">+----------+------------+-----------+-----------+</span><br><span class="line">| c        | v          | length(c) | length(v) |</span><br><span class="line">+----------+------------+-----------+-----------+</span><br><span class="line">|   a b    |   a b      |         5 |         7 |</span><br><span class="line">| abcdefgh | abcdefgh   |         8 |        10 |</span><br><span class="line">+----------+------------+-----------+-----------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<p>BINARY 和 VARBINARY 类似于 CHAR 和 VARCHAR，不同的是它们包含二进制字符串而不要非二进制字符串。也就是说，它们包含字节字符串而不是字符字符串。这说明它们没有字符集，并且排序和比较基于列值字节的数值值。</p>
+<p>BLOB 是一个二进制大对象，可以容纳可变数量的数据。有 4 种 BLOB 类型：TINYBLOB、BLOB、MEDIUMBLOB 和 LONGBLOB。它们区别在于可容纳存储范围不同。</p>
+<p>有 4 种 TEXT 类型：TINYTEXT、TEXT、MEDIUMTEXT 和 LONGTEXT。对应的这 4 种 BLOB 类型，可存储的最大长度不同，可根据实际情况选择。</p>
+<h2 id="ENUM-和-SET-类型"><a href="#ENUM-和-SET-类型" class="headerlink" title="ENUM 和 SET 类型"></a>ENUM 和 SET 类型</h2><p>ENUM 中文名称叫枚举类型，它的值范围需要在创建表时通过枚举方式显示。ENUM <strong>只允许从值集合中选取单个值，而不能一次取多个值</strong>。</p>
+<p>SET 和 ENUM 非常相似，也是一个字符串对象，里面可以包含 0-64 个成员。根据成员的不同，存储上也有所不同。set 类型可以<strong>允许值集合中任意选择 1 或多个元素进行组合</strong>。对超出范围的内容将不允许注入，而对重复的值将进行自动去重。</p>
+<p>简言之，enum 枚举是单选方法，比如性别；set 集合是多选方法，可以去重，比如爱好。</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>大小</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>ENUM</td>
+<td>对 1-255 个成员的枚举需要 1 个字节存储；<br />对于 255-65535 个成员，需要 2 个字节存储；<br />最多允许 65535 个成员。</td>
+<td>单选：选择性别</td>
+</tr>
+<tr>
+<td>SET</td>
+<td>1-8 个成员的集合，占 1 个字节<br />9-16 个成员的集合，占 2 个字节<br />17-24 个成员的集合，占 3 个字节<br />25-32 个成员的集合，占 4 个字节<br />33-64 个成员的集合，占 8 个字节</td>
+<td>多选：兴趣爱好</td>
+</tr>
+</tbody></table>
+<h3 id="enum-枚举"><a href="#enum-枚举" class="headerlink" title="enum 枚举"></a>enum 枚举</h3><p>创建一个数据表 test_enum，字段的类型分别为 enum：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; create table test_enum (gender enum(&#39;male&#39;,&#39;female&#39;));</span><br><span class="line">Query OK, 0 rows affected (0.04 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; desc test_enum;</span><br><span class="line">+--------+-----------------------+------+-----+---------+-------+</span><br><span class="line">| Field  | Type                  | Null | Key | Default | Extra |</span><br><span class="line">+--------+-----------------------+------+-----+---------+-------+</span><br><span class="line">| gender | enum(&#39;male&#39;,&#39;female&#39;) | YES  |     | NULL    |       |</span><br><span class="line">+--------+-----------------------+------+-----+---------+-------+</span><br><span class="line">1 row in set (0.01 sec)</span><br></pre></td></tr></table></figure>
+
+<p>如果插入的数据为 male 和 female 之一，可以正常插入：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; insert into test_enum value (&#39;male&#39;);</span><br><span class="line">Query OK, 1 row affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from test_enum;</span><br><span class="line">+--------+</span><br><span class="line">| gender |</span><br><span class="line">+--------+</span><br><span class="line">| male   |</span><br><span class="line">+--------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<p>但如果同时插入 male 和 female 或者插入这之外的数据，是不成的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; insert into test_enum value (&#39;male,female&#39;);</span><br><span class="line">ERROR 1265 (01000): Data truncated for column &#39;gender&#39; at row 1</span><br><span class="line">mysql&gt; insert into test_enum value (&#39;man&#39;);</span><br><span class="line">ERROR 1265 (01000): Data truncated for column &#39;gender&#39; at row 1</span><br></pre></td></tr></table></figure>
+
+<h3 id="set-集合"><a href="#set-集合" class="headerlink" title="set 集合"></a>set 集合</h3><p>创建一个名为 test_set 的数据表，字段的数据类型为 set：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; create table test_set (hobby set(&#39;抽烟&#39;,&#39;喝酒&#39;,&#39;烫头&#39;));</span><br><span class="line">Query OK, 0 rows affected (0.03 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; desc test_set;</span><br><span class="line">+-------+---------------------------------+------+-----+---------+-------+</span><br><span class="line">| Field | Type                            | Null | Key | Default | Extra |</span><br><span class="line">+-------+---------------------------------+------+-----+---------+-------+</span><br><span class="line">| hobby | set(&#39;抽烟&#39;,&#39;喝酒&#39;,&#39;烫头&#39;)       | YES  |     | NULL    |       |</span><br><span class="line">+-------+---------------------------------+------+-----+---------+-------+</span><br><span class="line">1 row in set (0.01 sec)</span><br></pre></td></tr></table></figure>
+
+<p>可以插入抽烟、喝酒和烫头中的任意数量项，并自带去重功能：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; insert into test_set value(&#39;抽烟,烫头,抽烟&#39;);</span><br><span class="line">Query OK, 1 row affected (0.00 sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * from test_set;</span><br><span class="line">+---------------+</span><br><span class="line">| hobby         |</span><br><span class="line">+---------------+</span><br><span class="line">| 抽烟,烫头     |</span><br><span class="line">+---------------+</span><br><span class="line">1 row in set (0.00 sec)</span><br></pre></td></tr></table></figure>
+
+<p>不过如果输入不属于选项中的内容，会报错：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql&gt; insert into test_set value(&#39;抽烟,烫头,洗澡&#39;);</span><br><span class="line">ERROR 1265 (01000): Data truncated for column &#39;hobby&#39; at row 1</span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -461,7 +721,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#数值类型"><span class="nav-number">1.</span> <span class="nav-text">数值类型</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#数值类型"><span class="nav-number">1.</span> <span class="nav-text">数值类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#int-整数"><span class="nav-number">1.1.</span> <span class="nav-text">int 整数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#小数"><span class="nav-number">1.2.</span> <span class="nav-text">小数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#日期和时间类型"><span class="nav-number">2.</span> <span class="nav-text">日期和时间类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#date、time-和-datetime"><span class="nav-number">2.1.</span> <span class="nav-text">date、time 和 datetime</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#设置时间默认值和自动更新"><span class="nav-number">2.2.</span> <span class="nav-text">设置时间默认值和自动更新</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#字符串类型"><span class="nav-number">3.</span> <span class="nav-text">字符串类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ENUM-和-SET-类型"><span class="nav-number">4.</span> <span class="nav-text">ENUM 和 SET 类型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#enum-枚举"><span class="nav-number">4.1.</span> <span class="nav-text">enum 枚举</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#set-集合"><span class="nav-number">4.2.</span> <span class="nav-text">set 集合</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -477,14 +737,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">342</span>
+          <span class="site-state-item-count">345</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-count">18</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -546,7 +806,7 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">61:19</span>
+    <span title="站点阅读时长">62:03</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
   </div>
