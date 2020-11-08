@@ -38,7 +38,7 @@
 <meta property="og:image" content="https://sliu.vip/python-advanced/rpc/rpcpythongrpcdemo.gif">
 <meta property="og:image" content="https://sliu.vip/python-advanced/rpc/2733312-79268e6a80810cd8.png">
 <meta property="article:published_time" content="2020-03-13T05:53:10.228Z">
-<meta property="article:modified_time" content="2020-03-21T05:30:10.746Z">
+<meta property="article:modified_time" content="2020-11-08T16:31:01.047Z">
 <meta property="article:author" content="刘硕">
 <meta property="article:tag" content="Python">
 <meta property="article:tag" content="网络编程">
@@ -252,7 +252,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-03-21 13:30:10" itemprop="dateModified" datetime="2020-03-21T13:30:10+08:00">2020-03-21</time>
+                <time title="修改时间：2020-11-09 00:31:01" itemprop="dateModified" datetime="2020-11-09T00:31:01+08:00">2020-11-09</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -342,7 +342,7 @@
 
 <p>安装好之后，我们就可以使用 rpyc，很容易地搭建起 Python 版本的 RPC 客户端和服务端了。</p>
 <p>客户端 <code>client.py</code> 的代码为：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> rpyc</span><br><span class="line"></span><br><span class="line"><span class="comment"># 参数主要是host, port</span></span><br><span class="line">conn = rpyc.connect(<span class="string">'localhost'</span>, <span class="number">9999</span>)</span><br><span class="line"><span class="comment"># test是服务端的那个以"exposed_"开头的方法</span></span><br><span class="line">print(<span class="string">'start'</span>)</span><br><span class="line"><span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        num = int(input(<span class="string">'请输入一个数字[任意非数字退出]：'</span>))</span><br><span class="line">        cResult = conn.root.cal(num)    <span class="comment"># 这一句是客户端的精华，调用服务端的函数</span></span><br><span class="line">        print(cResult)</span><br><span class="line">    <span class="keyword">except</span> Exception:</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">print(<span class="string">'end'</span>)</span><br><span class="line"></span><br><span class="line">conn.close()</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> rpyc</span><br><span class="line"></span><br><span class="line"><span class="comment"># 参数主要是 host, port</span></span><br><span class="line">conn = rpyc.connect(<span class="string">'localhost'</span>, <span class="number">9999</span>)</span><br><span class="line"><span class="comment"># cal 是服务端的那个以“exposed_”开头的方法</span></span><br><span class="line">print(<span class="string">'start'</span>)</span><br><span class="line"><span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        num = int(input(<span class="string">'请输入一个数字[任意非数字退出]：'</span>))</span><br><span class="line">        cResult = conn.root.cal(num)    <span class="comment"># 这一句是客户端的精华，调用服务端的函数</span></span><br><span class="line">        print(cResult)</span><br><span class="line">    <span class="keyword">except</span> Exception:</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">print(<span class="string">'end'</span>)</span><br><span class="line"></span><br><span class="line">conn.close()</span><br></pre></td></tr></table></figure>
 
 <p>服务端 <code>server.py</code> 的代码为：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> rpyc <span class="keyword">import</span> Service</span><br><span class="line"><span class="keyword">from</span> rpyc.utils.server <span class="keyword">import</span> ThreadedServer</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestService</span><span class="params">(Service)</span>:</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 对于服务端来说， 只有以"exposed_"打头的方法才能被客户端调用，所以要提供给客户端的方法都得加"exposed_"</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">exposed_cal</span><span class="params">(self, num)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> num * <span class="number">2</span></span><br><span class="line"></span><br><span class="line">sr = ThreadedServer(TestService, port=<span class="number">9999</span>, auto_register=<span class="literal">False</span>)</span><br><span class="line">sr.start()</span><br></pre></td></tr></table></figure>
@@ -531,14 +531,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">345</span>
+          <span class="site-state-item-count">353</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-count">19</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
@@ -595,12 +595,12 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-area-chart"></i>
     </span>
-    <span title="站点总字数">2m</span>
+    <span title="站点总字数">2.1m</span>
     <span class="post-meta-divider">|</span>
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">62:03</span>
+    <span title="站点阅读时长">62:43</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动
   </div>
